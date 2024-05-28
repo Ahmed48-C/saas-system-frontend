@@ -11,13 +11,6 @@ import HeaderDots from '../HeaderDots';
 import HeaderUserbox from '../HeaderUserbox';
 import HeaderDrawer from '../HeaderDrawer';
 
-// import HeaderDots from '../../layout-components/HeaderDots';
-// import HeaderDrawer from '../../layout-components/HeaderDrawer';
-// import HeaderUserbox from '../../layout-components/HeaderUserbox';
-// import HeaderSearch from '../../layout-components/HeaderSearch';
-// import HeaderMenu from '../../layout-components/HeaderMenu';
-
-
 const Header = (props) => {
   const {
     headerShadow,
@@ -54,7 +47,7 @@ const Header = (props) => {
         <div className="app-header--pane">
           <HeaderDots />
           <HeaderUserbox />
-          {/* <HeaderDrawer /> */}
+          <HeaderDrawer />
         </div>
       </div>
     </>
