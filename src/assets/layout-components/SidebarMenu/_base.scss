@@ -144,7 +144,8 @@
 
         &.active {
           .sidebar-icon-indicator {
-            transform: rotate(-90deg);
+            // transform: rotate(-90deg);
+            transform: rotate(90deg);
           }
 
           &.nav-link-simple {
