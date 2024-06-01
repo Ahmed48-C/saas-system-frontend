@@ -5,12 +5,7 @@ import { ClimbingBoxLoader } from 'react-spinners';
 
 import {
 LeftSidebar,
-CollapsedSidebar,
-MinimalLayout,
-PresentationLayout
 } from './layout-blueprints';
-
-import { Sidebar, Header } from './layout-components';
 
 import { ThemeProvider } from '@material-ui/styles';
 import MuiTheme from './theme';
@@ -268,9 +263,6 @@ library.add(
 const Dashboard = lazy(() =>
     import('./pages/Dashboard')
 );
-const Overview = lazy(() =>
-    import('./pages/Overview')
-);
 
 const Routes = () => {
     const location = useLocation();
@@ -315,21 +307,16 @@ const Routes = () => {
 
     return (
         <ThemeProvider theme={MuiTheme}>
-            {/* <LeftSidebar /> */}
             <LeftSidebar>
                 <AnimatePresence>
                     <Suspense fallback={<SuspenseLoading />}>
                         <Switch>
-                            <Redirect exact from="/" to="/Overview" />
-                            <Route path={['/Overview', '/Dashboard']}>
-                            <Route
-                                path="/Overview"
-                                component={Overview}
-                            />
-                            <Route
-                                path="/Dashboard"
-                                component={Dashboard}
-                            />
+                            <Redirect exact from="/" to="/Dashboard" />
+                            <Route>
+                              <Route
+                                  path="/Dashboard"
+                                  component={Dashboard}
+                              />
                             </Route>
                         </Switch>
                     </Suspense>
