@@ -59,6 +59,8 @@ const rows = [
 ];
 
 const Dashboard = () => {
+  const Heading = 'Dashboard'
+
   const tableContent = rows.map((row, index) =>(
     <tr key={index}>
       <td className="font-weight-bold">{row.ID}</td>
@@ -96,7 +98,7 @@ const Dashboard = () => {
 
   return (
     <>
-      <MainTable headers={headers} tableContent={tableContent} />
+      <MainTable headers={headers} tableContent={tableContent} Heading={Heading} />
     </>
   )
 }

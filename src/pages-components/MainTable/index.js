@@ -11,27 +11,83 @@ import {
   Tooltip,
   TextField,
   FormControl,
-  Select
+  Select,
+  Grid
 } from '@material-ui/core';
 
 import Pagination from '@material-ui/lab/Pagination';
 
 import SearchTwoToneIcon from '@material-ui/icons/SearchTwoTone';
 
-const MainTable = ({ headers, tableContent, tableButtons }) => {
+import { AnimatePresence, motion } from 'framer-motion';
+import { PageTitle } from '../../layout-components';
+import DatePicker from '../DatePicker';
+import InputSelect from '../InputSelect';
+import TagSelect from '../TagSelect';
+import TimePicker from '../TimePicker';
+import Upload from '../Upload';
+import ToggleSwitch from '../ToggleSwitch';
+import Textarea from '../Textarea';
+
+const MainTable = ({ headers, tableContent, tableButtons, createContent, Heading }) => {
+    const Create = () => {
+      return (
+        <Card className="p-4 mb-4" style={{
+          minHeight: '80vh',
+          height: 'auto',
+          // width: '100%',
+          // display: 'flex',
+          // flexDirection: 'column',
+          // justifyContent: 'space-between',
+        }}>
+            <PageTitle titleHeading={'Add ' + Heading} handleClick={handleClick} />
+            <DatePicker />
+            <InputSelect />
+            <TagSelect />
+            <TimePicker />
+            <Upload />
+            <ToggleSwitch />
+            <Textarea />
+            {createContent}
+            {/* <Button size="small" className="btn-neutral-primary" onClick={handleClick}>
+              <span className="btn-wrapper--icon">
+                <FontAwesomeIcon icon={['fas', 'plus-circle']} />
+              </span>
+              <span className="btn-wrapper--label">Exit</span>
+            </Button> */}
+        </Card>
+      )
+    }
+
     const [entries, setEntries] = useState('1');
+    const [showCreate, setShowCreate] = useState(false);
 
     const handleChange = (event) => {
       setEntries(event.target.value);
     };
+
+    const handleClick = (event) => {
+      setShowCreate(prevShowCreate => !prevShowCreate);
+  };
   
     return (
       <>
+        {showCreate ? (
+          <motion.div
+            key="create"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            transition={{ duration: 0.5 }}
+          >
+            <Create />
+          </motion.div>
+        ) : (
         <Card className="card-box mb-spacing-6-x2">
           <div className="card-header py-3">
             <div className="card-header--title font-size-lg">Support board</div>
             <div className="card-header--actions">
-              <Button size="small" className="btn-neutral-primary">
+              <Button size="small" className="btn-neutral-primary" onClick={handleClick}>
                 <span className="btn-wrapper--icon">
                   <FontAwesomeIcon icon={['fas', 'plus-circle']} />
                 </span>
@@ -40,40 +96,7 @@ const MainTable = ({ headers, tableContent, tableButtons }) => {
             </div>
           </div>
           {tableButtons}
-          {/* <div className="d-flex justify-content-between px-4 py-3"> */}
           <div className="d-flex align-right px-4 py-3">
-            {/* <div className="d-flex align-items-center">
-              <span>Show</span>
-              <FormControl size="small" variant="outlined" className="mx-3">
-                <InputLabel id="select-entries-label">Entries</InputLabel>
-                <Select
-                  labelId="select-entries-label"
-                  id="select-entries"
-                  value={entries}
-                  onChange={handleChange}
-                  label="Entries">
-                  <MenuItem className="mx-2" value={1}>
-                    All entries
-                  </MenuItem>
-                  <MenuItem className="mx-2" value={10}>
-                    10
-                  </MenuItem>
-                  <MenuItem className="mx-2" value={15}>
-                    15
-                  </MenuItem>
-                  <MenuItem className="mx-2" value={20}>
-                    20
-                  </MenuItem>
-                  <MenuItem className="mx-2" value={25}>
-                    25
-                  </MenuItem>
-                  <MenuItem className="mx-2" value={30}>
-                    30
-                  </MenuItem>
-                </Select>
-              </FormControl>
-              <span>entries</span>
-            </div> */}
             <div className="search-wrapper">
               <TextField
                 variant="outlined"
@@ -101,130 +124,6 @@ const MainTable = ({ headers, tableContent, tableButtons }) => {
               </thead>
               <tbody>
                 {tableContent}
-                {/* <tr>
-                  <td className="font-weight-bold">#453</td>
-                  <td>
-                    <div className="d-flex align-items-center">
-                      <div>Shanelle Wynn</div>
-                    </div>
-                  </td>
-                  <td>When, while the lovely valley teems</td>
-                  <td className="text-center">
-                    <div className="badge badge-neutral-danger text-danger">
-                      High
-                    </div>
-                  </td>
-                  <td className="text-center">
-                    <div className="badge badge-neutral-dark text-dark">
-                      Closed
-                    </div>
-                  </td>
-                  <td className="text-center text-black-50">12/12/2020</td>
-                  <td className="text-center text-black-50">08/30/2021</td>
-                  <td className="text-center">
-                    <Button
-                      size="small"
-                      className="btn-link d-30 p-0 btn-icon hover-scale-sm">
-                      <FontAwesomeIcon
-                        icon={['fas', 'ellipsis-h']}
-                        className="font-size-lg"
-                      />
-                    </Button>
-                  </td>
-                </tr>
-                <tr>
-                  <td className="font-weight-bold">#584</td>
-                  <td>
-                    <div className="d-flex align-items-center">
-                      <div>Brody Dixon</div>
-                    </div>
-                  </td>
-                  <td>I am so happy, my dear friend</td>
-                  <td className="text-center">
-                    <div className="badge badge-neutral-warning text-warning">
-                      Low
-                    </div>
-                  </td>
-                  <td className="text-center">
-                    <div className="badge badge-neutral-success text-success">
-                      Open
-                    </div>
-                  </td>
-                  <td className="text-center text-black-50">06/08/2022</td>
-                  <td className="text-center text-black-50">07/25/2023</td>
-                  <td className="text-center">
-                    <Button
-                      size="small"
-                      className="btn-link d-30 p-0 btn-icon hover-scale-sm">
-                      <FontAwesomeIcon
-                        icon={['fas', 'ellipsis-h']}
-                        className="font-size-lg"
-                      />
-                    </Button>
-                  </td>
-                </tr>
-                <tr>
-                  <td className="font-weight-bold">#764</td>
-                  <td>
-                    <div className="d-flex align-items-center">
-                      <div>Milton Ayala</div>
-                    </div>
-                  </td>
-                  <td>His own image, and the breath</td>
-                  <td className="text-center">
-                    <div className="badge badge-neutral-info text-info">
-                      Medium
-                    </div>
-                  </td>
-                  <td className="text-center">
-                    <div className="badge badge-neutral-dark text-dark">
-                      Closed
-                    </div>
-                  </td>
-                  <td className="text-center text-black-50">12/12/2020</td>
-                  <td className="text-center text-black-50">08/30/2021</td>
-                  <td className="text-center">
-                    <Button
-                      size="small"
-                      className="btn-link d-30 p-0 btn-icon hover-scale-sm">
-                      <FontAwesomeIcon
-                        icon={['fas', 'ellipsis-h']}
-                        className="font-size-lg"
-                      />
-                    </Button>
-                  </td>
-                </tr>
-                <tr>
-                  <td className="font-weight-bold">#453</td>
-                  <td>
-                    <div className="d-flex align-items-center">
-                      <div>Kane Gentry</div>
-                    </div>
-                  </td>
-                  <td>When I hear the buzz</td>
-                  <td className="text-center">
-                    <div className="badge badge-neutral-warning text-warning">
-                      Low
-                    </div>
-                  </td>
-                  <td className="text-center">
-                    <div className="badge badge-neutral-success text-success">
-                      Open
-                    </div>
-                  </td>
-                  <td className="text-center text-black-50">12/12/2020</td>
-                  <td className="text-center text-black-50">08/30/2021</td>
-                  <td className="text-center">
-                    <Button
-                      size="small"
-                      className="btn-link d-30 p-0 btn-icon hover-scale-sm">
-                      <FontAwesomeIcon
-                        icon={['fas', 'ellipsis-h']}
-                        className="font-size-lg"
-                      />
-                    </Button>
-                  </td>
-                </tr> */}
               </tbody>
             </Table>
           </div>
@@ -268,6 +167,7 @@ const MainTable = ({ headers, tableContent, tableButtons }) => {
             </div>
           </div>
         </Card>
+        )}
       </>
     );
 }
