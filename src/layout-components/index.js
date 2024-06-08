@@ -11,3 +11,4 @@ export { default as SidebarUserbox } from './SidebarUserbox';
 export { default as SidebarMenu } from './SidebarMenu';
 export { default as SidebarFooter } from './SidebarFooter';
 export { default as Footer } from './Footer';
+export { default as PageTitle } from './PageTitle';
