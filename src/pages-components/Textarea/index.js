@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Container, Card, TextField } from '@material-ui/core';
 
 const Textarea = () => {
-  const [value, setValue] = useState('Controlled');
+  const [value, setValue] = useState('');
 
   const handleChange = (event) => {
     setValue(event.target.value);
@@ -36,9 +36,11 @@ const Textarea = () => {
             fullWidth
             id="filled-multiline-static"
             label="Multiline"
+            onChange={handleChange}
+            value={value}
             multiline
             rows="3"
-            defaultValue="Default Value"
+            rowsMax="5"
           />
         {/* </Container>
       </Card> */}

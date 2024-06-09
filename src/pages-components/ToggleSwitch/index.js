@@ -18,7 +18,7 @@ const ToggleSwitch = () => {
         defaultChecked
         name="checkedB"
         color="secondary"
-        className="switch-medium"
+        className="switch-small"
         />
     </>
   );

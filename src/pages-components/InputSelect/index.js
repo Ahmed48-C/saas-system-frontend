@@ -9,7 +9,7 @@ import {
   Select
 } from '@material-ui/core';
 
-const InputSelect = () => {
+const InputSelect = ({ selectItems }) => {
   const [age, setAge] = useState('');
 
   const handleChange = (event) => {
@@ -28,12 +28,17 @@ const InputSelect = () => {
             value={age}
             onChange={handleChange}
             label="Age">
-            <MenuItem value="">
+            {/* <MenuItem value="">
                 <em>None</em>
-            </MenuItem>
-            <MenuItem value={10}>Ten</MenuItem>
+            </MenuItem> */}
+            {/* <MenuItem value={10}>Ten</MenuItem>
             <MenuItem value={20}>Twenty</MenuItem>
-            <MenuItem value={30}>Thirty</MenuItem>
+            <MenuItem value={30}>Thirty</MenuItem> */}
+            {selectItems.map((item) => (
+              <MenuItem key={item.value} value={item.value}>
+                {item.name}
+              </MenuItem>
+            ))}
             </Select>
         </FormControl>
     </>

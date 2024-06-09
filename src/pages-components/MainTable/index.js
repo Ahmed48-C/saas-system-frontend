@@ -29,7 +29,7 @@ import Upload from '../Upload';
 import ToggleSwitch from '../ToggleSwitch';
 import Textarea from '../Textarea';
 
-const MainTable = ({ headers, tableContent, tableButtons, createContent, Heading }) => {
+const MainTable = ({ headers, tableContent, tableButtons, createContent, Heading, selectItems, tagSelectOptions }) => {
     const Create = () => {
       return (
         <Card className="p-4 mb-4" style={{
@@ -42,8 +42,8 @@ const MainTable = ({ headers, tableContent, tableButtons, createContent, Heading
         }}>
             <PageTitle titleHeading={'Add ' + Heading} handleClick={handleClick} />
             <DatePicker />
-            <InputSelect />
-            <TagSelect />
+            <InputSelect selectItems={selectItems} />
+            <TagSelect tagSelectOptions={tagSelectOptions} />
             <TimePicker />
             <Upload />
             <ToggleSwitch />
