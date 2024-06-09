@@ -25,7 +25,7 @@ const DatePicker = () => {
               <KeyboardDatePicker
                 margin="normal"
                 id="date-picker-dialog"
-                label="Date picker dialog"
+                label="Date"
                 format="MM/dd/yyyy"
                 value={selectedDate}
                 onChange={handleDateChange}

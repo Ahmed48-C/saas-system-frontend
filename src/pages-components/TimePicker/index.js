@@ -11,7 +11,9 @@ import {
 
 const TimePicker = () => {
   const [selectedDate, setSelectedDate] = useState(
-    new Date('2014-08-18T21:11:54')
+    new Date(
+      // '2014-08-18T21:11:54'
+    )
   );
 
   const handleDateChange = (date) => {
