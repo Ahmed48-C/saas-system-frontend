@@ -51,9 +51,11 @@ const PageTitle = (props) => {
   return (
     <>
       <div
-        className={clsx('app-page-title', pageTitleStyle, pageTitleBackground, {
-          'app-page-title--shadow': pageTitleShadow
-        })}>
+          className={clsx('app-page-title', pageTitleStyle, pageTitleBackground, {
+            'app-page-title--shadow': pageTitleShadow
+          })}
+          style={{ padding: 0, margin: 0 }}
+        >
         <div>
           <div className="app-page-title--first">
             {pageTitleIconBox && (

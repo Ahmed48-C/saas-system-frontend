@@ -32,7 +32,7 @@ import Textarea from '../Textarea';
 const MainTable = ({ headers, tableContent, tableButtons, createContent, Heading, selectItems, tagSelectOptions }) => {
     const Create = () => {
       return (
-        <Card className="p-4 mb-4" style={{
+        <Card className="p-4 mb-4 card-box mb-spacing-6-x2" style={{
           minHeight: '80vh',
           height: 'auto',
           // width: '100%',
@@ -107,14 +107,25 @@ const MainTable = ({ headers, tableContent, tableButtons, createContent, Heading
         >
           <Card className="card-box mb-spacing-6-x2">
             <div className="card-header py-3">
-              <div className="card-header--title font-size-lg">Support board</div>
+              <div className="card-header--title font-size-xl">Support board</div>
               <div className="card-header--actions">
-                <Button size="small" className="btn-neutral-primary" onClick={handleClick}>
+                {/* <Button size="small" className="btn-neutral-primary" onClick={handleClick}>
                   <span className="btn-wrapper--icon">
                     <FontAwesomeIcon icon={['fas', 'plus-circle']} />
                   </span>
                   <span className="btn-wrapper--label">Add ticket</span>
-                </Button>
+                </Button> */}
+                <Tooltip title="New">
+                  <Button
+                    variant="contained"
+                    size="small"
+                    className="d-40 btn-primary"
+                    onClick={handleClick}>
+                    <span className="btn-wrapper--icon">
+                      <FontAwesomeIcon icon={['fas', 'plus-circle']} />
+                    </span>
+                  </Button>
+                </Tooltip>
               </div>
             </div>
             {tableButtons}
