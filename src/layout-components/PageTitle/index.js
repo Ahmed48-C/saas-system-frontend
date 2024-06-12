@@ -34,6 +34,7 @@ const PageTitle = (props) => {
     pageTitleIconBox,
     pageTitleDescription,
     titleHeading,
+    headingIcon,
     titleDescription,
     children,
     handleClick
@@ -58,13 +59,13 @@ const PageTitle = (props) => {
         >
         <div>
           <div className="app-page-title--first">
-            {pageTitleIconBox && (
+            {/* {pageTitleIconBox && (
               <div className="app-page-title--iconbox d-70">
                 <div className="d-70 d-flex align-items-center justify-content-center display-1">
-                  <HomeWorkTwoToneIcon className="text-primary" />
+                  {headingIcon}
                 </div>
               </div>
-            )}
+            )} */}
             <div className="app-page-title--heading">
               <h1>{titleHeading}</h1>
               {pageTitleDescription && (

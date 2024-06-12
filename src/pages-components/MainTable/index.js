@@ -29,7 +29,7 @@ import Upload from '../Upload';
 import ToggleSwitch from '../ToggleSwitch';
 import Textarea from '../Textarea';
 
-const MainTable = ({ headers, tableContent, tableButtons, createContent, Heading, selectItems, tagSelectOptions }) => {
+const MainTable = ({ headers, tableContent, tableButtons, createContent, Heading, selectItems, tagSelectOptions, headingIcon }) => {
     const Create = () => {
       return (
         <Card className="p-4 mb-4 card-box mb-spacing-6-x2" style={{
@@ -40,7 +40,7 @@ const MainTable = ({ headers, tableContent, tableButtons, createContent, Heading
           // flexDirection: 'column',
           // justifyContent: 'space-between',
         }}>
-            <PageTitle titleHeading={'Add ' + Heading} handleClick={handleClick} />
+            <PageTitle titleHeading={'Add ' + Heading} handleClick={handleClick} headingIcon={headingIcon} />
             <DatePicker />
             <InputSelect selectItems={selectItems} />
             <TagSelect tagSelectOptions={tagSelectOptions} />
@@ -107,7 +107,7 @@ const MainTable = ({ headers, tableContent, tableButtons, createContent, Heading
         >
           <Card className="card-box mb-spacing-6-x2">
             <div className="card-header py-3">
-              <div className="card-header--title font-size-xl">Support board</div>
+              <div className="card-header--title font-size-xl">{Heading}</div>
               <div className="card-header--actions">
                 {/* <Button size="small" className="btn-neutral-primary" onClick={handleClick}>
                   <span className="btn-wrapper--icon">
