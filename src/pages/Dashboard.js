@@ -1,7 +1,8 @@
-import React from 'react'
-import { MainTable } from '../pages-components'
-import { Button } from '@material-ui/core';
+import React, { useState } from 'react'
+import { MainTable, Popover } from '../pages-components'
+import { Button, ButtonGroup, Card, Divider, Fade, Popper } from '@material-ui/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import DashboardIcon from '@material-ui/icons/Dashboard';
 
 const headers = [
   { key: 'ID', className: 'bg-white text-left' },
@@ -174,7 +175,17 @@ const tagSelectOptions = [
 
 const Dashboard = () => {
   const Heading = 'Dashboard'
-  
+  const headingIcon = <DashboardIcon className='text-primary'/>
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(anchorEl ? null : event.currentTarget);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? 'transitions-popper' : undefined;
+
   const tableContent = rows.map((row, index) =>(
     <tr key={index}>
       <td className="font-weight-bold">{row.ID}</td>
@@ -199,12 +210,44 @@ const Dashboard = () => {
       <td className="text-center">
         <Button
           size="small"
-          className="btn-link d-30 p-0 btn-icon hover-scale-sm">
+          className="btn-link d-30 p-0 btn-icon hover-scale-sm"
+          onClick={handleClick}
+          >
           <FontAwesomeIcon
             icon={['fas', 'ellipsis-h']}
             className="font-size-lg"
           />
         </Button>
+        <Popper id={id} open={open} anchorEl={anchorEl} transition>
+          {({ TransitionProps }) => (
+            <Fade {...TransitionProps} timeout={350}>
+              {/* <Card className='card-box' >
+                <div className="p-1 font-weight-bold bg-secondary d-flex align-items-center justify-content-center" style={{height: '20px', fontSize: '12px'}}>
+                  The content of the Popper.
+                </div>
+                <Divider />
+                <div className="p-1 font-weight-bold bg-secondary d-flex align-items-center justify-content-center" style={{height: '20px', fontSize: '12px'}}>
+                  Lorem ipsum
+                </div>
+              </Card> */}
+              <ButtonGroup
+                orientation="vertical"
+                color="primary"
+                aria-label="vertical outlined primary button group"
+                variant="contained"
+              >
+                <Button className="d-30 btn-icon hover-scale-sm text-white">
+                <FontAwesomeIcon
+                  icon={['fas', 'ellipsis-h']}
+                  className="font-size-lg"
+                />
+                </Button>
+                <Button className="d-30 btn-icon hover-scale-sm text-white">Two</Button>
+                <Button className="d-30 btn-icon hover-scale-sm text-white">Three</Button>
+              </ButtonGroup>
+            </Fade>
+          )}
+        </Popper>
       </td>
     </tr>
   ))
@@ -212,7 +255,7 @@ const Dashboard = () => {
 
   return (
     <>
-      <MainTable headers={headers} tableContent={tableContent} Heading={Heading} selectItems={selectItems} tagSelectOptions={tagSelectOptions} />
+      <MainTable headers={headers} tableContent={tableContent} Heading={Heading} headingIcon={headingIcon} selectItems={selectItems} tagSelectOptions={tagSelectOptions} />
     </>
   )
 }
