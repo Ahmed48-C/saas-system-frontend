@@ -21,40 +21,23 @@ import SearchTwoToneIcon from '@material-ui/icons/SearchTwoTone';
 
 import { AnimatePresence, motion } from 'framer-motion';
 import { PageTitle } from '../../layout-components';
-import DatePicker from '../DatePicker';
-import InputSelect from '../InputSelect';
-import TagSelect from '../TagSelect';
-import TimePicker from '../TimePicker';
-import Upload from '../Upload';
-import ToggleSwitch from '../ToggleSwitch';
-import Textarea from '../Textarea';
 
-const MainTable = ({ headers, tableContent, tableButtons, createContent, Heading, selectItems, tagSelectOptions, headingIcon }) => {
+const MainTable = ({ headers, tableContent, tableButtons, createContent, Heading, headingIcon }) => {
     const Create = () => {
       return (
         <Card className="p-4 mb-4 card-box mb-spacing-6-x2" style={{
           minHeight: '80vh',
           height: 'auto',
-          // width: '100%',
-          // display: 'flex',
-          // flexDirection: 'column',
-          // justifyContent: 'space-between',
         }}>
             <PageTitle titleHeading={'Add ' + Heading} handleClick={handleClick} headingIcon={headingIcon} />
-            <DatePicker />
+            {/* <DatePicker />
             <InputSelect selectItems={selectItems} />
             <TagSelect tagSelectOptions={tagSelectOptions} />
             <TimePicker />
             <Upload />
             <ToggleSwitch />
-            <Textarea />
+            <Textarea /> */}
             {createContent}
-            {/* <Button size="small" className="btn-neutral-primary" onClick={handleClick}>
-              <span className="btn-wrapper--icon">
-                <FontAwesomeIcon icon={['fas', 'plus-circle']} />
-              </span>
-              <span className="btn-wrapper--label">Exit</span>
-            </Button> */}
         </Card>
       )
     }
@@ -109,12 +92,6 @@ const MainTable = ({ headers, tableContent, tableButtons, createContent, Heading
             <div className="card-header py-3">
               <div className="card-header--title font-size-xl">{Heading}</div>
               <div className="card-header--actions">
-                {/* <Button size="small" className="btn-neutral-primary" onClick={handleClick}>
-                  <span className="btn-wrapper--icon">
-                    <FontAwesomeIcon icon={['fas', 'plus-circle']} />
-                  </span>
-                  <span className="btn-wrapper--label">Add ticket</span>
-                </Button> */}
                 <Tooltip title="New">
                   <Button
                     variant="contained"

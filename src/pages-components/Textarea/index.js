@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { Container, Card, TextField } from '@material-ui/core';
 
-const Textarea = () => {
+const Textarea = ({rows, rowsMax, label}) => {
   const [value, setValue] = useState('');
 
   const handleChange = (event) => {
@@ -11,39 +11,17 @@ const Textarea = () => {
 
   return (
     <>
-      {/* <Card className="p-5 shadow-xxl">
-        <Container> */}
-          {/* <TextField
-            className="m-3"
-            fullWidth
-            id="filled-multiline-flexible"
-            label="Multiline"
-            multiline
-            rowsMax="4"
-            value={value}
-            onChange={handleChange}
-          />
-          <TextField
-            className="m-3"
-            fullWidth
-            id="filled-textarea"
-            label="Multiline Placeholder"
-            placeholder="Placeholder"
-            multiline
-          /> */}
           <TextField
             className="m-3"
             fullWidth
             id="filled-multiline-static"
-            label="Multiline"
+            label={label}
             onChange={handleChange}
             value={value}
             multiline
-            rows="3"
-            rowsMax="5"
+            rows={rows}
+            rowsMax={rowsMax}
           />
-        {/* </Container>
-      </Card> */}
     </>
   );
 }
