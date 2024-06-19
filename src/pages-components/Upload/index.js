@@ -10,6 +10,7 @@ import CloudUploadTwoToneIcon from '@material-ui/icons/CloudUploadTwoTone';
 import CheckIcon from '@material-ui/icons/Check';
 
 const Upload = () => {
+  
   const {
     acceptedFiles,
     isDragActive,

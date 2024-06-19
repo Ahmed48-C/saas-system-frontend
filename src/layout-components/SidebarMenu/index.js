@@ -98,6 +98,12 @@ const SidebarMenu = (props) => {
     event.preventDefault();
   };
 
+  const [locationsOpen, setLocationsOpen] = useState(false);
+  const toggleLocations = (event) => {
+    setLocationsOpen(!locationsOpen);
+    event.preventDefault();
+  };
+
   return (
     <>
       <PerfectScrollbar>
@@ -501,8 +507,8 @@ const SidebarMenu = (props) => {
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
-                      to="/DashboardMonitoring">
-                      Location
+                      to="/Locations">
+                      Locations
                     </NavLink>
                   </li>
                 </ul>
