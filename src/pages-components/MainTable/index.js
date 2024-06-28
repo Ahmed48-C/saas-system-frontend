@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -22,37 +22,30 @@ import SearchTwoToneIcon from '@material-ui/icons/SearchTwoTone';
 import { AnimatePresence, motion } from 'framer-motion';
 import { PageTitle } from '../../layout-components';
 
-const MainTable = ({ headers, tableContent, tableButtons, createContent, Heading, headingIcon }) => {
+const MainTable = ({ headers, tableContent, tableButtons, createContent, Heading, headingIcon, handleClick, showCreate }) => {
     const Create = () => {
       return (
         <Card className="p-4 mb-4 card-box mb-spacing-6-x2" style={{
           minHeight: '80vh',
           height: 'auto',
         }}>
-            <PageTitle titleHeading={'Add ' + Heading} handleClick={handleClick} headingIcon={headingIcon} />
-            {/* <DatePicker />
-            <InputSelect selectItems={selectItems} />
-            <TagSelect tagSelectOptions={tagSelectOptions} />
-            <TimePicker />
-            <Upload />
-            <ToggleSwitch />
-            <Textarea /> */}
+            <PageTitle titleHeading={Heading} handleClick={handleClick} />
             {createContent}
         </Card>
       )
     }
 
     const [entries, setEntries] = useState('1');
-    const [showCreate, setShowCreate] = useState(false);
+    // const [showCreate, setShowCreate] = useState(false);
     const [pointerEvents, setPointerEvents] = useState('auto');
 
     const handleChange = (event) => {
       setEntries(event.target.value);
     };
 
-    const handleClick = (event) => {
-      setShowCreate(prevShowCreate => !prevShowCreate);
-    };
+    // const handleClick = (event) => {
+    //   setShowCreate(prevShowCreate => !prevShowCreate);
+    // };
 
     const handleAnimationStart = () => {
       setPointerEvents('none');

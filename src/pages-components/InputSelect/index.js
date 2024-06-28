@@ -1,21 +1,13 @@
 import React, { useState } from 'react';
 
 import {
-  Grid,
   InputLabel,
-  Card,
   MenuItem,
   FormControl,
   Select
 } from '@material-ui/core';
 
-const InputSelect = ({ selectItems, label }) => {
-  const [age, setAge] = useState('');
-
-  const handleChange = (event) => {
-    setAge(event.target.value);
-  };
-
+const InputSelect = ({ selectItems, label, value, onChange, error }) => {
   // Custom menu props to limit the visible items and enable scrolling
   const menuProps = {
     PaperProps: {
@@ -26,13 +18,13 @@ const InputSelect = ({ selectItems, label }) => {
   };
 
   return (
-    <FormControl fullWidth variant="standard" className="m-3">
+    <FormControl fullWidth variant="standard" className="m-3" error={error}>
       <InputLabel id="country-select-label">{label}</InputLabel>
       <Select
         labelId="country-select-label"
         id="country-select"
-        value={age}
-        onChange={handleChange}
+        value={value}
+        onChange={onChange}
         label={label}
         MenuProps={menuProps} // Apply custom menu props
       >
