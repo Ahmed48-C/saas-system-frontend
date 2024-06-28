@@ -10,14 +10,12 @@ import {
 } from '@material-ui/pickers';
 
 const TimePicker = () => {
-  const [selectedDate, setSelectedDate] = useState(
-    new Date(
-      // '2014-08-18T21:11:54'
-    )
+  const [time, setTime] = useState(
+    new Date()
   );
 
   const handleDateChange = (date) => {
-    setSelectedDate(date);
+    setTime(date);
   };
 
   return (
@@ -28,7 +26,7 @@ const TimePicker = () => {
                 margin="normal"
                 id="time-picker"
                 label="Time picker"
-                value={selectedDate}
+                value={time}
                 onChange={handleDateChange}
                 KeyboardButtonProps={{
                   'aria-label': 'change time'
