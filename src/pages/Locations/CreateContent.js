@@ -22,13 +22,9 @@ const CreateContent = ({ countryOptions, isEmpty, showSuccess, handleCloseSucces
           fetchLocations();
           handleShowSuccess(true); // Show success message
           setTimeout(() => handleShowSuccess(false), 1500); // Hide success message after 3 seconds
-          // Optionally reset form state or show success message
-          // setLocationsData({})
         })
         .catch(error => {
-          // Handle error (if needed)
           console.error('Error making post request:', error);
-          // Optionally show error message to user
         });
     };
 
@@ -37,11 +33,8 @@ const CreateContent = ({ countryOptions, isEmpty, showSuccess, handleCloseSucces
         <Form
           showSuccess={showSuccess}
           handleCloseSuccess={handleCloseSuccess}
-          // handleInputChange={handleInputChange}
-          // locationsData={locationsData}
           handleClick={handleSubmitClick}
           countryOptions={countryOptions}
-          // isFormValid={isFormValid}
           isEmpty={isEmpty}
           successMessage='Location Added Successfully'
           icon='plus'

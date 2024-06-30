@@ -22,7 +22,7 @@ import SearchTwoToneIcon from '@material-ui/icons/SearchTwoTone';
 import { AnimatePresence, motion } from 'framer-motion';
 import { PageTitle } from '../../layout-components';
 
-const MainTable = ({ headers, tableContent, tableButtons, createContent, Heading, headingIcon, handleClick, showCreate }) => {
+const MainTable = ({ tableContent, tableButtons, createContent, Heading, headingIcon, handleClick, showCreate, tableHeading }) => {
     const Create = () => {
       return (
         <Card className="p-4 mb-4 card-box mb-spacing-6-x2" style={{
@@ -36,16 +36,11 @@ const MainTable = ({ headers, tableContent, tableButtons, createContent, Heading
     }
 
     const [entries, setEntries] = useState('1');
-    // const [showCreate, setShowCreate] = useState(false);
     const [pointerEvents, setPointerEvents] = useState('auto');
 
     const handleChange = (event) => {
       setEntries(event.target.value);
     };
-
-    // const handleClick = (event) => {
-    //   setShowCreate(prevShowCreate => !prevShowCreate);
-    // };
 
     const handleAnimationStart = () => {
       setPointerEvents('none');
@@ -119,11 +114,7 @@ const MainTable = ({ headers, tableContent, tableButtons, createContent, Heading
             <div className="table-responsive-md">
               <Table className="table table-hover text-nowrap mb-0">
                 <thead>
-                  <tr>
-                  {headers.map((header, index) => (
-                      <th key={index} className={header.className}>{header.key}</th>
-                  ))}
-                  </tr>
+                  {tableHeading}
                 </thead>
                 <tbody>
                   {tableContent}
@@ -132,7 +123,7 @@ const MainTable = ({ headers, tableContent, tableButtons, createContent, Heading
             </div>
             <div className="card-footer py-3 d-flex justify-content-between">
               <Pagination
-                className="pagination-second"
+                className="pagination-primary"
                 variant="outlined"
                 count={10}
               />
