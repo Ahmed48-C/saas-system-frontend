@@ -30,8 +30,6 @@ const TableContent = ({
         .then(response => {
           console.log('Delete request successful:', response.data);
           fetchLocations(); // Assuming you have a fetchLocations function to refresh the data
-        //   setShowDeleted(true); // Show success message
-        //   setTimeout(() => setShowDeleted(false), 1500); // Hide success message after 3 seconds
           handleShowSuccess(true); // Show success message
           setTimeout(() => handleShowSuccess(false), 1500); // Hide success message after 3 seconds
         })
@@ -56,7 +54,7 @@ const TableContent = ({
     return loading || editLoading ? (
       <Loader />
     ) : (
-      locations.map((row, index) => (
+      locations.data.map((row, index) => (
         <LocationRow
           key={index}
           row={row}

@@ -37,7 +37,6 @@ const EditContent = ({
           handleShowSuccess(true); // Show success message
           setTimeout(() => {
             handleShowSuccess(false);
-            // handleClose(); // Close edit mode after successful update
             handleEditMode(false);
             handleClick();
             fetchLocations();
@@ -56,11 +55,8 @@ const EditContent = ({
         <Form
           showSuccess={showSuccess}
           handleCloseSuccess={handleCloseSuccess}
-          // handleInputChange={handleInputChange}
-          // locationsData={locationsData}
           handleClick={handleUpdateClick}
           countryOptions={countryOptions}
-          // isFormValid={isFormValid}
           isEmpty={isEmpty}
           successMessage='Location Updated Successfully'
           icon='save'
