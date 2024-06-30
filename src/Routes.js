@@ -263,7 +263,7 @@ const Dashboard = lazy(() =>
 );
 
 const Locations = lazy(() =>
-  import('./pages/Locations')
+  import('./pages/Locations/index')
 );
 
 const Routes = () => {
