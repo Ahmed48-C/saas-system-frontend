@@ -28,6 +28,8 @@ const Locations = () => {
   const [location, setLocation] = useState({});
   const [order, setOrder] = useState('desc');
   const [orderBy, setOrderBy] = useState('id');
+  const [page, setPage] = useState(1); // Current page state
+  const [totalPages, setTotalPages] = useState(1); // Total pages state
 
   const handleClick = () => {
     setShowCreate(prevShowCreate => !prevShowCreate);
@@ -35,12 +37,17 @@ const Locations = () => {
 
   // const fetchLocations = () => {
   //   setLoading(true);
-  //   axios.get('http://127.0.0.1:8000/api/get/locations/')
-  //     .then(response => {
+  //   let url = 'http://127.0.0.1:8000/api/get/locations/';
+  //   if (order && orderBy) {
+  //     url += `?order_by=${order === 'desc' ? '-' : ''}${orderBy}`;
+  //   }
+  //   axios.get(url)
+  //     .then((response) => {
   //       setLocations(response.data);
+  //       console.log("LOCATIONS : "+locations)
   //       setLoading(false);
   //     })
-  //     .catch(error => {
+  //     .catch((error) => {
   //       console.error('Error fetching data:', error);
   //       setLoading(false);
   //     });
@@ -48,19 +55,40 @@ const Locations = () => {
 
   // useEffect(() => {
   //   fetchLocations();
-  // }, []);
-  console.log(locations)
+  // }, [order, orderBy]);
 
   const fetchLocations = () => {
     setLoading(true);
-    let url = 'http://127.0.0.1:8000/api/get/locations/';
+    const pageSize = 5; // Number of items per page
+    let url = `http://127.0.0.1:8000/api/get/locations/?from=${(page - 1) * pageSize}&to=${page * pageSize}`;
     if (order && orderBy) {
-      url += `?order_by=${order === 'desc' ? '-' : ''}${orderBy}`;
+      url += `&order_by=${order === 'desc' ? '-' : ''}${orderBy}`;
     }
     axios.get(url)
       .then((response) => {
-        setLocations(response.data);
-        console.log("LOCATIONS : "+locations)
+        console.log(response.data);
+        setLocations(response.data); // Assuming API returns results in a `results` field
+        setTotalPages(Math.ceil(response.data.actual_total_count / pageSize)); // Calculate total pages based on total count
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+        setLoading(false);
+      });
+  };
+
+  const resetLocations = () => {
+    setLoading(true);
+    const pageSize = 5; // Number of items per page
+    let url = `http://127.0.0.1:8000/api/get/locations/?from=0&to=5`;
+    if (order && orderBy) {
+      url += `&order_by=${order === 'desc' ? '-' : ''}${orderBy}`;
+    }
+    axios.get(url)
+      .then((response) => {
+        console.log(response.data);
+        setLocations(response.data); // Assuming API returns results in a `results` field
+        setTotalPages(Math.ceil(response.data.actual_total_count / pageSize)); // Calculate total pages based on total count
         setLoading(false);
       })
       .catch((error) => {
@@ -70,8 +98,8 @@ const Locations = () => {
   };
 
   useEffect(() => {
-    fetchLocations();
-  }, [order, orderBy]);
+    fetchLocations(); // Fetch locations when component mounts or dependencies change
+  }, [order, orderBy, page]);
 
   const { countries } = useCountries();
 
@@ -116,6 +144,10 @@ const Locations = () => {
     setShowSuccess(false);
   };
 
+  const handlePageChange = (event, newPage) => {
+    setPage(newPage);
+  };
+
   return (
     <>
       <MainTable
@@ -142,6 +174,7 @@ const Locations = () => {
               handleLocation={handleLocation}
               handleEditLoading={handleEditLoading}
               handleRecordId={handleRecordId}
+              resetLocations={resetLocations}
             />
           )
         }
@@ -161,6 +194,7 @@ const Locations = () => {
             handleClick={handleClick}
             handleLocation={handleLocation}
             location={location}
+            resetLocations={resetLocations}
           />
           :
           <CreateContent
@@ -170,10 +204,14 @@ const Locations = () => {
             handleCloseSuccess={handleCloseSuccess}
             fetchLocations={fetchLocations}
             handleShowSuccess={handleShowSuccess}
+            resetLocations={resetLocations}
+            page={page}
           />
         }
         handleClick={handleClick}
         showCreate={showCreate}
+        handlePageChange={handlePageChange} // Pass page change handler
+        pageCount={totalPages} // Pass total pages
       />
     </>
   )
