@@ -22,7 +22,7 @@ import SearchTwoToneIcon from '@material-ui/icons/SearchTwoTone';
 import { AnimatePresence, motion } from 'framer-motion';
 import { PageTitle } from '../../layout-components';
 
-const MainTable = ({ tableContent, tableButtons, createContent, Heading, headingIcon, handleClick, showCreate, tableHeading }) => {
+const MainTable = ({ tableContent, tableButtons, createContent, Heading, headingIcon, handleClick, showCreate, tableHeading, handlePageChange, pageCount }) => {
     const Create = () => {
       return (
         <Card className="p-4 mb-4 card-box mb-spacing-6-x2" style={{
@@ -49,7 +49,7 @@ const MainTable = ({ tableContent, tableButtons, createContent, Heading, heading
     const handleAnimationComplete = () => {
       setPointerEvents('auto');
     };
-  
+
     return (
       <>
         {showCreate ? (
@@ -122,12 +122,18 @@ const MainTable = ({ tableContent, tableButtons, createContent, Heading, heading
               </Table>
             </div>
             <div className="card-footer py-3 d-flex justify-content-between">
-              <Pagination
+              {/* <Pagination
                 className="pagination-primary"
                 variant="outlined"
                 count={10}
+              /> */}
+              <Pagination
+                className="pagination-primary"
+                variant="outlined"
+                count={pageCount} // Total number of pages
+                onChange={handlePageChange} // Handle page change event
               />
-              <div className="d-flex align-items-center">
+              {/* <div className="d-flex align-items-center">
                 <span>Show</span>
                 <FormControl size="small" variant="outlined" className="mx-3">
                   <InputLabel id="select-entries-label">Entries</InputLabel>
@@ -158,7 +164,7 @@ const MainTable = ({ tableContent, tableButtons, createContent, Heading, heading
                   </Select>
                 </FormControl>
                 <span>entries</span>
-              </div>
+              </div> */}
             </div>
           </Card>
         </motion.div>
