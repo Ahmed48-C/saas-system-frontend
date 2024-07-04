@@ -7,6 +7,7 @@ import EditContent from './EditContent';
 import CreateContent from './CreateContent';
 import TableContent from './TableContent';
 import TableHeading from './TableHeading';
+import { useHistory } from 'react-router-dom'; // Import useHistory
 
 const headers = [
   { key: 'code', label: 'Code', className: 'bg-white text-left' },
@@ -15,7 +16,7 @@ const headers = [
 ];
 
 const Locations = () => {
-  const [showSuccess, setShowSuccess] = useState(false);
+  // const [showSuccess, setShowSuccess] = useState(false);
 
   const [loading, setLoading] = useState(true);
   const [locations, setLocations] = useState([]);
@@ -31,8 +32,14 @@ const Locations = () => {
   const [page, setPage] = useState(1); // Current page state
   const [totalPages, setTotalPages] = useState(1); // Total pages state
 
+  const history = useHistory(); // Use the useHistory hook
+
   const handleClick = () => {
     setShowCreate(prevShowCreate => !prevShowCreate);
+  };
+
+  const handleNavigation = () => {
+    history.push('/location/create'); // Navigate to the desired path
   };
 
   // const fetchLocations = () => {
@@ -101,18 +108,18 @@ const Locations = () => {
     fetchLocations(); // Fetch locations when component mounts or dependencies change
   }, [order, orderBy, page]);
 
-  const { countries } = useCountries();
+  // const { countries } = useCountries();
 
-  const countryOptions = countries
-      .map(country => ({
-        name: country.name,
-        value: country.name, // Setting value to country name
-      }))
-      .sort((a, b) => a.name.localeCompare(b.name));
+  // const countryOptions = countries
+  //     .map(country => ({
+  //       name: country.name,
+  //       value: country.name, // Setting value to country name
+  //     }))
+  //     .sort((a, b) => a.name.localeCompare(b.name));
 
-  const isEmpty = (field) => {
-    return field === null || field === undefined || field === '';
-  };
+  // const isEmpty = (field) => {
+  //   return field === null || field === undefined || field === '';
+  // };
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -120,9 +127,9 @@ const Locations = () => {
     setOrderBy(property);
   };
 
-  const handleShowSuccess = (value) => {
-    setShowSuccess(value);
-  };
+  // const handleShowSuccess = (value) => {
+  //   setShowSuccess(value);
+  // };
 
   const handleEditMode = (value) => {
     setEditMode(value);
@@ -140,9 +147,9 @@ const Locations = () => {
     setRecordId(value);
   };
 
-  const handleCloseSuccess = () => {
-    setShowSuccess(false);
-  };
+  // const handleCloseSuccess = () => {
+  //   setShowSuccess(false);
+  // };
 
   const handlePageChange = (event, newPage) => {
     setPage(newPage);
@@ -169,46 +176,40 @@ const Locations = () => {
               locations={locations}
               handleEditMode={handleEditMode}
               handleClick={handleClick}
-              handleShowSuccess={handleShowSuccess}
-              showSuccess={showSuccess}
+              // handleShowSuccess={handleShowSuccess}
+              // showSuccess={showSuccess}
               handleLocation={handleLocation}
               handleEditLoading={handleEditLoading}
               handleRecordId={handleRecordId}
-              resetLocations={resetLocations}
             />
           )
         }
-        Heading={editMode ? 'Update Location' : 'Add Location'}
-        createContent={
-          editMode ?
-          <EditContent
-            id={recordId}
-            countryOptions={countryOptions}
-            isEmpty={isEmpty}
-            showSuccess={showSuccess}
-            handleCloseSuccess={handleCloseSuccess}
-            fetchLocations={fetchLocations}
-            handleShowSuccess={handleShowSuccess}
-            handleEditMode={handleEditMode}
-            editLoading={editLoading}
-            handleClick={handleClick}
-            handleLocation={handleLocation}
-            location={location}
-            resetLocations={resetLocations}
-          />
-          :
-          <CreateContent
-            countryOptions={countryOptions}
-            isEmpty={isEmpty}
-            showSuccess={showSuccess}
-            handleCloseSuccess={handleCloseSuccess}
-            fetchLocations={fetchLocations}
-            handleShowSuccess={handleShowSuccess}
-            resetLocations={resetLocations}
-            page={page}
-          />
-        }
-        handleClick={handleClick}
+        Heading='Locations'
+        // createContent={
+        //   editMode ?
+        //   <EditContent
+        //     id={recordId}
+        //     // countryOptions={countryOptions}
+        //     // isEmpty={isEmpty}
+        //     showSuccess={showSuccess}
+        //     handleCloseSuccess={handleCloseSuccess}
+        //     fetchLocations={fetchLocations}
+        //     handleShowSuccess={handleShowSuccess}
+        //     handleEditMode={handleEditMode}
+        //     editLoading={editLoading}
+        //     handleClick={handleClick}
+        //     handleLocation={handleLocation}
+        //     location={location}
+        //   />
+        //   :
+        //   <CreateContent
+        //     showSuccess={showSuccess}
+        //     handleCloseSuccess={handleCloseSuccess}
+        //     fetchLocations={fetchLocations}
+        //     handleShowSuccess={handleShowSuccess}
+        //   />
+        // }
+        handleClick={handleNavigation}
         showCreate={showCreate}
         handlePageChange={handlePageChange} // Pass page change handler
         pageCount={totalPages} // Pass total pages

@@ -4,6 +4,7 @@ import SuccessMessage from '../../pages-components/SuccesMessage';
 import { Button, ButtonGroup, Fade, Popper } from '@material-ui/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Loader } from '../../pages-components';
+import { useHistory } from 'react-router-dom';
 
 const TableContent = ({
     fetchLocations,
@@ -20,6 +21,7 @@ const TableContent = ({
 }) => {
     const [active, setActive] = useState(true);
     const [isDefault, setIsDefault] = useState(false);
+    
 
     useEffect(() => {
         handleEditMode(false);
@@ -30,8 +32,10 @@ const TableContent = ({
         .then(response => {
           console.log('Delete request successful:', response.data);
           fetchLocations(); // Assuming you have a fetchLocations function to refresh the data
-          handleShowSuccess(true); // Show success message
-          setTimeout(() => handleShowSuccess(false), 1500); // Hide success message after 3 seconds
+          // handleShowSuccess(true); // Show success message
+          setTimeout(() => 
+            // handleShowSuccess(false), 
+          1500); // Hide success message after 3 seconds
         })
         .catch(error => {
           console.error('Error deleting location:', error);
@@ -66,7 +70,7 @@ const TableContent = ({
           fetchLocation={fetchLocation}
           handleEditMode={handleEditMode}
           handleClick={handleClick}
-          handleShowSuccess={handleShowSuccess}
+          // handleShowSuccess={handleShowSuccess}
           showSuccess={showSuccess}
           handleRecordId={handleRecordId}
         />
@@ -74,8 +78,12 @@ const TableContent = ({
     );
   };
 
-  const LocationRow = ({ row, active, isDefault, setActive, handleDeleteClick, setIsDefault, fetchLocation, handleEditMode, handleClick, handleShowSuccess, showSuccess, handleRecordId }) => {
+  const LocationRow = ({ 
+    row, active, isDefault, setActive, handleDeleteClick, setIsDefault, fetchLocation, handleEditMode, handleClick, 
+    // handleShowSuccess, 
+    showSuccess, handleRecordId }) => {
     const [anchorEl, setAnchorEl] = useState(null);
+    const history = useHistory();
 
     const handlePopperClick = (event) => {
       setAnchorEl(anchorEl ? null : event.currentTarget);
@@ -89,9 +97,10 @@ const TableContent = ({
     };
 
     const handleEditClick = (id) => {
-      fetchLocation(row.id);
-      handleEditMode(true);
-      handleRecordId(id);
+      history.push(`/location/edit/${id}`);
+      // fetchLocation(row.id);
+      // handleEditMode(true);
+      // handleRecordId(id);
       handleClick();
       handleButtonClick();
     };
@@ -112,14 +121,14 @@ const TableContent = ({
 
     return (
       <>
-        <SuccessMessage
+        {/* <SuccessMessage
           open={showSuccess}
           message='Location Deleted Successfully'
           vertical='bottom'
           horizontal='center'
           toastrStyle='toastr-success'
           onClose={() => handleShowSuccess(false)}
-        />
+        /> */}
       <tr>
         <td>
           <div className="d-flex align-items-center">

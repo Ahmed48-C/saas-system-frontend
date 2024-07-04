@@ -3,9 +3,50 @@ import SuccessMessage from '../../pages-components/SuccesMessage'
 import { Box, Button, Divider, FormControl, Grid, Tooltip } from '@material-ui/core'
 import { InputSelect, Textarea } from '../../pages-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useCountries } from 'use-react-countries'
+import isEmpty from '../../pages-functions/isEmpty'
+import { useParams } from 'react-router-dom';
+import axios from 'axios'
 
-const Form = ({ showSuccess, handleCloseSuccess,  handleClick, countryOptions, isEmpty, successMessage, icon, data }) => {
-    const [locationsData, setLocationsData] = useState(data || {});
+const Form = ({ 
+    // showSuccess, 
+    // handleCloseSuccess,  
+    handleClick, successMessage, icon, data }) => {
+
+    const { id } = useParams(); // Get the ID from the URL
+    // const [locationsData, setLocationsData] = useState(data || {});
+    const [locationsData, setLocationsData] = useState({});
+    console.log('LOCATIONS DATA', locationsData)
+    const [showSuccess, setShowSuccess] = useState(false);
+
+    useEffect(() => {
+        if (id) {
+          fetchLocation();
+        }
+      }, [id]);
+    
+    const fetchLocation = () => {
+    axios.get(`http://127.0.0.1:8000/api/get/location/${id}/`)
+        .then(response => {
+        setLocationsData(response.data);
+        })
+        .catch(error => {
+        console.error('Error fetching data:', error);
+        });
+    };
+
+    const handleCloseSuccess = () => {
+        setShowSuccess(false);
+        };
+
+    const { countries } = useCountries();
+
+    const countryOptions = countries
+      .map(country => ({
+        name: country.name,
+        value: country.name, // Setting value to country name
+      }))
+      .sort((a, b) => a.name.localeCompare(b.name));
 
     const isFormValid = () => {
         return locationsData.code &&

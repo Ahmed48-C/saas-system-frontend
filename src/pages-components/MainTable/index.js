@@ -29,7 +29,7 @@ const MainTable = ({ tableContent, tableButtons, createContent, Heading, heading
           minHeight: '80vh',
           height: 'auto',
         }}>
-            <PageTitle titleHeading={Heading} handleClick={handleClick} />
+            {/* <PageTitle titleHeading={Heading} handleClick={handleClick} /> */}
             {createContent}
         </Card>
       )
@@ -52,7 +52,7 @@ const MainTable = ({ tableContent, tableButtons, createContent, Heading, heading
 
     return (
       <>
-        {showCreate ? (
+        {/* {showCreate ? (
           <motion.div
             key="create"
             initial={{ opacity: 0, y: -20 }}
@@ -65,7 +65,7 @@ const MainTable = ({ tableContent, tableButtons, createContent, Heading, heading
           >
             <Create />
           </motion.div>
-        ) : (
+        ) : ( */}
         <motion.div
           key="table"
           initial={{ opacity: 0, y: -20 }}
@@ -168,7 +168,7 @@ const MainTable = ({ tableContent, tableButtons, createContent, Heading, heading
             </div>
           </Card>
         </motion.div>
-        )}
+        {/* )} */}
       </>
     );
 }
