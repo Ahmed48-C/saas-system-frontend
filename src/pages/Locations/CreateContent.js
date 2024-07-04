@@ -1,8 +1,12 @@
 import React, { useState } from 'react'
 import axios from "axios";
 import Form from './Form';
+import { PageTitle } from '../../layout-components';
+import { useHistory } from 'react-router-dom'; // Import useHistory
 
-const CreateContent = ({ countryOptions, isEmpty, showSuccess, handleCloseSuccess, fetchLocations, handleShowSuccess }) => {
+const CreateContent = ({  handleShowSuccess }) => {
+  const history = useHistory(); // Use the useHistory hook
+
     const handleSubmitClick = (locationsData) => {
       const postData = {
         code: locationsData.code,
@@ -19,9 +23,11 @@ const CreateContent = ({ countryOptions, isEmpty, showSuccess, handleCloseSucces
         .then(response => {
           // Handle success (if needed)
           console.log('Post request successful:', response.data);
-          fetchLocations();
-          handleShowSuccess(true); // Show success message
-          setTimeout(() => handleShowSuccess(false), 1500); // Hide success message after 3 seconds
+          // handleShowSuccess(true); // Show success message
+          setTimeout(() => {
+            // handleShowSuccess(false); // Hide success message after 1 second
+            history.push('/locations'); // Navigate to /locations
+          }, 1000);
         })
         .catch(error => {
           console.error('Error making post request:', error);
@@ -30,12 +36,11 @@ const CreateContent = ({ countryOptions, isEmpty, showSuccess, handleCloseSucces
 
     return (
       <>
+        {/* <PageTitle titleHeading='Add Location' handleClick={handleClick} /> */}
         <Form
-          showSuccess={showSuccess}
-          handleCloseSuccess={handleCloseSuccess}
+          // showSuccess={showSuccess}
+          // handleCloseSuccess={handleCloseSuccess}
           handleClick={handleSubmitClick}
-          countryOptions={countryOptions}
-          isEmpty={isEmpty}
           successMessage='Location Added Successfully'
           icon='plus'
           data={{}}

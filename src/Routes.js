@@ -266,6 +266,14 @@ const Locations = lazy(() =>
   import('./pages/Locations/index')
 );
 
+const CreateLocations = lazy(() =>
+  import('./pages/Locations/CreateContent')
+);
+
+const EditLocations = lazy(() =>
+  import('./pages/Locations/EditContent')
+);
+
 const Routes = () => {
   const location = useLocation();
 
@@ -313,15 +321,27 @@ const Routes = () => {
               <AnimatePresence>
                   <Suspense fallback={<SuspenseLoading />}>
                       <Switch>
-                          <Redirect exact from="/" to="/Dashboard" />
+                          <Redirect exact from="/" to="/dashboard" />
                           <Route>
                             <Route
-                                path="/Dashboard"
+                                exact
+                                path="/dashboard"
                                 component={Dashboard}
                             />
                             <Route
-                                path="/Locations"
+                                exact
+                                path="/locations"
                                 component={Locations}
+                            />
+                            <Route
+                                exact
+                                path="/location/create"
+                                component={CreateLocations}
+                            />
+                            <Route
+                                exact
+                                path="/location/edit/:id"
+                                component={EditLocations}
                             />
                           </Route>
                       </Switch>
