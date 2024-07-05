@@ -38,6 +38,7 @@ const CreateContent = () => {
         <Form
           handleClick={handleSubmitClick}
           icon='plus'
+          title='Add Location'
         />
       </>
     )

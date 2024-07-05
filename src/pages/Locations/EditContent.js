@@ -43,6 +43,7 @@ const EditContent = ({ editLoading }) => {
         <Form
           handleClick={handleUpdateClick}
           icon='save'
+          title='Edit Location'
         />
         )}
       </>

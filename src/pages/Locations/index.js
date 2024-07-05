@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { MainTable } from '../../pages-components'
 import axios from 'axios';
 import NoRecords from '../../pages-components/NoRecords';
@@ -53,6 +53,32 @@ const Locations = () => {
   useEffect(() => {
     fetchLocations(); // Fetch locations when component mounts or dependencies change
   }, [order, orderBy, page]);
+
+
+  // for warning: React Hook useEffect has a missing dependency: 'fetchLocations'. Either include it or remove the dependency array
+  // const fetchLocations = useCallback(() => {
+  //   setLoading(true);
+  //   const pageSize = 5; // Number of items per page
+  //   let url = API_ENDPOINTS.GET_LOCATIONS((page - 1) * pageSize, page * pageSize);
+  //   if (order && orderBy) {
+  //     url += `&order_by=${order === 'desc' ? '-' : ''}${orderBy}`;
+  //   }
+  //   axios.get(url)
+  //     .then((response) => {
+  //       console.log(response.data);
+  //       setLocations(response.data); // Assuming API returns results in a `results` field
+  //       setTotalPages(Math.ceil(response.data.actual_total_count / pageSize)); // Calculate total pages based on total count
+  //       setLoading(false);
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error fetching data:', error);
+  //       setLoading(false);
+  //     });
+  // }, [page, order, orderBy]);
+
+  // useEffect(() => {
+  //   fetchLocations(); // Fetch locations when component mounts or dependencies change
+  // }, [fetchLocations]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
