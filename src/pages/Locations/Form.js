@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Box, Button, Divider, FormControl, Grid, Tooltip } from '@material-ui/core'
-import { InputSelect, Textarea } from '../../pages-components'
+import { InputSelect, Loader, Textarea } from '../../pages-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useCountries } from 'use-react-countries'
 import isEmpty from '../../pages-functions/isEmpty'
@@ -12,6 +12,7 @@ const Form = ({ handleClick, icon }) => {
     const { id } = useParams(); // Get the ID from the URL
 
     const [locationsData, setLocationsData] = useState({});
+    const [editLoading, setEditLoading] = useState(false); // Add loading state
 
     useEffect(() => {
         if (id) {
@@ -19,16 +20,19 @@ const Form = ({ handleClick, icon }) => {
         }
       }, [id]);
     
-    const fetchLocation = () => {
-    let url = API_ENDPOINTS.GET_LOCATION(id);
-
-    axios.get(url)
-        .then(response => {
-        setLocationsData(response.data);
-        })
-        .catch(error => {
-        console.error('Error fetching data:', error);
-        });
+      const fetchLocation = () => {
+        setEditLoading(true); // Set loading to true before fetching data
+        const url = API_ENDPOINTS.GET_LOCATION(id);
+    
+        axios.get(url)
+          .then(response => {
+            setLocationsData(response.data);
+            setEditLoading(false); // Set loading to false after data is fetched
+          })
+          .catch(error => {
+            console.error('Error fetching data:', error);
+            setEditLoading(false); // Set loading to false in case of error
+          });
     };
 
     const { countries } = useCountries();
@@ -56,6 +60,9 @@ const Form = ({ handleClick, icon }) => {
 
     return (
         <>
+            {editLoading ? (
+                <Loader /> // Render the Loader component while loading
+            ) : (
             <FormControl fullWidth>
                 <Grid container spacing={3} className="my-4">
                     <Grid item xs={12}>
@@ -200,6 +207,7 @@ const Form = ({ handleClick, icon }) => {
                     </Grid>
                 </Grid>
             </FormControl>
+            )}
         </>
     )
 }
