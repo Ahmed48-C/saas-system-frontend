@@ -1,5 +1,5 @@
 import React, { lazy, Suspense, useState, useEffect } from 'react';
-import { Switch, Route, Redirect, useLocation } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ClimbingBoxLoader } from 'react-spinners';
 
@@ -275,8 +275,6 @@ const EditLocations = lazy(() =>
 );
 
 const Routes = () => {
-  const location = useLocation();
-
   const SuspenseLoading = () => {
       const [show, setShow] = useState(false);
       useEffect(() => {

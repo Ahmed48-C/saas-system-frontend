@@ -1,22 +1,11 @@
 import React, { useState } from 'react';
 
 import {
-  Grid,
-  Input,
-  InputLabel,
-  Card,
-  MenuItem,
-  FormControl,
-  Select,
-  Button,
-  Container,
   TextField
 } from '@material-ui/core';
 
 import { useTheme } from '@material-ui/core/styles';
 
-import Chip from '@material-ui/core/Chip';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Autocomplete } from '@material-ui/lab';
 
 const ITEM_HEIGHT = 24;

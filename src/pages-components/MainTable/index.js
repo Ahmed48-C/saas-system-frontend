@@ -1,40 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   Table,
-  InputLabel,
   InputAdornment,
   Card,
-  MenuItem,
   Button,
   Tooltip,
   TextField,
-  FormControl,
-  Select,
-  Grid
 } from '@material-ui/core';
 
 import Pagination from '@material-ui/lab/Pagination';
 
 import SearchTwoToneIcon from '@material-ui/icons/SearchTwoTone';
 
-import { AnimatePresence, motion } from 'framer-motion';
-import { PageTitle } from '../../layout-components';
+import { motion } from 'framer-motion';
 
-const MainTable = ({ tableContent, tableButtons, createContent, Heading, headingIcon, handleClick, showCreate, tableHeading, handlePageChange, pageCount }) => {
-    const Create = () => {
-      return (
-        <Card className="p-4 mb-4 card-box mb-spacing-6-x2" style={{
-          minHeight: '80vh',
-          height: 'auto',
-        }}>
-            {/* <PageTitle titleHeading={Heading} handleClick={handleClick} /> */}
-            {createContent}
-        </Card>
-      )
-    }
-
+const MainTable = ({ tableContent, tableButtons, Heading, handleClick, tableHeading, handlePageChange, pageCount }) => {
+  
     const [entries, setEntries] = useState('1');
     const [pointerEvents, setPointerEvents] = useState('auto');
 
@@ -52,20 +35,6 @@ const MainTable = ({ tableContent, tableButtons, createContent, Heading, heading
 
     return (
       <>
-        {/* {showCreate ? (
-          <motion.div
-            key="create"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            transition={{ duration: 0.3 }}
-            onAnimationStart={handleAnimationStart}
-            onAnimationComplete={handleAnimationComplete}
-            style={{ pointerEvents }}
-          >
-            <Create />
-          </motion.div>
-        ) : ( */}
         <motion.div
           key="table"
           initial={{ opacity: 0, y: -20 }}
@@ -122,11 +91,6 @@ const MainTable = ({ tableContent, tableButtons, createContent, Heading, heading
               </Table>
             </div>
             <div className="card-footer py-3 d-flex justify-content-between">
-              {/* <Pagination
-                className="pagination-primary"
-                variant="outlined"
-                count={10}
-              /> */}
               <Pagination
                 className="pagination-primary"
                 variant="outlined"
@@ -168,7 +132,6 @@ const MainTable = ({ tableContent, tableButtons, createContent, Heading, heading
             </div>
           </Card>
         </motion.div>
-        {/* )} */}
       </>
     );
 }

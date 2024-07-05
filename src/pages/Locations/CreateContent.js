@@ -1,10 +1,9 @@
-import React, { useState } from 'react'
+import React from 'react'
 import axios from "axios";
 import Form from './Form';
-import { PageTitle } from '../../layout-components';
 import { useHistory } from 'react-router-dom'; // Import useHistory
 
-const CreateContent = ({  handleShowSuccess }) => {
+const CreateContent = () => {
   const history = useHistory(); // Use the useHistory hook
 
     const handleSubmitClick = (locationsData) => {
@@ -21,12 +20,9 @@ const CreateContent = ({  handleShowSuccess }) => {
 
       axios.post('http://127.0.0.1:8000/api/post/location/', postData)
         .then(response => {
-          // Handle success (if needed)
           console.log('Post request successful:', response.data);
-          // handleShowSuccess(true); // Show success message
           setTimeout(() => {
-            // handleShowSuccess(false); // Hide success message after 1 second
-            history.push('/locations'); // Navigate to /locations
+            history.push('/locations');
           }, 1000);
         })
         .catch(error => {
@@ -36,14 +32,9 @@ const CreateContent = ({  handleShowSuccess }) => {
 
     return (
       <>
-        {/* <PageTitle titleHeading='Add Location' handleClick={handleClick} /> */}
         <Form
-          // showSuccess={showSuccess}
-          // handleCloseSuccess={handleCloseSuccess}
           handleClick={handleSubmitClick}
-          successMessage='Location Added Successfully'
           icon='plus'
-          data={{}}
         />
       </>
     )
