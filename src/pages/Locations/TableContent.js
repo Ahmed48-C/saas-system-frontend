@@ -4,6 +4,7 @@ import { Button, ButtonGroup, Fade, Popper } from '@material-ui/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Loader } from '../../pages-components';
 import { useHistory } from 'react-router-dom';
+import API_ENDPOINTS from '../../config/apis';
 
 const TableContent = ({
     fetchLocations,
@@ -14,7 +15,9 @@ const TableContent = ({
     const [isDefault, setIsDefault] = useState(false);
 
     const handleDeleteClick = (id) => {
-      axios.delete(`http://127.0.0.1:8000/api/delete/location/${id}/`)
+      let url = API_ENDPOINTS.DELETE_LOCATION(id);
+
+      axios.delete(url)
         .then(response => {
           console.log('Delete request successful:', response.data);
           fetchLocations();

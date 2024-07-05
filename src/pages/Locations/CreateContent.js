@@ -2,6 +2,7 @@ import React from 'react'
 import axios from "axios";
 import Form from './Form';
 import { useHistory } from 'react-router-dom'; // Import useHistory
+import API_ENDPOINTS from '../../config/apis';
 
 const CreateContent = () => {
   const history = useHistory(); // Use the useHistory hook
@@ -18,7 +19,9 @@ const CreateContent = () => {
         country: locationsData.country,
       };
 
-      axios.post('http://127.0.0.1:8000/api/post/location/', postData)
+      let url = API_ENDPOINTS.POST_LOCATION();
+
+      axios.post(url, postData)
         .then(response => {
           console.log('Post request successful:', response.data);
           setTimeout(() => {
