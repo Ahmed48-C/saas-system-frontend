@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import SuccessMessage from '../../pages-components/SuccesMessage'
 import { Box, Button, Divider, FormControl, Grid, Tooltip } from '@material-ui/core'
 import { InputSelect, Textarea } from '../../pages-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -8,16 +7,10 @@ import isEmpty from '../../pages-functions/isEmpty'
 import { useParams } from 'react-router-dom';
 import axios from 'axios'
 
-const Form = ({ 
-    // showSuccess, 
-    // handleCloseSuccess,  
-    handleClick, successMessage, icon, data }) => {
-
+const Form = ({ handleClick, icon }) => {
     const { id } = useParams(); // Get the ID from the URL
-    // const [locationsData, setLocationsData] = useState(data || {});
+
     const [locationsData, setLocationsData] = useState({});
-    console.log('LOCATIONS DATA', locationsData)
-    const [showSuccess, setShowSuccess] = useState(false);
 
     useEffect(() => {
         if (id) {
@@ -34,10 +27,6 @@ const Form = ({
         console.error('Error fetching data:', error);
         });
     };
-
-    const handleCloseSuccess = () => {
-        setShowSuccess(false);
-        };
 
     const { countries } = useCountries();
 
@@ -64,14 +53,6 @@ const Form = ({
 
     return (
         <>
-            <SuccessMessage
-            open={showSuccess}
-            message={successMessage}
-            vertical='bottom'
-            horizontal='center'
-            toastrStyle='toastr-success'
-            onClose={() => handleCloseSuccess()}
-            />
             <FormControl fullWidth>
                 <Grid container spacing={3} className="my-4">
                     <Grid item xs={12}>

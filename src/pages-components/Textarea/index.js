@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 
-import { Container, Card, TextField } from '@material-ui/core';
+import { TextField } from '@material-ui/core';
 
 const Textarea = ({ rows, rowsMax, label, value, onChange, key, error, id }) => {
   return (
@@ -9,7 +9,6 @@ const Textarea = ({ rows, rowsMax, label, value, onChange, key, error, id }) => 
         key={key}
         className="m-3"
         fullWidth
-        // id="filled-multiline-static"
         id={id}
         label={label}
         onChange={onChange}

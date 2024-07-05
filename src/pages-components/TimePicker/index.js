@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import { Container, Card, TextField } from '@material-ui/core';
-
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import {
@@ -21,18 +19,16 @@ const TimePicker = () => {
   return (
     <>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            {/* <div className="d-flex justify-content-center align-items-center"> */}
-              <KeyboardTimePicker
-                margin="normal"
-                id="time-picker"
-                label="Time picker"
-                value={time}
-                onChange={handleDateChange}
-                KeyboardButtonProps={{
-                  'aria-label': 'change time'
-                }}
-              />
-            {/* </div> */}
+        <KeyboardTimePicker
+          margin="normal"
+          id="time-picker"
+          label="Time picker"
+          value={time}
+          onChange={handleDateChange}
+          KeyboardButtonProps={{
+            'aria-label': 'change time'
+          }}
+        />
       </MuiPickersUtilsProvider>
     </>
   );
