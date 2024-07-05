@@ -5,6 +5,8 @@ import NoRecords from '../../pages-components/NoRecords';
 import TableContent from './TableContent';
 import TableHeading from './TableHeading';
 import { useHistory } from 'react-router-dom'; // Import useHistory
+import API_ENDPOINTS from '../../config/apis';
+
 
 const headers = [
   { key: 'code', label: 'Code', className: 'bg-white text-left' },
@@ -30,7 +32,8 @@ const Locations = () => {
   const fetchLocations = () => {
     setLoading(true);
     const pageSize = 5; // Number of items per page
-    let url = `http://127.0.0.1:8000/api/get/locations/?from=${(page - 1) * pageSize}&to=${page * pageSize}`;
+    // let url = `http://127.0.0.1:8000/api/get/locations/?from=${(page - 1) * pageSize}&to=${page * pageSize}`;
+    let url = API_ENDPOINTS.GET_LOCATIONS((page - 1) * pageSize, page * pageSize);
     if (order && orderBy) {
       url += `&order_by=${order === 'desc' ? '-' : ''}${orderBy}`;
     }

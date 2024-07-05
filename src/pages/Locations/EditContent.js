@@ -3,6 +3,7 @@ import axios from "axios";
 import Form from './Form';
 import { Loader } from '../../pages-components';
 import { useParams, useHistory } from 'react-router-dom';
+import API_ENDPOINTS from '../../config/apis';
 
 const EditContent = ({ editLoading }) => {
     const { id } = useParams(); // Get the ID from the URL
@@ -19,8 +20,10 @@ const EditContent = ({ editLoading }) => {
         postcode: locationsData.postcode,
         country: locationsData.country,
       };
-  
-      axios.put(`http://127.0.0.1:8000/api/put/location/${id}/`, putData)
+
+      let url = API_ENDPOINTS.PUT_LOCATION(id);
+
+      axios.put(url, putData)
         .then(response => {
           console.log('Update request successful:', response.data);
           setTimeout(() => {

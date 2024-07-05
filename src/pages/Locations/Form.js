@@ -6,6 +6,7 @@ import { useCountries } from 'use-react-countries'
 import isEmpty from '../../pages-functions/isEmpty'
 import { useParams } from 'react-router-dom';
 import axios from 'axios'
+import API_ENDPOINTS from '../../config/apis'
 
 const Form = ({ handleClick, icon }) => {
     const { id } = useParams(); // Get the ID from the URL
@@ -19,7 +20,9 @@ const Form = ({ handleClick, icon }) => {
       }, [id]);
     
     const fetchLocation = () => {
-    axios.get(`http://127.0.0.1:8000/api/get/location/${id}/`)
+    let url = API_ENDPOINTS.GET_LOCATION(id);
+
+    axios.get(url)
         .then(response => {
         setLocationsData(response.data);
         })
