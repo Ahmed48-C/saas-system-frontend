@@ -7,8 +7,9 @@ import isEmpty from '../../pages-functions/isEmpty'
 import { useParams } from 'react-router-dom';
 import axios from 'axios'
 import API_ENDPOINTS from '../../config/apis'
+import PageTitle from '../../layout-components/PageTitle'
 
-const Form = ({ handleClick, icon }) => {
+const Form = ({ handleClick, icon, title }) => {
     const { id } = useParams(); // Get the ID from the URL
 
     const [locationsData, setLocationsData] = useState({});
@@ -65,6 +66,16 @@ const Form = ({ handleClick, icon }) => {
             ) : (
             <FormControl fullWidth>
                 <Grid container spacing={3} className="my-4">
+                    <Grid item xs={12}>
+                        <div>
+                            <div className="app-page-title--first">
+                                <div className="app-page-title--heading">
+                                    <h1>{title}</h1>
+                                </div>
+                            </div>
+                            <Divider className="my-4" />
+                        </div>
+                    </Grid>
                     <Grid item xs={12}>
                         <div className="font-size-lg font-weight-bold">DETAILS</div>
                     </Grid>
