@@ -1,0 +1,117 @@
+import React from 'react'
+import { InputSelect, Textarea } from '../../pages-components'
+import { Grid } from '@material-ui/core'
+import { useCountries } from 'use-react-countries';
+
+const FilterContent = ({ currentFilter, setCurrentFilter }) => {
+
+    const { countries } = useCountries();
+
+    const countryOptions = countries
+    .map(country => ({
+        name: country.name,
+        value: country.name, // Setting value to country name
+    }))
+    .sort((a, b) => a.name.localeCompare(b.name));
+
+    return (
+        <>
+            <Grid item xs={12}>
+                <Textarea
+                    style={{ margin: 0 }}
+                    rows={1}
+                    rowsMax={2}
+                    label='Code'
+                    name='code'
+                    id='code'
+                    value={currentFilter.code}
+                    onChange={(e) => setCurrentFilter({ ...currentFilter, code: e.target.value })}
+                />
+            </Grid>
+            <Grid item xs={12}>
+            <Textarea
+                    style={{ margin: 0 }}
+                    rows={1}
+                    rowsMax={2}
+                    label='Name'
+                    name='name'
+                    id='name'
+                    value={currentFilter.name}
+                    onChange={(e) => setCurrentFilter({ ...currentFilter, name: e.target.value })}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <Textarea
+                    style={{ margin: 0 }}
+                    rows={1}
+                    rowsMax={2}
+                    label='Note'
+                    name='note'
+                    id='note'
+                    value={currentFilter.note}
+                    onChange={(e) => setCurrentFilter({ ...currentFilter, note: e.target.value })}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <Textarea
+                    style={{ margin: 0 }}
+                    rows={1}
+                    rowsMax={2}
+                    label='Street'
+                    name='street'
+                    id='street'
+                    value={currentFilter.street}
+                    onChange={(e) => setCurrentFilter({ ...currentFilter, street: e.target.value })}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <Textarea
+                    style={{ margin: 0 }}
+                    rows={1}
+                    rowsMax={2}
+                    label='City'
+                    name='city'
+                    id='city'
+                    value={currentFilter.city}
+                    onChange={(e) => setCurrentFilter({ ...currentFilter, city: e.target.value })}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <Textarea
+                    style={{ margin: 0 }}
+                    rows={1}
+                    rowsMax={2}
+                    label='State'
+                    name='state'
+                    id='state'
+                    value={currentFilter.state}
+                    onChange={(e) => setCurrentFilter({ ...currentFilter, state: e.target.value })}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <Textarea
+                    style={{ margin: 0 }}
+                    rows={1}
+                    rowsMax={2}
+                    label='Postcode'
+                    name='postcode'
+                    id='postcode'
+                    value={currentFilter.postcode}
+                    onChange={(e) => setCurrentFilter({ ...currentFilter, postcode: e.target.value })}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <InputSelect
+                    selectItems={countryOptions}
+                    label='Country'
+                    name='country'
+                    id='country'
+                    value={currentFilter.country}
+                    onChange={(e) => setCurrentFilter({ ...currentFilter, country: e.target.value })}
+                />
+            </Grid>
+        </>
+    )
+}
+
+export default FilterContent
