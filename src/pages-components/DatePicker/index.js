@@ -6,6 +6,7 @@ import {
 } from '@material-ui/pickers';
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
+import { FormControl } from '@material-ui/core';
 
 const DatePicker = () => {
   const [date, setDate] = useState(new Date());
@@ -16,6 +17,7 @@ const DatePicker = () => {
 
   return (
     <>
+    <FormControl fullWidth variant="standard" className="m-3">
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <KeyboardDatePicker
             margin="normal"
@@ -29,6 +31,7 @@ const DatePicker = () => {
             }}
           />
       </MuiPickersUtilsProvider>
+      </FormControl>
     </>
   );
 }

@@ -15,8 +15,9 @@ import Pagination from '@material-ui/lab/Pagination';
 import SearchTwoToneIcon from '@material-ui/icons/SearchTwoTone';
 
 import { motion } from 'framer-motion';
+import FilterBar from '../FilterBar';
 
-const MainTable = ({ tableContent, tableButtons, Heading, handleClick, tableHeading, handlePageChange, pageCount }) => {
+const MainTable = ({ tableContent, tableButtons, Heading, handleClick, tableHeading, handlePageChange, pageCount, filterBar }) => {
   
     const [entries, setEntries] = useState('1');
     const [pointerEvents, setPointerEvents] = useState('auto');
@@ -63,9 +64,13 @@ const MainTable = ({ tableContent, tableButtons, Heading, handleClick, tableHead
               </div>
             </div>
             {tableButtons}
-            <div className="d-flex align-right px-4 py-3">
+            {/* <div className="d-flex align-right px-4 py-3"> */}
+            {/* <div className="d-flex align-right"> */}
+            <div>
               <div className="search-wrapper">
-                <TextField
+                {filterBar}
+                {/* <FilterBar /> */}
+                {/* <TextField
                   variant="outlined"
                   size="small"
                   id="input-search"
@@ -76,7 +81,7 @@ const MainTable = ({ tableContent, tableButtons, Heading, handleClick, tableHead
                       </InputAdornment>
                     )
                   }}
-                />
+                /> */}
               </div>
             </div>
             <div className="divider" />

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { MainTable } from '../../pages-components'
+import { FilterBar, MainTable } from '../../pages-components'
 import axios from 'axios';
 import NoRecords from '../../pages-components/NoRecords';
 import TableContent from './TableContent';
@@ -23,6 +23,12 @@ const Locations = () => {
   const [page, setPage] = useState(1); // Current page state
   const [totalPages, setTotalPages] = useState(1); // Total pages state
 
+  const [filters, setFilters] = useState([]);
+  const [anchorEl4, setAnchorEl4] = useState(null);
+  const [currentFilter, setCurrentFilter] = useState({ code: '', name: '', note: '', street: '', city: '', state: '', postcode: '', country: '' });
+  const [isEditing, setIsEditing] = useState(false);
+  const [editIndex, setEditIndex] = useState(null);
+
   const history = useHistory(); // Use the useHistory hook
 
   const handleNavigation = () => {
@@ -36,6 +42,9 @@ const Locations = () => {
     let url = API_ENDPOINTS.GET_LOCATIONS((page - 1) * pageSize, page * pageSize);
     if (order && orderBy) {
       url += `&order_by=${order === 'desc' ? '-' : ''}${orderBy}`;
+    }
+    if (Array.isArray(filters) && filters.length > 0) {
+      url += `&filters=${JSON.stringify(filters)}`;
     }
     axios.get(url)
       .then((response) => {
@@ -52,7 +61,7 @@ const Locations = () => {
 
   useEffect(() => {
     fetchLocations(); // Fetch locations when component mounts or dependencies change
-  }, [order, orderBy, page]);
+  }, [order, orderBy, page, filters]);
 
 
   // for warning: React Hook useEffect has a missing dependency: 'fetchLocations'. Either include it or remove the dependency array
@@ -90,9 +99,82 @@ const Locations = () => {
     setPage(newPage);
   };
 
+  const handleChipClick = (event, index) => {
+    const selectedFilter = filters[index];
+    setCurrentFilter(selectedFilter);
+    setIsEditing(true);
+    setEditIndex(index);
+    setAnchorEl4(event.currentTarget);
+  };
+
+  const handleClick = () => {
+    const nonEmptyFilter = Object.fromEntries(
+      Object.entries(currentFilter).filter(([_, value]) => value.trim() !== '')
+    );
+
+    if (isEditing) {
+      const updatedFilters = [...filters];
+      updatedFilters[editIndex] = nonEmptyFilter;
+      setFilters(updatedFilters);
+    } else {
+      setFilters([...filters, nonEmptyFilter]);
+    }
+    handleCloseFilter();
+  };
+
+  const removeAllFilters = () => {
+    setFilters([]);
+  };
+
+  const handleDelete = (index) => {
+    const updatedFilters = filters.filter((_, i) => i !== index);
+    setFilters(updatedFilters);
+  };
+
+  const handleClickFilter = (event) => {
+    setAnchorEl4(event.currentTarget);
+  };
+
+  const handleCloseFilter = () => {
+    setAnchorEl4(null);
+    setCurrentFilter({ code: '', name: '', note: '', street: '', city: '', state: '', postcode: '', country: '' });
+    setIsEditing(false);
+    setEditIndex(null);
+  };
+
+  const isFormValid = () => {
+    return Object.values(currentFilter).some(value => value.trim() !== '');
+  };
+
+  const formatFilter = (filter) => {
+    return Object.entries(filter)
+      .filter(([key, value]) => value.trim() !== '')
+      .map(([key, value]) => `${key}: ${value}`)
+      .join(', ');
+  };
+
   return (
     <>
       <MainTable
+        filterBar={<FilterBar
+          filters={filters}
+          handleChipClick={handleChipClick}
+          handleClick={handleClick}
+          handleDelete={handleDelete}
+          removeAllFilters={removeAllFilters}
+          handleClickFilter={handleClickFilter}
+          handleCloseFilter={handleCloseFilter}
+          setCurrentFilter={setCurrentFilter}
+          setIsEditing={setIsEditing}
+          setEditIndex={setEditIndex}
+          anchorEl4={anchorEl4}
+          open4={Boolean(anchorEl4)}
+          isFormValid={isFormValid}
+          currentFilter={currentFilter}
+          // setCurrentFilter={setCurrentFilter}
+          isEditing={isEditing}
+          formatFilter={formatFilter}
+        />}
         tableHeading={<TableHeading
           order={order}
           orderBy={orderBy}
