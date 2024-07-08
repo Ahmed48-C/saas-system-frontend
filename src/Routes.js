@@ -274,6 +274,18 @@ const EditLocations = lazy(() =>
   import('./pages/Locations/EditContent')
 );
 
+const Suppliers = lazy(() =>
+  import('./pages/Suppliers/index')
+);
+
+const CreateSuppliers = lazy(() =>
+  import('./pages/Suppliers/CreateContent')
+);
+
+const EditSuppliers = lazy(() =>
+  import('./pages/Suppliers/EditContent')
+);
+
 const Routes = () => {
   const SuspenseLoading = () => {
       const [show, setShow] = useState(false);
@@ -321,11 +333,13 @@ const Routes = () => {
                       <Switch>
                           <Redirect exact from="/" to="/dashboard" />
                           <Route>
+
                             <Route
                                 exact
                                 path="/dashboard"
                                 component={Dashboard}
                             />
+
                             <Route
                                 exact
                                 path="/locations"
@@ -341,6 +355,23 @@ const Routes = () => {
                                 path="/location/edit/:id"
                                 component={EditLocations}
                             />
+
+                            <Route
+                                exact
+                                path="/suppliers"
+                                component={Suppliers}
+                            />
+                            <Route
+                                exact
+                                path="/supplier/create"
+                                component={CreateSuppliers}
+                            />
+                            <Route
+                                exact
+                                path="/supplier/edit/:id"
+                                component={EditSuppliers}
+                            />
+
                           </Route>
                       </Switch>
                   </Suspense>
