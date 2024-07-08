@@ -212,7 +212,7 @@ const Locations = () => {
           headers={headers}
         />}
         tableContent={
-          !loading && locations.length === 0 ? (
+          !loading && locations.data.length === 0 ? (
             <NoRecords context='Locations' />
           ) : (
             <TableContent
