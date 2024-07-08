@@ -6,6 +6,7 @@ import {
   MuiPickersUtilsProvider,
   KeyboardTimePicker
 } from '@material-ui/pickers';
+import { FormControl } from '@material-ui/core';
 
 const TimePicker = () => {
   const [time, setTime] = useState(
@@ -18,6 +19,7 @@ const TimePicker = () => {
 
   return (
     <>
+    <FormControl fullWidth variant="standard" className="m-3">
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <KeyboardTimePicker
           margin="normal"
@@ -30,6 +32,7 @@ const TimePicker = () => {
           }}
         />
       </MuiPickersUtilsProvider>
+    </FormControl>
     </>
   );
 }
