@@ -3,11 +3,10 @@ import { Box, Button, Divider, FormControl, Grid, Tooltip } from '@material-ui/c
 import { InputSelect, Loader, Textarea } from '../../pages-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useCountries } from 'use-react-countries'
-import isEmpty from '../../pages-functions/isEmpty'
+import isEmpty from '../../functions/pages/isEmpty'
 import { useParams } from 'react-router-dom';
 import axios from 'axios'
 import API_ENDPOINTS from '../../config/apis'
-import PageTitle from '../../layout-components/PageTitle'
 
 const Form = ({ handleClick, icon, title }) => {
     const { id } = useParams(); // Get the ID from the URL
@@ -17,33 +16,33 @@ const Form = ({ handleClick, icon, title }) => {
 
     useEffect(() => {
         if (id) {
-          fetchLocation();
+            fetchLocation();
         }
-      }, [id]);
-    
-      const fetchLocation = () => {
+    }, [id]);
+
+    const fetchLocation = () => {
         setEditLoading(true); // Set loading to true before fetching data
         const url = API_ENDPOINTS.GET_LOCATION(id);
-    
+
         axios.get(url)
-          .then(response => {
+        .then(response => {
             setLocationsData(response.data);
             setEditLoading(false); // Set loading to false after data is fetched
-          })
-          .catch(error => {
+        })
+        .catch(error => {
             console.error('Error fetching data:', error);
             setEditLoading(false); // Set loading to false in case of error
-          });
+        });
     };
 
     const { countries } = useCountries();
 
     const countryOptions = countries
-      .map(country => ({
+    .map(country => ({
         name: country.name,
         value: country.name, // Setting value to country name
-      }))
-      .sort((a, b) => a.name.localeCompare(b.name));
+    }))
+    .sort((a, b) => a.name.localeCompare(b.name));
 
     const isFormValid = () => {
         return locationsData.code &&
@@ -53,8 +52,8 @@ const Form = ({ handleClick, icon, title }) => {
                locationsData.state &&
                locationsData.postcode &&
                locationsData.country;
-      };
-    
+    };
+
     const handleInputChange = (field) => (e) => {
     setLocationsData({ ...locationsData, [field]: e.target.value });
     };

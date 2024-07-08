@@ -6,6 +6,7 @@ import TableContent from './TableContent';
 import TableHeading from './TableHeading';
 import { useHistory } from 'react-router-dom'; // Import useHistory
 import API_ENDPOINTS from '../../config/apis';
+import FilterContent from './FilterContent';
 
 
 const headers = [
@@ -15,6 +16,7 @@ const headers = [
 ];
 
 const Locations = () => {
+  const heading = 'Locations'
   const [loading, setLoading] = useState(true);
   const [locations, setLocations] = useState([]);
 
@@ -99,81 +101,109 @@ const Locations = () => {
     setPage(newPage);
   };
 
-  const handleChipClick = (event, index) => {
-    const selectedFilter = filters[index];
-    setCurrentFilter(selectedFilter);
-    setIsEditing(true);
-    setEditIndex(index);
-    setAnchorEl4(event.currentTarget);
-  };
+  // const handleChipClick = (event, index) => {
+  //   const selectedFilter = filters[index];
+  //   setCurrentFilter(selectedFilter);
+  //   setIsEditing(true);
+  //   setEditIndex(index);
+  //   setAnchorEl4(event.currentTarget);
+  // };
 
-  const handleClick = () => {
-    const nonEmptyFilter = Object.fromEntries(
-      Object.entries(currentFilter).filter(([_, value]) => value.trim() !== '')
-    );
+  // const handleClick = () => {
+  //   const nonEmptyFilter = Object.fromEntries(
+  //     Object.entries(currentFilter).filter(([_, value]) => value.trim() !== '')
+  //   );
 
-    if (isEditing) {
-      const updatedFilters = [...filters];
-      updatedFilters[editIndex] = nonEmptyFilter;
-      setFilters(updatedFilters);
-    } else {
-      setFilters([...filters, nonEmptyFilter]);
-    }
-    handleCloseFilter();
-  };
+  //   if (isEditing) {
+  //     const updatedFilters = [...filters];
+  //     updatedFilters[editIndex] = nonEmptyFilter;
+  //     setFilters(updatedFilters);
+  //   } else {
+  //     setFilters([...filters, nonEmptyFilter]);
+  //   }
+  //   handleCloseFilter();
+  // };
 
-  const removeAllFilters = () => {
-    setFilters([]);
-  };
+  // const removeAllFilters = () => {
+  //   setFilters([]);
+  // };
 
-  const handleDelete = (index) => {
-    const updatedFilters = filters.filter((_, i) => i !== index);
-    setFilters(updatedFilters);
-  };
+  // const handleDelete = (index) => {
+  //   const updatedFilters = filters.filter((_, i) => i !== index);
+  //   setFilters(updatedFilters);
+  // };
 
-  const handleClickFilter = (event) => {
-    setAnchorEl4(event.currentTarget);
-  };
+  // const handleClickFilter = (event) => {
+  //   setAnchorEl4(event.currentTarget);
+  // };
 
-  const handleCloseFilter = () => {
-    setAnchorEl4(null);
-    setCurrentFilter({ code: '', name: '', note: '', street: '', city: '', state: '', postcode: '', country: '' });
-    setIsEditing(false);
-    setEditIndex(null);
-  };
+  // const handleCloseFilter = () => {
+  //   setAnchorEl4(null);
+  //   setCurrentFilter({ code: '', name: '', note: '', street: '', city: '', state: '', postcode: '', country: '' });
+  //   setIsEditing(false);
+  //   setEditIndex(null);
+  // };
 
-  const isFormValid = () => {
-    return Object.values(currentFilter).some(value => value.trim() !== '');
-  };
+  // const isFormValid = () => {
+  //   return Object.values(currentFilter).some(value => value.trim() !== '');
+  // };
 
-  const formatFilter = (filter) => {
-    return Object.entries(filter)
-      .filter(([key, value]) => value.trim() !== '')
-      .map(([key, value]) => `${key}: ${value}`)
-      .join(', ');
-  };
+  // const formatFilter = (filter) => {
+  //   return Object.entries(filter)
+  //     .filter(([key, value]) => value.trim() !== '')
+  //     .map(([key, value]) => `${key}: ${value}`)
+  //     .join(', ');
+  // };
+
+
+  const handleAnchorEl4 = (value) => {
+    setAnchorEl4(value);
+  }
+
+  const handleFilters = (value) => {
+    setFilters(value);
+  }
+
+  const handleCurrentFilter = (value) => {
+    setCurrentFilter(value);
+  }
+
+  const handleIsEditing = (value) => {
+    setIsEditing(value);
+  }
+
+  const handleEditIndex = (value) => {
+    setEditIndex(value);
+  }
 
   return (
     <>
       <MainTable
         filterBar={<FilterBar
           filters={filters}
-          handleChipClick={handleChipClick}
-          handleClick={handleClick}
-          handleDelete={handleDelete}
-          removeAllFilters={removeAllFilters}
-          handleClickFilter={handleClickFilter}
-          handleCloseFilter={handleCloseFilter}
+          // handleChipClick={handleChipClick}
+          // handleClick={handleClick}
+          // handleDelete={handleDelete}
+          // removeAllFilters={removeAllFilters}
+          // handleClickFilter={handleClickFilter}
+          // handleCloseFilter={handleCloseFilter}
           setCurrentFilter={setCurrentFilter}
           setIsEditing={setIsEditing}
           setEditIndex={setEditIndex}
           anchorEl4={anchorEl4}
           open4={Boolean(anchorEl4)}
-          isFormValid={isFormValid}
+          // isFormValid={isFormValid}
           currentFilter={currentFilter}
-          // setCurrentFilter={setCurrentFilter}
           isEditing={isEditing}
-          formatFilter={formatFilter}
+          // formatFilter={formatFilter}
+          heading={heading}
+          handleAnchorEl4={handleAnchorEl4}
+          handleFilters={handleFilters}
+          handleCurrentFilter={handleCurrentFilter}
+          handleIsEditing={handleIsEditing}
+          handleEditIndex={handleEditIndex}
+          editIndex={editIndex}
+          filterContent={<FilterContent currentFilter={currentFilter} setCurrentFilter={setCurrentFilter} />}
         />}
         tableHeading={<TableHeading
           order={order}
