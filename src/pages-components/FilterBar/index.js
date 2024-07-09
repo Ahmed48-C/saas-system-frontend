@@ -7,17 +7,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const FilterBar = ({
     filters,
-    // handleChipClick,
-    // handleClick,
-    // handleDelete,
-    // removeAllFilters,
-    // handleClickFilter,
-    // handleCloseFilter,
     anchorEl4,
     open4,
-    // isFormValid,
     isEditing,
-    // formatFilter,
     heading,
     filterContent,
     currentFilter,

@@ -26,6 +26,7 @@ const FilterContent = ({ currentFilter, setCurrentFilter }) => {
                     id='code'
                     value={currentFilter.code}
                     onChange={(e) => setCurrentFilter({ ...currentFilter, code: e.target.value })}
+                    maxLength={50}
                 />
             </Grid>
             <Grid item xs={12}>
@@ -38,6 +39,7 @@ const FilterContent = ({ currentFilter, setCurrentFilter }) => {
                     id='name'
                     value={currentFilter.name}
                     onChange={(e) => setCurrentFilter({ ...currentFilter, name: e.target.value })}
+                    maxLength={80}
                 />
             </Grid>
             <Grid item xs={12}>
@@ -62,6 +64,7 @@ const FilterContent = ({ currentFilter, setCurrentFilter }) => {
                     id='street'
                     value={currentFilter.street}
                     onChange={(e) => setCurrentFilter({ ...currentFilter, street: e.target.value })}
+                    maxLength={200}
                 />
             </Grid>
             <Grid item xs={12}>
@@ -74,6 +77,7 @@ const FilterContent = ({ currentFilter, setCurrentFilter }) => {
                     id='city'
                     value={currentFilter.city}
                     onChange={(e) => setCurrentFilter({ ...currentFilter, city: e.target.value })}
+                    maxLength={200}
                 />
             </Grid>
             <Grid item xs={12}>
@@ -86,6 +90,7 @@ const FilterContent = ({ currentFilter, setCurrentFilter }) => {
                     id='state'
                     value={currentFilter.state}
                     onChange={(e) => setCurrentFilter({ ...currentFilter, state: e.target.value })}
+                    maxLength={200}
                 />
             </Grid>
             <Grid item xs={12}>
@@ -98,6 +103,7 @@ const FilterContent = ({ currentFilter, setCurrentFilter }) => {
                     id='postcode'
                     value={currentFilter.postcode}
                     onChange={(e) => setCurrentFilter({ ...currentFilter, postcode: e.target.value })}
+                    maxLength={50}
                 />
             </Grid>
             <Grid item xs={12}>
