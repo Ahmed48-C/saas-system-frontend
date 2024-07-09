@@ -2,7 +2,7 @@ import React from 'react';
 
 import { TextField } from '@material-ui/core';
 
-const Textarea = ({ rows, rowsMax, label, value, onChange, key, error, id }) => {
+const Textarea = ({ rows, rowsMax, label, value, onChange, key, error, id, maxLength }) => {
   return (
     <>
       <TextField
@@ -17,6 +17,7 @@ const Textarea = ({ rows, rowsMax, label, value, onChange, key, error, id }) => 
         rows={rows}
         rowsMax={rowsMax}
         error={error}
+        inputProps={maxLength ? { maxLength: maxLength } : {}} // Conditionally add maxLength
       />
     </>
   );

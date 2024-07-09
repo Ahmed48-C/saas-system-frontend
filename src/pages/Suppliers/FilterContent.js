@@ -16,6 +16,7 @@ const FilterContent = ({ currentFilter, setCurrentFilter }) => {
                     id='name'
                     value={currentFilter.name}
                     onChange={(e) => setCurrentFilter({ ...currentFilter, name: e.target.value })}
+                    maxLength={80}
                 />
             </Grid>
             <Grid item xs={12}>
@@ -28,6 +29,7 @@ const FilterContent = ({ currentFilter, setCurrentFilter }) => {
                     id='phone'
                     value={currentFilter.phone}
                     onChange={(e) => setCurrentFilter({ ...currentFilter, phone: e.target.value })}
+                    maxLength={80}
                 />
             </Grid>
             <Grid item xs={12}>
@@ -40,6 +42,7 @@ const FilterContent = ({ currentFilter, setCurrentFilter }) => {
                     id='email'
                     value={currentFilter.email}
                     onChange={(e) => setCurrentFilter({ ...currentFilter, email: e.target.value })}
+                    maxLength={254}
                 />
             </Grid>
         </>

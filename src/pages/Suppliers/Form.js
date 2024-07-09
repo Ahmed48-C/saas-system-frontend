@@ -79,6 +79,7 @@ const Form = ({ handleClick, icon, title }) => {
                         value={suppliersData.name ?? ""}
                         key='name'
                         error={isEmpty(suppliersData.name)}
+                        maxLength={80}
                         />
                     </Grid>
                     <Grid item xs={6}>
@@ -92,6 +93,7 @@ const Form = ({ handleClick, icon, title }) => {
                         value={suppliersData.phone ?? ""}
                         key='phone'
                         error={isEmpty(suppliersData.phone)}
+                        maxLength={80}
                         />
                     </Grid>
                     <Grid item xs={6}>
@@ -105,6 +107,7 @@ const Form = ({ handleClick, icon, title }) => {
                         value={suppliersData.email ?? ""}
                         key='email'
                         error={isEmpty(suppliersData.email)}
+                        maxLength={254}
                         />
                     </Grid>
                     {/* <Grid item xs={6}>

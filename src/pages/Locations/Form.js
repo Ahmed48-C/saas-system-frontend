@@ -92,6 +92,7 @@ const Form = ({ handleClick, icon, title }) => {
                         value={locationsData.code ?? ""}
                         key='code'
                         error={isEmpty(locationsData.code)}
+                        maxLength={50}
                         />
                     </Grid>
                     <Grid item xs={6}>
@@ -105,6 +106,7 @@ const Form = ({ handleClick, icon, title }) => {
                         value={locationsData.name ?? ""}
                         key='name'
                         error={isEmpty(locationsData.name)}
+                        maxLength={80}
                         />
                     </Grid>
                     <Grid item xs={12}>
@@ -139,6 +141,7 @@ const Form = ({ handleClick, icon, title }) => {
                         value={locationsData.street ?? ""}
                         key='street'
                         error={isEmpty(locationsData.street)}
+                        maxLength={200}
                         />
                     </Grid>
                     <Grid item xs={6}>
@@ -152,6 +155,7 @@ const Form = ({ handleClick, icon, title }) => {
                         value={locationsData.city ?? ""}
                         key='city'
                         error={isEmpty(locationsData.city)}
+                        maxLength={200}
                         />
                     </Grid>
                     <Grid item xs={6}>
@@ -165,6 +169,7 @@ const Form = ({ handleClick, icon, title }) => {
                         value={locationsData.state ?? ""}
                         key='state'
                         error={isEmpty(locationsData.state)}
+                        maxLength={200}
                         />
                     </Grid>
                     <Grid item xs={6}>
@@ -178,6 +183,7 @@ const Form = ({ handleClick, icon, title }) => {
                         value={locationsData.postcode ?? ""}
                         key='postcode'
                         error={isEmpty(locationsData.postcode)}
+                        maxLength={50}
                         />
                     </Grid>
                     <Grid item xs={6}>
