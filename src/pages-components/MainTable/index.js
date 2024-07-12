@@ -69,19 +69,6 @@ const MainTable = ({ tableContent, tableButtons, Heading, handleClick, tableHead
             <div>
               <div className="search-wrapper">
                 {filterBar}
-                {/* <FilterBar /> */}
-                {/* <TextField
-                  variant="outlined"
-                  size="small"
-                  id="input-search"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <SearchTwoToneIcon />
-                      </InputAdornment>
-                    )
-                  }}
-                /> */}
               </div>
             </div>
             <div className="divider" />

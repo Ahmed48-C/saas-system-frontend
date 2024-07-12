@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Loader } from '../../pages-components';
 import { useHistory } from 'react-router-dom';
 import API_ENDPOINTS from '../../config/apis';
+import handleDeleteRecord from '../../functions/pages/handleDeleteRecord';
 
 const TableContent = ({
     fetchSuppliers,
@@ -12,21 +13,21 @@ const TableContent = ({
     suppliers
 }) => {
 
-    const handleDeleteClick = (id) => {
-      let url = API_ENDPOINTS.DELETE_SUPPLIER(id);
+    // const handleDeleteClick = (id) => {
+    //   let url = API_ENDPOINTS.DELETE_SUPPLIER(id);
 
-      axios.delete(url)
-        .then(response => {
-          console.log('Delete request successful:', response.data);
-          fetchSuppliers();
-          // setTimeout(() =>
-            
-          // 1500);
-        })
-        .catch(error => {
-          console.error('Error deleting supplier:', error);
-        });
-    };
+    //   axios.delete(url)
+    //     .then(response => {
+    //       console.log('Delete request successful:', response.data);
+    //       fetchSuppliers();
+    //       // setTimeout(() =>
+
+    //       // 1500);
+    //     })
+    //     .catch(error => {
+    //       console.error('Error deleting supplier:', error);
+    //     });
+    // };
 
     return loading ? (
       <Loader />
@@ -35,13 +36,13 @@ const TableContent = ({
         <SupplierRow
           key={index}
           row={row}
-          handleDeleteClick={handleDeleteClick}
+          handleDeleteRecord={() => handleDeleteRecord(row.id, API_ENDPOINTS.DELETE_SUPPLIER, fetchSuppliers)}
         />
       ))
     );
   };
 
-  const SupplierRow = ({ row, handleDeleteClick }) => {
+  const SupplierRow = ({ row, handleDeleteRecord }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const history = useHistory();
 
@@ -64,11 +65,6 @@ const TableContent = ({
     return (
       <>
         <tr>
-          {/* <td>
-            <div className="d-flex align-items-center">
-              <div>{row.code}</div>
-            </div>
-          </td> */}
           <td>{row.name}</td>
           <td>{row.phone}</td>
           <td>{row.email}</td>
@@ -94,7 +90,8 @@ const TableContent = ({
                         variant="contained"
                       >
                         <Button className="d-30 px-5 btn-icon hover-scale-sm text-white" onClick={() => handleEditClick(row.id)}>Edit</Button>
-                        <Button className="d-30 px-5 btn-icon hover-scale-sm text-white" onClick={() => handleDeleteClick(row.id)}>Delete</Button>
+                        {/* <Button className="d-30 px-5 btn-icon hover-scale-sm text-white" onClick={() => handleDeleteRecord(row.id)}>Delete</Button> */}
+                        <Button className="d-30 px-5 btn-icon hover-scale-sm text-white" onClick={() => handleDeleteRecord()}>Delete</Button>
                       </ButtonGroup>
                   </div>
                 </Fade>

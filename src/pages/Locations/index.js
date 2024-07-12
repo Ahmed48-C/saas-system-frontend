@@ -3,11 +3,11 @@ import { FilterBar, MainTable } from '../../pages-components'
 import axios from 'axios';
 import NoRecords from '../../pages-components/NoRecords';
 import TableContent from './TableContent';
-import TableHeading from './TableHeading';
 import { useHistory } from 'react-router-dom'; // Import useHistory
 import API_ENDPOINTS from '../../config/apis';
 import FilterContent from './FilterContent';
-
+import TableHeading from '../../functions/pages/tableHeading';
+import { fetchAll } from '../../functions/pages/handleFetchAll';
 
 const headers = [
   { key: 'code', label: 'Code', className: 'bg-white text-left' },
@@ -38,32 +38,48 @@ const Locations = () => {
   };
 
   const fetchLocations = () => {
-    setLoading(true);
     const pageSize = 5; // Number of items per page
-    // let url = `http://127.0.0.1:8000/api/get/locations/?from=${(page - 1) * pageSize}&to=${page * pageSize}`;
-    let url = API_ENDPOINTS.GET_LOCATIONS((page - 1) * pageSize, page * pageSize);
-    if (order && orderBy) {
-      url += `&order_by=${order === 'desc' ? '-' : ''}${orderBy}`;
-    }
-    if (Array.isArray(filters) && filters.length > 0) {
-      url += `&filters=${JSON.stringify(filters)}`;
-    }
-    axios.get(url)
-      .then((response) => {
-        console.log(response.data);
-        setLocations(response.data); // Assuming API returns results in a `results` field
-        setTotalPages(Math.ceil(response.data.actual_total_count / pageSize)); // Calculate total pages based on total count
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error('Error fetching data:', error);
-        setLoading(false);
-      });
+    fetchAll(API_ENDPOINTS.GET_LOCATIONS, page, pageSize, order, orderBy, filters, setLocations, setLoading);
   };
 
   useEffect(() => {
     fetchLocations(); // Fetch locations when component mounts or dependencies change
   }, [order, orderBy, page, filters]);
+
+  useEffect(() => {
+    if (locations.actual_total_count) {
+      const pageSize = 5;
+      setTotalPages(Math.ceil(locations.actual_total_count / pageSize));
+    }
+  }, [locations]);
+
+
+  // const fetchLocations = () => {
+  //   setLoading(true);
+  //   const pageSize = 5; // Number of items per page
+  //   let url = API_ENDPOINTS.GET_LOCATIONS((page - 1) * pageSize, page * pageSize);
+  //   if (order && orderBy) {
+  //     url += `&order_by=${order === 'desc' ? '-' : ''}${orderBy}`;
+  //   }
+  //   if (Array.isArray(filters) && filters.length > 0) {
+  //     url += `&filters=${JSON.stringify(filters)}`;
+  //   }
+  //   axios.get(url)
+  //     .then((response) => {
+  //       console.log(response.data);
+  //       setLocations(response.data); // Assuming API returns results in a `results` field
+  //       setTotalPages(Math.ceil(response.data.actual_total_count / pageSize)); // Calculate total pages based on total count
+  //       setLoading(false);
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error fetching data:', error);
+  //       setLoading(false);
+  //     });
+  // };
+
+  // useEffect(() => {
+  //   fetchLocations(); // Fetch locations when component mounts or dependencies change
+  // }, [order, orderBy, page, filters]);
 
 
   // for warning: React Hook useEffect has a missing dependency: 'fetchLocations'. Either include it or remove the dependency array
@@ -101,61 +117,6 @@ const Locations = () => {
     setPage(newPage);
   };
 
-  // const handleChipClick = (event, index) => {
-  //   const selectedFilter = filters[index];
-  //   setCurrentFilter(selectedFilter);
-  //   setIsEditing(true);
-  //   setEditIndex(index);
-  //   setAnchorEl4(event.currentTarget);
-  // };
-
-  // const handleClick = () => {
-  //   const nonEmptyFilter = Object.fromEntries(
-  //     Object.entries(currentFilter).filter(([_, value]) => value.trim() !== '')
-  //   );
-
-  //   if (isEditing) {
-  //     const updatedFilters = [...filters];
-  //     updatedFilters[editIndex] = nonEmptyFilter;
-  //     setFilters(updatedFilters);
-  //   } else {
-  //     setFilters([...filters, nonEmptyFilter]);
-  //   }
-  //   handleCloseFilter();
-  // };
-
-  // const removeAllFilters = () => {
-  //   setFilters([]);
-  // };
-
-  // const handleDelete = (index) => {
-  //   const updatedFilters = filters.filter((_, i) => i !== index);
-  //   setFilters(updatedFilters);
-  // };
-
-  // const handleClickFilter = (event) => {
-  //   setAnchorEl4(event.currentTarget);
-  // };
-
-  // const handleCloseFilter = () => {
-  //   setAnchorEl4(null);
-  //   setCurrentFilter({ code: '', name: '', note: '', street: '', city: '', state: '', postcode: '', country: '' });
-  //   setIsEditing(false);
-  //   setEditIndex(null);
-  // };
-
-  // const isFormValid = () => {
-  //   return Object.values(currentFilter).some(value => value.trim() !== '');
-  // };
-
-  // const formatFilter = (filter) => {
-  //   return Object.entries(filter)
-  //     .filter(([key, value]) => value.trim() !== '')
-  //     .map(([key, value]) => `${key}: ${value}`)
-  //     .join(', ');
-  // };
-
-
   const handleAnchorEl4 = (value) => {
     setAnchorEl4(value);
   }
@@ -181,21 +142,13 @@ const Locations = () => {
       <MainTable
         filterBar={<FilterBar
           filters={filters}
-          // handleChipClick={handleChipClick}
-          // handleClick={handleClick}
-          // handleDelete={handleDelete}
-          // removeAllFilters={removeAllFilters}
-          // handleClickFilter={handleClickFilter}
-          // handleCloseFilter={handleCloseFilter}
           setCurrentFilter={setCurrentFilter}
           setIsEditing={setIsEditing}
           setEditIndex={setEditIndex}
           anchorEl4={anchorEl4}
           open4={Boolean(anchorEl4)}
-          // isFormValid={isFormValid}
           currentFilter={currentFilter}
           isEditing={isEditing}
-          // formatFilter={formatFilter}
           heading={heading}
           handleAnchorEl4={handleAnchorEl4}
           handleFilters={handleFilters}
