@@ -17,7 +17,7 @@ import SearchTwoToneIcon from '@material-ui/icons/SearchTwoTone';
 import { motion } from 'framer-motion';
 import FilterBar from '../FilterBar';
 
-const MainTable = ({ tableContent, tableButtons, Heading, handleClick, tableHeading, handlePageChange, pageCount, filterBar }) => {
+const MainTable = ({ tableContent, tableButtons, Heading, handleClick, tableHeading, handlePageChange, pageCount, filterBar, page }) => {
   
     const [entries, setEntries] = useState('1');
     const [pointerEvents, setPointerEvents] = useState('auto');
@@ -88,6 +88,7 @@ const MainTable = ({ tableContent, tableButtons, Heading, handleClick, tableHead
                 variant="outlined"
                 count={pageCount} // Total number of pages
                 onChange={handlePageChange} // Handle page change event
+                page={page} // Current page
               />
               {/* <div className="d-flex align-items-center">
                 <span>Show</span>

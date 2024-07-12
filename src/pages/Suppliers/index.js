@@ -25,6 +25,7 @@ const Supplier = () => {
   const [orderBy, setOrderBy] = useState('id');
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const pageSize = 5;
 
   const [filters, setFilters] = useState([]);
   const [anchorEl4, setAnchorEl4] = useState(null);
@@ -39,47 +40,35 @@ const Supplier = () => {
   };
 
   const fetchSuppliers = () => {
-    const pageSize = 5; // Number of items per page
-    fetchAll(API_ENDPOINTS.GET_LOCATIONS, page, pageSize, order, orderBy, filters, setSuppliers, setLoading);
+    fetchAll(
+      API_ENDPOINTS.GET_SUPPLIERS,
+      page,
+      pageSize,
+      order,
+      orderBy,
+      filters,
+      (data) => {
+        setSuppliers(data);
+        if (data.actual_total_count) {
+          setTotalPages(Math.ceil(data.actual_total_count / pageSize));
+        } else {
+          setTotalPages(0);
+        }
+        setLoading(false);
+      },
+      setLoading
+    );
   };
 
   useEffect(() => {
-    fetchSuppliers(); // Fetch locations when component mounts or dependencies change
+    fetchSuppliers();
   }, [order, orderBy, page, filters]);
 
   useEffect(() => {
-    if (suppliers.actual_total_count) {
-      const pageSize = 5;
-      setTotalPages(Math.ceil(suppliers.actual_total_count / pageSize));
+    if (filters.length > 0) {
+      setPage(1);
     }
-  }, [suppliers]);
-
-  // const fetchSuppliers = () => {
-  //   setLoading(true);
-  //   const pageSize = 5;
-  //   let url = API_ENDPOINTS.GET_SUPPLIERS((page - 1) * pageSize, page * pageSize);
-  //   if (order && orderBy) {
-  //     url += `&order_by=${order === 'desc' ? '-' : ''}${orderBy}`;
-  //   }
-  //   if (Array.isArray(filters) && filters.length > 0) {
-  //     url += `&filters=${JSON.stringify(filters)}`;
-  //   }
-  //   axios.get(url)
-  //     .then((response) => {
-  //       console.log(response.data);
-  //       setSuppliers(response.data);
-  //       setTotalPages(Math.ceil(response.data.actual_total_count / pageSize));
-  //       setLoading(false);
-  //     })
-  //     .catch((error) => {
-  //       console.error('Error fetching data:', error);
-  //       setLoading(false);
-  //     });
-  // };
-
-  // useEffect(() => {
-  //   fetchSuppliers();
-  // }, [order, orderBy, page, filters]);
+  }, [filters]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -153,6 +142,7 @@ const Supplier = () => {
         handleClick={handleNavigation}
         handlePageChange={handlePageChange} // Pass page change handler
         pageCount={totalPages} // Pass total pages
+        page={page}
       />
     </>
   )
