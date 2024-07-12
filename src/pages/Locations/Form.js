@@ -7,6 +7,7 @@ import isEmpty from '../../functions/pages/isEmpty'
 import { useParams } from 'react-router-dom';
 import axios from 'axios'
 import API_ENDPOINTS from '../../config/apis'
+import { handleFetchRecord } from '../../functions/pages/handleFetchRecord'
 
 const Form = ({ handleClick, icon, title }) => {
     const { id } = useParams(); // Get the ID from the URL
@@ -14,26 +15,37 @@ const Form = ({ handleClick, icon, title }) => {
     const [locationsData, setLocationsData] = useState({});
     const [editLoading, setEditLoading] = useState(false); // Add loading state
 
+    // useEffect(() => {
+    //     if (id) {
+    //         fetchLocation();
+    //     }
+    // }, [id]);
+
+    // const fetchLocation = () => {
+    //     setEditLoading(true); // Set loading to true before fetching data
+    //     const url = API_ENDPOINTS.GET_LOCATION(id);
+
+    //     axios.get(url)
+    //     .then(response => {
+    //         setLocationsData(response.data);
+    //         setEditLoading(false); // Set loading to false after data is fetched
+    //     })
+    //     .catch(error => {
+    //         console.error('Error fetching data:', error);
+    //         setEditLoading(false); // Set loading to false in case of error
+    //     });
+    // };
+
     useEffect(() => {
         if (id) {
-            fetchLocation();
+            fetchData();
         }
     }, [id]);
 
-    const fetchLocation = () => {
-        setEditLoading(true); // Set loading to true before fetching data
-        const url = API_ENDPOINTS.GET_LOCATION(id);
-
-        axios.get(url)
-        .then(response => {
-            setLocationsData(response.data);
-            setEditLoading(false); // Set loading to false after data is fetched
-        })
-        .catch(error => {
-            console.error('Error fetching data:', error);
-            setEditLoading(false); // Set loading to false in case of error
-        });
+    const fetchData = () => {
+        handleFetchRecord(id, API_ENDPOINTS.GET_LOCATION, setLocationsData, setEditLoading);
     };
+
 
     const { countries } = useCountries();
 

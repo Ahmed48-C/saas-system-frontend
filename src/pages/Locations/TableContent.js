@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Loader } from '../../pages-components';
 import { useHistory } from 'react-router-dom';
 import API_ENDPOINTS from '../../config/apis';
+import handleDeleteRecord from '../../functions/pages/handleDeleteRecord';
 
 const TableContent = ({
     fetchLocations,
@@ -14,21 +15,21 @@ const TableContent = ({
     const [active, setActive] = useState(true);
     const [isDefault, setIsDefault] = useState(false);
 
-    const handleDeleteClick = (id) => {
-      let url = API_ENDPOINTS.DELETE_LOCATION(id);
+    // const handleDeleteClick = (id) => {
+    //   let url = API_ENDPOINTS.DELETE_LOCATION(id);
 
-      axios.delete(url)
-        .then(response => {
-          console.log('Delete request successful:', response.data);
-          fetchLocations();
-          // setTimeout(() =>
+    //   axios.delete(url)
+    //     .then(response => {
+    //       console.log('Delete request successful:', response.data);
+    //       fetchLocations();
+    //       // setTimeout(() =>
             
-          // 1500);
-        })
-        .catch(error => {
-          console.error('Error deleting location:', error);
-        });
-    };
+    //       // 1500);
+    //     })
+    //     .catch(error => {
+    //       console.error('Error deleting location:', error);
+    //     });
+    // };
 
     return loading ? (
       <Loader />
@@ -39,13 +40,13 @@ const TableContent = ({
           row={row}
           active={active}
           setActive={setActive}
-          handleDeleteClick={handleDeleteClick}
+          handleDeleteRecord={() => handleDeleteRecord(row.id, API_ENDPOINTS.DELETE_SUPPLIER, fetchLocations)}
         />
       ))
     );
   };
 
-  const LocationRow = ({ row, active, isDefault, setActive, handleDeleteClick }) => {
+  const LocationRow = ({ row, active, isDefault, setActive, handleDeleteRecord }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const history = useHistory();
 
@@ -123,7 +124,8 @@ const TableContent = ({
                       >
                         <Button className="d-30 px-5 btn-icon hover-scale-sm text-white" onClick={() => handleEditClick(row.id)}>Edit</Button>
                         <Button className="d-30 px-5 btn-icon hover-scale-sm text-white" onClick={handleDefaultClick}>Default</Button>
-                        <Button className="d-30 px-5 btn-icon hover-scale-sm text-white" onClick={() => handleDeleteClick(row.id)}>Delete</Button>
+                        {/* <Button className="d-30 px-5 btn-icon hover-scale-sm text-white" onClick={() => handleDeleteClick(row.id)}>Delete</Button> */}
+                        <Button className="d-30 px-5 btn-icon hover-scale-sm text-white" onClick={() => handleDeleteRecord()}>Delete</Button>
                         <Button
                           className="d-30 px-5 btn-icon hover-scale-sm text-white"
                           onClick={handleDeactivateClick}
@@ -141,7 +143,8 @@ const TableContent = ({
                         variant="contained"
                       >
                         <Button className="d-30 px-5 btn-icon hover-scale-sm text-white" onClick={() => handleEditClick(row.id)}>Edit</Button>
-                        <Button className="d-30 px-5 btn-icon hover-scale-sm text-white" onClick={() => handleDeleteClick(row.id)}>Delete</Button>
+                        {/* <Button className="d-30 px-5 btn-icon hover-scale-sm text-white" onClick={() => handleDeleteClick(row.id)}>Delete</Button> */}
+                        <Button className="d-30 px-5 btn-icon hover-scale-sm text-white" onClick={() => handleDeleteRecord()}>Delete</Button>
                         <Button
                           className="d-30 px-5 btn-icon hover-scale-sm text-white"
                           onClick={handleActivateClick}
