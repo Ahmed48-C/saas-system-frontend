@@ -24,6 +24,7 @@ const Locations = () => {
   const [orderBy, setOrderBy] = useState('id');
   const [page, setPage] = useState(1); // Current page state
   const [totalPages, setTotalPages] = useState(1); // Total pages state
+  const pageSize = 5;
 
   const [filters, setFilters] = useState([]);
   const [anchorEl4, setAnchorEl4] = useState(null);
@@ -38,74 +39,53 @@ const Locations = () => {
   };
 
   const fetchLocations = () => {
-    const pageSize = 5; // Number of items per page
-    fetchAll(API_ENDPOINTS.GET_LOCATIONS, page, pageSize, order, orderBy, filters, setLocations, setLoading);
+    fetchAll(
+      API_ENDPOINTS.GET_LOCATIONS,
+      page,
+      pageSize,
+      order,
+      orderBy,
+      filters,
+      (data) => {
+        setLocations(data);
+        if (data.actual_total_count) {
+          setTotalPages(Math.ceil(data.actual_total_count / pageSize));
+        } else {
+          setTotalPages(0);
+        }
+        setLoading(false);
+      },
+      setLoading
+    );
   };
 
   useEffect(() => {
-    fetchLocations(); // Fetch locations when component mounts or dependencies change
+    fetchLocations();
   }, [order, orderBy, page, filters]);
 
   useEffect(() => {
-    if (locations.actual_total_count) {
-      const pageSize = 5;
-      setTotalPages(Math.ceil(locations.actual_total_count / pageSize));
+    if (filters.length > 0) {
+      setPage(1);
     }
-  }, [locations]);
-
+  }, [filters]);
 
   // const fetchLocations = () => {
-  //   setLoading(true);
-  //   const pageSize = 5; // Number of items per page
-  //   let url = API_ENDPOINTS.GET_LOCATIONS((page - 1) * pageSize, page * pageSize);
-  //   if (order && orderBy) {
-  //     url += `&order_by=${order === 'desc' ? '-' : ''}${orderBy}`;
-  //   }
-  //   if (Array.isArray(filters) && filters.length > 0) {
-  //     url += `&filters=${JSON.stringify(filters)}`;
-  //   }
-  //   axios.get(url)
-  //     .then((response) => {
-  //       console.log(response.data);
-  //       setLocations(response.data); // Assuming API returns results in a `results` field
-  //       setTotalPages(Math.ceil(response.data.actual_total_count / pageSize)); // Calculate total pages based on total count
-  //       setLoading(false);
-  //     })
-  //     .catch((error) => {
-  //       console.error('Error fetching data:', error);
-  //       setLoading(false);
-  //     });
+  //   fetchAll(API_ENDPOINTS.GET_LOCATIONS, page, pageSize, order, orderBy, filters, setLocations, setLoading);
   // };
 
   // useEffect(() => {
   //   fetchLocations(); // Fetch locations when component mounts or dependencies change
   // }, [order, orderBy, page, filters]);
 
-
-  // for warning: React Hook useEffect has a missing dependency: 'fetchLocations'. Either include it or remove the dependency array
-  // const fetchLocations = useCallback(() => {
-  //   setLoading(true);
-  //   const pageSize = 5; // Number of items per page
-  //   let url = API_ENDPOINTS.GET_LOCATIONS((page - 1) * pageSize, page * pageSize);
-  //   if (order && orderBy) {
-  //     url += `&order_by=${order === 'desc' ? '-' : ''}${orderBy}`;
+  // useEffect(() => {
+  //   if (locations.actual_total_count) {
+  //     setTotalPages(Math.ceil(locations.actual_total_count / pageSize));
   //   }
-  //   axios.get(url)
-  //     .then((response) => {
-  //       console.log(response.data);
-  //       setLocations(response.data); // Assuming API returns results in a `results` field
-  //       setTotalPages(Math.ceil(response.data.actual_total_count / pageSize)); // Calculate total pages based on total count
-  //       setLoading(false);
-  //     })
-  //     .catch((error) => {
-  //       console.error('Error fetching data:', error);
-  //       setLoading(false);
-  //     });
-  // }, [page, order, orderBy]);
+  // }, [locations]);
 
   // useEffect(() => {
-  //   fetchLocations(); // Fetch locations when component mounts or dependencies change
-  // }, [fetchLocations]);
+  //   setPage(1); // Reset to the first page when filters change
+  // }, [filters]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -179,6 +159,7 @@ const Locations = () => {
         handleClick={handleNavigation}
         handlePageChange={handlePageChange} // Pass page change handler
         pageCount={totalPages} // Pass total pages
+        page={page}
       />
     </>
   )
