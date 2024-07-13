@@ -72,7 +72,15 @@ const MainTable = ({ tableContent, tableButtons, Heading, handleClick, tableHead
               </div>
             </div>
             <div className="divider" />
-            <div className="table-responsive-md">
+            {/* <div className="table-responsive-lg"> */}
+            <div
+              style={{
+                display: 'block',
+                width: '100%',
+                overflowX: 'auto',
+                WebkitOverflowScrolling: 'touch',
+              }}
+            >
               <Table className="table table-hover text-nowrap mb-0">
                 <thead>
                   {tableHeading}
