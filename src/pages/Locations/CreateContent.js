@@ -1,12 +1,11 @@
 import React from 'react'
-import axios from "axios";
 import Form from './Form';
-import { useHistory } from 'react-router-dom'; // Import useHistory
+import { useHistory } from 'react-router-dom';
 import API_ENDPOINTS from '../../config/apis';
 import { handleSubmitRecord } from '../../functions/pages/handleSubmitRecord';
 
 const CreateContent = () => {
-  const history = useHistory(); // Use the useHistory hook
+  const history = useHistory();
 
   const handleSubmitClick = (locationsData) => {
     const postData = {

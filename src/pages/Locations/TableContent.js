@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import axios from "axios";
 import { Button, ButtonGroup, Fade, Popper } from '@material-ui/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Loader } from '../../pages-components';
@@ -15,22 +14,6 @@ const TableContent = ({
     const [active, setActive] = useState(true);
     const [isDefault, setIsDefault] = useState(false);
 
-    // const handleDeleteClick = (id) => {
-    //   let url = API_ENDPOINTS.DELETE_LOCATION(id);
-
-    //   axios.delete(url)
-    //     .then(response => {
-    //       console.log('Delete request successful:', response.data);
-    //       fetchLocations();
-    //       // setTimeout(() =>
-            
-    //       // 1500);
-    //     })
-    //     .catch(error => {
-    //       console.error('Error deleting location:', error);
-    //     });
-    // };
-
     return loading ? (
       <Loader />
     ) : (
@@ -40,7 +23,7 @@ const TableContent = ({
           row={row}
           active={active}
           setActive={setActive}
-          handleDeleteRecord={() => handleDeleteRecord(row.id, API_ENDPOINTS.DELETE_SUPPLIER, fetchLocations)}
+          handleDeleteRecord={() => handleDeleteRecord(row.id, API_ENDPOINTS.DELETE_LOCATION, fetchLocations)}
         />
       ))
     );
@@ -124,7 +107,6 @@ const TableContent = ({
                       >
                         <Button className="d-30 px-5 btn-icon hover-scale-sm text-white" onClick={() => handleEditClick(row.id)}>Edit</Button>
                         <Button className="d-30 px-5 btn-icon hover-scale-sm text-white" onClick={handleDefaultClick}>Default</Button>
-                        {/* <Button className="d-30 px-5 btn-icon hover-scale-sm text-white" onClick={() => handleDeleteClick(row.id)}>Delete</Button> */}
                         <Button className="d-30 px-5 btn-icon hover-scale-sm text-white" onClick={() => handleDeleteRecord()}>Delete</Button>
                         <Button
                           className="d-30 px-5 btn-icon hover-scale-sm text-white"
@@ -143,7 +125,6 @@ const TableContent = ({
                         variant="contained"
                       >
                         <Button className="d-30 px-5 btn-icon hover-scale-sm text-white" onClick={() => handleEditClick(row.id)}>Edit</Button>
-                        {/* <Button className="d-30 px-5 btn-icon hover-scale-sm text-white" onClick={() => handleDeleteClick(row.id)}>Delete</Button> */}
                         <Button className="d-30 px-5 btn-icon hover-scale-sm text-white" onClick={() => handleDeleteRecord()}>Delete</Button>
                         <Button
                           className="d-30 px-5 btn-icon hover-scale-sm text-white"

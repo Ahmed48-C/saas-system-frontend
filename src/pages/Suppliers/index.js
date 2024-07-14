@@ -1,6 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FilterBar, MainTable } from '../../pages-components'
-import axios from 'axios';
 import NoRecords from '../../pages-components/NoRecords';
 import TableContent from './TableContent';
 import { useHistory } from 'react-router-dom';
@@ -25,7 +24,7 @@ const Supplier = () => {
   const [orderBy, setOrderBy] = useState('id');
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const pageSize = 5;
+  const pageSize = 50;
 
   const [filters, setFilters] = useState([]);
   const [anchorEl4, setAnchorEl4] = useState(null);
@@ -140,8 +139,8 @@ const Supplier = () => {
         }
         Heading='Suppliers'
         handleClick={handleNavigation}
-        handlePageChange={handlePageChange} // Pass page change handler
-        pageCount={totalPages} // Pass total pages
+        handlePageChange={handlePageChange}
+        pageCount={totalPages}
         page={page}
       />
     </>
