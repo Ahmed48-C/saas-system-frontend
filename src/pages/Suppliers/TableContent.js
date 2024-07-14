@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import axios from "axios";
 import { Button, ButtonGroup, Fade, Popper } from '@material-ui/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Loader } from '../../pages-components';
@@ -12,22 +11,6 @@ const TableContent = ({
     loading,
     suppliers
 }) => {
-
-    // const handleDeleteClick = (id) => {
-    //   let url = API_ENDPOINTS.DELETE_SUPPLIER(id);
-
-    //   axios.delete(url)
-    //     .then(response => {
-    //       console.log('Delete request successful:', response.data);
-    //       fetchSuppliers();
-    //       // setTimeout(() =>
-
-    //       // 1500);
-    //     })
-    //     .catch(error => {
-    //       console.error('Error deleting supplier:', error);
-    //     });
-    // };
 
     return loading ? (
       <Loader />
@@ -90,7 +73,6 @@ const TableContent = ({
                         variant="contained"
                       >
                         <Button className="d-30 px-5 btn-icon hover-scale-sm text-white" onClick={() => handleEditClick(row.id)}>Edit</Button>
-                        {/* <Button className="d-30 px-5 btn-icon hover-scale-sm text-white" onClick={() => handleDeleteRecord(row.id)}>Delete</Button> */}
                         <Button className="d-30 px-5 btn-icon hover-scale-sm text-white" onClick={() => handleDeleteRecord()}>Delete</Button>
                       </ButtonGroup>
                   </div>

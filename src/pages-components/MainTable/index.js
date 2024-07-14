@@ -1,24 +1,19 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   Table,
-  InputAdornment,
   Card,
   Button,
   Tooltip,
-  TextField,
 } from '@material-ui/core';
 
 import Pagination from '@material-ui/lab/Pagination';
 
-import SearchTwoToneIcon from '@material-ui/icons/SearchTwoTone';
-
 import { motion } from 'framer-motion';
-import FilterBar from '../FilterBar';
 
 const MainTable = ({ tableContent, tableButtons, Heading, handleClick, tableHeading, handlePageChange, pageCount, filterBar, page }) => {
-  
+
     const [entries, setEntries] = useState('1');
     const [pointerEvents, setPointerEvents] = useState('auto');
 
@@ -34,6 +29,30 @@ const MainTable = ({ tableContent, tableButtons, Heading, handleClick, tableHead
       setPointerEvents('auto');
     };
 
+    const [divHeight, setDivHeight] = useState('auto');
+
+    useEffect(() => {
+      const adjustHeight = () => {
+        const mediaHeight = window.innerHeight;
+        let maxHeight = 157.8;
+        if (mediaHeight <= 555) {
+          if (divHeight > maxHeight) {
+            setDivHeight(maxHeight);
+          }
+        } else {
+          maxHeight = 157.8 + (Math.floor((mediaHeight - 555) / 55) * 55);
+          setDivHeight(maxHeight);
+        }
+      };
+
+      window.addEventListener('resize', adjustHeight);
+      adjustHeight();
+
+      return () => {
+        window.removeEventListener('resize', adjustHeight);
+      };
+    }, [divHeight]);
+
     return (
       <>
         <motion.div
@@ -46,7 +65,8 @@ const MainTable = ({ tableContent, tableButtons, Heading, handleClick, tableHead
           onAnimationComplete={handleAnimationComplete}
           style={{ pointerEvents }}
         >
-          <Card className="card-box mb-spacing-6-x2">
+          {/* <Card className="card-box mb-spacing-6-x2"> */}
+          <Card className="card-box">
             <div className="card-header py-3">
               <div className="card-header--title font-size-xl">{Heading}</div>
               <div className="card-header--actions">
@@ -64,21 +84,21 @@ const MainTable = ({ tableContent, tableButtons, Heading, handleClick, tableHead
               </div>
             </div>
             {tableButtons}
-            {/* <div className="d-flex align-right px-4 py-3"> */}
-            {/* <div className="d-flex align-right"> */}
             <div>
               <div className="search-wrapper">
                 {filterBar}
               </div>
             </div>
             <div className="divider" />
-            {/* <div className="table-responsive-lg"> */}
             <div
+              id="table-container"
               style={{
                 display: 'block',
                 width: '100%',
                 overflowX: 'auto',
+                overflowY: 'auto', // Add vertical scroll bar
                 WebkitOverflowScrolling: 'touch',
+                maxHeight: divHeight
               }}
             >
               <Table className="table table-hover text-nowrap mb-0">

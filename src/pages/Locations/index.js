@@ -1,9 +1,8 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FilterBar, MainTable } from '../../pages-components'
-import axios from 'axios';
 import NoRecords from '../../pages-components/NoRecords';
 import TableContent from './TableContent';
-import { useHistory } from 'react-router-dom'; // Import useHistory
+import { useHistory } from 'react-router-dom';
 import API_ENDPOINTS from '../../config/apis';
 import FilterContent from './FilterContent';
 import TableHeading from '../../functions/pages/tableHeading';
@@ -22,9 +21,9 @@ const Locations = () => {
 
   const [order, setOrder] = useState('desc');
   const [orderBy, setOrderBy] = useState('id');
-  const [page, setPage] = useState(1); // Current page state
-  const [totalPages, setTotalPages] = useState(1); // Total pages state
-  const pageSize = 5;
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const pageSize = 50;
 
   const [filters, setFilters] = useState([]);
   const [anchorEl4, setAnchorEl4] = useState(null);
@@ -32,10 +31,10 @@ const Locations = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
 
-  const history = useHistory(); // Use the useHistory hook
+  const history = useHistory();
 
   const handleNavigation = () => {
-    history.push('/location/create'); // Navigate to the desired path
+    history.push('/location/create');
   };
 
   const fetchLocations = () => {
@@ -68,24 +67,6 @@ const Locations = () => {
       setPage(1);
     }
   }, [filters]);
-
-  // const fetchLocations = () => {
-  //   fetchAll(API_ENDPOINTS.GET_LOCATIONS, page, pageSize, order, orderBy, filters, setLocations, setLoading);
-  // };
-
-  // useEffect(() => {
-  //   fetchLocations(); // Fetch locations when component mounts or dependencies change
-  // }, [order, orderBy, page, filters]);
-
-  // useEffect(() => {
-  //   if (locations.actual_total_count) {
-  //     setTotalPages(Math.ceil(locations.actual_total_count / pageSize));
-  //   }
-  // }, [locations]);
-
-  // useEffect(() => {
-  //   setPage(1); // Reset to the first page when filters change
-  // }, [filters]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -157,8 +138,8 @@ const Locations = () => {
         }
         Heading='Locations'
         handleClick={handleNavigation}
-        handlePageChange={handlePageChange} // Pass page change handler
-        pageCount={totalPages} // Pass total pages
+        handlePageChange={handlePageChange}
+        pageCount={totalPages}
         page={page}
       />
     </>

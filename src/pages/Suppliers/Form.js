@@ -1,40 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { Box, Button, Divider, FormControl, Grid, Tooltip } from '@material-ui/core'
-import { InputSelect, Loader, Textarea } from '../../pages-components'
+import { Loader, Textarea } from '../../pages-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useCountries } from 'use-react-countries'
 import isEmpty from '../../functions/pages/isEmpty'
 import { useParams } from 'react-router-dom';
-import axios from 'axios'
 import API_ENDPOINTS from '../../config/apis'
 import { handleFetchRecord } from '../../functions/pages/handleFetchRecord'
 
 const Form = ({ handleClick, icon, title }) => {
-    const { id } = useParams(); // Get the ID from the URL
+    const { id } = useParams();
 
     const [suppliersData, setSuppliersData] = useState({});
-    const [editLoading, setEditLoading] = useState(false); // Add loading state
-
-    // useEffect(() => {
-    //     if (id) {
-    //         fetchSupplier();
-    //     }
-    // }, [id]);
-
-    // const fetchSupplier = () => {
-    //     setEditLoading(true); // Set loading to true before fetching data
-    //     const url = API_ENDPOINTS.GET_SUPPLIER(id);
-
-    //     axios.get(url)
-    //     .then(response => {
-    //         setSuppliersData(response.data);
-    //         setEditLoading(false); // Set loading to false after data is fetched
-    //     })
-    //     .catch(error => {
-    //         console.error('Error fetching data:', error);
-    //         setEditLoading(false); // Set loading to false in case of error
-    //     });
-    // };
+    const [editLoading, setEditLoading] = useState(false);
 
     useEffect(() => {
         if (id) {
@@ -47,9 +24,9 @@ const Form = ({ handleClick, icon, title }) => {
     };
 
     const isFormValid = () => {
-        return suppliersData.name &&
-               suppliersData.phone &&
-               suppliersData.email;
+        return  suppliersData.name &&
+                suppliersData.phone &&
+                suppliersData.email;
     };
 
     const handleInputChange = (field) => (e) => {
@@ -59,7 +36,7 @@ const Form = ({ handleClick, icon, title }) => {
     return (
         <>
             {editLoading ? (
-                <Loader /> // Render the Loader component while loading
+                <Loader />
             ) : (
             <FormControl fullWidth>
                 <Grid container spacing={3} className="my-4">
