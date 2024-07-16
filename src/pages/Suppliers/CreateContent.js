@@ -12,18 +12,21 @@ const CreateContent = () => {
         name: suppliersData.name,
         phone: suppliersData.phone,
         email: suppliersData.email,
+        contact_name: suppliersData.contact_name,
+        contact_phone: suppliersData.contact_phone,
+        location_id: suppliersData.location_id,
       };
-  
+
       const successCallback = (data) => {
         setTimeout(() => {
           history.push('/suppliers');
         }, 1000);
       };
-  
+
       const errorCallback = (error) => {
         console.error('Error making post request:', error);
       };
-  
+
       handleSubmitRecord(postData, API_ENDPOINTS.POST_SUPPLIER, successCallback, errorCallback);
     };
 

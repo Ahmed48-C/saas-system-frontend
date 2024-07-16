@@ -14,6 +14,9 @@ const EditContent = ({ editLoading }) => {
         name: suppliersData.name,
         phone: suppliersData.phone,
         email: suppliersData.email,
+        contact_name: suppliersData.contact_name,
+        contact_phone: suppliersData.contact_phone,
+        location_id: suppliersData.location_id,
       };
 
       const successCallback = (data) => {

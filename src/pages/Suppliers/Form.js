@@ -1,36 +1,63 @@
 import React, { useEffect, useState } from 'react'
 import { Box, Button, Divider, FormControl, Grid, Tooltip } from '@material-ui/core'
-import { Loader, Textarea } from '../../pages-components'
+import { InputSelect, Loader, Textarea } from '../../pages-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import isEmpty from '../../functions/pages/isEmpty'
 import { useParams } from 'react-router-dom';
 import API_ENDPOINTS from '../../config/apis'
 import { handleFetchRecord } from '../../functions/pages/handleFetchRecord'
+import axios from "axios";
 
 const Form = ({ handleClick, icon, title }) => {
     const { id } = useParams();
 
     const [suppliersData, setSuppliersData] = useState({});
     const [editLoading, setEditLoading] = useState(false);
+    const [locations, setLocations] = useState([]);
 
     useEffect(() => {
         if (id) {
             fetchData();
         }
+
+        fetchLocations();
     }, [id]);
+
+    useEffect(() => {
+        console.log(locations); // Log locations whenever it changes
+    }, [locations]);
 
     const fetchData = () => {
         handleFetchRecord(id, API_ENDPOINTS.GET_SUPPLIER, setSuppliersData, setEditLoading);
     };
 
+    const fetchLocations = () => {
+        axios.get(`http://127.0.0.1:8000/api/get/locations/`)
+        .then(response => {
+            if (Array.isArray(response.data.data)) {
+                setLocations(response.data.data);
+            } else {
+                console.error('Invalid data format:', response.data);
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+        });
+    }
+
     const isFormValid = () => {
         return  suppliersData.name &&
                 suppliersData.phone &&
-                suppliersData.email;
+                suppliersData.email &&
+                suppliersData.location_id;
     };
 
     const handleInputChange = (field) => (e) => {
-    setSuppliersData({ ...suppliersData, [field]: e.target.value });
+        setSuppliersData({ ...suppliersData, [field]: e.target.value });
+    };
+
+    const formatLocationName = (name) => {
+        return name.length > 20 ? `${name.slice(0, 20)}...` : name;
     };
 
     return (
@@ -111,19 +138,55 @@ const Form = ({ handleClick, icon, title }) => {
                         // error={isEmpty(suppliersData.operator_id)}
                         />
                     </Grid>
+                    */}
                     <Grid item xs={6}>
-                        <Textarea
-                        rows={1}
-                        rowsMax={2}
-                        label='Location ID'
+                        <InputSelect
+                        selectItems={locations.map(location => ({
+                            value: location.id,
+                            name: formatLocationName(location.name)
+                        }))}
+                        label='Location'
                         name='location_id'
                         id='location_id'
                         onChange={handleInputChange('location_id')}
                         value={suppliersData.location_id ?? ""}
-                        key='location_id'
-                        // error={isEmpty(suppliersData.location_id)}
+                        error={isEmpty(suppliersData.location_id)}
                         />
-                    </Grid> */}
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Divider className="my-4" />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <div className="font-size-lg font-weight-bold">Contact Person</div>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Textarea
+                        rows={1}
+                        rowsMax={2}
+                        label='Contact Name'
+                        name='contact_name'
+                        id='contact_name'
+                        onChange={handleInputChange('contact_name')}
+                        value={suppliersData.contact_name ?? ""}
+                        key='contact_name'
+                        // error={isEmpty(suppliersData.contact_name)}
+                        maxLength={80}
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Textarea
+                        rows={1}
+                        rowsMax={2}
+                        label='Contact Phone'
+                        name='contact_phone'
+                        id='contact_phone'
+                        onChange={handleInputChange('contact_phone')}
+                        value={suppliersData.contact_phone ?? ""}
+                        key='contact_phone'
+                        // error={isEmpty(suppliersData.contact_phone)}
+                        maxLength={80}
+                        />
+                    </Grid>
                     <Grid item xs={12}>
                         <Divider className="my-4" />
                     </Grid>
