@@ -7,25 +7,31 @@ import { handleSubmitRecord } from '../../functions/pages/handleSubmitRecord';
 const CreateContent = () => {
   const history = useHistory();
 
-    const handleSubmitClick = (suppliersData) => {
+    const handleSubmitClick = (data) => {
       const postData = {
-        name: suppliersData.name,
-        phone: suppliersData.phone,
-        email: suppliersData.email,
-        contact_name: suppliersData.contact_name,
-        contact_phone: suppliersData.contact_phone,
-        location_id: suppliersData.location_id,
+        code: data.code,
+        name: data.name,
+        description: data.description,
+        supplier_id: data.supplier_id,
+        brand: data.brand,
+        measure_unit: data.measure_unit,
+        weight: data.weight,
+        length: data.length,
+        width: data.width,
+        height: data.height,
+        color: data.color,
+        size: data.size,
       };
 
       const successCallback = (data) => {
-        history.push('/suppliers');
+        history.push('/products');
       };
 
       const errorCallback = (error) => {
         console.error('Error making post request:', error);
       };
 
-      handleSubmitRecord(postData, API_ENDPOINTS.POST_SUPPLIER, successCallback, errorCallback);
+      handleSubmitRecord(postData, API_ENDPOINTS.POST_PRODUCT, successCallback, errorCallback);
     };
 
     return (
@@ -33,7 +39,7 @@ const CreateContent = () => {
         <Form
           handleClick={handleSubmitClick}
           icon='plus'
-          title='Add Supplier'
+          title='Add Product'
         />
       </>
     )

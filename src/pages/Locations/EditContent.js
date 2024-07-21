@@ -20,20 +20,18 @@ const EditContent = ({ editLoading }) => {
         postcode: locationsData.postcode,
         country: locationsData.country,
       };
-  
+
       const successCallback = (data) => {
-        setTimeout(() => {
-          history.push('/locations');
-        }, 1000);
+        history.push('/locations');
       };
-  
+
       const errorCallback = (error) => {
         console.error('Error making update request:', error);
       };
-  
+
       handleUpdateRecord(id, updateData, API_ENDPOINTS.PUT_LOCATION, successCallback, errorCallback);
     };
-  
+
     return (
       <>
         {editLoading ? (

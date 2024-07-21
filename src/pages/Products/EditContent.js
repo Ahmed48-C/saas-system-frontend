@@ -1,33 +1,39 @@
 import React from 'react'
-import Form from './Form';
 import { Loader } from '../../pages-components';
 import { useParams, useHistory } from 'react-router-dom';
 import API_ENDPOINTS from '../../config/apis';
 import { handleUpdateRecord } from '../../functions/pages/handleUpdateRecord';
+import Form from './Form';
 
 const EditContent = ({ editLoading }) => {
     const { id } = useParams();
     const history = useHistory();
 
-    const handleUpdateClick = (suppliersData) => {
+    const handleUpdateClick = (data) => {
       const updateData = {
-        name: suppliersData.name,
-        phone: suppliersData.phone,
-        email: suppliersData.email,
-        contact_name: suppliersData.contact_name,
-        contact_phone: suppliersData.contact_phone,
-        location_id: suppliersData.location_id,
+        code: data.code,
+        name: data.name,
+        description: data.description,
+        supplier_id: data.supplier_id,
+        brand: data.brand,
+        measure_unit: data.measure_unit,
+        weight: data.weight,
+        length: data.length,
+        width: data.width,
+        height: data.height,
+        color: data.color,
+        size: data.size,
       };
 
       const successCallback = (data) => {
-        history.push('/suppliers');
+        history.push('/products');
       };
 
       const errorCallback = (error) => {
         console.error('Error making update request:', error);
       };
 
-      handleUpdateRecord(id, updateData, API_ENDPOINTS.PUT_SUPPLIER, successCallback, errorCallback);
+      handleUpdateRecord(id, updateData, API_ENDPOINTS.PUT_PRODUCT, successCallback, errorCallback);
     };
 
     return (
@@ -38,7 +44,7 @@ const EditContent = ({ editLoading }) => {
         <Form
           handleClick={handleUpdateClick}
           icon='save'
-          title='Edit Supplier'
+          title='Edit Product'
         />
         )}
       </>

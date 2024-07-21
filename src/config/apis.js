@@ -15,6 +15,12 @@ const API_ENDPOINTS = {
   GET_SUPPLIERS: (from, to) => `${BASE_URL}/api/get/suppliers/?from=${from}&to=${to}`,
   GET_SUPPLIER: (id) => `${BASE_URL}/api/get/supplier/${id}/`,
 
+  DELETE_PRODUCT: (id) => `${BASE_URL}/api/delete/product/${id}/`,
+  POST_PRODUCT: () => `${BASE_URL}/api/post/product/`,
+  PUT_PRODUCT: (id) => `${BASE_URL}/api/put/product/${id}/`,
+  GET_PRODUCTS: (from, to) => `${BASE_URL}/api/get/products/?from=${from}&to=${to}`,
+  GET_PRODUCT: (id) => `${BASE_URL}/api/get/product/${id}/`,
+
 };
 
 export default API_ENDPOINTS;

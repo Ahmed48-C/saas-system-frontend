@@ -18,6 +18,7 @@ const Textarea = ({ rows, rowsMax, label, value, onChange, key, error, id, maxLe
         rowsMax={rowsMax}
         error={error}
         inputProps={maxLength ? { maxLength: maxLength } : {}} // Conditionally add maxLength
+        variant="outlined"
       />
     </>
   );

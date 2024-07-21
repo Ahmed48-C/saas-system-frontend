@@ -286,6 +286,18 @@ const EditSuppliers = lazy(() =>
   import('./pages/Suppliers/EditContent')
 );
 
+const Products = lazy(() =>
+  import('./pages/Products/index')
+);
+
+const CreateProducts = lazy(() =>
+  import('./pages/Products/CreateContent')
+);
+
+const EditProducts = lazy(() =>
+  import('./pages/Products/EditContent')
+);
+
 const Routes = () => {
   const SuspenseLoading = () => {
       const [show, setShow] = useState(false);
@@ -370,6 +382,22 @@ const Routes = () => {
                                 exact
                                 path="/supplier/edit/:id"
                                 component={EditSuppliers}
+                            />
+
+                            <Route
+                                exact
+                                path="/products"
+                                component={Products}
+                            />
+                            <Route
+                                exact
+                                path="/product/create"
+                                component={CreateProducts}
+                            />
+                            <Route
+                                exact
+                                path="/product/edit/:id"
+                                component={EditProducts}
                             />
 
                           </Route>
