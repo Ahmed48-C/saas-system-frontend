@@ -18,7 +18,13 @@ const InputSelect = ({ selectItems, label, value, onChange, error }) => {
   };
 
   return (
-    <FormControl fullWidth variant="standard" className="m-3" error={error}>
+    <FormControl
+    fullWidth
+    // variant="standard"
+    variant="outlined"
+    className="m-3"
+    error={error}
+    >
       <InputLabel id="country-select-label">{label}</InputLabel>
       <Select
         labelId="country-select-label"

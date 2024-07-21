@@ -13,6 +13,18 @@ const TableContent = ({
 }) => {
     const [active, setActive] = useState(true);
     const [isDefault, setIsDefault] = useState(false);
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [currentRowId, setCurrentRowId] = useState(null);
+
+    const handlePopperClick = (event, rowId) => {
+      if (currentRowId === rowId) {
+        setAnchorEl(null);
+        setCurrentRowId(null);
+      } else {
+        setAnchorEl(event.currentTarget);
+        setCurrentRowId(rowId);
+      }
+    };
 
     return loading ? (
       <Loader />
@@ -23,25 +35,36 @@ const TableContent = ({
           row={row}
           active={active}
           setActive={setActive}
-          handleDeleteRecord={() => handleDeleteRecord(row.id, API_ENDPOINTS.DELETE_LOCATION, fetchLocations)}
+          anchorEl={anchorEl}
+          setAnchorEl={setAnchorEl}
+          currentRowId={currentRowId}
+          handlePopperClick={handlePopperClick}
+          fetchLocations={fetchLocations}
+          setCurrentRowId={setCurrentRowId}
         />
       ))
     );
   };
 
-  const LocationRow = ({ row, active, isDefault, setActive, handleDeleteRecord }) => {
-    const [anchorEl, setAnchorEl] = useState(null);
+  const LocationRow = ({
+    row,
+    active,
+    isDefault,
+    setActive,
+    anchorEl,
+    setAnchorEl,
+    currentRowId,
+    handlePopperClick,
+    setCurrentRowId,
+    fetchLocations,
+  }) => {
     const history = useHistory();
-
-    const handlePopperClick = (event) => {
-      setAnchorEl(anchorEl ? null : event.currentTarget);
-    };
-
-    const open = Boolean(anchorEl);
+    const open = Boolean(anchorEl) && currentRowId === row.id;
     const id = open ? 'transitions-popper' : undefined;
 
     const handleButtonClick = () => {
       setAnchorEl(null);
+      setCurrentRowId(null);
     };
 
     const handleEditClick = (id) => {
@@ -76,7 +99,7 @@ const TableContent = ({
             <Button
               size="small"
               className="btn-link d-30 p-0 btn-icon hover-scale-sm"
-              onClick={handlePopperClick}
+              onClick={(event) => handlePopperClick(event, row.id)}
             >
               <FontAwesomeIcon
                 icon={['fas', 'ellipsis-h']}
@@ -107,7 +130,7 @@ const TableContent = ({
                       >
                         <Button className="d-30 px-5 btn-icon hover-scale-sm text-white" onClick={() => handleEditClick(row.id)}>Edit</Button>
                         <Button className="d-30 px-5 btn-icon hover-scale-sm text-white" onClick={handleDefaultClick}>Default</Button>
-                        <Button className="d-30 px-5 btn-icon hover-scale-sm text-white" onClick={() => handleDeleteRecord()}>Delete</Button>
+                        <Button className="d-30 px-5 btn-icon hover-scale-sm text-white" onClick={() => handleDeleteRecord(row.id, API_ENDPOINTS.DELETE_LOCATION, fetchLocations)}>Delete</Button>
                         <Button
                           className="d-30 px-5 btn-icon hover-scale-sm text-white"
                           onClick={handleDeactivateClick}
@@ -125,7 +148,7 @@ const TableContent = ({
                         variant="contained"
                       >
                         <Button className="d-30 px-5 btn-icon hover-scale-sm text-white" onClick={() => handleEditClick(row.id)}>Edit</Button>
-                        <Button className="d-30 px-5 btn-icon hover-scale-sm text-white" onClick={() => handleDeleteRecord()}>Delete</Button>
+                        <Button className="d-30 px-5 btn-icon hover-scale-sm text-white" onClick={() => handleDeleteRecord(row.id, API_ENDPOINTS.DELETE_LOCATION, fetchLocations)}>Delete</Button>
                         <Button
                           className="d-30 px-5 btn-icon hover-scale-sm text-white"
                           onClick={handleActivateClick}

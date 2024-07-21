@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import { Button, ButtonGroup, Fade, Popper } from '@material-ui/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Loader } from '../../pages-components';
@@ -7,9 +7,9 @@ import API_ENDPOINTS from '../../config/apis';
 import handleDeleteRecord from '../../functions/pages/handleDeleteRecord';
 
 const TableContent = ({
-    fetchSuppliers,
-    loading,
-    suppliers
+  fetchRecords,
+  loading,
+  records
 }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [currentRowId, setCurrentRowId] = useState(null);
@@ -27,30 +27,30 @@ const TableContent = ({
   return loading ? (
     <Loader />
   ) : (
-    suppliers.data.map((row, index) => (
-      <SupplierRow
+    records.data.map((row, index) => (
+      <Row
         key={index}
         row={row}
         anchorEl={anchorEl}
         setAnchorEl={setAnchorEl}
         currentRowId={currentRowId}
         handlePopperClick={handlePopperClick}
-        fetchSuppliers={fetchSuppliers}
+        fetchRecords={fetchRecords}
         setCurrentRowId={setCurrentRowId}
       />
     ))
   );
 };
 
-const SupplierRow = ({
+const Row = ({
   row,
   anchorEl,
   setAnchorEl,
   currentRowId,
   handlePopperClick,
-  fetchSuppliers,
-  setCurrentRowId
-  }) => {
+  fetchRecords,
+  setCurrentRowId,
+}) => {
   const history = useHistory();
   const open = Boolean(anchorEl) && currentRowId === row.id;
   const id = open ? 'transitions-popper' : undefined;
@@ -61,16 +61,16 @@ const SupplierRow = ({
   };
 
   const handleEditClick = (id) => {
-    history.push(`/supplier/edit/${id}`);
+    history.push(`/product/edit/${id}`);
     handleButtonClick();
   };
 
   return (
     <>
       <tr>
+        <td>{row.code}</td>
         <td>{row.name}</td>
-        <td>{row.phone}</td>
-        <td>{row.email}</td>
+        <td>{row.supplier}</td>
         <td className="text-center">
           <Button
             size="small"
@@ -86,15 +86,15 @@ const SupplierRow = ({
             {({ TransitionProps }) => (
               <Fade {...TransitionProps} timeout={350}>
                 <div>
-                    <ButtonGroup
-                      orientation="vertical"
-                      color="primary"
-                      aria-label="vertical outlined primary button group"
-                      variant="contained"
-                    >
-                      <Button className="d-30 px-5 btn-icon hover-scale-sm text-white" onClick={() => handleEditClick(row.id)}>Edit</Button>
-                      <Button className="d-30 px-5 btn-icon hover-scale-sm text-white" onClick={() => handleDeleteRecord(row.id, API_ENDPOINTS.DELETE_PRODUCT, fetchSuppliers)}>Delete</Button>
-                      </ButtonGroup>
+                  <ButtonGroup
+                    orientation="vertical"
+                    color="primary"
+                    aria-label="vertical outlined primary button group"
+                    variant="contained"
+                  >
+                    <Button className="d-30 px-5 btn-icon hover-scale-sm text-white" onClick={() => handleEditClick(row.id)}>Edit</Button>
+                    <Button className="d-30 px-5 btn-icon hover-scale-sm text-white" onClick={() => handleDeleteRecord(row.id, API_ENDPOINTS.DELETE_PRODUCT, fetchRecords)}>Delete</Button>
+                  </ButtonGroup>
                 </div>
               </Fade>
             )}
@@ -105,4 +105,4 @@ const SupplierRow = ({
   );
 };
 
-export default TableContent
+export default TableContent;

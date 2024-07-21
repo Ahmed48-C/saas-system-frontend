@@ -20,9 +20,7 @@ const CreateContent = () => {
     };
 
     const successCallback = (data) => {
-      setTimeout(() => {
-        history.push('/locations');
-      }, 1000);
+      history.push('/locations');
     };
 
     const errorCallback = (error) => {
