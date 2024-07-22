@@ -21,6 +21,8 @@ const CreateContent = () => {
         height: data.height,
         color: data.color,
         size: data.size,
+        dimension_unit: data.dimension_unit,
+        weight_unit: data.weight_unit,
       };
 
       const successCallback = (data) => {
