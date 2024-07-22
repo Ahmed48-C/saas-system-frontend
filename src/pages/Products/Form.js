@@ -8,6 +8,7 @@ import API_ENDPOINTS from '../../config/apis'
 import { handleFetchRecord } from '../../functions/pages/handleFetchRecord'
 import axios from "axios";
 import AdornmentTextarea from '../../pages-components/AdornmentTextArea'
+import getUnits from '../../config/getUnits'
 
 const Form = ({ handleClick, icon, title }) => {
     const { id } = useParams();
@@ -15,6 +16,13 @@ const Form = ({ handleClick, icon, title }) => {
     const [data, setData] = useState({});
     const [editLoading, setEditLoading] = useState(false);
     const [suppliers, setSuppliers] = useState([]);
+
+    const units = getUnits();
+
+    // const [dimensionUnit, setDimensionUnit] = useState('m');
+    const dimensionUnits = units.length || [];
+
+    const weightUnits = units.mass || [];
 
     useEffect(() => {
         if (id) {
@@ -59,17 +67,11 @@ const Form = ({ handleClick, icon, title }) => {
         return name.length > 20 ? `${name.slice(0, 20)}...` : name;
     };
 
-    const [value, setValue] = useState('');
-    const [unit, setUnit] = useState('cm');
-    const units = ['cm', 'inches', 'mm'];
-
-    const handleValueChange = (event) => {
+    const handleUnitChange = (setValue) => (event) => {
         setValue(event.target.value);
     };
 
-    const handleUnitChange = (event) => {
-        setUnit(event.target.value);
-    };
+    console.log(data.weight_unit)
 
     return (
         <>
@@ -181,20 +183,23 @@ const Form = ({ handleClick, icon, title }) => {
                         <div className="font-size-lg font-weight-bold">Additional Info</div>
                     </Grid>
                     <Grid item xs={4}>
-                        <Textarea
-                        rows={1}
-                        rowsMax={2}
-                        label='Weight'
-                        name='weight'
-                        id='weight'
-                        onChange={handleInputChange('weight')}
-                        value={data.weight ?? ""}
-                        key='weight'
-                        maxLength={80}
+                        <AdornmentTextarea
+                            rows={1}
+                            rowsMax={2}
+                            label='Weight'
+                            name='weight'
+                            id='weight'
+                            onChange={handleInputChange('weight')}
+                            value={data.weight ?? ""}
+                            key='weight'
+                            maxLength={80}
+                            unit={data.weight_unit ?? ""}
+                            onUnitChange={handleInputChange('weight_unit')}
+                            units={weightUnits}
                         />
                     </Grid>
                     <Grid item xs={4}>
-                        <Textarea
+                        <AdornmentTextarea
                             rows={1}
                             rowsMax={2}
                             label='Length'
@@ -204,24 +209,13 @@ const Form = ({ handleClick, icon, title }) => {
                             value={data.length ?? ""}
                             key='length'
                             maxLength={80}
+                            unit={data.dimension_unit ?? ""}
+                            onUnitChange={handleInputChange('dimension_unit')}
+                            units={dimensionUnits}
                         />
-                        {/* <AdornmentTextarea
-                            rows={1}
-                            rowsMax={2}
-                            label='Length'
-                            name='length'
-                            id='length'
-                            onChange={handleInputChange('length')}
-                            value={data.length ?? ""}
-                            key='length'
-                            maxLength={80}
-                            unit={unit}
-                            onUnitChange={handleUnitChange}
-                            units={units}
-                        /> */}
                     </Grid>
                     <Grid item xs={4}>
-                        <Textarea
+                        <AdornmentTextarea
                         rows={1}
                         rowsMax={2}
                         label='Width'
@@ -231,10 +225,13 @@ const Form = ({ handleClick, icon, title }) => {
                         value={data.width ?? ""}
                         key='width'
                         maxLength={80}
+                        unit={data.dimension_unit ?? ""}
+                        onUnitChange={handleInputChange('dimension_unit')}
+                        units={dimensionUnits}
                         />
                     </Grid>
                     <Grid item xs={4}>
-                        <Textarea
+                        <AdornmentTextarea
                         rows={1}
                         rowsMax={2}
                         label='Height'
@@ -244,6 +241,9 @@ const Form = ({ handleClick, icon, title }) => {
                         value={data.height ?? ""}
                         key='height'
                         maxLength={80}
+                        unit={data.dimension_unit ?? ""}
+                        onUnitChange={handleInputChange('dimension_unit')}
+                        units={dimensionUnits}
                         />
                     </Grid>
                     <Grid item xs={4}>
