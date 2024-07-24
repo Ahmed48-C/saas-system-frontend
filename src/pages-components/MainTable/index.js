@@ -12,6 +12,10 @@ import {
   makeStyles,
   lighten,
   ButtonGroup,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from '@material-ui/core';
 
 import Pagination from '@material-ui/lab/Pagination';
@@ -22,13 +26,13 @@ import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import IndeterminateCheckBoxIcon from '@material-ui/icons/IndeterminateCheckBox';
 import clsx from 'clsx';
 
-const MainTable = ({ tableContent, tableButtons, Heading, handleClick, tableHeading, handlePageChange, pageCount, filterBar, page, numSelected, handleBatchDelete, isSelectedAll, handleSelectAll, handleDeselectAll }) => {
+const MainTable = ({ tableContent, tableButtons, Heading, handleClick, tableHeading, handlePageChange, pageCount, filterBar, page, numSelected, handleBatchDelete, isSelectedAll, handleSelectAll, handleDeselectAll, rows, handleRows }) => {
 
-    const [entries, setEntries] = useState('1');
+    // const [rows, setRows] = useState('50');
     const [pointerEvents, setPointerEvents] = useState('auto');
 
     const handleChange = (event) => {
-      setEntries(event.target.value);
+      handleRows(event.target.value);
     };
 
     const handleAnimationStart = () => {
@@ -196,38 +200,38 @@ const MainTable = ({ tableContent, tableButtons, Heading, handleClick, tableHead
                 onChange={handlePageChange} // Handle page change event
                 page={page} // Current page
               />
-              {/* <div className="d-flex align-items-center">
+              <div className="d-flex align-items-center">
                 <span>Show</span>
                 <FormControl size="small" variant="outlined" className="mx-3">
-                  <InputLabel id="select-entries-label">Entries</InputLabel>
+                  <InputLabel id="select-rows-label">Rows</InputLabel>
                   <Select
-                    labelId="select-entries-label"
-                    id="select-entries"
-                    value={entries}
+                    labelId="select-rows-label"
+                    id="select-rows"
+                    value={rows}
                     onChange={handleChange}
-                    label="Entries">
-                    <MenuItem className="mx-2" value={1}>
-                      All entries
-                    </MenuItem>
-                    <MenuItem className="mx-2" value={10}>
-                      10
-                    </MenuItem>
-                    <MenuItem className="mx-2" value={15}>
-                      15
-                    </MenuItem>
-                    <MenuItem className="mx-2" value={20}>
-                      20
-                    </MenuItem>
+                    label="Rows">
                     <MenuItem className="mx-2" value={25}>
                       25
                     </MenuItem>
-                    <MenuItem className="mx-2" value={30}>
-                      30
+                    <MenuItem className="mx-2" value={50}>
+                      50
+                    </MenuItem>
+                    <MenuItem className="mx-2" value={75}>
+                      75
+                    </MenuItem>
+                    <MenuItem className="mx-2" value={100}>
+                      100
+                    </MenuItem>
+                    <MenuItem className="mx-2" value={150}>
+                      150
+                    </MenuItem>
+                    <MenuItem className="mx-2" value={300}>
+                      300
                     </MenuItem>
                   </Select>
                 </FormControl>
-                <span>entries</span>
-              </div> */}
+                <span>Rows</span>
+              </div>
             </div>
           </Card>
         </motion.div>

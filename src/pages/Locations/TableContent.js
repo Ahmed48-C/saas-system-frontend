@@ -106,6 +106,7 @@ const TableContent = ({
     const history = useHistory();
     const open = Boolean(anchorEl) && currentRowId === row.id;
     const id = open ? 'transitions-popper' : undefined;
+    const classes = useToolbarStyles();
 
     const handleButtonClick = () => {
       setAnchorEl(null);
@@ -130,8 +131,6 @@ const TableContent = ({
     const handleDefaultClick = () => {
       handleButtonClick();
     };
-
-    const classes = useToolbarStyles();
 
     return (
       <>

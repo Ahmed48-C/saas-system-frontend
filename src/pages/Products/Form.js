@@ -79,7 +79,7 @@ const Form = ({ handleClick, icon, title }) => {
                 <Loader />
             ) : (
             <FormControl fullWidth>
-                <Grid container spacing={3} className="my-4">
+                <Grid container spacing={3} className="my-4" style={{ width: '100%' }}>
                     <Grid item xs={12}>
                         <div>
                             <div className="app-page-title--first">

@@ -14,6 +14,8 @@ const TableContent = ({
     handleNumSelected,
     selected,
     handleSelected,
+    handleIsSelectedAll,
+    dense,
 }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [currentRowId, setCurrentRowId] = useState(null);
@@ -40,6 +42,12 @@ const TableContent = ({
 
     handleSelected(newSelected);
     handleNumSelected(newSelected.length);
+
+    if (newSelected.length === suppliers.data.length) {
+      handleIsSelectedAll(true);
+    } else {
+      handleIsSelectedAll(false);
+    }
   };
 
   return loading ? (
@@ -57,6 +65,7 @@ const TableContent = ({
         setCurrentRowId={setCurrentRowId}
         handleCheckboxChange={handleCheckboxChange}
         isSelected={selected.indexOf(row.id) !== -1}
+        dense={dense}
       />
     ))
   );
@@ -85,6 +94,7 @@ const SupplierRow = ({
   setCurrentRowId,
   handleCheckboxChange,
   isSelected,
+  dense,
   }) => {
   const history = useHistory();
   const open = Boolean(anchorEl) && currentRowId === row.id;
