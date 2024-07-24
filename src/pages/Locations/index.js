@@ -25,7 +25,7 @@ const Locations = () => {
   const [orderBy, setOrderBy] = useState('id');
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const pageSize = 50;
+  const [rows, setRows] = useState(50); // Initialize rows state
 
   const [filters, setFilters] = useState([]);
   const [anchorEl4, setAnchorEl4] = useState(null);
@@ -47,14 +47,14 @@ const Locations = () => {
     fetchAll(
       API_ENDPOINTS.GET_LOCATIONS,
       page,
-      pageSize,
+      rows,
       order,
       orderBy,
       filters,
       (data) => {
         setLocations(data);
         if (data.actual_total_count) {
-          setTotalPages(Math.ceil(data.actual_total_count / pageSize));
+          setTotalPages(Math.ceil(data.actual_total_count / rows));
         } else {
           setTotalPages(0);
         }
@@ -66,7 +66,7 @@ const Locations = () => {
 
   useEffect(() => {
     fetchLocations();
-  }, [order, orderBy, page, filters]);
+  }, [order, orderBy, page, filters, rows]);
 
   useEffect(() => {
     if (filters.length > 0) {
@@ -114,6 +114,10 @@ const Locations = () => {
 
   const handleIsSelectedAll = (value) => {
     setIsSelectedAll(value);
+  }
+
+  const handleRows = (value) => {
+    setRows(value);
   }
 
   const handleBatchDelete = () => {
@@ -189,6 +193,8 @@ const Locations = () => {
         handleSelectAll={handleSelectAll}
         handleDeselectAll={handleDeselectAll}
         isSelectedAll={isSelectedAll}
+        rows={rows} // Pass rows state
+        handleRows={handleRows} // Pass setRows function
       />
     </>
   )

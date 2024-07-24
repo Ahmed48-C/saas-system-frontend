@@ -26,7 +26,7 @@ const Product = () => {
   const [orderBy, setOrderBy] = useState('id');
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const pageSize = 50;
+  const [rows, setRows] = useState(50); // Initialize rows state
 
   const [filters, setFilters] = useState([]);
   const [anchorEl4, setAnchorEl4] = useState(null);
@@ -36,6 +36,7 @@ const Product = () => {
 
   const [numSelected, setNumSelected] = useState(0);
   const [selected, setSelected] = useState([]);
+  const [isSelectedAll, setIsSelectedAll] = useState(false);
 
   const history = useHistory();
 
@@ -47,14 +48,14 @@ const Product = () => {
     fetchAll(
       API_ENDPOINTS.GET_PRODUCTS,
       page,
-      pageSize,
+      rows,
       order,
       orderBy,
       filters,
       (data) => {
         setRecords(data);
         if (data.actual_total_count) {
-          setTotalPages(Math.ceil(data.actual_total_count / pageSize));
+          setTotalPages(Math.ceil(data.actual_total_count / rows));
         } else {
           setTotalPages(0);
         }
@@ -66,7 +67,7 @@ const Product = () => {
 
   useEffect(() => {
     fetchRecords();
-  }, [order, orderBy, page, filters]);
+  }, [order, orderBy, page, filters, rows]);
 
   useEffect(() => {
     if (filters.length > 0) {
@@ -112,10 +113,31 @@ const Product = () => {
     setSelected(value);
   }
 
+  const handleIsSelectedAll = (value) => {
+    setIsSelectedAll(value);
+  }
+
+  const handleRows = (value) => {
+    setRows(value);
+  }
+
   const handleBatchDelete = () => {
     handleBatchDeleteRecords(selected, API_ENDPOINTS.DELETE_PRODUCTS, fetchRecords)
     setNumSelected(0);
     setSelected([]);
+  }
+
+  const handleSelectAll = () => {
+    const allIds = records.data.map(location => location.id);
+    setSelected(allIds);
+    setNumSelected(allIds.length);
+    setIsSelectedAll(true);
+  }
+
+  const handleDeselectAll = () => {
+    setSelected([]);
+    setNumSelected(0);
+    setIsSelectedAll(false);
   }
 
   return (
@@ -157,6 +179,7 @@ const Product = () => {
               handleNumSelected={handleNumSelected}
               selected={selected}
               handleSelected={handleSelected}
+              handleIsSelectedAll={handleIsSelectedAll}
             />
           )
         }
@@ -167,6 +190,11 @@ const Product = () => {
         page={page}
         numSelected={numSelected}
         handleBatchDelete={handleBatchDelete}
+        handleSelectAll={handleSelectAll}
+        handleDeselectAll={handleDeselectAll}
+        isSelectedAll={isSelectedAll}
+        rows={rows} // Pass rows state
+        handleRows={handleRows} // Pass setRows function
       />
     </>
   )
