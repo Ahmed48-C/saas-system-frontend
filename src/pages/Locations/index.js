@@ -7,8 +7,10 @@ import API_ENDPOINTS from '../../config/apis';
 import FilterContent from './FilterContent';
 import TableHeading from '../../functions/pages/tableHeading';
 import { fetchAll } from '../../functions/pages/handleFetchAll';
+import handleBatchDeleteRecords from '../../functions/pages/handleBatchDeleteRecords';
 
 const headers = [
+  { key: '', label: '', className: 'bg-white text-center' },
   { key: 'code', label: 'Code', className: 'bg-white text-left' },
   { key: 'name', label: 'Name', className: 'bg-white text-left' },
   { key: 'actions', label: 'Actions', className: 'bg-white text-center', sortable: false }
@@ -30,6 +32,10 @@ const Locations = () => {
   const [currentFilter, setCurrentFilter] = useState({ code: '', name: '', note: '', street: '', city: '', state: '', postcode: '', country: '' });
   const [isEditing, setIsEditing] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
+
+  const [numSelected, setNumSelected] = useState(0);
+  const [selected, setSelected] = useState([]);
+  const [isSelectedAll, setIsSelectedAll] = useState(false);
 
   const history = useHistory();
 
@@ -98,6 +104,38 @@ const Locations = () => {
     setEditIndex(value);
   }
 
+  const handleNumSelected = (value) => {
+    setNumSelected(value);
+  }
+
+  const handleSelected = (value) => {
+    setSelected(value);
+  }
+
+  const handleIsSelectedAll = (value) => {
+    setIsSelectedAll(value);
+  }
+
+  const handleBatchDelete = () => {
+    handleBatchDeleteRecords(selected, API_ENDPOINTS.DELETE_LOCATIONS, fetchLocations);
+    setNumSelected(0);
+    setSelected([]);
+    setIsSelectedAll(false);
+  }
+
+  const handleSelectAll = () => {
+    const allIds = locations.data.map(location => location.id);
+    setSelected(allIds);
+    setNumSelected(allIds.length);
+    setIsSelectedAll(true);
+  }
+
+  const handleDeselectAll = () => {
+    setSelected([]);
+    setNumSelected(0);
+    setIsSelectedAll(false);
+  }
+
   return (
     <>
       <MainTable
@@ -133,6 +171,11 @@ const Locations = () => {
               fetchLocations={fetchLocations}
               loading={loading}
               locations={locations}
+              numSelected={numSelected}
+              handleNumSelected={handleNumSelected}
+              selected={selected}
+              handleSelected={handleSelected}
+              handleIsSelectedAll={handleIsSelectedAll}
             />
           )
         }
@@ -141,6 +184,11 @@ const Locations = () => {
         handlePageChange={handlePageChange}
         pageCount={totalPages}
         page={page}
+        numSelected={numSelected}
+        handleBatchDelete={handleBatchDelete}
+        handleSelectAll={handleSelectAll}
+        handleDeselectAll={handleDeselectAll}
+        isSelectedAll={isSelectedAll}
       />
     </>
   )

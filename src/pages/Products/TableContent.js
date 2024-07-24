@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
-import { Button, ButtonGroup, Fade, Popper } from '@material-ui/core';
+import { Button, ButtonGroup, Checkbox, Fade, lighten, makeStyles, Popper, TableRow } from '@material-ui/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Loader } from '../../pages-components';
 import { useHistory } from 'react-router-dom';
 import API_ENDPOINTS from '../../config/apis';
 import handleDeleteRecord from '../../functions/pages/handleDeleteRecord';
+import clsx from 'clsx';
 
 const TableContent = ({
   fetchRecords,
   loading,
-  records
+  records,
+  handleNumSelected,
+  selected,
+  handleSelected,
 }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [currentRowId, setCurrentRowId] = useState(null);
@@ -22,6 +26,20 @@ const TableContent = ({
       setAnchorEl(event.currentTarget);
       setCurrentRowId(rowId);
     }
+  };
+
+  const handleCheckboxChange = (id) => {
+    const currentIndex = selected.indexOf(id);
+    const newSelected = [...selected];
+
+    if (currentIndex === -1) {
+      newSelected.push(id);
+    } else {
+      newSelected.splice(currentIndex, 1);
+    }
+
+    handleSelected(newSelected);
+    handleNumSelected(newSelected.length);
   };
 
   return loading ? (
@@ -37,10 +55,25 @@ const TableContent = ({
         handlePopperClick={handlePopperClick}
         fetchRecords={fetchRecords}
         setCurrentRowId={setCurrentRowId}
+        handleCheckboxChange={handleCheckboxChange}
+        isSelected={selected.indexOf(row.id) !== -1}
       />
     ))
   );
 };
+
+const useToolbarStyles = makeStyles((theme) => ({
+  highlight:
+    theme.palette.type === 'light'
+      ? {
+          // color: theme.palette.secondary.main,
+          backgroundColor: lighten(theme.palette.secondary.light, 0.85),
+        }
+      : {
+          // color: theme.palette.text.primary,
+          backgroundColor: theme.palette.secondary.dark,
+        },
+}));
 
 const Row = ({
   row,
@@ -50,10 +83,13 @@ const Row = ({
   handlePopperClick,
   fetchRecords,
   setCurrentRowId,
+  handleCheckboxChange,
+  isSelected,
 }) => {
   const history = useHistory();
   const open = Boolean(anchorEl) && currentRowId === row.id;
   const id = open ? 'transitions-popper' : undefined;
+  const classes = useToolbarStyles();
 
   const handleButtonClick = () => {
     setAnchorEl(null);
@@ -67,7 +103,15 @@ const Row = ({
 
   return (
     <>
-      <tr>
+      <TableRow
+        className={clsx(isSelected && classes.highlight)}
+      >
+        <td style={{ width: '50px' }}>
+          <Checkbox
+            checked={isSelected}
+            onChange={() => handleCheckboxChange(row.id)}
+          />
+        </td>
         <td>{row.code}</td>
         <td>{row.name}</td>
         <td>{row.supplier}</td>
@@ -100,7 +144,7 @@ const Row = ({
             )}
           </Popper>
         </td>
-      </tr>
+      </TableRow>
     </>
   );
 };

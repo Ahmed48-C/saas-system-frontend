@@ -7,8 +7,10 @@ import API_ENDPOINTS from '../../config/apis';
 import FilterContent from './FilterContent';
 import TableHeading from '../../functions/pages/tableHeading';
 import { fetchAll } from '../../functions/pages/handleFetchAll';
+import handleBatchDeleteRecords from '../../functions/pages/handleBatchDeleteRecords';
 
 const headers = [
+  { key: '', label: '', className: 'bg-white text-center' },
   { key: 'code', label: 'Code', className: 'bg-white text-left' },
   { key: 'name', label: 'Name', className: 'bg-white text-left' },
   { key: 'supplier', label: 'Supplier', className: 'bg-white text-left' },
@@ -31,6 +33,9 @@ const Product = () => {
   const [currentFilter, setCurrentFilter] = useState({ code: '', name: '', supplier: '', });
   const [isEditing, setIsEditing] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
+
+  const [numSelected, setNumSelected] = useState(0);
+  const [selected, setSelected] = useState([]);
 
   const history = useHistory();
 
@@ -99,6 +104,20 @@ const Product = () => {
     setEditIndex(value);
   }
 
+  const handleNumSelected = (value) => {
+    setNumSelected(value);
+  }
+
+  const handleSelected = (value) => {
+    setSelected(value);
+  }
+
+  const handleBatchDelete = () => {
+    handleBatchDeleteRecords(selected, API_ENDPOINTS.DELETE_PRODUCTS, fetchRecords)
+    setNumSelected(0);
+    setSelected([]);
+  }
+
   return (
     <>
       <MainTable
@@ -134,6 +153,10 @@ const Product = () => {
               fetchRecords={fetchRecords}
               loading={loading}
               records={records}
+              numSelected={numSelected}
+              handleNumSelected={handleNumSelected}
+              selected={selected}
+              handleSelected={handleSelected}
             />
           )
         }
@@ -142,6 +165,8 @@ const Product = () => {
         handlePageChange={handlePageChange}
         pageCount={totalPages}
         page={page}
+        numSelected={numSelected}
+        handleBatchDelete={handleBatchDelete}
       />
     </>
   )
