@@ -7,8 +7,10 @@ import API_ENDPOINTS from '../../config/apis';
 import FilterContent from './FilterContent';
 import TableHeading from '../../functions/pages/tableHeading';
 import { fetchAll } from '../../functions/pages/handleFetchAll';
+import handleBatchDeleteRecords from '../../functions/pages/handleBatchDeleteRecords';
 
 const headers = [
+  { key: '', label: '', className: 'bg-white text-center' },
   { key: 'name', label: 'Name', className: 'bg-white text-left' },
   { key: 'phone', label: 'Phone', className: 'bg-white text-left' },
   { key: 'email', label: 'Email', className: 'bg-white text-left' },
@@ -31,6 +33,9 @@ const Supplier = () => {
   const [currentFilter, setCurrentFilter] = useState({ name: '', phone: '', email: '', });
   const [isEditing, setIsEditing] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
+
+  const [numSelected, setNumSelected] = useState(0);
+  const [selected, setSelected] = useState([]);
 
   const history = useHistory();
 
@@ -99,6 +104,20 @@ const Supplier = () => {
     setEditIndex(value);
   }
 
+  const handleNumSelected = (value) => {
+    setNumSelected(value);
+  }
+
+  const handleSelected = (value) => {
+    setSelected(value);
+  }
+
+  const handleBatchDelete = () => {
+    handleBatchDeleteRecords(selected, API_ENDPOINTS.DELETE_SUPPLIERS, fetchSuppliers)
+    setNumSelected(0);
+    setSelected([]);
+  }
+
   return (
     <>
       <MainTable
@@ -134,6 +153,10 @@ const Supplier = () => {
               fetchSuppliers={fetchSuppliers}
               loading={loading}
               suppliers={suppliers}
+              numSelected={numSelected}
+              handleNumSelected={handleNumSelected}
+              selected={selected}
+              handleSelected={handleSelected}
             />
           )
         }
@@ -142,6 +165,8 @@ const Supplier = () => {
         handlePageChange={handlePageChange}
         pageCount={totalPages}
         page={page}
+        numSelected={numSelected}
+        handleBatchDelete={handleBatchDelete}
       />
     </>
   )

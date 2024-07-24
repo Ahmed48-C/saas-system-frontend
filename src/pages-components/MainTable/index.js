@@ -6,13 +6,23 @@ import {
   Card,
   Button,
   Tooltip,
+  Typography,
+  IconButton,
+  Toolbar,
+  makeStyles,
+  lighten,
+  ButtonGroup,
 } from '@material-ui/core';
 
 import Pagination from '@material-ui/lab/Pagination';
 
 import { motion } from 'framer-motion';
+import DeleteIcon from '@material-ui/icons/Delete';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import IndeterminateCheckBoxIcon from '@material-ui/icons/IndeterminateCheckBox';
+import clsx from 'clsx';
 
-const MainTable = ({ tableContent, tableButtons, Heading, handleClick, tableHeading, handlePageChange, pageCount, filterBar, page }) => {
+const MainTable = ({ tableContent, tableButtons, Heading, handleClick, tableHeading, handlePageChange, pageCount, filterBar, page, numSelected, handleBatchDelete, isSelectedAll, handleSelectAll, handleDeselectAll }) => {
 
     const [entries, setEntries] = useState('1');
     const [pointerEvents, setPointerEvents] = useState('auto');
@@ -53,6 +63,21 @@ const MainTable = ({ tableContent, tableButtons, Heading, handleClick, tableHead
       };
     }, [divHeight]);
 
+    const useToolbarStyles = makeStyles((theme) => ({
+      highlight:
+        theme.palette.type === 'light'
+          ? {
+              color: theme.palette.secondary.main,
+              backgroundColor: lighten(theme.palette.secondary.light, 0.85)
+            }
+          : {
+              color: theme.palette.text.primary,
+              backgroundColor: theme.palette.secondary.dark
+            },
+    }));
+
+    const classes = useToolbarStyles();
+
     return (
       <>
         <motion.div
@@ -67,9 +92,61 @@ const MainTable = ({ tableContent, tableButtons, Heading, handleClick, tableHead
         >
           {/* <Card className="card-box mb-spacing-6-x2"> */}
           <Card className="card-box">
-            <div className="card-header py-3">
-              <div className="card-header--title font-size-xl">{Heading}</div>
-              <div className="card-header--actions">
+            {/* <div className="card-header py-3"> */}
+            {numSelected > 0 ? (
+              <Toolbar className={clsx(classes.highlight,'card-header py-3')}>
+              <Typography
+                className='card-header--title font-size-xl'
+                color="h6"
+                variant="tableTitle"
+                component="div">
+                {numSelected} selected
+              </Typography>
+              <ButtonGroup>
+                {isSelectedAll ? (
+                  <Tooltip title="Deselect All">
+                      <IconButton
+                          variant="outlined"
+                          size="small"
+                          className="d-40"
+                          onClick={handleDeselectAll}
+                          >
+                          <IndeterminateCheckBoxIcon/>
+                      </IconButton>
+                  </Tooltip>
+                ) : (
+                  <Tooltip title="Select All">
+                      <IconButton
+                          variant="outlined"
+                          size="small"
+                          className="d-40"
+                          onClick={handleSelectAll}
+                          >
+                          <CheckBoxIcon/>
+                      </IconButton>
+                  </Tooltip>
+                )}
+                <Tooltip title="Delete">
+                    <IconButton
+                        variant="outlined"
+                        size="small"
+                        className="d-40"
+                        onClick={handleBatchDelete}
+                        >
+                        <DeleteIcon/>
+                    </IconButton>
+                </Tooltip>
+              </ButtonGroup>
+            </Toolbar>
+            ) : (
+              <Toolbar className="card-header py-3">
+                <Typography
+                  className='card-header--title font-size-xl'
+                  variant="h6"
+                  id="tableTitle"
+                  component="div">
+                  {Heading}
+                </Typography>
                 <Tooltip title="New">
                   <Button
                     variant="contained"
@@ -81,8 +158,9 @@ const MainTable = ({ tableContent, tableButtons, Heading, handleClick, tableHead
                     </span>
                   </Button>
                 </Tooltip>
-              </div>
-            </div>
+              </Toolbar>
+            )}
+            {/* </div> */}
             {tableButtons}
             <div>
               <div className="search-wrapper">
@@ -101,7 +179,7 @@ const MainTable = ({ tableContent, tableButtons, Heading, handleClick, tableHead
                 maxHeight: divHeight
               }}
             >
-              <Table className="table table-hover text-nowrap mb-0">
+              <Table className="table text-nowrap mb-0">
                 <thead>
                   {tableHeading}
                 </thead>
