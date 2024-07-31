@@ -59,6 +59,7 @@
     "react-sparklines": "1.7.0",
     "react-spinners": "0.8.3",
     "react-text-mask": "5.4.3",
+    "react-toastify": "^9.0.3",
     "react-trend": "1.2.5",
     "redux": "4.0.5",
     "use-react-countries": "^2.0.1",
