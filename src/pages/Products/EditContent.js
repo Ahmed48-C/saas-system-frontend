@@ -4,6 +4,7 @@ import { useParams, useHistory } from 'react-router-dom';
 import API_ENDPOINTS from '../../config/apis';
 import { handleUpdateRecord } from '../../functions/pages/handleUpdateRecord';
 import Form from './Form';
+import { toast } from 'react-toastify';
 
 const EditContent = ({ editLoading }) => {
     const { id } = useParams();
@@ -29,6 +30,7 @@ const EditContent = ({ editLoading }) => {
 
       const successCallback = (data) => {
         history.push('/products');
+        toast.success('Edited Product Successfully');
       };
 
       const errorCallback = (error) => {

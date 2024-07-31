@@ -6,6 +6,7 @@ import { useHistory } from 'react-router-dom';
 import API_ENDPOINTS from '../../config/apis';
 import handleDeleteRecord from '../../functions/pages/handleDeleteRecord';
 import clsx from 'clsx';
+import { toast } from 'react-toastify';
 
 const TableContent = ({
     fetchLocations,
@@ -132,6 +133,11 @@ const TableContent = ({
       handleButtonClick();
     };
 
+    const handleDeleteClick = (id) => {
+      handleDeleteRecord(id, API_ENDPOINTS.DELETE_LOCATION, fetchLocations)
+      toast.success('Deleted Location Successfully');
+    };
+
     return (
       <>
         <TableRow
@@ -184,7 +190,7 @@ const TableContent = ({
                       >
                         <Button className="d-30 px-5 btn-icon hover-scale-sm text-white" onClick={() => handleEditClick(row.id)}>Edit</Button>
                         <Button className="d-30 px-5 btn-icon hover-scale-sm text-white" onClick={handleDefaultClick}>Default</Button>
-                        <Button className="d-30 px-5 btn-icon hover-scale-sm text-white" onClick={() => handleDeleteRecord(row.id, API_ENDPOINTS.DELETE_LOCATION, fetchLocations)}>Delete</Button>
+                        <Button className="d-30 px-5 btn-icon hover-scale-sm text-white" onClick={() => handleDeleteClick(row.id)}>Delete</Button>
                         <Button
                           className="d-30 px-5 btn-icon hover-scale-sm text-white"
                           onClick={handleDeactivateClick}
@@ -202,7 +208,7 @@ const TableContent = ({
                         variant="contained"
                       >
                         <Button className="d-30 px-5 btn-icon hover-scale-sm text-white" onClick={() => handleEditClick(row.id)}>Edit</Button>
-                        <Button className="d-30 px-5 btn-icon hover-scale-sm text-white" onClick={() => handleDeleteRecord(row.id, API_ENDPOINTS.DELETE_LOCATION, fetchLocations)}>Delete</Button>
+                        <Button className="d-30 px-5 btn-icon hover-scale-sm text-white" onClick={() => handleDeleteClick(row.id)}>Delete</Button>
                         <Button
                           className="d-30 px-5 btn-icon hover-scale-sm text-white"
                           onClick={handleActivateClick}

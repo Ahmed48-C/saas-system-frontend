@@ -3,6 +3,7 @@ import Form from './Form';
 import { useHistory } from 'react-router-dom';
 import API_ENDPOINTS from '../../config/apis';
 import { handleSubmitRecord } from '../../functions/pages/handleSubmitRecord';
+import { toast } from 'react-toastify';
 
 const CreateContent = () => {
   const history = useHistory();
@@ -27,6 +28,7 @@ const CreateContent = () => {
 
       const successCallback = (data) => {
         history.push('/products');
+        toast.success('Added Product Successfully');
       };
 
       const errorCallback = (error) => {

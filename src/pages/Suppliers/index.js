@@ -8,6 +8,7 @@ import FilterContent from './FilterContent';
 import TableHeading from '../../functions/pages/tableHeading';
 import { fetchAll } from '../../functions/pages/handleFetchAll';
 import handleBatchDeleteRecords from '../../functions/pages/handleBatchDeleteRecords';
+import { toast } from 'react-toastify';
 
 const headers = [
   { key: '', label: '', className: 'bg-white text-center' },
@@ -125,6 +126,8 @@ const Supplier = () => {
     handleBatchDeleteRecords(selected, API_ENDPOINTS.DELETE_SUPPLIERS, fetchSuppliers)
     setNumSelected(0);
     setSelected([]);
+    setIsSelectedAll(false);
+    toast.success('Deleted Suppliers Successfully');
   }
 
   const handleSelectAll = () => {
