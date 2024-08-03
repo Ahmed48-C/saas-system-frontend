@@ -19,7 +19,7 @@ const FilterBar = ({
     handleIsEditing,
     handleEditIndex,
     editIndex
-  }) => {
+}) => {
     const hasFilter = Array.isArray(filters) && filters.length > 0;
 
     const formatFilter = (filter) => {
@@ -39,6 +39,10 @@ const FilterBar = ({
 
     const removeAllFilters = () => {
         handleFilters([]);
+    };
+
+    const truncateLabel = (label, maxLength = 30) => {
+        return label.length > maxLength ? `${label.substring(0, maxLength)}...` : label;
     };
 
     const handleDelete = (index) => {
@@ -88,7 +92,8 @@ const FilterBar = ({
                     </IconButton>
                 </Tooltip>
                 {hasFilter ? (
-                    <Box display="flex" justifyContent="space-between" flex={1}>
+                    <>
+                    {/* <Box display="flex" justifyContent="space-between" flex={1}> */}
                         <Box
                             display="flex"
                             flexGrow={1}
@@ -99,7 +104,7 @@ const FilterBar = ({
                                 <Chip
                                     className="bg-primary text-white mr-1"
                                     key={index}
-                                    label={formatFilter(filter)}
+                                    label={truncateLabel(formatFilter(filter))}
                                     onClick={(event) => handleChipClick(event, index)}
                                     onDelete={() => handleDelete(index)}
                                     clickable
@@ -108,6 +113,7 @@ const FilterBar = ({
                                 />
                             ))}
                         </Box>
+                    {/* </Box> */}
                         <Box flexShrink={0}>
                             <Tooltip title="Clear">
                                 <IconButton
@@ -119,7 +125,7 @@ const FilterBar = ({
                                 </IconButton>
                             </Tooltip>
                         </Box>
-                    </Box>
+                    </>
                 ) : (
                     <Typography className="card-header--title font-size-xs m-2" style={{ cursor: "default" }}>
                         Filter...
