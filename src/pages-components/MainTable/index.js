@@ -48,13 +48,13 @@ const MainTable = ({ tableContent, tableButtons, Heading, handleClick, tableHead
     useEffect(() => {
       const adjustHeight = () => {
         const mediaHeight = window.innerHeight;
-        let maxHeight = 157.8;
+        let maxHeight = 183.8;
         if (mediaHeight <= 555) {
           if (divHeight > maxHeight) {
             setDivHeight(maxHeight);
           }
         } else {
-          maxHeight = 157.8 + (Math.floor((mediaHeight - 555) / 55) * 55);
+          maxHeight = 183.8 + (Math.floor((mediaHeight - 555) / 67.5) * 67.5);
           setDivHeight(maxHeight);
         }
       };
@@ -167,9 +167,9 @@ const MainTable = ({ tableContent, tableButtons, Heading, handleClick, tableHead
             {/* </div> */}
             {tableButtons}
             <div>
-              <div className="search-wrapper">
+              {/* <div className="search-wrapper"> */}
                 {filterBar}
-              </div>
+              {/* </div> */}
             </div>
             <div className="divider" />
             <div
