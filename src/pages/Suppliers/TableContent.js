@@ -113,8 +113,15 @@ const SupplierRow = ({
   };
 
   const handleDeleteClick = (id) => {
-    handleDeleteRecord(id, API_ENDPOINTS.DELETE_SUPPLIER, fetchSuppliers)
-    toast.success('Deleted Product Successfully');
+    const successCallback = (data) => {
+      toast.success('Deleted Supplier Successfully');
+    };
+
+    const errorCallback = (error) => {
+      toast.error('Error ' + error.message);
+    };
+
+    handleDeleteRecord(id, API_ENDPOINTS.DELETE_SUPPLIER, fetchSuppliers, successCallback, errorCallback)
   };
 
   return (

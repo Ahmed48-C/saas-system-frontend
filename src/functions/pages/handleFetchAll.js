@@ -11,7 +11,7 @@ const constructFetchUrl = (endpoint, page, pageSize, order, orderBy, filters) =>
     return url;
 };
 
-export const fetchAll = (endpoint, page, pageSize, order, orderBy, filters, setData, setLoading) => {
+export const fetchAll = (endpoint, page, pageSize, order, orderBy, filters, setData, setLoading, errorCallback) => {
     setLoading(true);
 
     const url = constructFetchUrl(endpoint, page, pageSize, order, orderBy, filters);
@@ -23,6 +23,8 @@ export const fetchAll = (endpoint, page, pageSize, order, orderBy, filters, setD
         })
         .catch(error => {
             console.error('Error fetching data:', error);
-            setLoading(false);
+            if (errorCallback) {
+                errorCallback(error);
+            }
         });
 };

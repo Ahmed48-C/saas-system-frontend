@@ -24,7 +24,7 @@ const CreateContent = () => {
       };
 
       const errorCallback = (error) => {
-        console.error('Error making post request:', error);
+        toast.error('Error ' + error.message);
       };
 
       handleSubmitRecord(postData, API_ENDPOINTS.POST_SUPPLIER, successCallback, errorCallback);
