@@ -45,6 +45,10 @@ const Locations = () => {
   };
 
   const fetchLocations = () => {
+    const errorCallback = (error) => {
+      console.log('Error occurred:', error);
+      history.push('/500'); // Navigate to the 500 error page
+    };
     fetchAll(
       API_ENDPOINTS.GET_LOCATIONS,
       page,
@@ -61,7 +65,8 @@ const Locations = () => {
         }
         setLoading(false);
       },
-      setLoading
+      setLoading,
+      errorCallback,
     );
   };
 

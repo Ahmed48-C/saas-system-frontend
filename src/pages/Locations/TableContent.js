@@ -134,8 +134,15 @@ const TableContent = ({
     };
 
     const handleDeleteClick = (id) => {
-      handleDeleteRecord(id, API_ENDPOINTS.DELETE_LOCATION, fetchLocations)
-      toast.success('Deleted Location Successfully');
+      const successCallback = (data) => {
+        toast.success('Deleted Location Successfully');
+      };
+
+      const errorCallback = (error) => {
+        toast.error('Error ' + error.message);
+      };
+
+      handleDeleteRecord(id, API_ENDPOINTS.DELETE_LOCATION, fetchLocations, successCallback, errorCallback)
     };
 
     return (

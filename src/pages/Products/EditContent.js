@@ -34,7 +34,7 @@ const EditContent = ({ editLoading }) => {
       };
 
       const errorCallback = (error) => {
-        console.error('Error making update request:', error);
+        toast.error('Error ' + error.message);
       };
 
       handleUpdateRecord(id, updateData, API_ENDPOINTS.PUT_PRODUCT, successCallback, errorCallback);

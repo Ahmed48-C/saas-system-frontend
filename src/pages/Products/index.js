@@ -46,6 +46,9 @@ const Product = () => {
   };
 
   const fetchRecords = () => {
+    const errorCallback = (error) => {
+      history.push('/500'); // Navigate to the 500 error page
+    };
     fetchAll(
       API_ENDPOINTS.GET_PRODUCTS,
       page,
@@ -62,7 +65,8 @@ const Product = () => {
         }
         setLoading(false);
       },
-      setLoading
+      setLoading,
+      errorCallback,
     );
   };
 

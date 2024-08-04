@@ -113,8 +113,15 @@ const Row = ({
   };
 
   const handleDeleteClick = (id) => {
-    handleDeleteRecord(id, API_ENDPOINTS.DELETE_PRODUCT, fetchRecords)
-    toast.success('Deleted Product Successfully');
+    const successCallback = (data) => {
+      toast.success('Deleted Product Successfully');
+    };
+
+    const errorCallback = (error) => {
+      toast.error('Error ' + error.message);
+    };
+
+    handleDeleteRecord(id, API_ENDPOINTS.DELETE_PRODUCT, fetchRecords, successCallback, errorCallback)
   };
 
   return (
