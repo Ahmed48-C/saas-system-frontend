@@ -288,6 +288,7 @@ const Dashboard = lazy(() =>
   import('./pages/Dashboard')
 );
 
+
 const Locations = lazy(() =>
   import('./pages/Locations/index')
 );
@@ -299,6 +300,20 @@ const CreateLocations = lazy(() =>
 const EditLocations = lazy(() =>
   import('./pages/Locations/EditContent')
 );
+
+
+const Stores = lazy(() =>
+  import('./pages/Stores/index')
+);
+
+const CreateStores = lazy(() =>
+  import('./pages/Stores/CreateContent')
+);
+
+const EditStores = lazy(() =>
+  import('./pages/Stores/EditContent')
+);
+
 
 const Suppliers = lazy(() =>
   import('./pages/Suppliers/index')
@@ -312,6 +327,7 @@ const EditSuppliers = lazy(() =>
   import('./pages/Suppliers/EditContent')
 );
 
+
 const Products = lazy(() =>
   import('./pages/Products/index')
 );
@@ -323,6 +339,7 @@ const CreateProducts = lazy(() =>
 const EditProducts = lazy(() =>
   import('./pages/Products/EditContent')
 );
+
 
 const Routes = () => {
   const SuspenseLoading = () => {
@@ -392,6 +409,22 @@ const Routes = () => {
                                 exact
                                 path="/location/edit/:id"
                                 component={EditLocations}
+                            />
+
+                            <Route
+                                exact
+                                path="/stores"
+                                component={Stores}
+                            />
+                            <Route
+                                exact
+                                path="/store/create"
+                                component={CreateStores}
+                            />
+                            <Route
+                                exact
+                                path="/store/edit/:id"
+                                component={EditStores}
                             />
 
                             <Route
