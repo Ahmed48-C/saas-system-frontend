@@ -424,7 +424,7 @@ const SidebarMenu = (props) => {
                 </span> */}
               </NavLink>
             </li>
-            <li>
+            {/* <li>
               <a
                 href="#/"
                 onClick={toggleIventory}
@@ -439,9 +439,25 @@ const SidebarMenu = (props) => {
               </a>
               <Collapse in={InventoryOpen}>
                 <ul>
-                  
+
                 </ul>
               </Collapse>
+            </li> */}
+            <li>
+              <NavLink
+                activeClassName="active"
+                onClick={toggleSidebarMobile}
+                className="nav-link-simple"
+                to="/inventories">
+                <span className="sidebar-icon">
+                  {/* <BallotTwoToneIcon /> */}
+                  <ArchiveIcon />
+                </span>
+                Inventories
+                {/* <span className="sidebar-icon-indicator sidebar-icon-indicator-right">
+                  <ChevronRightTwoToneIcon />
+                </span> */}
+              </NavLink>
             </li>
             {/* <li>
               <a

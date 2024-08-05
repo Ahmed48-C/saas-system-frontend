@@ -341,6 +341,19 @@ const EditProducts = lazy(() =>
 );
 
 
+const Inventories = lazy(() =>
+  import('./pages/Inventories/index')
+);
+
+const CreateInventories = lazy(() =>
+  import('./pages/Inventories/CreateContent')
+);
+
+const EditInventories = lazy(() =>
+  import('./pages/Inventories/EditContent')
+);
+
+
 const Routes = () => {
   const SuspenseLoading = () => {
       const [show, setShow] = useState(false);
@@ -457,6 +470,22 @@ const Routes = () => {
                                 exact
                                 path="/product/edit/:id"
                                 component={EditProducts}
+                            />
+
+                            <Route
+                                exact
+                                path="/inventories"
+                                component={Inventories}
+                            />
+                            <Route
+                                exact
+                                path="/inventory/create"
+                                component={CreateInventories}
+                            />
+                            <Route
+                                exact
+                                path="/inventory/edit/:id"
+                                component={EditInventories}
                             />
 
                             {/* <Route path="/400" component={BadRequest400} />
