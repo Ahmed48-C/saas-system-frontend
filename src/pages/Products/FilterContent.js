@@ -1,10 +1,43 @@
-import React from 'react'
-import { Textarea } from '../../pages-components'
+import React, { useEffect, useState } from 'react'
+import { InputSelect, Loader, Textarea } from '../../pages-components'
 import { Grid } from '@material-ui/core'
+import axios from 'axios';
 
 const FilterContent = ({ currentFilter, setCurrentFilter }) => {
+    const [loading, setLoading] = useState(true);
+    const [suppliers, setSuppliers] = useState([]);
+
+    const formatName = (name) => {
+        return name.length > 20 ? `${name.slice(0, 20)}...` : name;
+    };
+
+    useEffect(() => {
+        fetchSuppliers();
+    }, []);
+
+    const fetchSuppliers = () => {
+        axios.get(`http://127.0.0.1:8000/api/get/suppliers/`)
+        .then(response => {
+            setLoading(false);
+            if (Array.isArray(response.data.data)) {
+                setSuppliers(response.data.data);
+            } else {
+                console.error('Invalid data format:', response.data);
+            }
+        })
+        .catch(error => {
+            setLoading(false);
+            console.error('Error fetching data:', error);
+        });
+    }
 
     return (
+        <>
+        {loading ? (
+            <Grid item xs={12} style={{ display: 'flex', justifyContent: 'center', paddingLeft: '32px' }}>
+                <Loader />
+            </Grid>
+        ) : (
         <>
             <Grid item xs={12}>
                 <Textarea
@@ -44,7 +77,19 @@ const FilterContent = ({ currentFilter, setCurrentFilter }) => {
                     onChange={(e) => setCurrentFilter({ ...currentFilter, description: e.target.value })}
                 />
             </Grid>
-            {/* supplier */}
+            <Grid item xs={12}>
+                <InputSelect
+                    selectItems={suppliers.map(supplier => ({
+                        value: supplier.id.toString(),
+                        name: formatName(supplier.name)
+                    }))}
+                    label='Supplier'
+                    name='supplier'
+                    id='supplier'
+                    onChange={(e) => setCurrentFilter({ ...currentFilter, supplier_id: e.target.value })}
+                    value={currentFilter.supplier_id}
+                />
+            </Grid>
             <Grid item xs={12}>
                 <Textarea
                     style={{ margin: 0 }}
@@ -149,6 +194,8 @@ const FilterContent = ({ currentFilter, setCurrentFilter }) => {
                     maxLength={80}
                 />
             </Grid>
+            </>
+            )}
         </>
     )
 }

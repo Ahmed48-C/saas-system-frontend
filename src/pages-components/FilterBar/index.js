@@ -75,7 +75,13 @@ const FilterBar = ({
 
     const handleCloseFilter = () => {
         handleAnchorEl4(null);
-        handleCurrentFilter({ code: '', name: '', note: '', street: '', city: '', state: '', postcode: '', country: '' });
+        handleCurrentFilter(currentFilter => {
+            const newFilter = {};
+            Object.keys(currentFilter).forEach(key => {
+                newFilter[key] = '';
+            });
+            return newFilter;
+        });
         handleIsEditing(false);
         handleEditIndex(null);
     };
