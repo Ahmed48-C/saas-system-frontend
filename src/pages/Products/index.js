@@ -31,7 +31,7 @@ const Product = () => {
 
   const [filters, setFilters] = useState([]);
   const [anchorEl4, setAnchorEl4] = useState(null);
-  const [currentFilter, setCurrentFilter] = useState({ code: '', name: '', supplier: '', });
+  const [currentFilter, setCurrentFilter] = useState({ code: '', name: '', description: '', supplier_id: '', brand: '', measure_unit: '', weight: '', length: '', width: '', height: '', color: '', size: '', dimension_unit: '', weight_unit: '' });
   const [isEditing, setIsEditing] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
 

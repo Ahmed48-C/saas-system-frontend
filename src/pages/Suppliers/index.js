@@ -31,7 +31,7 @@ const Supplier = () => {
 
   const [filters, setFilters] = useState([]);
   const [anchorEl4, setAnchorEl4] = useState(null);
-  const [currentFilter, setCurrentFilter] = useState({ name: '', phone: '', email: '', });
+  const [currentFilter, setCurrentFilter] = useState({ name: '', phone: '', email: '', contact_name: '', contact_phone: '', location_id: '', });
   const [isEditing, setIsEditing] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
 

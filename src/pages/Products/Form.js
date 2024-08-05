@@ -56,7 +56,8 @@ const Form = ({ handleClick, icon, title }) => {
 
     const isFormValid = () => {
         return  data.code &&
-                data.name;
+                data.name &&
+                data.supplier_id;
     };
 
     const handleInputChange = (field) => (e) => {
@@ -148,6 +149,7 @@ const Form = ({ handleClick, icon, title }) => {
                         id='supplier_id'
                         onChange={handleInputChange('supplier_id')}
                         value={data.supplier_id ?? ""}
+                        error={isEmpty(data.supplier_id)}
                         />
                     </Grid>
                     <Grid item xs={4}>

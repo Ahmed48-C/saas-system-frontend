@@ -31,6 +31,13 @@ const API_ENDPOINTS = {
   GET_STORES: (from, to) => `${BASE_URL}/api/get/stores/?from=${from}&to=${to}`,
   GET_STORE: (id) => `${BASE_URL}/api/get/store/${id}/`,
 
+  DELETE_INVENTORY: (id) => `${BASE_URL}/api/delete/inventory/${id}/`,
+  DELETE_INVENTORIES: () => `${BASE_URL}/api/delete/inventories/`,
+  POST_INVENTORY: () => `${BASE_URL}/api/post/inventory/`,
+  PUT_INVENTORY: (id) => `${BASE_URL}/api/put/inventory/${id}/`,
+  GET_INVENTORIES: (from, to) => `${BASE_URL}/api/get/inventories/?from=${from}&to=${to}`,
+  GET_INVENTORY: (id) => `${BASE_URL}/api/get/inventory/${id}/`,
+
 };
 
 export default API_ENDPOINTS;
