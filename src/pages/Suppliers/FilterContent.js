@@ -1,10 +1,43 @@
-import React from 'react'
-import { Textarea } from '../../pages-components'
+import React, { useEffect, useState } from 'react'
+import { InputSelect, Loader, Textarea } from '../../pages-components'
 import { Grid } from '@material-ui/core'
+import axios from 'axios';
 
 const FilterContent = ({ currentFilter, setCurrentFilter }) => {
+    const [loading, setLoading] = useState(true);
+    const [locations, setLocations] = useState([]);
+
+    const formatName = (name) => {
+        return name.length > 20 ? `${name.slice(0, 20)}...` : name;
+    };
+
+    useEffect(() => {
+        fetchLocations();
+    }, []);
+
+    const fetchLocations = () => {
+        axios.get(`http://127.0.0.1:8000/api/get/locations/`)
+        .then(response => {
+            setLoading(false);
+            if (Array.isArray(response.data.data)) {
+                setLocations(response.data.data);
+            } else {
+                console.error('Invalid data format:', response.data);
+            }
+        })
+        .catch(error => {
+            setLoading(false);
+            console.error('Error fetching data:', error);
+        });
+    }
 
     return (
+        <>
+        {loading ? (
+            <Grid item xs={12} style={{ display: 'flex', justifyContent: 'center', paddingLeft: '32px' }}>
+                <Loader />
+            </Grid>
+        ) : (
         <>
             <Grid item xs={12}>
                 <Textarea
@@ -71,6 +104,21 @@ const FilterContent = ({ currentFilter, setCurrentFilter }) => {
                     maxLength={80}
                 />
             </Grid>
+            <Grid item xs={12}>
+                <InputSelect
+                    selectItems={locations.map(location => ({
+                        value: location.id.toString(),
+                        name: formatName(location.name)
+                    }))}
+                    label='Location'
+                    name='location'
+                    id='location'
+                    onChange={(e) => setCurrentFilter({ ...currentFilter, location_id: e.target.value })}
+                    value={currentFilter.location_id}
+                />
+            </Grid>
+            </>
+            )}
         </>
     )
 }

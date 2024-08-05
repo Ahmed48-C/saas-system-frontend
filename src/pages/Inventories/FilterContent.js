@@ -1,11 +1,62 @@
-import React from 'react'
-import { InputSelect, Textarea } from '../../pages-components'
+import React, { useEffect, useState } from 'react'
+import { InputSelect, Loader, Textarea } from '../../pages-components'
 import { Grid } from '@material-ui/core'
 import { useCountries } from 'use-react-countries';
+import axios from 'axios';
 
 const FilterContent = ({ currentFilter, setCurrentFilter }) => {
+    const [loading, setLoading] = useState(true);
+    const [products, setProducts] = useState([]);
+    const [stores, setStores] = useState([]);
+
+    const formatName = (name) => {
+        return name.length > 20 ? `${name.slice(0, 20)}...` : name;
+    };
+
+    useEffect(() => {
+        fetchProducts();
+        fetchStores();
+    }, []);
+
+    const fetchProducts = () => {
+        axios.get(`http://127.0.0.1:8000/api/get/products/`)
+        .then(response => {
+            setLoading(false);
+            if (Array.isArray(response.data.data)) {
+                setProducts(response.data.data);
+            } else {
+                console.error('Invalid data format:', response.data);
+            }
+        })
+        .catch(error => {
+            setLoading(false);
+            console.error('Error fetching data:', error);
+        });
+    }
+
+    const fetchStores = () => {
+        axios.get(`http://127.0.0.1:8000/api/get/stores/`)
+        .then(response => {
+            setLoading(false);
+            if (Array.isArray(response.data.data)) {
+                setStores(response.data.data);
+            } else {
+                console.error('Invalid data format:', response.data);
+            }
+        })
+        .catch(error => {
+            setLoading(false);
+            console.error('Error fetching data:', error);
+        });
+    }
 
     return (
+        <>
+        {loading ? (
+            <Grid item xs={12} style={{ display: 'flex', justifyContent: 'center', paddingLeft: '32px' }}>
+                <Loader />
+            </Grid>
+        ) : (
         <>
             <Grid item xs={12}>
                 <Textarea
@@ -85,6 +136,34 @@ const FilterContent = ({ currentFilter, setCurrentFilter }) => {
                     maxLength={80}
                 />
             </Grid>
+            <Grid item xs={12}>
+                <InputSelect
+                    selectItems={products.map(product => ({
+                        value: product.id.toString(),
+                        name: formatName(product.name)
+                    }))}
+                    label='Product'
+                    name='product'
+                    id='product'
+                    onChange={(e) => setCurrentFilter({ ...currentFilter, product_id: e.target.value })}
+                    value={currentFilter.product_id}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <InputSelect
+                    selectItems={stores.map(store => ({
+                        value: store.id.toString(),
+                        name: formatName(store.name)
+                    }))}
+                    label='Store'
+                    name='store'
+                    id='store'
+                    onChange={(e) => setCurrentFilter({ ...currentFilter, store_id: e.target.value })}
+                    value={currentFilter.store_id}
+                />
+            </Grid>
+            </>
+            )}
         </>
     )
 }
