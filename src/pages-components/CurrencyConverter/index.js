@@ -81,7 +81,9 @@ const CurrencyConverter = () => {
     const suffix = formatSuffix(amount);
 
     const handleConvert = () => {
-        if (!amount || isNaN(amount)) {
+        const rawAmount = amount.replace(/,/g, '');
+
+        if (!rawAmount || isNaN(rawAmount)) {
             setError('Please enter a valid number');
             setConvertedAmount('');
             return;
@@ -93,9 +95,26 @@ const CurrencyConverter = () => {
 
         setLoading(true);
         const rate = currencies[toCurrency] / currencies[fromCurrency];
-        const result = amount * rate;
-        setConvertedAmount(result.toFixed(4));
+        const result = rawAmount * rate;
+
+        // Format result based on whether it is in scientific notation or not
+        const formattedResult = formatNumber(result);
+
+        setConvertedAmount(formattedResult);
         setLoading(false);
+    };
+
+    const formatNumber = (value) => {
+        // Check if the value contains 'e' which indicates scientific notation
+        if (value.toString().includes('e')) {
+            // Keep scientific notation as is
+            return value.toExponential(4); // Adjust precision as needed
+        } else {
+            // Format normally
+            return new Intl.NumberFormat('en-US', {
+                maximumFractionDigits: 2
+            }).format(value);
+        }
     };
 
     const handleSwap = () => {
@@ -104,11 +123,13 @@ const CurrencyConverter = () => {
     };
 
     const handleAmountChange = (e) => {
-        if (isNaN(e.target.value)) {
-            setError('Please enter a valid number');
+        const rawValue = e.target.value.replace(/,/g, ''); // Remove commas for proper number parsing
+        if (isNaN(rawValue) || rawValue === '') {
+            // setError('Please enter a valid number');
+            setAmount('');
         } else {
             setError('');
-            setAmount(e.target.value);
+            setAmount(formatNumber(rawValue)); // Apply formatting
         }
     };
 
@@ -150,7 +171,7 @@ const CurrencyConverter = () => {
                             currencies={currencies}
                         />
                     </Grid>
-                    <Grid item xs={12} md={6}>
+                    <Grid item xs={12}>
                         <TextField
                             label="Amount"
                             value={amount}
@@ -159,17 +180,17 @@ const CurrencyConverter = () => {
                             fullWidth
                             error={!!error}
                             helperText={error}
-                            type="number"
+                            type="text" // Use text to format input
                             InputProps={{
                                 endAdornment: (
                                     <InputAdornment position="end">
-                                        {suffix}
+                                        {formatSuffix(amount.replace(/,/g, ''))}
                                     </InputAdornment>
                                 ),
                             }}
                         />
                     </Grid>
-                    <Grid item xs={12} md={6}>
+                    {/* <Grid item xs={12} md={6}>
                         <Button
                             variant="contained"
                             color="primary"
@@ -179,7 +200,7 @@ const CurrencyConverter = () => {
                         >
                             {loading ? <Loader /> : 'Convert'}
                         </Button>
-                    </Grid>
+                    </Grid> */}
                     <Grid item xs={12}>
                         <Paper
                             elevation={3}
@@ -188,6 +209,7 @@ const CurrencyConverter = () => {
                                 backgroundColor: 'rgba(30, 30, 30, 0.1)',
                                 height: '100px',
                                 display: 'flex',
+                                flexDirection: 'column',
                                 justifyContent: 'center',
                                 alignItems: 'center',
                                 cursor: convertedAmount ? 'pointer' : 'default',
@@ -197,8 +219,12 @@ const CurrencyConverter = () => {
                             onClick={handleCopyToClipboard}
                         >
                             {amount && fromCurrency && toCurrency && convertedAmount && (
-                                <Typography variant="h5" style={{ textAlign: 'center' }}>
-                                    Converted Amount: {convertedAmount} {toCurrency}
+                                <Typography variant="h5" style={{ textAlign: 'center', width: '100%' }}>
+                                    <div>Converted Amount:</div>
+                                    <div style={{ width: '100%', position: 'relative' }}>
+                                        <span style={{ marginRight: 'auto' }}>{convertedAmount}</span>
+                                        <span style={{ color: 'rgba(30, 30, 30, 0.4)', position: 'absolute', right: '0' }}>{toCurrency}</span>
+                                    </div>
                                 </Typography>
                             )}
                             {convertedAmount && (
