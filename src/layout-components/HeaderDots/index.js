@@ -31,6 +31,8 @@ import PeopleAltTwoToneIcon from '@material-ui/icons/PeopleAltTwoTone';
 
 import Chart from 'react-apexcharts';
 import PerfectScrollbar from 'react-perfect-scrollbar';
+import CurrencyConverter from '../../pages-components/CurrencyConverter';
+import SwapHorizIcon from '@material-ui/icons/SwapHoriz';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -155,22 +157,22 @@ const HeaderDots = () => {
     <>
       <div className="d-flex align-items-center popover-header-wrapper">
         <span className="pr-2">
-          <Badge
+          {/* <Badge
             variant="dot"
             anchorOrigin={{
               vertical: 'top',
               horizontal: 'left'
             }}
             badgeContent=" "
-            classes={{ badge: 'bg-success badge-circle' }}>
+            classes={{ badge: 'bg-success badge-circle' }}> */}
             <Button
               onClick={handleClick1}
               className="btn-transition-none bg-neutral-success text-success font-size-lg p-0 d-inline-block shadow-none border-0 text-center d-44 rounded position-relative">
               <span>
-                <NotificationsActiveTwoToneIcon />
+                <SwapHorizIcon />
               </span>
             </Button>
-          </Badge>
+          {/* </Badge> */}
 
           <Popover
             open={open1}
@@ -184,10 +186,12 @@ const HeaderDots = () => {
               vertical: 'top',
               horizontal: 'center'
             }}
-            classes={{
-              paper: 'app-header-dots'
-            }}>
-            <div className="popover-custom-lg overflow-hidden">
+            // classes={{
+            //   paper: 'app-header-dots'
+            // }}
+            >
+            <CurrencyConverter />
+            {/* <div className="popover-custom-lg overflow-hidden">
               <div className="bg-composed-wrapper bg-midnight-bloom border-0 text-center rounded-sm m-2">
                 <div className="bg-composed-img-3 bg-composed-wrapper--image" />
                 <div className="bg-composed-wrapper--content text-white px-2 py-4">
@@ -374,7 +378,7 @@ const HeaderDots = () => {
                   </Button>
                 </Badge>
               </div>
-            </div>
+            </div> */}
           </Popover>
         </span>
         <span className="pr-2">
