@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './assets/base.scss';
 import configureStore from './config/configureStore';
 import { Provider } from 'react-redux';
 
 import { BrowserRouter } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 
 import Routes from './Routes';
 import ScrollToTop from './utils/ScrollToTop';
@@ -16,6 +16,7 @@ function App() {
       <Provider store={store}>
         <ToastContainer
           position="bottom-center"
+          limit={3}
         />
         <BrowserRouter>
           <ScrollToTop>
