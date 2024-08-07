@@ -33,6 +33,8 @@ import Chart from 'react-apexcharts';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import CurrencyConverter from '../../pages-components/CurrencyConverter';
 import SwapHorizIcon from '@material-ui/icons/SwapHoriz';
+import Calculator from '../../pages-components/Calculator';
+import { faCalculator } from '@fortawesome/free-solid-svg-icons';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -389,13 +391,12 @@ const HeaderDots = () => {
               vertical: 'top',
               horizontal: 'right'
             }}
-            badgeContent=" "
-            classes={{ badge: 'bg-danger badge-circle-sm' }}>
+            badgeContent=" ">
             <Button
               onClick={handleClick2}
               className="btn-transition-none bg-neutral-danger text-danger font-size-lg p-0 d-inline-block shadow-none border-0 text-center d-44 rounded position-relative">
               <span>
-                <PollTwoToneIcon />
+                <FontAwesomeIcon icon={faCalculator} className="font-size-lg" />
               </span>
             </Button>
           </Badge>
@@ -411,7 +412,8 @@ const HeaderDots = () => {
               vertical: 'top',
               horizontal: 'center'
             }}>
-            <List
+              <Calculator />
+            {/* <List
               component="div"
               className="list-group-flush text-left bg-transparent">
               <ListItem>
@@ -464,7 +466,7 @@ const HeaderDots = () => {
                   <span className="btn-wrapper--label">Logout</span>
                 </Button>
               </ListItem>
-            </List>
+            </List> */}
           </Popover>
         </span>
         <span className="pr-2">
