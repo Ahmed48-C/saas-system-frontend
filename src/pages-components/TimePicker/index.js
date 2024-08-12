@@ -1,40 +1,55 @@
-import React, { useState } from 'react';
-
+import React from 'react';
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardTimePicker
-} from '@material-ui/pickers';
-import { FormControl } from '@material-ui/core';
+import { MuiPickersUtilsProvider, KeyboardTimePicker } from '@material-ui/pickers';
+import { FormControl, TextField } from '@material-ui/core';
 
-const TimePicker = () => {
-  const [time, setTime] = useState(
-    new Date()
-  );
+const TimePicker = ({ label, value, onChange, id, ampm, minutesStep, error, key, name }) => {
+  const handleTimeChange = (time) => {
+    if (time) {
+      // Reset seconds to 00
+      const updatedTime = new Date(time);
+      updatedTime.setSeconds(0, 0); // Set seconds and milliseconds to 0
 
-  const handleDateChange = (date) => {
-    setTime(date);
+      // Call the original onChange handler with the updated time
+      onChange(updatedTime);
+    } else {
+      // Handle null value (if user clears the input)
+      onChange(null);
+    }
   };
 
   return (
-    <>
-    <FormControl fullWidth variant="standard" className="m-3">
+    <FormControl fullWidth variant="outlined">
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <KeyboardTimePicker
+          fullWidth
+          className="m-3"
           margin="normal"
-          id="time-picker"
-          label="Time picker"
-          value={time}
-          onChange={handleDateChange}
+          id={id}
+          label={label}
+          value={value}
+          key={key}
+          onChange={handleTimeChange}
+          ampm={ampm}
+          minutesStep={minutesStep}
+          error={error}
+          name={name}
+          helperText={error ? '' : ''}
+          TextFieldComponent={(props) => (
+            <TextField
+              {...props}
+              variant="outlined"
+              error={error}
+            />
+          )}
           KeyboardButtonProps={{
-            'aria-label': 'change time'
+            'aria-label': 'change time',
           }}
         />
       </MuiPickersUtilsProvider>
     </FormControl>
-    </>
   );
 }
 
-export default TimePicker
+export default TimePicker;

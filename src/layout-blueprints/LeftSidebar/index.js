@@ -6,8 +6,7 @@ import { connect } from 'react-redux';
 
 import {
   Sidebar,
-  Header,
-  Footer
+  Header
 } from '../../layout-components';
 
 const LeftSidebar = (props) => {

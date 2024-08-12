@@ -38,6 +38,11 @@ const API_ENDPOINTS = {
   GET_INVENTORIES: (from, to) => `${BASE_URL}/api/get/inventories/?from=${from}&to=${to}`,
   GET_INVENTORY: (id) => `${BASE_URL}/api/get/inventory/${id}/`,
 
+  DELETE_REMINDER: (id) => `${BASE_URL}/api/delete/reminder/${id}/`,
+  POST_REMINDER: () => `${BASE_URL}/api/post/reminder/`,
+  GET_REMINDERS: () => `${BASE_URL}/api/get/reminders/`,
+  GET_REMINDER: (id) => `${BASE_URL}/api/get/reminder/${id}/`,
+  PUT_REMINDER: (id) => `${BASE_URL}/api/put/reminder/${id}/`,
 };
 
 export default API_ENDPOINTS;

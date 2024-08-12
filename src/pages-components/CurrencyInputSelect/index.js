@@ -1,22 +1,22 @@
 import React from 'react';
-import { TextField, MenuItem, makeStyles } from '@material-ui/core';
+import { TextField, makeStyles } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import CurrencyFlag from 'react-currency-flags';
+// import CurrencyFlag from 'react-currency-flags';
 
-const useStyles = makeStyles((theme) => ({
-    option: {
-        display: 'flex',
-        alignItems: 'center',
-        fontSize: '0.875rem', // Adjust text size
-    },
-    flag: {
-        marginRight: theme.spacing(2),
-        transform: 'scale(1.5)', // Increase the size of the flag
-    },
-}));
+// const useStyles = makeStyles((theme) => ({
+//     option: {
+//         display: 'flex',
+//         alignItems: 'center',
+//         fontSize: '0.875rem', // Adjust text size
+//     },
+//     flag: {
+//         marginRight: theme.spacing(2),
+//         transform: 'scale(1.5)', // Increase the size of the flag
+//     },
+// }));
 
 const CurrencyInputSelect = ({ label, value, onChange, currencies }) => {
-    const classes = useStyles();
+    // const classes = useStyles();
 
     const currencyOptions = Object.keys(currencies).map((currency) => ({
         code: currency,

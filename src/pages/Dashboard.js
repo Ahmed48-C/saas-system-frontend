@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { MainTable, Popover } from '../pages-components'
-import { Button, ButtonGroup, Card, Divider, Fade, Popper } from '@material-ui/core';
+import { Button, ButtonGroup, Fade, Popper } from '@material-ui/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 

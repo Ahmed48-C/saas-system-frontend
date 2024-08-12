@@ -1,39 +1,43 @@
-import React, { useState } from 'react';
-
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker
-} from '@material-ui/pickers';
-import 'date-fns';
+import React from 'react';
+import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
-import { FormControl } from '@material-ui/core';
+import { FormControl, TextField } from '@material-ui/core';
 
-const DatePicker = () => {
-  const [date, setDate] = useState(new Date());
-
-  const handleDateChange = (date) => {
-    setDate(date);
-  };
-
+const DatePicker = ({ label, value, onChange, format, id, disablePast,
+  // minDate, maxDate,
+  error, key, name }) => {
   return (
-    <>
-    <FormControl fullWidth variant="standard" className="m-3">
+    <FormControl fullWidth variant="outlined">
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <KeyboardDatePicker
-            margin="normal"
-            id="date-picker-dialog"
-            label="Date"
-            format="MM/dd/yyyy"
-            value={date}
-            onChange={handleDateChange}
-            KeyboardButtonProps={{
-              'aria-label': 'change date'
-            }}
-          />
+      <KeyboardDatePicker
+          fullWidth
+          margin="normal"
+          className="m-3"
+          key={key}
+          id={id}
+          label={label}
+          format={format}
+          value={value}
+          onChange={onChange}
+          disablePast={disablePast}
+          error={error}
+          name={name}
+          helperText={error ? '' : ''}
+          // Use a custom TextField component to get the outlined variant
+          TextFieldComponent={(props) => (
+            <TextField
+              {...props}
+              variant="outlined"
+              error={error}
+            />
+          )}
+          KeyboardButtonProps={{
+            'aria-label': 'change date',
+          }}
+        />
       </MuiPickersUtilsProvider>
-      </FormControl>
-    </>
+    </FormControl>
   );
 }
 
-export default DatePicker
+export default DatePicker;
