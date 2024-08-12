@@ -44,7 +44,7 @@ const Calculator = () => {
     };
 
     return (
-        <Paper style={{ padding: '20px', width: '100%', maxWidth: '350px', margin: '0 auto', position: 'relative' }}>
+        <Paper style={{ padding: '20px', width: '100%', maxWidth: '350px', margin: '0 auto', position: 'relative' }} elevation={3}>
             <TextField
                 label="Expression"
                 value={formatExpression(expression)}

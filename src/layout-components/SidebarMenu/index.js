@@ -22,8 +22,6 @@ import AssessmentIcon from '@material-ui/icons/Assessment';
 import ContactsIcon from '@material-ui/icons/Contacts';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 import BuildIcon from '@material-ui/icons/Build';
-import TrendingUpIcon from '@material-ui/icons/TrendingUp';
-import LocalShippingIcon from '@material-ui/icons/LocalShipping';
 import SettingsIcon from '@material-ui/icons/Settings';
 import ArchiveIcon from '@material-ui/icons/Archive';
 

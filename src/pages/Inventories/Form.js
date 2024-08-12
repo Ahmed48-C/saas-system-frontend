@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { Box, Button, Divider, FormControl, Grid, Tooltip } from '@material-ui/core'
 import { InputSelect, Loader, Textarea } from '../../pages-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useCountries } from 'use-react-countries'
 import isEmpty from '../../functions/pages/isEmpty'
 import { useParams } from 'react-router-dom';
 import API_ENDPOINTS from '../../config/apis'

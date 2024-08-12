@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { InputSelect, Loader, Textarea } from '../../pages-components'
 import { Grid } from '@material-ui/core'
-import { useCountries } from 'use-react-countries';
 import axios from 'axios';
 
 const FilterContent = ({ currentFilter, setCurrentFilter }) => {

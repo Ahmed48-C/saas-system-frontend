@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import SwapHorizIcon from '@material-ui/icons/SwapHoriz';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
-import { TextField, Button, Grid, Paper, Typography, InputAdornment, IconButton } from '@material-ui/core';
-import Loader from '../Loader';
+import { TextField, Grid, Paper, Typography, InputAdornment, IconButton } from '@material-ui/core';
 import CurrencyInputSelect from '../CurrencyInputSelect';
 import { toast } from 'react-toastify';
 
@@ -78,8 +77,6 @@ const CurrencyConverter = () => {
         return '';
     };
 
-    const suffix = formatSuffix(amount);
-
     const handleConvert = () => {
         const rawAmount = amount.replace(/,/g, '');
 
@@ -148,7 +145,7 @@ const CurrencyConverter = () => {
 
     return (
         <>
-            <Paper style={{ padding: '20px', width: '100%', maxWidth: '500px', margin: '0 auto', position: 'relative' }}>
+            <Paper style={{ padding: '20px', width: '100%', maxWidth: '500px', margin: '0 auto', position: 'relative' }} elevation={3}>
                 <Grid container spacing={3} alignItems="center">
                     <Grid item xs={12} md={5}>
                         <CurrencyInputSelect
