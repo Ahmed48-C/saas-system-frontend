@@ -1,132 +1,174 @@
 import React, { useState } from 'react';
 import { Paper, TextField, Button, Grid } from '@material-ui/core';
-import BackspaceIcon from '@material-ui/icons/Backspace';
+
+// Button values for the calculator layout
+const btnValues = [
+    ['C', '+-', '%', '/'],
+    ['7', '8', '9', '*'],
+    ['4', '5', '6', '-'],
+    ['1', '2', '3', '+'],
+    ['0', '.', '='],
+];
+
+// Utility functions for calculations
+const toLocaleString = (num) =>
+    String(num).replace(/(?<!\..*)(\d)(?=(?:\d{3})+(?:\.|$))/g, '$1 ');
+
+const removeSpaces = (num) =>
+    num.toString().replace(/\s/g, '');
+
+const calculate = (a, b, sign) => {
+    switch (sign) {
+        case '+': return a + b;
+        case '-': return a - b;
+        case '*': return a * b;
+        case '/': return b !== 0 ? a / b : "Can't divide by 0";
+        default: return b;
+    }
+};
 
 const Calculator = () => {
-    const [expression, setExpression] = useState('');
-    const [result, setResult] = useState('');
+    const [calc, setCalc] = useState({
+        sign: '',
+        num: '',
+        res: '',
+    });
 
-    const handleButtonClick = (value) => {
-        setExpression((prev) => prev + value);
-    };
+    // Handler functions for each button press
+    const handleButtonClick = (btn) => {
+        // Clear NaN error when any button is pressed
+        if (calc.res === "NaN") {
+            resetCalc();
+        }
 
-    const handleClear = () => {
-        setExpression('');
-        setResult('');
-    };
-
-    const handleDelete = () => {
-        setExpression((prev) => prev.slice(0, -1));
-    };
-
-    const handleCalculate = () => {
-        try {
-            const evalResult = eval(expression.replace(/,/g, '')); // Remove commas before evaluation
-            setResult(evalResult.toLocaleString()); // Format result with commas
-        } catch (error) {
-            setResult('Error');
+        if (btn === 'C' || calc.res === "Can't divide by 0") {
+            resetCalc();
+        } else if (btn === '+-') {
+            invertNumber();
+        } else if (btn === '%') {
+            applyPercent();
+        } else if (btn === '=') {
+            evaluateResult();
+        } else if (['/', '*', '-', '+'].includes(btn)) {
+            chooseSign(btn);
+        } else if (btn === '.') {
+            addDecimal();
+        } else {
+            appendNumber(btn);
         }
     };
 
-    const handlePercentage = () => {
-        try {
-            const evalResult = eval(expression.replace(/,/g, '')) / 100; // Calculate percentage
-            setExpression(evalResult.toString()); // Set expression to result
-        } catch (error) {
-            setExpression('Error');
+    // Update the number on the display
+    const appendNumber = (num) => {
+        if (removeSpaces(calc.num).length < 16) {
+            const updatedNum = calc.num === '0' && num === '0' ? '0' :
+                toLocaleString(removeSpaces(calc.num + num));
+
+            setCalc({
+                ...calc,
+                num: updatedNum,
+                res: calc.sign ? calc.res : '',
+            });
         }
     };
 
-    const formatExpression = (expr) => {
-        return expr.replace(/\d+/g, (match) => {
-            return parseInt(match, 10).toLocaleString();
+    const addDecimal = () => {
+        if (!calc.num.includes('.')) {
+            setCalc({
+                ...calc,
+                num: calc.num + '.',
+            });
+        }
+    };
+
+    const chooseSign = (sign) => {
+        setCalc({
+            ...calc,
+            sign,
+            res: calc.num && calc.res
+                ? toLocaleString(calculate(Number(removeSpaces(calc.res)), Number(removeSpaces(calc.num)), calc.sign))
+                : calc.num || calc.res,
+            num: '',
+        });
+    };
+
+    const evaluateResult = () => {
+        if (calc.sign && calc.num) {
+            const result = calculate(Number(removeSpaces(calc.res)), Number(removeSpaces(calc.num)), calc.sign);
+            setCalc({
+                ...calc,
+                res: result === "Can't divide by 0" ? result : toLocaleString(result),
+                sign: '',
+                num: '',
+            });
+        }
+    };
+
+    const invertNumber = () => {
+        setCalc({
+            ...calc,
+            num: calc.num ? toLocaleString(removeSpaces(calc.num) * -1) : '',
+            res: calc.res ? toLocaleString(removeSpaces(calc.res) * -1) : '',
+        });
+    };
+
+    const applyPercent = () => {
+        const currentNum = calc.num ? parseFloat(removeSpaces(calc.num)) : 0;
+        const result = calc.res ? parseFloat(removeSpaces(calc.res)) : 0;
+        // Calculate percentage of the result if there's a result
+        setCalc({
+            ...calc,
+            num: result ? (result / 100).toString() : (currentNum / 100).toString(),
+            res: '',
+            sign: '',
+        });
+    };
+
+    const resetCalc = () => {
+        setCalc({
+            sign: '',
+            num: '',
+            res: '',
         });
     };
 
     return (
-        <Paper style={{ padding: '20px', width: '100%', maxWidth: '350px', margin: '0 auto', position: 'relative' }} elevation={3}>
+        <Paper
+            style={{
+                padding: '20px',
+                width: '100%',
+                maxWidth: '350px',
+                margin: '0 auto',
+                position: 'relative'
+            }}
+            elevation={3}
+        >
             <TextField
                 label="Expression"
-                value={formatExpression(expression)}
+                value={calc.num || calc.res || '0'}
                 variant="outlined"
                 fullWidth
-                InputProps={{
-                    readOnly: true,
-                }}
-                style={{ marginBottom: '20px' }}
-            />
-            <TextField
-                label="Result"
-                value={result}
-                variant="outlined"
-                fullWidth
-                InputProps={{
-                    readOnly: true,
-                }}
+                InputProps={{ readOnly: true }}
                 style={{ marginBottom: '20px' }}
             />
             <Grid container spacing={1}>
-                {['7', '8', '9', '/'].map((value) => (
-                    <Grid item xs={3} key={value}>
-                        <Button variant="contained" color="primary" fullWidth onClick={() => handleButtonClick(value)} style={{ height: '100%' }}>
-                            {value}
-                        </Button>
-                    </Grid>
-                ))}
-                {['4', '5', '6', '*'].map((value) => (
-                    <Grid item xs={3} key={value}>
-                        <Button variant="contained" color="primary" fullWidth onClick={() => handleButtonClick(value)} style={{ height: '100%' }}>
-                            {value}
-                        </Button>
-                    </Grid>
-                ))}
-                {['1', '2', '3', '-'].map((value) => (
-                    <Grid item xs={3} key={value}>
-                        <Button variant="contained" color="primary" fullWidth onClick={() => handleButtonClick(value)} style={{ height: '100%' }}>
-                            {value}
-                        </Button>
-                    </Grid>
-                ))}
-                {['0', '.', '%', '+'].map((value) => (
-                    <Grid item xs={3} key={value}>
+                {btnValues.flat().map((btn, i) => (
+                    <Grid item xs={btn === '=' ? 6 : 3} key={i}>
                         <Button
                             variant="contained"
-                            color="primary"
+                            color={btn === '=' ? 'secondary' : btn === 'C' ? 'default' : 'primary'}
                             fullWidth
-                            onClick={() => {
-                                if (value === '%') {
-                                    handlePercentage();
-                                } else {
-                                    handleButtonClick(value);
-                                }
+                            onClick={() => handleButtonClick(btn)}
+                            style={{
+                                height: '100%',
+                                backgroundColor: btn === 'C' ? '#f44336' : '',
+                                color: btn === 'C' ? '#fff' : '',
                             }}
-                            style={{ height: '100%' }}
                         >
-                            {value}
+                            {btn}
                         </Button>
                     </Grid>
                 ))}
-                <Grid item xs={6}>
-                    <Button variant="contained" color="secondary" fullWidth onClick={handleClear}>
-                        Clear
-                    </Button>
-                </Grid>
-                <Grid item xs={3}>
-                <Button
-                        variant="contained"
-                        color="primary"
-                        fullWidth
-                        onClick={handleDelete}
-                        style={{ height: '100%' }}
-                    >
-                        <BackspaceIcon fontSize="small" />
-                    </Button>
-                </Grid>
-                <Grid item xs={3}>
-                    <Button variant="contained" color="warning" fullWidth onClick={handleCalculate}>
-                        =
-                    </Button>
-                </Grid>
             </Grid>
         </Paper>
     );
