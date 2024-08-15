@@ -38,6 +38,17 @@ const Stores = () => {
     const [selected, setSelected] = useState([]);
     const [isSelectedAll, setIsSelectedAll] = useState(false);
 
+    const [columns, setColumns] = useState([
+        { name: 'code', label: 'Code', className: 'bg-white text-left', selected: true },
+        { name: 'name', label: 'Name', className: 'bg-white text-left', selected: true },
+        { name: 'note', label: 'Note', className: 'bg-white text-left', selected: false },
+        { name: 'street', label: 'Street', className: 'bg-white text-left', selected: false },
+        { name: 'city', label: 'City', className: 'bg-white text-left', selected: false },
+        { name: 'state', label: 'state', className: 'bg-white text-left', selected: false },
+        { name: 'postcode', label: 'Postcode', className: 'bg-white text-left', selected: false },
+        { name: 'country', label: 'Country', className: 'bg-white text-left', selected: false }
+    ]);
+
     const history = useHistory();
 
     const handleNavigation = () => {
@@ -126,6 +137,10 @@ const Stores = () => {
         setRows(value);
     }
 
+    const handleColumns = (value) => {
+        setColumns(value);
+    }
+
     const handleBatchDelete = () => {
         handleBatchDeleteRecords(selected, API_ENDPOINTS.DELETE_STORES, fetchRecords);
         setNumSelected(0);
@@ -173,6 +188,7 @@ const Stores = () => {
             orderBy={orderBy}
             onRequestSort={handleRequestSort}
             headers={headers}
+            columns={columns}
             />}
             tableContent={
             !loading && records.data.length === 0 ? (
@@ -187,6 +203,7 @@ const Stores = () => {
                     selected={selected}
                     handleSelected={handleSelected}
                     handleIsSelectedAll={handleIsSelectedAll}
+                    columns={columns}
                 />
             )
             }
@@ -202,6 +219,8 @@ const Stores = () => {
             isSelectedAll={isSelectedAll}
             rows={rows} // Pass rows state
             handleRows={handleRows} // Pass setRows function
+            columns={columns}
+            handleColumns={handleColumns}
         />
         </>
     )

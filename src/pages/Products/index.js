@@ -39,6 +39,21 @@ const Product = () => {
   const [selected, setSelected] = useState([]);
   const [isSelectedAll, setIsSelectedAll] = useState(false);
 
+  const [columns, setColumns] = useState([
+    { name: 'code', label: 'Code', className: 'bg-white text-left', selected: true },
+    { name: 'name', label: 'Name', className: 'bg-white text-left', selected: true },
+    { name: 'description', label: 'Description', className: 'bg-white text-left', selected: false },
+    { name: 'supplier', label: 'Supplier', className: 'bg-white text-left', selected: true },
+    { name: 'brand', label: 'Brand', className: 'bg-white text-left', selected: false },
+    { name: 'measure_unit', label: 'Measure Unit', className: 'bg-white text-left', selected: false },
+    { name: 'weight', label: 'Weight', className: 'bg-white text-left', selected: false },
+    { name: 'height', label: 'Height', className: 'bg-white text-left', selected: false },
+    { name: 'color', label: 'Color', className: 'bg-white text-left', selected: false },
+    { name: 'size', label: 'Size', className: 'bg-white text-left', selected: false },
+    { name: 'dimension_unit', label: 'Dimension Unit', className: 'bg-white text-left', selected: false },
+    { name: 'weight_unit', label: 'Weight Unit', className: 'bg-white text-left', selected: false },
+  ]);
+
   const history = useHistory();
 
   const handleNavigation = () => {
@@ -127,6 +142,10 @@ const Product = () => {
     setRows(value);
   }
 
+  const handleColumns = (value) => {
+    setColumns(value);
+  }
+
   const handleBatchDelete = () => {
     handleBatchDeleteRecords(selected, API_ENDPOINTS.DELETE_PRODUCTS, fetchRecords)
     setNumSelected(0);
@@ -174,6 +193,7 @@ const Product = () => {
           orderBy={orderBy}
           onRequestSort={handleRequestSort}
           headers={headers}
+          columns={columns}
         />}
         tableContent={
           !loading && records.data.length === 0 ? (
@@ -188,6 +208,7 @@ const Product = () => {
               selected={selected}
               handleSelected={handleSelected}
               handleIsSelectedAll={handleIsSelectedAll}
+              columns={columns}
             />
           )
         }
@@ -203,6 +224,8 @@ const Product = () => {
         isSelectedAll={isSelectedAll}
         rows={rows} // Pass rows state
         handleRows={handleRows} // Pass setRows function
+        columns={columns}
+        handleColumns={handleColumns}
       />
     </>
   )

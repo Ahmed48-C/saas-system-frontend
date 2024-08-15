@@ -39,6 +39,17 @@ const Inventories = () => {
     const [selected, setSelected] = useState([]);
     const [isSelectedAll, setIsSelectedAll] = useState(false);
 
+    const [columns, setColumns] = useState([
+        { name: 'code', label: 'Code', className: 'bg-white text-left', selected: true },
+        { name: 'in_stock', label: 'In Stock', className: 'bg-white text-left', selected: false },
+        { name: 'on_order', label: 'On Order', className: 'bg-white text-left', selected: false },
+        { name: 'reserved', label: 'Reserved', className: 'bg-white text-left', selected: false },
+        { name: 'min_stock', label: 'Min Stock', className: 'bg-white text-left', selected: false },
+        { name: 'max_stock', label: 'Max Stock', className: 'bg-white text-left', selected: false },
+        { name: 'product', label: 'Product', className: 'bg-white text-left', selected: true },
+        { name: 'store', label: 'Store', className: 'bg-white text-left', selected: true }
+    ]);
+
     const history = useHistory();
 
     const handleNavigation = () => {
@@ -158,6 +169,10 @@ const Inventories = () => {
         setRows(value);
     }
 
+    const handleColumns = (value) => {
+        setColumns(value);
+    }
+
     const handleBatchDelete = () => {
         handleBatchDeleteRecords(selected, API_ENDPOINTS.DELETE_INVENTORIES, fetchRecords);
         setNumSelected(0);
@@ -205,6 +220,7 @@ const Inventories = () => {
             orderBy={orderBy}
             onRequestSort={handleRequestSort}
             headers={headers}
+            columns={columns}
             />}
             tableContent={
             !loading && records.data.length === 0 ? (
@@ -219,6 +235,7 @@ const Inventories = () => {
                     selected={selected}
                     handleSelected={handleSelected}
                     handleIsSelectedAll={handleIsSelectedAll}
+                    columns={columns}
                 />
             )
             }
@@ -234,6 +251,8 @@ const Inventories = () => {
             isSelectedAll={isSelectedAll}
             rows={rows} // Pass rows state
             handleRows={handleRows} // Pass setRows function
+            columns={columns}
+            handleColumns={handleColumns}
         />
         </>
     )

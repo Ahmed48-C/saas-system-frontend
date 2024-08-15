@@ -17,6 +17,7 @@ const TableContent = ({
     handleSelected,
     handleIsSelectedAll,
     dense,
+    columns,
 }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const [currentRowId, setCurrentRowId] = useState(null);
@@ -67,6 +68,7 @@ const TableContent = ({
                 handleCheckboxChange={handleCheckboxChange}
                 isSelected={selected.indexOf(row.id) !== -1}
                 dense={dense}
+                columns={columns}
             />
         ))
     );
@@ -96,6 +98,7 @@ const Row = ({
     handleCheckboxChange,
     isSelected,
     dense,
+    columns,
 }) => {
     const history = useHistory();
     const open = Boolean(anchorEl) && currentRowId === row.id;
@@ -135,9 +138,13 @@ const Row = ({
                 onChange={() => handleCheckboxChange(row.id)}
                 />
             </td>
-            <td>{row.code}</td>
+            {/* <td>{row.code}</td>
             <td>{row.product}</td>
-            <td>{row.store}</td>
+            <td>{row.store}</td> */}
+            {/* Dynamically render columns based on the 'selected' property */}
+            {columns.filter(column => column.selected).map((column, index) => (
+                <td key={index}>{row[column.name]}</td>
+            ))}
             <td className="text-center">
                 <Button
                 size="small"
