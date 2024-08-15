@@ -5,6 +5,7 @@ import FileCopyIcon from '@material-ui/icons/FileCopy';
 import { TextField, Grid, Paper, Typography, InputAdornment, IconButton } from '@material-ui/core';
 import CurrencyInputSelect from '../CurrencyInputSelect';
 import { toast } from 'react-toastify';
+import Loader from '../Loader';
 
 const API_KEY = '2f5ecdd5c54ae1e0090f9be2'; // Replace with your actual API key
 const API_URL = `https://v6.exchangerate-api.com/v6/${API_KEY}/latest/`;
@@ -199,45 +200,57 @@ const CurrencyConverter = () => {
                         </Button>
                     </Grid> */}
                     <Grid item xs={12}>
-                        <Paper
-                            elevation={3}
-                            style={{
-                                padding: '20px',
-                                backgroundColor: 'rgba(30, 30, 30, 0.1)',
-                                height: '100px',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                cursor: convertedAmount ? 'pointer' : 'default',
-                                position: 'relative',
-                            }}
-                            variant="outlined"
-                            onClick={handleCopyToClipboard}
-                        >
-                            {amount && fromCurrency && toCurrency && convertedAmount && (
-                                <Typography variant="h5" style={{ textAlign: 'center', width: '100%' }}>
-                                    <div>Converted Amount:</div>
-                                    <div style={{ width: '100%', position: 'relative' }}>
-                                        <span style={{ marginRight: 'auto' }}>{convertedAmount}</span>
-                                        <span style={{ color: 'rgba(30, 30, 30, 0.4)', position: 'absolute', right: '0' }}>{toCurrency}</span>
-                                    </div>
-                                </Typography>
-                            )}
-                            {convertedAmount && (
-                                <FileCopyIcon
-                                    style={{
-                                        position: 'absolute',
-                                        top: '5px',
-                                        right: '5px',
-                                        cursor: 'pointer',
-                                        color: 'rgba(30, 30, 30, 0.4)'
-                                    }}
-                                    fontSize="small" // Use predefined size for smaller icon
-                                    // onClick={handleCopyToClipboard}
-                                />
-                            )}
-                        </Paper>
+                        {loading ? (
+                            <div
+                                style={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    height: '100px',
+                                }}
+                            >
+                                <Loader />
+                            </div>
+                        ) : (
+                            <Paper
+                                elevation={3}
+                                style={{
+                                    padding: '20px',
+                                    backgroundColor: 'rgba(30, 30, 30, 0.1)',
+                                    height: '100px',
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    cursor: convertedAmount ? 'pointer' : 'default',
+                                    position: 'relative',
+                                }}
+                                variant="outlined"
+                                onClick={handleCopyToClipboard}
+                            >
+                                {amount && fromCurrency && toCurrency && convertedAmount && (
+                                    <Typography variant="h5" style={{ textAlign: 'center', width: '100%' }}>
+                                        <div>Converted Amount:</div>
+                                        <div style={{ width: '100%', position: 'relative' }}>
+                                            <span style={{ marginRight: 'auto' }}>{convertedAmount}</span>
+                                            <span style={{ color: 'rgba(30, 30, 30, 0.4)', position: 'absolute', right: '0' }}>{toCurrency}</span>
+                                        </div>
+                                    </Typography>
+                                )}
+                                {convertedAmount && (
+                                    <FileCopyIcon
+                                        style={{
+                                            position: 'absolute',
+                                            top: '5px',
+                                            right: '5px',
+                                            cursor: 'pointer',
+                                            color: 'rgba(30, 30, 30, 0.4)',
+                                        }}
+                                        fontSize="small" // Use predefined size for smaller icon
+                                    />
+                                )}
+                            </Paper>
+                        )}
                     </Grid>
                 </Grid>
             </Paper>

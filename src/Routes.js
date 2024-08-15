@@ -10,9 +10,9 @@ import MuiTheme from './theme';
 
 import InternalServerError from './pages/InternalServerError';
 import NotFound from './pages/NotFound';
-import BadRequest from './pages/BadRequest';
-import Forbidden from './pages/Forbidden';
-import Unauthorized from './pages/Unauthorized';
+// import BadRequest from './pages/BadRequest';
+// import Forbidden from './pages/Forbidden';
+// import Unauthorized from './pages/Unauthorized';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
@@ -272,17 +272,17 @@ const InternalServerError500 = () => {
   return <InternalServerError title="500 - Internal Server Error" description="The server encountered an internal error and was unable to complete your request." />;
 };
 
-const BadRequest400 = () => {
-  return <BadRequest title="400 - Bad Request" description="The server could not understand the request due to invalid syntax." />;
-};
+// const BadRequest400 = () => {
+//   return <BadRequest title="400 - Bad Request" description="The server could not understand the request due to invalid syntax." />;
+// };
 
-const Forbidden403 = () => {
-  return <Forbidden title="403 - Forbidden" description="You do not have permission to access this page." />;
-};
+// const Forbidden403 = () => {
+//   return <Forbidden title="403 - Forbidden" description="You do not have permission to access this page." />;
+// };
 
-const Unauthorized401 = () => {
-  return <Unauthorized title="401 - Unauthorized" description="You need to be logged in to view this page." />;
-};
+// const Unauthorized401 = () => {
+//   return <Unauthorized title="401 - Unauthorized" description="You need to be logged in to view this page." />;
+// };
 
 const Dashboard = lazy(() =>
   import('./pages/Dashboard')

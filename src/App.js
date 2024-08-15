@@ -66,7 +66,7 @@ function ReminderWatcher() {
       }, 20000); // Check every 20s
 
       return () => clearInterval(interval);
-  }, [reminders]);
+  }, [reminders, alarmSound]);
 
   const updateReminderAsReached = (reminder) => {
       let url = API_ENDPOINTS.PUT_REMINDER(reminder.id)
