@@ -17,6 +17,7 @@ const TableContent = ({
     handleSelected,
     handleIsSelectedAll,
     dense,
+    columns,
 }) => {
     const [active, setActive] = useState(true);
     const [isDefault, setIsDefault] = useState(false);
@@ -71,6 +72,7 @@ const TableContent = ({
           handleCheckboxChange={handleCheckboxChange}
           isSelected={selected.indexOf(row.id) !== -1}
           dense={dense}
+          columns={columns}
         />
       ))
     );
@@ -103,6 +105,7 @@ const TableContent = ({
     handleCheckboxChange,
     isSelected,
     dense,
+    columns,
   }) => {
     const history = useHistory();
     const open = Boolean(anchorEl) && currentRowId === row.id;
@@ -156,12 +159,15 @@ const TableContent = ({
               onChange={() => handleCheckboxChange(row.id)}
             />
           </td>
-          <td>
+          {/* <td>
             <div className="d-flex align-items-center">
               <div>{row.code}</div>
             </div>
           </td>
-          <td>{row.name}</td>
+          <td>{row.name}</td> */}
+          {columns.filter(column => column.selected).map((column, index) => (
+            <td key={index}>{row[column.name]}</td>
+          ))}
           <td className="text-center">
             <Button
               size="small"

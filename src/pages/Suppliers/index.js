@@ -39,6 +39,15 @@ const Supplier = () => {
   const [selected, setSelected] = useState([]);
   const [isSelectedAll, setIsSelectedAll] = useState(false);
 
+  const [columns, setColumns] = useState([
+    { name: 'name', label: 'Name', className: 'bg-white text-left', selected: true },
+    { name: 'phone', label: 'Phone', className: 'bg-white text-left', selected: true },
+    { name: 'email', label: 'Email', className: 'bg-white text-left', selected: true },
+    { name: 'contact_name', label: 'Contact Name', className: 'bg-white text-left', selected: false },
+    { name: 'contact_phone', label: 'Contact Phone', className: 'bg-white text-left', selected: false },
+    { name: 'location', label: 'location', className: 'bg-white text-left', selected: false }
+  ]);
+
   const history = useHistory();
 
   const handleNavigation = () => {
@@ -126,6 +135,10 @@ const Supplier = () => {
     setRows(value);
   }
 
+  const handleColumns = (value) => {
+    setColumns(value);
+  }
+
   const handleBatchDelete = () => {
     handleBatchDeleteRecords(selected, API_ENDPOINTS.DELETE_SUPPLIERS, fetchSuppliers)
     setNumSelected(0);
@@ -173,6 +186,7 @@ const Supplier = () => {
           orderBy={orderBy}
           onRequestSort={handleRequestSort}
           headers={headers}
+          columns={columns}
         />}
         tableContent={
           !loading && suppliers.data.length === 0 ? (
@@ -187,6 +201,7 @@ const Supplier = () => {
               selected={selected}
               handleSelected={handleSelected}
               handleIsSelectedAll={handleIsSelectedAll}
+              columns={columns}
             />
           )
         }
@@ -202,6 +217,8 @@ const Supplier = () => {
         isSelectedAll={isSelectedAll}
         rows={rows} // Pass rows state
         handleRows={handleRows} // Pass setRows function
+        columns={columns}
+        handleColumns={handleColumns}
       />
     </>
   )

@@ -16,6 +16,11 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  Popover,
+  List,
+  ListItem,
+  FormControlLabel,
+  Checkbox,
 } from '@material-ui/core';
 
 import Pagination from '@material-ui/lab/Pagination';
@@ -24,9 +29,10 @@ import { motion } from 'framer-motion';
 import DeleteIcon from '@material-ui/icons/Delete';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import IndeterminateCheckBoxIcon from '@material-ui/icons/IndeterminateCheckBox';
+import ViewWeekIcon from '@material-ui/icons/ViewWeek';
 import clsx from 'clsx';
 
-const MainTable = ({ tableContent, tableButtons, Heading, handleClick, tableHeading, handlePageChange, pageCount, filterBar, page, numSelected, handleBatchDelete, isSelectedAll, handleSelectAll, handleDeselectAll, rows, handleRows }) => {
+const MainTable = ({ tableContent, tableButtons, Heading, handleClick, tableHeading, handlePageChange, pageCount, filterBar, page, numSelected, handleBatchDelete, isSelectedAll, handleSelectAll, handleDeselectAll, rows, handleRows, columns, handleColumns }) => {
 
     // const [rows, setRows] = useState('50');
     const [pointerEvents, setPointerEvents] = useState('auto');
@@ -81,6 +87,26 @@ const MainTable = ({ tableContent, tableButtons, Heading, handleClick, tableHead
     }));
 
     const classes = useToolbarStyles();
+
+    const [columnsAnchorEl, setColumnsAnchorEl] = useState(null);
+
+    const handleColumnsPopoverOpen = (event) => {
+      setColumnsAnchorEl(event.currentTarget);
+    };
+
+    const handleColumnsPopoverClose = () => {
+      setColumnsAnchorEl(null);
+    };
+
+    const handleColumnToggle = (index) => {
+      handleColumns((prevColumns) => {
+        const updatedColumns = [...prevColumns];
+        updatedColumns[index].selected = !updatedColumns[index].selected;
+        return updatedColumns;
+      });
+    };
+
+    const open = Boolean(columnsAnchorEl);
 
     return (
       <>
@@ -201,6 +227,51 @@ const MainTable = ({ tableContent, tableButtons, Heading, handleClick, tableHead
                 page={page} // Current page
               />
               <div className="d-flex align-items-center">
+                {/* Edit Columns Popover */}
+                <Tooltip title="Columns">
+                    <Button
+                        style={{ width: '36px', height: '36px', padding: '0' }}
+                        variant="contained"
+                        size="small"
+                        className="btn-primary mx-3"
+                        onClick={handleColumnsPopoverOpen}
+                    >
+                        <span className="btn-wrapper--icon">
+                            <ViewWeekIcon fontSize='small' />
+                        </span>
+                    </Button>
+                </Tooltip>
+                <Popover
+                  open={open}
+                  anchorEl={columnsAnchorEl}
+                  onClose={handleColumnsPopoverClose}
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                  }}
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'left',
+                  }}
+                >
+                  <Typography style={{ padding: '10px' }}>Edit Columns</Typography>
+                  <List>
+                    {columns.map((column, index) => (
+                      <ListItem key={index} dense button>
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                              color="primary"
+                              checked={column.selected}
+                              onChange={() => handleColumnToggle(index)}
+                            />
+                          }
+                          label={column.name}
+                        />
+                      </ListItem>
+                    ))}
+                  </List>
+                </Popover>
                 <span>Show</span>
                 <FormControl size="small" variant="outlined" className="mx-3">
                   <InputLabel id="select-rows-label">Rows</InputLabel>
