@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { FilterBar, MainTable } from '../../pages-components'
 import NoRecords from '../../pages-components/NoRecords';
 import TableContent from './TableContent';
@@ -45,7 +45,7 @@ const Product = () => {
     history.push('/product/create');
   };
 
-  const fetchRecords = () => {
+  const fetchRecords = useCallback(() => {
     const errorCallback = (error) => {
       console.log('Error occurred:', error);
       history.push('/500'); // Navigate to the 500 error page
@@ -69,11 +69,11 @@ const Product = () => {
       setLoading,
       errorCallback,
     );
-  };
+  }, [history, order, orderBy, page, filters, rows]);
 
   useEffect(() => {
     fetchRecords();
-  }, [order, orderBy, page, filters, rows]);
+  }, [fetchRecords]);
 
   useEffect(() => {
     if (filters.length > 0) {
