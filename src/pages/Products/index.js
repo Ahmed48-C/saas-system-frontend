@@ -39,20 +39,27 @@ const Product = () => {
   const [selected, setSelected] = useState([]);
   const [isSelectedAll, setIsSelectedAll] = useState(false);
 
-  const [columns, setColumns] = useState([
-    { name: 'code', label: 'Code', className: 'bg-white text-left', selected: true },
-    { name: 'name', label: 'Name', className: 'bg-white text-left', selected: true },
-    { name: 'description', label: 'Description', className: 'bg-white text-left', selected: false },
-    { name: 'supplier', label: 'Supplier', className: 'bg-white text-left', selected: true },
-    { name: 'brand', label: 'Brand', className: 'bg-white text-left', selected: false },
-    { name: 'measure_unit', label: 'Measure Unit', className: 'bg-white text-left', selected: false },
-    { name: 'weight', label: 'Weight', className: 'bg-white text-left', selected: false },
-    { name: 'height', label: 'Height', className: 'bg-white text-left', selected: false },
-    { name: 'color', label: 'Color', className: 'bg-white text-left', selected: false },
-    { name: 'size', label: 'Size', className: 'bg-white text-left', selected: false },
-    { name: 'dimension_unit', label: 'Dimension Unit', className: 'bg-white text-left', selected: false },
-    { name: 'weight_unit', label: 'Weight Unit', className: 'bg-white text-left', selected: false },
-  ]);
+  const [columns, setColumns] = useState(() => {
+    const savedColumns = localStorage.getItem('productColumns');
+    return savedColumns ? JSON.parse(savedColumns) : [
+        { name: 'code', label: 'Code', className: 'bg-white text-left', selected: true },
+        { name: 'name', label: 'Name', className: 'bg-white text-left', selected: true },
+        { name: 'description', label: 'Description', className: 'bg-white text-left', selected: false },
+        { name: 'supplier', label: 'Supplier', className: 'bg-white text-left', selected: true },
+        { name: 'brand', label: 'Brand', className: 'bg-white text-left', selected: false },
+        { name: 'measure_unit', label: 'Measure Unit', className: 'bg-white text-left', selected: false },
+        { name: 'weight', label: 'Weight', className: 'bg-white text-left', selected: false },
+        { name: 'height', label: 'Height', className: 'bg-white text-left', selected: false },
+        { name: 'color', label: 'Color', className: 'bg-white text-left', selected: false },
+        { name: 'size', label: 'Size', className: 'bg-white text-left', selected: false },
+        { name: 'dimension_unit', label: 'Dimension Unit', className: 'bg-white text-left', selected: false },
+        { name: 'weight_unit', label: 'Weight Unit', className: 'bg-white text-left', selected: false },
+    ];
+  });
+
+  useEffect(() => {
+    localStorage.setItem('productColumns', JSON.stringify(columns));
+  }, [columns]);
 
   const history = useHistory();
 

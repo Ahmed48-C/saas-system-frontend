@@ -39,14 +39,21 @@ const Supplier = () => {
   const [selected, setSelected] = useState([]);
   const [isSelectedAll, setIsSelectedAll] = useState(false);
 
-  const [columns, setColumns] = useState([
-    { name: 'name', label: 'Name', className: 'bg-white text-left', selected: true },
-    { name: 'phone', label: 'Phone', className: 'bg-white text-left', selected: true },
-    { name: 'email', label: 'Email', className: 'bg-white text-left', selected: true },
-    { name: 'contact_name', label: 'Contact Name', className: 'bg-white text-left', selected: false },
-    { name: 'contact_phone', label: 'Contact Phone', className: 'bg-white text-left', selected: false },
-    { name: 'location', label: 'location', className: 'bg-white text-left', selected: false }
-  ]);
+  const [columns, setColumns] = useState(() => {
+    const savedColumns = localStorage.getItem('supplierColumns');
+    return savedColumns ? JSON.parse(savedColumns) : [
+      { name: 'name', label: 'Name', className: 'bg-white text-left', selected: true },
+      { name: 'phone', label: 'Phone', className: 'bg-white text-left', selected: true },
+      { name: 'email', label: 'Email', className: 'bg-white text-left', selected: true },
+      { name: 'contact_name', label: 'Contact Name', className: 'bg-white text-left', selected: false },
+      { name: 'contact_phone', label: 'Contact Phone', className: 'bg-white text-left', selected: false },
+      { name: 'location', label: 'location', className: 'bg-white text-left', selected: false }
+    ];
+  });
+
+  useEffect(() => {
+    localStorage.setItem('supplierColumns', JSON.stringify(columns));
+  }, [columns]);
 
   const history = useHistory();
 
