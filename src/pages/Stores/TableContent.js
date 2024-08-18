@@ -121,7 +121,25 @@ const Row = ({
         };
 
         const errorCallback = (error) => {
-            toast.error('Error ' + error.message);
+            if (error.response && error.response.data) {
+                let errorMessage = error.response.data;
+
+                // If errorMessage is an object, convert it to a string
+                if (typeof errorMessage === 'object') {
+                    errorMessage = JSON.stringify(errorMessage);
+                }
+
+                // Check if the error message includes 'some instances'
+                if (errorMessage.includes('some instances')) {
+                    toast.error('Error: Store(s) is referenced by other objects and cannot be deleted.');
+                } else {
+                    toast.error('Error: ' + errorMessage);
+                }
+            } else {
+                toast.error('Error: ' + error.message);
+            }
+
+            console.log(error);
         };
 
         handleDeleteRecord(id, API_ENDPOINTS.DELETE_STORE, fetchRecords, successCallback, errorCallback)
