@@ -98,12 +98,47 @@ const MainTable = ({ tableContent, tableButtons, Heading, handleClick, tableHead
       setColumnsAnchorEl(null);
     };
 
+    // const handleColumnToggle = (index) => {
+    //   handleColumns((prevColumns) => {
+    //     const updatedColumns = [...prevColumns];
+    //     updatedColumns[index].selected = !updatedColumns[index].selected;
+    //     return updatedColumns;
+    //   });
+    // };
+
     const handleColumnToggle = (index) => {
       handleColumns((prevColumns) => {
         const updatedColumns = [...prevColumns];
         updatedColumns[index].selected = !updatedColumns[index].selected;
+
+        // Update the `isSelectedAll` state based on the new column selection
+        const allSelected = updatedColumns.every(column => column.selected);
+        setIsColumnSelectedAll(allSelected);
+
         return updatedColumns;
       });
+    };
+
+    const [isColumnSelectedAll, setIsColumnSelectedAll] = useState(
+      columns.every(column => column.selected)
+    );
+
+    const handleColumnSelectAll = () => {
+      const updatedColumns = columns.map(column => ({
+        ...column,
+        selected: true,
+      }));
+      handleColumns(updatedColumns);
+      setIsColumnSelectedAll(true);
+    };
+
+    const handleColumnDeselectAll = () => {
+      const updatedColumns = columns.map(column => ({
+        ...column,
+        selected: false,
+      }));
+      handleColumns(updatedColumns);
+      setIsColumnSelectedAll(false);
     };
 
     const open = Boolean(columnsAnchorEl);
@@ -242,31 +277,60 @@ const MainTable = ({ tableContent, tableButtons, Heading, handleClick, tableHead
                     </Button>
                 </Tooltip>
                 <Popover
-                  open={open}
-                  anchorEl={columnsAnchorEl}
-                  onClose={handleColumnsPopoverClose}
-                  anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'left',
-                  }}
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'left',
-                  }}
+                open={open}
+                anchorEl={columnsAnchorEl}
+                onClose={handleColumnsPopoverClose}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'left',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'left',
+                }}
                 >
-                  <Typography style={{ padding: '10px' }}>Edit Columns</Typography>
-                  <List>
+                  <div style={{ display: 'flex', alignItems: 'center', padding: '5px 5px 0 5px' }}>
+                    <Typography style={{ fontSize: '0.875rem', textAlign: 'center', flexGrow: 1 }}>
+                      Edit Columns
+                    </Typography>
+                    {isColumnSelectedAll ? (
+                      <Tooltip title="Deselect All">
+                        <IconButton
+                          variant="outlined"
+                          size="small"
+                          onClick={handleColumnDeselectAll}
+                          style={{ marginLeft: '10px' }} // Add some spacing between the typography and button
+                        >
+                          <IndeterminateCheckBoxIcon />
+                        </IconButton>
+                      </Tooltip>
+                    ) : (
+                      <Tooltip title="Select All">
+                        <IconButton
+                          variant="outlined"
+                          size="small"
+                          onClick={handleColumnSelectAll}
+                          style={{ marginLeft: '10px' }} // Add some spacing between the typography and button
+                        >
+                          <CheckBoxIcon />
+                        </IconButton>
+                      </Tooltip>
+                    )}
+                  </div>
+                  <List style={{ padding: '0' }}>
                     {columns.map((column, index) => (
-                      <ListItem key={index} dense button>
+                      <ListItem key={index} dense button style={{ padding: '2px 10px' }}>
                         <FormControlLabel
                           control={
                             <Checkbox
                               color="primary"
                               checked={column.selected}
                               onChange={() => handleColumnToggle(index)}
+                              size="small" // Make the checkbox smaller
                             />
                           }
                           label={column.name}
+                          // style={{ marginLeft: 'auto', marginRight: 'auto' }} // Center the label and checkbox
                         />
                       </ListItem>
                     ))}

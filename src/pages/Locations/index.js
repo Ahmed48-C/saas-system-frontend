@@ -38,16 +38,23 @@ const Locations = () => {
   const [selected, setSelected] = useState([]);
   const [isSelectedAll, setIsSelectedAll] = useState(false);
 
-  const [columns, setColumns] = useState([
-    { name: 'code', label: 'Code', className: 'bg-white text-left', selected: true },
-    { name: 'name', label: 'Name', className: 'bg-white text-left', selected: true },
-    { name: 'note', label: 'Note', className: 'bg-white text-left', selected: false },
-    { name: 'street', label: 'Street', className: 'bg-white text-left', selected: false },
-    { name: 'city', label: 'City', className: 'bg-white text-left', selected: false },
-    { name: 'state', label: 'state', className: 'bg-white text-left', selected: false },
-    { name: 'postcode', label: 'Postcode', className: 'bg-white text-left', selected: false },
-    { name: 'country', label: 'Country', className: 'bg-white text-left', selected: false }
-  ]);
+  const [columns, setColumns] = useState(() => {
+    const savedColumns = localStorage.getItem('locationColumns');
+    return savedColumns ? JSON.parse(savedColumns) : [
+      { name: 'code', label: 'Code', className: 'bg-white text-left', selected: true },
+      { name: 'name', label: 'Name', className: 'bg-white text-left', selected: true },
+      { name: 'note', label: 'Note', className: 'bg-white text-left', selected: false },
+      { name: 'street', label: 'Street', className: 'bg-white text-left', selected: false },
+      { name: 'city', label: 'City', className: 'bg-white text-left', selected: false },
+      { name: 'state', label: 'state', className: 'bg-white text-left', selected: false },
+      { name: 'postcode', label: 'Postcode', className: 'bg-white text-left', selected: false },
+      { name: 'country', label: 'Country', className: 'bg-white text-left', selected: false }
+    ];
+  });
+
+  useEffect(() => {
+    localStorage.setItem('locationColumns', JSON.stringify(columns));
+  }, [columns]);
 
   const history = useHistory();
 
