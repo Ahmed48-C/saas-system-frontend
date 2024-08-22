@@ -22,27 +22,12 @@ const Form = ({ handleClick, icon, title }) => {
             fetchData();
         }
 
-        // fetchLocations();
         formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/locations/`, setLocations);
     }, [id]);
 
     const fetchData = () => {
         handleFetchRecord(id, API_ENDPOINTS.GET_SUPPLIER, setSuppliersData, setEditLoading);
     };
-
-    // const fetchLocations = () => {
-    //     axios.get(`http://127.0.0.1:8000/api/get/locations/`)
-    //     .then(response => {
-    //         if (Array.isArray(response.data.data)) {
-    //             setLocations(response.data.data);
-    //         } else {
-    //             console.error('Invalid data format:', response.data);
-    //         }
-    //     })
-    //     .catch(error => {
-    //         console.error('Error fetching data:', error);
-    //     });
-    // }
 
     const isFormValid = () => {
         return  suppliersData.name &&

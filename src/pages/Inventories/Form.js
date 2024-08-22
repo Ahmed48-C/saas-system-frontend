@@ -23,8 +23,6 @@ const Form = ({ handleClick, icon, title }) => {
             fetchData();
         }
 
-        // fetchStores();
-        // fetchProducts();
         formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/stores/`, setStores)
         formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/products/`, setProducts)
     }, [id]);
@@ -32,34 +30,6 @@ const Form = ({ handleClick, icon, title }) => {
     const fetchData = () => {
         handleFetchRecord(id, API_ENDPOINTS.GET_INVENTORY, setData, setEditLoading);
     };
-
-    // const fetchStores = () => {
-    //     axios.get(`http://127.0.0.1:8000/api/get/stores/`)
-    //     .then(response => {
-    //         if (Array.isArray(response.data.data)) {
-    //             setStores(response.data.data);
-    //         } else {
-    //             console.error('Invalid data format:', response.data);
-    //         }
-    //     })
-    //     .catch(error => {
-    //         console.error('Error fetching data:', error);
-    //     });
-    // }
-
-    // const fetchProducts = () => {
-    //     axios.get(`http://127.0.0.1:8000/api/get/products/`)
-    //     .then(response => {
-    //         if (Array.isArray(response.data.data)) {
-    //             setProducts(response.data.data);
-    //         } else {
-    //             console.error('Invalid data format:', response.data);
-    //         }
-    //     })
-    //     .catch(error => {
-    //         console.error('Error fetching data:', error);
-    //     });
-    // }
 
     const isFormValid = () => {
         return  data.code &&

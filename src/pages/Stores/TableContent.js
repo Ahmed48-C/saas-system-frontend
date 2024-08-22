@@ -38,43 +38,21 @@ const TableContent = ({
         }
     };
 
-    // const handleCheckboxChange = (id) => {
-    //     const currentIndex = selected.indexOf(id);
-    //     const newSelected = [...selected];
-
-    //     if (currentIndex === -1) {
-    //         newSelected.push(id);
-    //     } else {
-    //         newSelected.splice(currentIndex, 1);
-    //     }
-
-    //     handleSelected(newSelected);
-    //     handleNumSelected(newSelected.length);
-
-    //     if (newSelected.length === records.data.length) {
-    //         handleIsSelectedAll(true);
-    //     } else {
-    //         handleIsSelectedAll(false);
-    //     }
-    // };
-
-    // const updateSelectedWithIds = () => {
-    //     // Handle only 'stores' model
-    //     if (ids.stores && ids.stores.length > 0) {
-    //         handleSelected(prevSelected => [...prevSelected, ...ids.stores]);
-    //         handleNumSelected(ids.stores.length)
-    //         setIds(prevIds => ({ ...prevIds, stores: [] })); // Clear the ids for 'stores'
-    //     }
-    // };
-
-    // // Update selected ids when 'ids.stores' changes
-    // useEffect(() => {
-    //     updateSelectedWithIds();
-    // }, [ids.stores]);
-
     useEffect(() => {
         updateSelectedWithIds('stores', ids, setIds, handleSelected, handleNumSelected);
     }, [ids.stores]);
+
+    useEffect(() => {
+        if (records && records.data && records.data.length > 0) {
+            const allIds = records.data.map(supplier => supplier.id);
+
+            if (selected.length === allIds.length) {
+                handleIsSelectedAll(true);
+            } else {
+                handleIsSelectedAll(false);
+            }
+        }
+    }, [records, selected]);
 
     return loading ? (
         <Loader />
@@ -89,7 +67,6 @@ const TableContent = ({
                 handlePopperClick={handlePopperClick}
                 fetchRecords={fetchRecords}
                 setCurrentRowId={setCurrentRowId}
-                // handleCheckboxChange={handleCheckboxChange}
                 handleCheckboxChange={(id) => handleCheckboxChange(id, selected, handleSelected, handleNumSelected, records, handleIsSelectedAll)}
                 isSelected={selected.includes(row.id)}
                 dense={dense}

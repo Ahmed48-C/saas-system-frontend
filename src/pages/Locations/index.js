@@ -62,36 +62,6 @@ const Locations = () => {
     history.push('/location/create');
   };
 
-  // const fetchLocations = () => {
-  //   const errorCallback = (error) => {
-  //     console.log('Error occurred:', error);
-  //     history.push('/500'); // Navigate to the 500 error page
-  //   };
-  //   fetchAll(
-  //     API_ENDPOINTS.GET_LOCATIONS,
-  //     page,
-  //     rows,
-  //     order,
-  //     orderBy,
-  //     filters,
-  //     (data) => {
-  //       setLocations(data);
-  //       if (data.actual_total_count) {
-  //         setTotalPages(Math.ceil(data.actual_total_count / rows));
-  //       } else {
-  //         setTotalPages(0);
-  //       }
-  //       setLoading(false);
-  //     },
-  //     setLoading,
-  //     errorCallback,
-  //   );
-  // };
-
-  // useEffect(() => {
-  //   fetchLocations();
-  // }, [order, orderBy, page, filters, rows]);
-
   const fetchLocations = useCallback(() => {
     const errorCallback = (error) => {
       console.log('Error occurred:', error);

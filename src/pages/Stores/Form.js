@@ -24,7 +24,6 @@ const Form = ({ handleClick, icon, title }) => {
         handleFetchRecord(id, API_ENDPOINTS.GET_STORE, setData, setEditLoading);
     };
 
-
     const { countries } = useCountries();
 
     const countryOptions = countries

@@ -45,7 +45,7 @@ const Form = ({ handleClick, icon, title }) => {
     };
 
     const handleInputChange = (field) => (e) => {
-    setLocationsData({ ...locationsData, [field]: e.target.value });
+        setLocationsData({ ...locationsData, [field]: e.target.value });
     };
 
     return (

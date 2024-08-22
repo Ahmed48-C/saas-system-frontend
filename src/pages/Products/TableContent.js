@@ -38,29 +38,21 @@ const TableContent = ({
     }
   };
 
-  // const handleCheckboxChange = (id) => {
-  //   const currentIndex = selected.indexOf(id);
-  //   const newSelected = [...selected];
-
-  //   if (currentIndex === -1) {
-  //     newSelected.push(id);
-  //   } else {
-  //     newSelected.splice(currentIndex, 1);
-  //   }
-
-  //   handleSelected(newSelected);
-  //   handleNumSelected(newSelected.length);
-
-  //   if (newSelected.length === records.data.length) {
-  //     handleIsSelectedAll(true);
-  //   } else {
-  //     handleIsSelectedAll(false);
-  //   }
-  // };
-
   useEffect(() => {
     updateSelectedWithIds('products', ids, setIds, handleSelected, handleNumSelected);
   }, [ids.products]);
+
+  useEffect(() => {
+    if (records && records.data && records.data.length > 0) {
+        const allIds = records.data.map(supplier => supplier.id);
+
+        if (selected.length === allIds.length) {
+            handleIsSelectedAll(true);
+        } else {
+            handleIsSelectedAll(false);
+        }
+    }
+  }, [records, selected]);
 
   return loading ? (
     <Loader />
