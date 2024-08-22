@@ -12,25 +12,28 @@ import { RemindersProvider, useReminders } from './config/RemindersContext';
 import axios from 'axios';
 import API_ENDPOINTS from './config/apis';
 import reminderSound from './assets/images/reminder-sound.mp3';
+import { SelectedIDsProvider } from './config/SelectedIdsContext';
 
 const store = configureStore();
 
 function App() {
   return (
-    <RemindersProvider>
-      <Provider store={store}>
-        <ToastContainer
-          position="bottom-center"
-          limit={3}
-        />
-        <ReminderWatcher /> {/* Separate the reminder logic here */}
-        <BrowserRouter>
-          <ScrollToTop>
-            <Routes />
-          </ScrollToTop>
-        </BrowserRouter>
-      </Provider>
-    </RemindersProvider>
+    <SelectedIDsProvider>
+      <RemindersProvider>
+        <Provider store={store}>
+          <ReminderWatcher /> {/* Separate the reminder logic here */}
+          <BrowserRouter>
+            <ToastContainer
+              position="bottom-center"
+              limit={3}
+            />
+            <ScrollToTop>
+              <Routes />
+            </ScrollToTop>
+          </BrowserRouter>
+        </Provider>
+      </RemindersProvider>
+    </SelectedIDsProvider>
   );
 }
 
