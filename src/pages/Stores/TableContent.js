@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, ButtonGroup, Checkbox, Fade, lighten, makeStyles, Popper, TableRow } from '@material-ui/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Loader } from '../../pages-components';
@@ -7,6 +7,9 @@ import API_ENDPOINTS from '../../config/apis';
 import handleDeleteRecord from '../../functions/pages/handleDeleteRecord';
 import clsx from 'clsx';
 import { toast } from 'react-toastify';
+import HandleTableErrorCallback from '../../functions/pages/HandleTableErrorCallback';
+import { UseIDs } from '../../config/SelectedIdsContext'
+import { updateSelectedWithIds } from '../../functions/pages/updateSelectedWithIds';
 
 const TableContent = ({
     fetchRecords,
@@ -21,6 +24,7 @@ const TableContent = ({
 }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const [currentRowId, setCurrentRowId] = useState(null);
+    const { ids, setIds } = UseIDs();
 
     const handlePopperClick = (event, rowId) => {
         if (currentRowId === rowId) {
@@ -52,6 +56,24 @@ const TableContent = ({
         }
     };
 
+    // const updateSelectedWithIds = () => {
+    //     // Handle only 'stores' model
+    //     if (ids.stores && ids.stores.length > 0) {
+    //         handleSelected(prevSelected => [...prevSelected, ...ids.stores]);
+    //         handleNumSelected(ids.stores.length)
+    //         setIds(prevIds => ({ ...prevIds, stores: [] })); // Clear the ids for 'stores'
+    //     }
+    // };
+
+    // // Update selected ids when 'ids.stores' changes
+    // useEffect(() => {
+    //     updateSelectedWithIds();
+    // }, [ids.stores]);
+
+    useEffect(() => {
+        updateSelectedWithIds('stores', ids, setIds, handleSelected, handleNumSelected);
+    }, [ids.stores]);
+
     return loading ? (
         <Loader />
     ) : (
@@ -66,7 +88,7 @@ const TableContent = ({
                 fetchRecords={fetchRecords}
                 setCurrentRowId={setCurrentRowId}
                 handleCheckboxChange={handleCheckboxChange}
-                isSelected={selected.indexOf(row.id) !== -1}
+                isSelected={selected.includes(row.id)}
                 dense={dense}
                 columns={columns}
             />
@@ -104,6 +126,7 @@ const Row = ({
     const open = Boolean(anchorEl) && currentRowId === row.id;
     const id = open ? 'transitions-popper' : undefined;
     const classes = useToolbarStyles();
+    const { ids, setIds } = UseIDs();
 
     const handleButtonClick = () => {
         setAnchorEl(null);
@@ -120,29 +143,33 @@ const Row = ({
             toast.success('Deleted Store Successfully');
         };
 
-        const errorCallback = (error) => {
-            if (error.response && error.response.data) {
-                let errorMessage = error.response.data;
+        // const errorCallback = (error) => {
+        //     if (error.response && error.response.data) {
+        //         let errorMessage = error.response.data;
 
-                // If errorMessage is an object, convert it to a string
-                if (typeof errorMessage === 'object') {
-                    errorMessage = JSON.stringify(errorMessage);
-                }
+        //         // If errorMessage is an object, convert it to a string
+        //         if (typeof errorMessage === 'object') {
+        //             errorMessage = JSON.stringify(errorMessage);
+        //         }
 
-                // Check if the error message includes 'some instances'
-                if (errorMessage.includes('some instances')) {
-                    toast.error('Error: Store(s) is referenced by other objects and cannot be deleted.');
-                } else {
-                    toast.error('Error: ' + errorMessage);
-                }
-            } else {
-                toast.error('Error: ' + error.message);
-            }
+        //         // Check if the error message includes 'some instances'
+        //         if (errorMessage.includes('some instances')) {
+        //             toast.error('Error: Store(s) is referenced by other objects and cannot be deleted.');
+        //         } else {
+        //             toast.error('Error: ' + errorMessage);
+        //         }
+        //     } else {
+        //         toast.error('Error: ' + error.message);
+        //     }
 
-            console.log(error);
-        };
+        //     console.log(error);
+        // };
 
-        handleDeleteRecord(id, API_ENDPOINTS.DELETE_STORE, fetchRecords, successCallback, errorCallback)
+        // handleDeleteRecord(id, API_ENDPOINTS.DELETE_STORE, fetchRecords, successCallback, errorCallback)
+
+        handleDeleteRecord(id, API_ENDPOINTS.DELETE_STORE, fetchRecords, successCallback, (error) => {
+            HandleTableErrorCallback(error, 'Store', ids, setIds); // Pass the error and entity name to the reusable function
+        });
     };
 
     return (
@@ -156,12 +183,6 @@ const Row = ({
                 onChange={() => handleCheckboxChange(row.id)}
                 />
             </td>
-            {/* <td>
-                <div className="d-flex align-items-center">
-                <div>{row.code}</div>
-                </div>
-            </td>
-            <td>{row.name}</td> */}
             {columns.filter(column => column.selected).map((column, index) => (
                 <td key={index}>{row[column.name]}</td>
             ))}

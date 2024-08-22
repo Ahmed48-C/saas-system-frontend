@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, ButtonGroup, Checkbox, Fade, lighten, makeStyles, Popper, TableRow } from '@material-ui/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Loader } from '../../pages-components';
@@ -7,6 +7,9 @@ import API_ENDPOINTS from '../../config/apis';
 import handleDeleteRecord from '../../functions/pages/handleDeleteRecord';
 import clsx from 'clsx';
 import { toast } from 'react-toastify';
+import HandleTableErrorCallback from '../../functions/pages/HandleTableErrorCallback';
+import { UseIDs } from '../../config/SelectedIdsContext'
+import { updateSelectedWithIds } from '../../functions/pages/updateSelectedWithIds';
 
 const TableContent = ({
     fetchLocations,
@@ -23,6 +26,7 @@ const TableContent = ({
     const [isDefault, setIsDefault] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
     const [currentRowId, setCurrentRowId] = useState(null);
+    const { ids, setIds } = UseIDs();
 
     const handlePopperClick = (event, rowId) => {
       if (currentRowId === rowId) {
@@ -54,6 +58,10 @@ const TableContent = ({
       }
     };
 
+    useEffect(() => {
+      updateSelectedWithIds('locations', ids, setIds, handleSelected, handleNumSelected);
+    }, [ids.locations]);
+
     return loading ? (
       <Loader />
     ) : (
@@ -70,7 +78,7 @@ const TableContent = ({
           fetchLocations={fetchLocations}
           setCurrentRowId={setCurrentRowId}
           handleCheckboxChange={handleCheckboxChange}
-          isSelected={selected.indexOf(row.id) !== -1}
+          isSelected={selected.includes(row.id)}
           dense={dense}
           columns={columns}
         />
@@ -111,6 +119,7 @@ const TableContent = ({
     const open = Boolean(anchorEl) && currentRowId === row.id;
     const id = open ? 'transitions-popper' : undefined;
     const classes = useToolbarStyles();
+    const { ids, setIds } = UseIDs();
 
     const handleButtonClick = () => {
       setAnchorEl(null);
@@ -141,29 +150,33 @@ const TableContent = ({
         toast.success('Deleted Location Successfully');
       };
 
-      const errorCallback = (error) => {
-        if (error.response && error.response.data) {
-            let errorMessage = error.response.data;
+      // const errorCallback = (error) => {
+      //   if (error.response && error.response.data) {
+      //       let errorMessage = error.response.data;
 
-            // If errorMessage is an object, convert it to a string
-            if (typeof errorMessage === 'object') {
-              errorMessage = JSON.stringify(errorMessage);
-            }
+      //       // If errorMessage is an object, convert it to a string
+      //       if (typeof errorMessage === 'object') {
+      //         errorMessage = JSON.stringify(errorMessage);
+      //       }
 
-            // Check if the error message includes 'some instances'
-            if (errorMessage.includes('some instances')) {
-                toast.error('Error: Location(s) is referenced by other objects and cannot be deleted.');
-            } else {
-                toast.error('Error: ' + errorMessage);
-            }
-        } else {
-            toast.error('Error: ' + error.message);
-        }
+      //       // Check if the error message includes 'some instances'
+      //       if (errorMessage.includes('some instances')) {
+      //           toast.error('Error: Location(s) is referenced by other objects and cannot be deleted.');
+      //       } else {
+      //           toast.error('Error: ' + errorMessage);
+      //       }
+      //   } else {
+      //       toast.error('Error: ' + error.message);
+      //   }
 
-        console.log(error);
-      };
+      //   console.log(error);
+      // };
 
-      handleDeleteRecord(id, API_ENDPOINTS.DELETE_LOCATION, fetchLocations, successCallback, errorCallback)
+      // handleDeleteRecord(id, API_ENDPOINTS.DELETE_LOCATION, fetchLocations, successCallback, errorCallback)
+
+      handleDeleteRecord(id, API_ENDPOINTS.DELETE_LOCATION, fetchLocations, successCallback, (error) => {
+        HandleTableErrorCallback(error, 'Location', ids, setIds); // Pass the error and entity name to the reusable function
+      });
     };
 
     return (
@@ -177,12 +190,6 @@ const TableContent = ({
               onChange={() => handleCheckboxChange(row.id)}
             />
           </td>
-          {/* <td>
-            <div className="d-flex align-items-center">
-              <div>{row.code}</div>
-            </div>
-          </td>
-          <td>{row.name}</td> */}
           {columns.filter(column => column.selected).map((column, index) => (
             <td key={index}>{row[column.name]}</td>
           ))}
