@@ -31,27 +31,12 @@ const Form = ({ handleClick, icon, title }) => {
             fetchData();
         }
 
-        // fetchSuppliers();
         formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/suppliers/`, setSuppliers)
     }, [id]);
 
     const fetchData = () => {
         handleFetchRecord(id, API_ENDPOINTS.GET_PRODUCT, setData, setEditLoading);
     };
-
-    // const fetchSuppliers = () => {
-    //     axios.get(`http://127.0.0.1:8000/api/get/suppliers/`)
-    //     .then(response => {
-    //         if (Array.isArray(response.data.data)) {
-    //             setSuppliers(response.data.data);
-    //         } else {
-    //             console.error('Invalid data format:', response.data);
-    //         }
-    //     })
-    //     .catch(error => {
-    //         console.error('Error fetching data:', error);
-    //     });
-    // }
 
     const isFormValid = () => {
         return  data.code &&

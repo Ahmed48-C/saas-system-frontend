@@ -38,29 +38,22 @@ const TableContent = ({
     }
   };
 
-  // const handleCheckboxChange = (id) => {
-  //   const currentIndex = selected.indexOf(id);
-  //   const newSelected = [...selected];
-
-  //   if (currentIndex === -1) {
-  //     newSelected.push(id);
-  //   } else {
-  //     newSelected.splice(currentIndex, 1);
-  //   }
-
-  //   handleSelected(newSelected);
-  //   handleNumSelected(newSelected.length);
-
-  //   if (newSelected.length === suppliers.data.length) {
-  //     handleIsSelectedAll(true);
-  //   } else {
-  //     handleIsSelectedAll(false);
-  //   }
-  // };
-
   useEffect(() => {
     updateSelectedWithIds('suppliers', ids, setIds, handleSelected, handleNumSelected);
   }, [ids.suppliers]);
+
+  useEffect(() => {
+    if (suppliers && suppliers.data && suppliers.data.length > 0) {
+        const allIds = suppliers.data.map(supplier => supplier.id);
+
+        if (selected.length === allIds.length) {
+            handleIsSelectedAll(true);
+        } else {
+            handleIsSelectedAll(false);
+        }
+    }
+  }, [suppliers, selected]);
+
 
   return loading ? (
     <Loader />
@@ -75,7 +68,6 @@ const TableContent = ({
         handlePopperClick={handlePopperClick}
         fetchSuppliers={fetchSuppliers}
         setCurrentRowId={setCurrentRowId}
-        // handleCheckboxChange={handleCheckboxChange}
         handleCheckboxChange={(id) => handleCheckboxChange(id, selected, handleSelected, handleNumSelected, suppliers, handleIsSelectedAll)}
         isSelected={selected.includes(row.id)}
         dense={dense}
@@ -84,19 +76,6 @@ const TableContent = ({
     ))
   );
 };
-
-// const useToolbarStyles = makeStyles((theme) => ({
-//   highlight:
-//     theme.palette.type === 'light'
-//       ? {
-//           // color: theme.palette.secondary.main,
-//           backgroundColor: lighten(theme.palette.secondary.light, 0.85),
-//         }
-//       : {
-//           // color: theme.palette.text.primary,
-//           backgroundColor: theme.palette.secondary.dark,
-//         },
-// }));
 
 const SupplierRow = ({
   row,

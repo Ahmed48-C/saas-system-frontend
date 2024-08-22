@@ -10,30 +10,9 @@ const FilterContent = ({ currentFilter, setCurrentFilter }) => {
     const [loading, setLoading] = useState(true);
     const [suppliers, setSuppliers] = useState([]);
 
-    // const formatName = (name) => {
-    //     return name.length > 20 ? `${name.slice(0, 20)}...` : name;
-    // };
-
     useEffect(() => {
-        // fetchSuppliers();
         filterFetchDropdownRecords(`http://127.0.0.1:8000/api/get/suppliers/`, setSuppliers)
     }, []);
-
-    // const fetchSuppliers = () => {
-    //     axios.get(API_ENDPOINTS.GET_SUPPLIERS())
-    //     .then(response => {
-    //         setLoading(false);
-    //         if (Array.isArray(response.data.data)) {
-    //             setSuppliers(response.data.data);
-    //         } else {
-    //             console.error('Invalid data format:', response.data);
-    //         }
-    //     })
-    //     .catch(error => {
-    //         setLoading(false);
-    //         console.error('Error fetching data:', error);
-    //     });
-    // }
 
     return (
         <>
@@ -85,7 +64,6 @@ const FilterContent = ({ currentFilter, setCurrentFilter }) => {
                 <InputSelect
                     selectItems={suppliers.map(supplier => ({
                         value: supplier.id.toString(),
-                        // name: formatName(supplier.name)
                         name: formatFilterRecordDropdown(supplier.name)
                     }))}
                     label='Supplier'

@@ -38,29 +38,21 @@ const TableContent = ({
         }
     };
 
-    // const handleCheckboxChange = (id) => {
-    //     const currentIndex = selected.indexOf(id);
-    //     const newSelected = [...selected];
-
-    //     if (currentIndex === -1) {
-    //         newSelected.push(id);
-    //     } else {
-    //         newSelected.splice(currentIndex, 1);
-    //     }
-
-    //     handleSelected(newSelected);
-    //     handleNumSelected(newSelected.length);
-
-    //     if (newSelected.length === records.data.length) {
-    //         handleIsSelectedAll(true);
-    //     } else {
-    //         handleIsSelectedAll(false);
-    //     }
-    // };
-
     useEffect(() => {
         updateSelectedWithIds('inventories', ids, setIds, handleSelected, handleNumSelected);
     }, [ids.inventories]);
+
+    useEffect(() => {
+        if (records && records.data && records.data.length > 0) {
+            const allIds = records.data.map(supplier => supplier.id);
+
+            if (selected.length === allIds.length) {
+                handleIsSelectedAll(true);
+            } else {
+                handleIsSelectedAll(false);
+            }
+        }
+    }, [records, selected]);
 
     return loading ? (
         <Loader />
@@ -75,9 +67,7 @@ const TableContent = ({
                 handlePopperClick={handlePopperClick}
                 fetchRecords={fetchRecords}
                 setCurrentRowId={setCurrentRowId}
-                // handleCheckboxChange={handleCheckboxChange}
                 handleCheckboxChange={(id) => handleCheckboxChange(id, selected, handleSelected, handleNumSelected, records, handleIsSelectedAll)}
-                // isSelected={selected.indexOf(row.id) !== -1}
                 isSelected={selected.includes(row.id)}
                 dense={dense}
                 columns={columns}

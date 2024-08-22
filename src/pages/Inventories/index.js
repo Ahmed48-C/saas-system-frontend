@@ -63,36 +63,6 @@ const Inventories = () => {
         history.push('/inventory/create');
     };
 
-    // const fetchRecords = () => {
-    //     const errorCallback = (error) => {
-    //     console.log('Error occurred:', error);
-    //     history.push('/500'); // Navigate to the 500 error page
-    //     };
-    //     fetchAll(
-    //     API_ENDPOINTS.GET_INVENTORIES,
-    //     page,
-    //     rows,
-    //     order,
-    //     orderBy,
-    //     filters,
-    //     (data) => {
-    //         setRecords(data);
-    //         if (data.actual_total_count) {
-    //         setTotalPages(Math.ceil(data.actual_total_count / rows));
-    //         } else {
-    //         setTotalPages(0);
-    //         }
-    //         setLoading(false);
-    //     },
-    //     setLoading,
-    //     errorCallback,
-    //     );
-    // };
-
-    // useEffect(() => {
-    //     fetchRecords();
-    // }, [order, orderBy, page, filters, rows]);
-
     const fetchRecords = useCallback(() => {
         const errorCallback = (error) => {
             console.log('Error occurred:', error);

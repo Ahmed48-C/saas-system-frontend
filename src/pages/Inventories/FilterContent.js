@@ -11,48 +11,10 @@ const FilterContent = ({ currentFilter, setCurrentFilter }) => {
     const [products, setProducts] = useState([]);
     const [stores, setStores] = useState([]);
 
-    // const formatName = (name) => {
-    //     return name.length > 20 ? `${name.slice(0, 20)}...` : name;
-    // };
-
     useEffect(() => {
-        // fetchProducts();
-        // fetchStores();
         filterFetchDropdownRecords(`http://127.0.0.1:8000/api/get/products/`, setProducts)
         filterFetchDropdownRecords(`http://127.0.0.1:8000/api/get/stores/`, setStores)
     }, []);
-
-    // const fetchProducts = () => {
-    //     axios.get(API_ENDPOINTS.GET_PRODUCTS())
-    //     .then(response => {
-    //         setLoading(false);
-    //         if (Array.isArray(response.data.data)) {
-    //             setProducts(response.data.data);
-    //         } else {
-    //             console.error('Invalid data format:', response.data);
-    //         }
-    //     })
-    //     .catch(error => {
-    //         setLoading(false);
-    //         console.error('Error fetching data:', error);
-    //     });
-    // }
-
-    // const fetchStores = () => {
-    //     axios.get(API_ENDPOINTS.GET_STORES())
-    //     .then(response => {
-    //         setLoading(false);
-    //         if (Array.isArray(response.data.data)) {
-    //             setStores(response.data.data);
-    //         } else {
-    //             console.error('Invalid data format:', response.data);
-    //         }
-    //     })
-    //     .catch(error => {
-    //         setLoading(false);
-    //         console.error('Error fetching data:', error);
-    //     });
-    // }
 
     return (
         <>
@@ -144,7 +106,6 @@ const FilterContent = ({ currentFilter, setCurrentFilter }) => {
                 <InputSelect
                     selectItems={products.map(product => ({
                         value: product.id.toString(),
-                        // name: formatName(product.name)
                         name: formatFilterRecordDropdown(product.name)
                     }))}
                     label='Product'
@@ -158,7 +119,6 @@ const FilterContent = ({ currentFilter, setCurrentFilter }) => {
                 <InputSelect
                     selectItems={stores.map(store => ({
                         value: store.id.toString(),
-                        // name: formatName(store.name)
                         name: formatFilterRecordDropdown(store.name)
                     }))}
                     label='Store'
