@@ -7,6 +7,8 @@ import { useParams } from 'react-router-dom';
 import API_ENDPOINTS from '../../config/apis'
 import { handleFetchRecord } from '../../functions/pages/handleFetchRecord'
 import axios from 'axios'
+import { formatFormRecordDropdown } from '../../functions/pages/formatFormRecordDropdown'
+import { formFetchDropdownRecords } from '../../functions/pages/formFetchDropdownRecords'
 
 const Form = ({ handleClick, icon, title }) => {
     const { id } = useParams(); // Get the ID from the URL
@@ -21,41 +23,43 @@ const Form = ({ handleClick, icon, title }) => {
             fetchData();
         }
 
-        fetchStores();
-        fetchProducts();
+        // fetchStores();
+        // fetchProducts();
+        formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/stores/`, setStores)
+        formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/products/`, setProducts)
     }, [id]);
 
     const fetchData = () => {
         handleFetchRecord(id, API_ENDPOINTS.GET_INVENTORY, setData, setEditLoading);
     };
 
-    const fetchStores = () => {
-        axios.get(`http://127.0.0.1:8000/api/get/stores/`)
-        .then(response => {
-            if (Array.isArray(response.data.data)) {
-                setStores(response.data.data);
-            } else {
-                console.error('Invalid data format:', response.data);
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching data:', error);
-        });
-    }
+    // const fetchStores = () => {
+    //     axios.get(`http://127.0.0.1:8000/api/get/stores/`)
+    //     .then(response => {
+    //         if (Array.isArray(response.data.data)) {
+    //             setStores(response.data.data);
+    //         } else {
+    //             console.error('Invalid data format:', response.data);
+    //         }
+    //     })
+    //     .catch(error => {
+    //         console.error('Error fetching data:', error);
+    //     });
+    // }
 
-    const fetchProducts = () => {
-        axios.get(`http://127.0.0.1:8000/api/get/products/`)
-        .then(response => {
-            if (Array.isArray(response.data.data)) {
-                setProducts(response.data.data);
-            } else {
-                console.error('Invalid data format:', response.data);
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching data:', error);
-        });
-    }
+    // const fetchProducts = () => {
+    //     axios.get(`http://127.0.0.1:8000/api/get/products/`)
+    //     .then(response => {
+    //         if (Array.isArray(response.data.data)) {
+    //             setProducts(response.data.data);
+    //         } else {
+    //             console.error('Invalid data format:', response.data);
+    //         }
+    //     })
+    //     .catch(error => {
+    //         console.error('Error fetching data:', error);
+    //     });
+    // }
 
     const isFormValid = () => {
         return  data.code &&
@@ -65,10 +69,6 @@ const Form = ({ handleClick, icon, title }) => {
 
     const handleInputChange = (field) => (e) => {
         setData({ ...data, [field]: e.target.value });
-    };
-
-    const formatName = (name) => {
-        return name.length > 20 ? `${name.slice(0, 20)}...` : name;
     };
 
     return (
@@ -112,7 +112,7 @@ const Form = ({ handleClick, icon, title }) => {
                         <InputSelect
                         selectItems={stores.map(store => ({
                             value: store.id,
-                            name: formatName(store.name)
+                            name: formatFormRecordDropdown(store.name)
                         }))}
                         label='Store'
                         name='store_id'
@@ -126,7 +126,7 @@ const Form = ({ handleClick, icon, title }) => {
                         <InputSelect
                         selectItems={products.map(product => ({
                             value: product.id,
-                            name: formatName(product.name)
+                            name: formatFormRecordDropdown(product.name)
                         }))}
                         label='Product'
                         name='product_id'

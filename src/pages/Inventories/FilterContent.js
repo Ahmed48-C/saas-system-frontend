@@ -2,52 +2,57 @@ import React, { useEffect, useState } from 'react'
 import { InputSelect, Loader, Textarea } from '../../pages-components'
 import { Grid } from '@material-ui/core'
 import axios from 'axios';
+import API_ENDPOINTS from '../../config/apis';
+import { formatFilterRecordDropdown } from '../../functions/pages/formatFilterRecordDropdown';
+import { filterFetchDropdownRecords } from '../../functions/pages/filterFetchDropdownRecords';
 
 const FilterContent = ({ currentFilter, setCurrentFilter }) => {
     const [loading, setLoading] = useState(true);
     const [products, setProducts] = useState([]);
     const [stores, setStores] = useState([]);
 
-    const formatName = (name) => {
-        return name.length > 20 ? `${name.slice(0, 20)}...` : name;
-    };
+    // const formatName = (name) => {
+    //     return name.length > 20 ? `${name.slice(0, 20)}...` : name;
+    // };
 
     useEffect(() => {
-        fetchProducts();
-        fetchStores();
+        // fetchProducts();
+        // fetchStores();
+        filterFetchDropdownRecords(`http://127.0.0.1:8000/api/get/products/`, setProducts)
+        filterFetchDropdownRecords(`http://127.0.0.1:8000/api/get/stores/`, setStores)
     }, []);
 
-    const fetchProducts = () => {
-        axios.get(`http://127.0.0.1:8000/api/get/products/`)
-        .then(response => {
-            setLoading(false);
-            if (Array.isArray(response.data.data)) {
-                setProducts(response.data.data);
-            } else {
-                console.error('Invalid data format:', response.data);
-            }
-        })
-        .catch(error => {
-            setLoading(false);
-            console.error('Error fetching data:', error);
-        });
-    }
+    // const fetchProducts = () => {
+    //     axios.get(API_ENDPOINTS.GET_PRODUCTS())
+    //     .then(response => {
+    //         setLoading(false);
+    //         if (Array.isArray(response.data.data)) {
+    //             setProducts(response.data.data);
+    //         } else {
+    //             console.error('Invalid data format:', response.data);
+    //         }
+    //     })
+    //     .catch(error => {
+    //         setLoading(false);
+    //         console.error('Error fetching data:', error);
+    //     });
+    // }
 
-    const fetchStores = () => {
-        axios.get(`http://127.0.0.1:8000/api/get/stores/`)
-        .then(response => {
-            setLoading(false);
-            if (Array.isArray(response.data.data)) {
-                setStores(response.data.data);
-            } else {
-                console.error('Invalid data format:', response.data);
-            }
-        })
-        .catch(error => {
-            setLoading(false);
-            console.error('Error fetching data:', error);
-        });
-    }
+    // const fetchStores = () => {
+    //     axios.get(API_ENDPOINTS.GET_STORES())
+    //     .then(response => {
+    //         setLoading(false);
+    //         if (Array.isArray(response.data.data)) {
+    //             setStores(response.data.data);
+    //         } else {
+    //             console.error('Invalid data format:', response.data);
+    //         }
+    //     })
+    //     .catch(error => {
+    //         setLoading(false);
+    //         console.error('Error fetching data:', error);
+    //     });
+    // }
 
     return (
         <>
@@ -139,7 +144,8 @@ const FilterContent = ({ currentFilter, setCurrentFilter }) => {
                 <InputSelect
                     selectItems={products.map(product => ({
                         value: product.id.toString(),
-                        name: formatName(product.name)
+                        // name: formatName(product.name)
+                        name: formatFilterRecordDropdown(product.name)
                     }))}
                     label='Product'
                     name='product'
@@ -152,7 +158,8 @@ const FilterContent = ({ currentFilter, setCurrentFilter }) => {
                 <InputSelect
                     selectItems={stores.map(store => ({
                         value: store.id.toString(),
-                        name: formatName(store.name)
+                        // name: formatName(store.name)
+                        name: formatFilterRecordDropdown(store.name)
                     }))}
                     label='Store'
                     name='store'

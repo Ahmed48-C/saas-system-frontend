@@ -9,6 +9,8 @@ import { handleFetchRecord } from '../../functions/pages/handleFetchRecord'
 import axios from "axios";
 import AdornmentTextarea from '../../pages-components/AdornmentTextArea'
 import getUnits from '../../config/getUnits'
+import { formatFormRecordDropdown } from '../../functions/pages/formatFormRecordDropdown'
+import { formFetchDropdownRecords } from '../../functions/pages/formFetchDropdownRecords'
 
 const Form = ({ handleClick, icon, title }) => {
     const { id } = useParams();
@@ -29,30 +31,27 @@ const Form = ({ handleClick, icon, title }) => {
             fetchData();
         }
 
-        fetchSuppliers();
+        // fetchSuppliers();
+        formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/suppliers/`, setSuppliers)
     }, [id]);
-
-    useEffect(() => {
-        console.log(suppliers); // Log suppliers whenever it changes
-    }, [suppliers]);
 
     const fetchData = () => {
         handleFetchRecord(id, API_ENDPOINTS.GET_PRODUCT, setData, setEditLoading);
     };
 
-    const fetchSuppliers = () => {
-        axios.get(`http://127.0.0.1:8000/api/get/suppliers/`)
-        .then(response => {
-            if (Array.isArray(response.data.data)) {
-                setSuppliers(response.data.data);
-            } else {
-                console.error('Invalid data format:', response.data);
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching data:', error);
-        });
-    }
+    // const fetchSuppliers = () => {
+    //     axios.get(`http://127.0.0.1:8000/api/get/suppliers/`)
+    //     .then(response => {
+    //         if (Array.isArray(response.data.data)) {
+    //             setSuppliers(response.data.data);
+    //         } else {
+    //             console.error('Invalid data format:', response.data);
+    //         }
+    //     })
+    //     .catch(error => {
+    //         console.error('Error fetching data:', error);
+    //     });
+    // }
 
     const isFormValid = () => {
         return  data.code &&
@@ -64,15 +63,9 @@ const Form = ({ handleClick, icon, title }) => {
         setData({ ...data, [field]: e.target.value });
     };
 
-    const formatName = (name) => {
-        return name.length > 20 ? `${name.slice(0, 20)}...` : name;
-    };
-
     const handleUnitChange = (setValue) => (event) => {
         setValue(event.target.value);
     };
-
-    console.log(data.weight_unit)
 
     return (
         <>
@@ -142,7 +135,7 @@ const Form = ({ handleClick, icon, title }) => {
                         <InputSelect
                         selectItems={suppliers.map(supplier => ({
                             value: supplier.id,
-                            name: formatName(supplier.name)
+                            name: formatFormRecordDropdown(supplier.name)
                         }))}
                         label='Supplier'
                         name='supplier_id'

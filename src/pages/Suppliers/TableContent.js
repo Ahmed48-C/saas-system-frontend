@@ -10,6 +10,8 @@ import { toast } from 'react-toastify';
 import HandleTableErrorCallback from '../../functions/pages/HandleTableErrorCallback';
 import { UseIDs } from '../../config/SelectedIdsContext'
 import { updateSelectedWithIds } from '../../functions/pages/updateSelectedWithIds';
+import { handleCheckboxChange } from '../../functions/pages/handleCheckboxChange';
+import { selectedRowStyles } from '../../theme/selectedRowStyles';
 
 const TableContent = ({
     fetchSuppliers,
@@ -36,25 +38,25 @@ const TableContent = ({
     }
   };
 
-  const handleCheckboxChange = (id) => {
-    const currentIndex = selected.indexOf(id);
-    const newSelected = [...selected];
+  // const handleCheckboxChange = (id) => {
+  //   const currentIndex = selected.indexOf(id);
+  //   const newSelected = [...selected];
 
-    if (currentIndex === -1) {
-      newSelected.push(id);
-    } else {
-      newSelected.splice(currentIndex, 1);
-    }
+  //   if (currentIndex === -1) {
+  //     newSelected.push(id);
+  //   } else {
+  //     newSelected.splice(currentIndex, 1);
+  //   }
 
-    handleSelected(newSelected);
-    handleNumSelected(newSelected.length);
+  //   handleSelected(newSelected);
+  //   handleNumSelected(newSelected.length);
 
-    if (newSelected.length === suppliers.data.length) {
-      handleIsSelectedAll(true);
-    } else {
-      handleIsSelectedAll(false);
-    }
-  };
+  //   if (newSelected.length === suppliers.data.length) {
+  //     handleIsSelectedAll(true);
+  //   } else {
+  //     handleIsSelectedAll(false);
+  //   }
+  // };
 
   useEffect(() => {
     updateSelectedWithIds('suppliers', ids, setIds, handleSelected, handleNumSelected);
@@ -73,7 +75,8 @@ const TableContent = ({
         handlePopperClick={handlePopperClick}
         fetchSuppliers={fetchSuppliers}
         setCurrentRowId={setCurrentRowId}
-        handleCheckboxChange={handleCheckboxChange}
+        // handleCheckboxChange={handleCheckboxChange}
+        handleCheckboxChange={(id) => handleCheckboxChange(id, selected, handleSelected, handleNumSelected, suppliers, handleIsSelectedAll)}
         isSelected={selected.includes(row.id)}
         dense={dense}
         columns={columns}
@@ -82,18 +85,18 @@ const TableContent = ({
   );
 };
 
-const useToolbarStyles = makeStyles((theme) => ({
-  highlight:
-    theme.palette.type === 'light'
-      ? {
-          // color: theme.palette.secondary.main,
-          backgroundColor: lighten(theme.palette.secondary.light, 0.85),
-        }
-      : {
-          // color: theme.palette.text.primary,
-          backgroundColor: theme.palette.secondary.dark,
-        },
-}));
+// const useToolbarStyles = makeStyles((theme) => ({
+//   highlight:
+//     theme.palette.type === 'light'
+//       ? {
+//           // color: theme.palette.secondary.main,
+//           backgroundColor: lighten(theme.palette.secondary.light, 0.85),
+//         }
+//       : {
+//           // color: theme.palette.text.primary,
+//           backgroundColor: theme.palette.secondary.dark,
+//         },
+// }));
 
 const SupplierRow = ({
   row,
@@ -111,7 +114,7 @@ const SupplierRow = ({
   const history = useHistory();
   const open = Boolean(anchorEl) && currentRowId === row.id;
   const id = open ? 'transitions-popper' : undefined;
-  const classes = useToolbarStyles();
+  const classes = selectedRowStyles();
   const { ids, setIds } = UseIDs();
 
   const handleButtonClick = () => {
@@ -128,30 +131,6 @@ const SupplierRow = ({
     const successCallback = (data) => {
       toast.success('Deleted Supplier Successfully');
     };
-
-    // const errorCallback = (error) => {
-    //   if (error.response && error.response.data) {
-    //       let errorMessage = error.response.data;
-
-    //       // If errorMessage is an object, convert it to a string
-    //       if (typeof errorMessage === 'object') {
-    //           errorMessage = JSON.stringify(errorMessage);
-    //       }
-
-    //       // Check if the error message includes 'some instances'
-    //       if (errorMessage.includes('some instances')) {
-    //           toast.error('Error: Supplier(s) is referenced by other objects and cannot be deleted.');
-    //       } else {
-    //           toast.error('Error: ' + errorMessage);
-    //       }
-    //   } else {
-    //       toast.error('Error: ' + error.message);
-    //   }
-
-    //   console.log(error);
-    // };
-
-    // handleDeleteRecord(id, API_ENDPOINTS.DELETE_SUPPLIER, fetchSuppliers, successCallback, errorCallback)
 
     handleDeleteRecord(id, API_ENDPOINTS.DELETE_SUPPLIER, fetchSuppliers, successCallback, (error) => {
       HandleTableErrorCallback(error, 'Supplier', ids, setIds); // Pass the error and entity name to the reusable function
