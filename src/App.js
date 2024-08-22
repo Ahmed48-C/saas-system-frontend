@@ -66,7 +66,7 @@ function ReminderWatcher() {
                   updateReminderAsReached(reminder);
               }
           });
-      }, 20000); // Check every 20s
+      }, 5000); // Check every 5s
 
       return () => clearInterval(interval);
   }, [reminders, alarmSound]);

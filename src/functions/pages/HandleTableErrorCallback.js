@@ -38,10 +38,6 @@ const HandleTableErrorCallback = (error, entityName = 'Item', ids, setIds) => {
                 }));
             }
 
-            console.log(errorMessage);
-            console.log(relatedModel);
-            console.log(relatedIds);
-
             toast.error(
                 <>
                     Error: This {entityName} is referenced by other objects and cannot be deleted. Go to

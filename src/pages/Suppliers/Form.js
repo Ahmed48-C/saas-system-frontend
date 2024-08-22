@@ -7,6 +7,8 @@ import { useParams } from 'react-router-dom';
 import API_ENDPOINTS from '../../config/apis'
 import { handleFetchRecord } from '../../functions/pages/handleFetchRecord'
 import axios from "axios";
+import { formatFormRecordDropdown } from '../../functions/pages/formatFormRecordDropdown'
+import { formFetchDropdownRecords } from '../../functions/pages/formFetchDropdownRecords'
 
 const Form = ({ handleClick, icon, title }) => {
     const { id } = useParams();
@@ -20,30 +22,27 @@ const Form = ({ handleClick, icon, title }) => {
             fetchData();
         }
 
-        fetchLocations();
+        // fetchLocations();
+        formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/locations/`, setLocations);
     }, [id]);
-
-    useEffect(() => {
-        console.log(locations); // Log locations whenever it changes
-    }, [locations]);
 
     const fetchData = () => {
         handleFetchRecord(id, API_ENDPOINTS.GET_SUPPLIER, setSuppliersData, setEditLoading);
     };
 
-    const fetchLocations = () => {
-        axios.get(`http://127.0.0.1:8000/api/get/locations/`)
-        .then(response => {
-            if (Array.isArray(response.data.data)) {
-                setLocations(response.data.data);
-            } else {
-                console.error('Invalid data format:', response.data);
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching data:', error);
-        });
-    }
+    // const fetchLocations = () => {
+    //     axios.get(`http://127.0.0.1:8000/api/get/locations/`)
+    //     .then(response => {
+    //         if (Array.isArray(response.data.data)) {
+    //             setLocations(response.data.data);
+    //         } else {
+    //             console.error('Invalid data format:', response.data);
+    //         }
+    //     })
+    //     .catch(error => {
+    //         console.error('Error fetching data:', error);
+    //     });
+    // }
 
     const isFormValid = () => {
         return  suppliersData.name &&
@@ -54,10 +53,6 @@ const Form = ({ handleClick, icon, title }) => {
 
     const handleInputChange = (field) => (e) => {
         setSuppliersData({ ...suppliersData, [field]: e.target.value });
-    };
-
-    const formatLocationName = (name) => {
-        return name.length > 20 ? `${name.slice(0, 20)}...` : name;
     };
 
     return (
@@ -143,7 +138,7 @@ const Form = ({ handleClick, icon, title }) => {
                         <InputSelect
                         selectItems={locations.map(location => ({
                             value: location.id,
-                            name: formatLocationName(location.name)
+                            name: formatFormRecordDropdown(location.name)
                         }))}
                         label='Location'
                         name='location_id'

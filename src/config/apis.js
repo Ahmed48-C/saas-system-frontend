@@ -43,6 +43,7 @@ const API_ENDPOINTS = {
   GET_REMINDERS: () => `${BASE_URL}/api/get/reminders/`,
   GET_REMINDER: (id) => `${BASE_URL}/api/get/reminder/${id}/`,
   PUT_REMINDER: (id) => `${BASE_URL}/api/put/reminder/${id}/`,
+
 };
 
 export default API_ENDPOINTS;
