@@ -6,12 +6,13 @@ import API_ENDPOINTS from '../../config/apis';
 import { formatFilterRecordDropdown } from '../../functions/pages/formatFilterRecordDropdown';
 import { filterFetchDropdownRecords } from '../../functions/pages/filterFetchDropdownRecords';
 
-const FilterContent = ({ currentFilter, setCurrentFilter }) => {
+const FilterContent = ({ currentFilter, setCurrentFilter, handleLocations, locations }) => {
     const [loading, setLoading] = useState(true);
-    const [locations, setLocations] = useState([]);
+    // const [locations, setLocations] = useState([]);
 
     useEffect(() => {;
-        filterFetchDropdownRecords(`http://127.0.0.1:8000/api/get/locations/`, setLocations)
+        filterFetchDropdownRecords(`http://127.0.0.1:8000/api/get/locations/`, handleLocations)
+        setLoading(false);
     }, []);
 
     return (

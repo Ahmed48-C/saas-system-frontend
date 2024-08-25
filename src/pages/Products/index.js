@@ -32,6 +32,8 @@ const Product = () => {
   const [filters, setFilters] = useState([]);
   const [anchorEl4, setAnchorEl4] = useState(null);
   const [currentFilter, setCurrentFilter] = useState({ code: '', name: '', description: '', supplier_id: '', brand: '', measure_unit: '', weight: '', length: '', width: '', height: '', color: '', size: '', dimension_unit: '', weight_unit: '' });
+  const [suppliers, setSuppliers] = useState([]);
+  const filterRecords = { suppliers };
   const [isEditing, setIsEditing] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
 
@@ -153,6 +155,10 @@ const Product = () => {
     setColumns(value);
   }
 
+  const handleSuppliers = (value) => {
+    setSuppliers(value);
+  }
+
   const handleBatchDelete = () => {
     handleBatchDeleteRecords(selected, API_ENDPOINTS.DELETE_PRODUCTS, fetchRecords)
     setNumSelected(0);
@@ -193,10 +199,11 @@ const Product = () => {
           handleIsEditing={handleIsEditing}
           handleEditIndex={handleEditIndex}
           editIndex={editIndex}
-          filterContent={<FilterContent currentFilter={currentFilter} setCurrentFilter={setCurrentFilter} />}
+          filterContent={<FilterContent currentFilter={currentFilter} setCurrentFilter={setCurrentFilter} suppliers={suppliers} handleSuppliers={handleSuppliers} />}
+          filterRecords={filterRecords} // Pass records object
         />}
         tableHeading={<TableHeading
-          order={order}
+          order={order}handleSuppliers
           orderBy={orderBy}
           onRequestSort={handleRequestSort}
           headers={headers}

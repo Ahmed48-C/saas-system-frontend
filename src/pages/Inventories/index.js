@@ -32,6 +32,9 @@ const Inventories = () => {
     const [filters, setFilters] = useState([]);
     const [anchorEl4, setAnchorEl4] = useState(null);
     const [currentFilter, setCurrentFilter] = useState({ code: '', in_stock: '', on_order: '', reserved: '', min_stock: '', max_stock: '', product_id: '', store_id: '' });
+    const [products, setProducts] = useState([]);
+    const [stores, setStores] = useState([]);
+    const filterRecords = { products, stores };
     const [isEditing, setIsEditing] = useState(false);
     const [editIndex, setEditIndex] = useState(null);
 
@@ -150,6 +153,14 @@ const Inventories = () => {
         setColumns(value);
     }
 
+    const handleProducts = (value) => {
+        setProducts(value);
+    }
+
+    const handleStores = (value) => {
+        setStores(value);
+    }
+
     const handleBatchDelete = () => {
         handleBatchDeleteRecords(selected, API_ENDPOINTS.DELETE_INVENTORIES, fetchRecords);
         setNumSelected(0);
@@ -190,7 +201,8 @@ const Inventories = () => {
             handleIsEditing={handleIsEditing}
             handleEditIndex={handleEditIndex}
             editIndex={editIndex}
-            filterContent={<FilterContent currentFilter={currentFilter} setCurrentFilter={setCurrentFilter} />}
+            filterContent={<FilterContent currentFilter={currentFilter} setCurrentFilter={setCurrentFilter} products={products} handleProducts={handleProducts} stores={stores} handleStores={handleStores} />}
+            filterRecords={filterRecords} // Pass records object
             />}
             tableHeading={<TableHeading
             order={order}
