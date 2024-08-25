@@ -9,6 +9,9 @@ import TableHeading from '../../functions/pages/tableHeading';
 import { fetchAll } from '../../functions/pages/handleFetchAll';
 import handleBatchDeleteRecords from '../../functions/pages/handleBatchDeleteRecords';
 import { toast } from 'react-toastify';
+import { updateSelectedWithIds } from '../../functions/pages/updateSelectedWithIds';
+import { UseIDs } from '../../config/SelectedIdsContext';
+import HandleTableErrorCallback from '../../functions/pages/HandleTableErrorCallback';
 
 const headers = [
   { key: '', label: '', className: 'bg-white text-center' },
@@ -64,6 +67,8 @@ const Product = () => {
   }, [columns]);
 
   const history = useHistory();
+
+  const { ids, setIds } = UseIDs();
 
   const handleNavigation = () => {
     history.push('/product/create');
@@ -160,15 +165,22 @@ const Product = () => {
   }
 
   const handleBatchDelete = () => {
-    handleBatchDeleteRecords(selected, API_ENDPOINTS.DELETE_PRODUCTS, fetchRecords)
-    setNumSelected(0);
-    setSelected([]);
-    setIsSelectedAll(false);
-    toast.success('Deleted Products Successfully');
+    const successCallback = (data) => {
+      setNumSelected(0);
+      setSelected([]);
+      setIsSelectedAll(false);
+      toast.success('Deleted Products Successfully');
+    };
+
+    const errorCallback = (error) => {
+      HandleTableErrorCallback(error, 'Product', ids, setIds);
+    };
+
+    handleBatchDeleteRecords(selected, API_ENDPOINTS.DELETE_PRODUCTS, fetchRecords, successCallback, errorCallback)
   }
 
   const handleSelectAll = () => {
-    const allIds = records.data.map(location => location.id);
+    const allIds = records.data.map(record => record.id);
     setSelected(allIds);
     setNumSelected(allIds.length);
     setIsSelectedAll(true);
