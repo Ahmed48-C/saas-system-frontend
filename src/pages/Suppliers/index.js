@@ -32,6 +32,8 @@ const Supplier = () => {
   const [filters, setFilters] = useState([]);
   const [anchorEl4, setAnchorEl4] = useState(null);
   const [currentFilter, setCurrentFilter] = useState({ name: '', phone: '', email: '', contact_name: '', contact_phone: '', location_id: '' });
+  const [locations, setLocations] = useState([]);
+  const filterRecords = { locations };
   const [isEditing, setIsEditing] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
 
@@ -146,6 +148,10 @@ const Supplier = () => {
     setColumns(value);
   }
 
+  const handleLocations = (value) => {
+    setLocations(value);
+  }
+
   const handleBatchDelete = () => {
     handleBatchDeleteRecords(selected, API_ENDPOINTS.DELETE_SUPPLIERS, fetchSuppliers)
     setNumSelected(0);
@@ -186,7 +192,8 @@ const Supplier = () => {
           handleIsEditing={handleIsEditing}
           handleEditIndex={handleEditIndex}
           editIndex={editIndex}
-          filterContent={<FilterContent currentFilter={currentFilter} setCurrentFilter={setCurrentFilter} />}
+          filterContent={<FilterContent currentFilter={currentFilter} setCurrentFilter={setCurrentFilter} locations={locations} handleLocations={handleLocations} />}
+          filterRecords={filterRecords} // Pass records object
         />}
         tableHeading={<TableHeading
           order={order}

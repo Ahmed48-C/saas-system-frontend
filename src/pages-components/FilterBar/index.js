@@ -18,15 +18,30 @@ const FilterBar = ({
     handleCurrentFilter,
     handleIsEditing,
     handleEditIndex,
-    editIndex
+    editIndex,
+    filterRecords
 }) => {
     const hasFilter = Array.isArray(filters) && filters.length > 0;
 
     const formatFilter = (filter) => {
         return Object.entries(filter)
-        .filter(([key, value]) => value.trim() !== '')
-        .map(([key, value]) => `${key}: ${value}`)
-        .join(', ');
+            .filter(([key, value]) => value.trim() !== '')
+            .map(([key, value]) => {
+                // Check if key contains _id and fetch the name from records
+                if (key.includes('_id') && filterRecords) {
+                    const recordType = key.split('_')[0] + 's'; // e.g., location from location_id -> locations
+                    const record = filterRecords[recordType]?.find(item => item.id === Number(value));
+
+                    // If record is found, check for the name, otherwise fall back to the first field
+                    if (record) {
+                        const displayName = record.name || Object.values(record)[1];
+                        return `${key.replace('_id', '')}: ${displayName}`;
+                    }
+                    return `${key.replace('_id', '')}: ${value}`;
+                }
+                return `${key}: ${value}`;
+            })
+            .join(', ');
     };
 
     const isFormValid = () => {
