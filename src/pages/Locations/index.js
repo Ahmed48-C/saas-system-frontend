@@ -9,6 +9,8 @@ import TableHeading from '../../functions/pages/tableHeading';
 import { fetchAll } from '../../functions/pages/handleFetchAll';
 import handleBatchDeleteRecords from '../../functions/pages/handleBatchDeleteRecords';
 import { toast } from 'react-toastify';
+import { UseIDs } from '../../config/SelectedIdsContext';
+import HandleTableErrorCallback from '../../functions/pages/HandleTableErrorCallback';
 
 const headers = [
   { key: '', label: '', className: 'bg-white text-center' },
@@ -57,6 +59,8 @@ const Locations = () => {
   }, [columns]);
 
   const history = useHistory();
+
+  const { ids, setIds } = UseIDs();
 
   const handleNavigation = () => {
     history.push('/location/create');
@@ -149,11 +153,18 @@ const Locations = () => {
   }
 
   const handleBatchDelete = () => {
-    handleBatchDeleteRecords(selected, API_ENDPOINTS.DELETE_LOCATIONS, fetchLocations);
-    setNumSelected(0);
-    setSelected([]);
-    setIsSelectedAll(false);
-    toast.success('Deleted Locations Successfully');
+    const successCallback = (data) => {
+      setNumSelected(0);
+      setSelected([]);
+      setIsSelectedAll(false);
+      toast.success('Deleted Locations Successfully');
+    };
+
+    const errorCallback = (error) => {
+      HandleTableErrorCallback(error, 'Location', ids, setIds);
+    };
+
+    handleBatchDeleteRecords(selected, API_ENDPOINTS.DELETE_LOCATIONS, fetchLocations, successCallback, errorCallback);
   }
 
   const handleSelectAll = () => {

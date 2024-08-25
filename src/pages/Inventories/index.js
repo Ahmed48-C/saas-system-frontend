@@ -9,6 +9,8 @@ import TableHeading from '../../functions/pages/tableHeading';
 import { fetchAll } from '../../functions/pages/handleFetchAll';
 import handleBatchDeleteRecords from '../../functions/pages/handleBatchDeleteRecords';
 import { toast } from 'react-toastify';
+import HandleTableErrorCallback from '../../functions/pages/HandleTableErrorCallback';
+import { UseIDs } from '../../config/SelectedIdsContext';
 
 const headers = [
     { key: '', label: '', className: 'bg-white text-center' },
@@ -61,6 +63,8 @@ const Inventories = () => {
     }, [columns]);
 
     const history = useHistory();
+
+    const { ids, setIds } = UseIDs();
 
     const handleNavigation = () => {
         history.push('/inventory/create');
@@ -162,11 +166,18 @@ const Inventories = () => {
     }
 
     const handleBatchDelete = () => {
-        handleBatchDeleteRecords(selected, API_ENDPOINTS.DELETE_INVENTORIES, fetchRecords);
-        setNumSelected(0);
-        setSelected([]);
-        setIsSelectedAll(false);
-        toast.success('Deleted Inventories Successfully');
+        const successCallback = (data) => {
+            setNumSelected(0);
+            setSelected([]);
+            setIsSelectedAll(false);
+            toast.success('Deleted Inventories Successfully');
+        };
+
+        const errorCallback = (error) => {
+            HandleTableErrorCallback(error, 'Inventory', ids, setIds);
+        };
+
+        handleBatchDeleteRecords(selected, API_ENDPOINTS.DELETE_INVENTORIES, fetchRecords, successCallback, errorCallback);
     }
 
     const handleSelectAll = () => {
