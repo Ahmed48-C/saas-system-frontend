@@ -9,6 +9,7 @@ import { handleFetchRecord } from '../../functions/pages/handleFetchRecord'
 import axios from "axios";
 import { formatFormRecordDropdown } from '../../functions/pages/formatFormRecordDropdown'
 import { formFetchDropdownRecords } from '../../functions/pages/formFetchDropdownRecords'
+import { emailValidator } from '../../functions/pages/emailValidator'
 
 const Form = ({ handleClick, icon, title }) => {
     const { id } = useParams();
@@ -33,7 +34,8 @@ const Form = ({ handleClick, icon, title }) => {
         return  suppliersData.name &&
                 suppliersData.phone &&
                 suppliersData.email &&
-                suppliersData.location_id;
+                suppliersData.location_id&&
+                emailValidator(suppliersData.email);
     };
 
     const handleInputChange = (field) => (e) => {
@@ -101,7 +103,8 @@ const Form = ({ handleClick, icon, title }) => {
                         onChange={handleInputChange('email')}
                         value={suppliersData.email ?? ""}
                         key='email'
-                        error={isEmpty(suppliersData.email)}
+                        error={isEmpty(suppliersData.email) || !emailValidator(suppliersData.email)}
+                        helperText={isEmpty(suppliersData.email) || !emailValidator(suppliersData.email) ? 'Enter a valid email address.' : ''}
                         maxLength={254}
                         />
                     </Grid>

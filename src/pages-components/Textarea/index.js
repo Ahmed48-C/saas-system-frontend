@@ -2,7 +2,7 @@ import React from 'react';
 
 import { TextField } from '@material-ui/core';
 
-const Textarea = ({ rows, rowsMax, label, value, onChange, key, error, id, maxLength }) => {
+const Textarea = ({ rows, rowsMax, label, value, onChange, key, error, id, maxLength, helperText }) => {
   return (
     <>
       <TextField
@@ -19,6 +19,7 @@ const Textarea = ({ rows, rowsMax, label, value, onChange, key, error, id, maxLe
         error={error}
         inputProps={maxLength ? { maxLength: maxLength } : {}} // Conditionally add maxLength
         variant="outlined"
+        helperText={helperText}
       />
     </>
   );
