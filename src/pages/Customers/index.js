@@ -15,14 +15,14 @@ import HandleTableErrorCallback from '../../functions/pages/HandleTableErrorCall
 
 const headers = [
   { key: '', label: '', className: 'bg-white text-center' },
-  { key: 'code', label: 'Code', className: 'bg-white text-left' },
   { key: 'name', label: 'Name', className: 'bg-white text-left' },
-  { key: 'supplier', label: 'Supplier', className: 'bg-white text-left' },
+  { key: 'phone', label: 'Phone', className: 'bg-white text-left' },
+  { key: 'email', label: 'Email', className: 'bg-white text-left' },
   { key: 'actions', label: 'Actions', className: 'bg-white text-center', sortable: false }
 ];
 
-const Product = () => {
-  const heading = 'Product'
+const Customer = () => {
+  const heading = 'Customer'
   const [loading, setLoading] = useState(true);
   const [records, setRecords] = useState([]);
 
@@ -34,9 +34,9 @@ const Product = () => {
 
   const [filters, setFilters] = useState([]);
   const [anchorEl4, setAnchorEl4] = useState(null);
-  const [currentFilter, setCurrentFilter] = useState({ code: '', name: '', description: '', supplier_id: '', brand: '', measure_unit: '', weight: '', length: '', width: '', height: '', color: '', size: '', dimension_unit: '', weight_unit: '' });
-  const [suppliers, setSuppliers] = useState([]);
-  const filterRecords = { suppliers };
+  const [currentFilter, setCurrentFilter] = useState({ code: '', name: '', phone: '', email: '', location_id: '' });
+  const [locations, setLocations] = useState([]);
+  const filterRecords = { locations };
   const [isEditing, setIsEditing] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
 
@@ -45,25 +45,18 @@ const Product = () => {
   const [isSelectedAll, setIsSelectedAll] = useState(false);
 
   const [columns, setColumns] = useState(() => {
-    const savedColumns = localStorage.getItem('productColumns');
+    const savedColumns = localStorage.getItem('customerColumns');
     return savedColumns ? JSON.parse(savedColumns) : [
-        { name: 'code', label: 'Code', className: 'bg-white text-left', selected: true },
-        { name: 'name', label: 'Name', className: 'bg-white text-left', selected: true },
-        { name: 'description', label: 'Description', className: 'bg-white text-left', selected: false },
-        { name: 'supplier', label: 'Supplier', className: 'bg-white text-left', selected: true },
-        { name: 'brand', label: 'Brand', className: 'bg-white text-left', selected: false },
-        { name: 'measure_unit', label: 'Measure Unit', className: 'bg-white text-left', selected: false },
-        { name: 'weight', label: 'Weight', className: 'bg-white text-left', selected: false },
-        { name: 'height', label: 'Height', className: 'bg-white text-left', selected: false },
-        { name: 'color', label: 'Color', className: 'bg-white text-left', selected: false },
-        { name: 'size', label: 'Size', className: 'bg-white text-left', selected: false },
-        { name: 'dimension_unit', label: 'Dimension Unit', className: 'bg-white text-left', selected: false },
-        { name: 'weight_unit', label: 'Weight Unit', className: 'bg-white text-left', selected: false },
+      { name: 'code', label: 'Code', className: 'bg-white text-left', selected: true },
+      { name: 'name', label: 'Name', className: 'bg-white text-left', selected: false },
+      { name: 'phone', label: 'Phone', className: 'bg-white text-left', selected: false },
+      { name: 'email', label: 'Email', className: 'bg-white text-left', selected: false },
+      { name: 'location', label: 'location', className: 'bg-white text-left', selected: true }
     ];
   });
 
   useEffect(() => {
-    localStorage.setItem('productColumns', JSON.stringify(columns));
+    localStorage.setItem('customerColumns', JSON.stringify(columns));
   }, [columns]);
 
   const history = useHistory();
@@ -71,7 +64,7 @@ const Product = () => {
   const { ids, setIds } = UseIDs();
 
   const handleNavigation = () => {
-    history.push('/product/create');
+    history.push('/customer/create');
   };
 
   const fetchRecords = useCallback(() => {
@@ -80,7 +73,7 @@ const Product = () => {
       history.push('/500'); // Navigate to the 500 error page
     };
     fetchAll(
-      API_ENDPOINTS.GET_PRODUCTS,
+      API_ENDPOINTS.GET_CUSTOMERS,
       page,
       rows,
       order,
@@ -160,8 +153,8 @@ const Product = () => {
     setColumns(value);
   }
 
-  const handleSuppliers = (value) => {
-    setSuppliers(value);
+  const handleLocations = (value) => {
+    setLocations(value);
   }
 
   const handleBatchDelete = () => {
@@ -169,14 +162,14 @@ const Product = () => {
       setNumSelected(0);
       setSelected([]);
       setIsSelectedAll(false);
-      toast.success('Deleted Products Successfully');
+      toast.success('Deleted Customers Successfully');
     };
 
     const errorCallback = (error) => {
-      HandleTableErrorCallback(error, 'Product', ids, setIds);
+      HandleTableErrorCallback(error, 'Customer', ids, setIds);
     };
 
-    handleBatchDeleteRecords(selected, API_ENDPOINTS.DELETE_PRODUCTS, fetchRecords, successCallback, errorCallback)
+    handleBatchDeleteRecords(selected, API_ENDPOINTS.DELETE_CUSTOMERS, fetchRecords, successCallback, errorCallback)
   }
 
   const handleSelectAll = () => {
@@ -211,7 +204,7 @@ const Product = () => {
           handleIsEditing={handleIsEditing}
           handleEditIndex={handleEditIndex}
           editIndex={editIndex}
-          filterContent={<FilterContent currentFilter={currentFilter} setCurrentFilter={setCurrentFilter} suppliers={suppliers} handleSuppliers={handleSuppliers} />}
+          filterContent={<FilterContent currentFilter={currentFilter} setCurrentFilter={setCurrentFilter} locations={locations} handleLocations={handleLocations} />}
           filterRecords={filterRecords} // Pass records object
         />}
         tableHeading={<TableHeading
@@ -223,7 +216,7 @@ const Product = () => {
         />}
         tableContent={
           !loading && records.data.length === 0 ? (
-            <NoRecords context='Products' />
+            <NoRecords context='Customers' />
           ) : (
             <TableContent
               fetchRecords={fetchRecords}
@@ -238,7 +231,7 @@ const Product = () => {
             />
           )
         }
-        Heading='Products'
+        Heading='Customers'
         handleClick={handleNavigation}
         handlePageChange={handlePageChange}
         pageCount={totalPages}
@@ -257,4 +250,4 @@ const Product = () => {
   )
 }
 
-export default Product
+export default Customer

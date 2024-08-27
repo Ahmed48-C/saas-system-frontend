@@ -44,6 +44,13 @@ const API_ENDPOINTS = {
   GET_REMINDER: (id) => `${BASE_URL}/api/get/reminder/${id}/`,
   PUT_REMINDER: (id) => `${BASE_URL}/api/put/reminder/${id}/`,
 
+  DELETE_CUSTOMER: (id) => `${BASE_URL}/api/delete/customer/${id}/`,
+  DELETE_CUSTOMERS: () => `${BASE_URL}/api/delete/customers/`,
+  POST_CUSTOMER: () => `${BASE_URL}/api/post/customer/`,
+  PUT_CUSTOMER: (id) => `${BASE_URL}/api/put/customer/${id}/`,
+  GET_CUSTOMERS: (from, to) => `${BASE_URL}/api/get/customers/?from=${from}&to=${to}`,
+  GET_CUSTOMER: (id) => `${BASE_URL}/api/get/customer/${id}/`,
+
 };
 
 export default API_ENDPOINTS;
