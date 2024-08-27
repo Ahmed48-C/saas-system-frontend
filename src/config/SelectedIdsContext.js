@@ -9,6 +9,7 @@ export const SelectedIDsProvider = ({ children }) => {
         locations: [],
         products: [],
         suppliers: [],
+        customers: [],
     });
 
     return (

@@ -328,6 +328,19 @@ const EditSuppliers = lazy(() =>
 );
 
 
+const Customers = lazy(() =>
+  import('./pages/Customers/index')
+);
+
+const CreateCustomers = lazy(() =>
+  import('./pages/Customers/CreateContent')
+);
+
+const EditCustomers = lazy(() =>
+  import('./pages/Customers/EditContent')
+);
+
+
 const Products = lazy(() =>
   import('./pages/Products/index')
 );
@@ -454,6 +467,22 @@ const Routes = () => {
                                 exact
                                 path="/supplier/edit/:id"
                                 component={EditSuppliers}
+                            />
+
+                            <Route
+                                exact
+                                path="/customers"
+                                component={Customers}
+                            />
+                            <Route
+                                exact
+                                path="/customer/create"
+                                component={CreateCustomers}
+                            />
+                            <Route
+                                exact
+                                path="/customer/edit/:id"
+                                component={EditCustomers}
                             />
 
                             <Route
