@@ -14,14 +14,16 @@ import HandleTableErrorCallback from '../../functions/pages/HandleTableErrorCall
 
 const headers = [
   { key: '', label: '', className: 'bg-white text-center' },
-  { key: 'code', label: 'Code', className: 'bg-white text-left' },
   { key: 'name', label: 'Name', className: 'bg-white text-left' },
-  { key: 'supplier', label: 'Supplier', className: 'bg-white text-left' },
+  { key: 'price', label: 'Price', className: 'bg-white text-left' },
+  { key: 'quantity', label: 'Quantity', className: 'bg-white text-left' },
+  { key: 'total', label: 'Total', className: 'bg-white text-left' },
+  { key: 'status', label: 'Status', className: 'bg-white text-left' },
   { key: 'actions', label: 'Actions', className: 'bg-white text-center', sortable: false }
 ];
 
-const Product = () => {
-  const heading = 'Product'
+const PurchaseOrder = () => {
+  const heading = 'Purchase Order'
   const [loading, setLoading] = useState(true);
   const [records, setRecords] = useState([]);
 
@@ -33,9 +35,10 @@ const Product = () => {
 
   const [filters, setFilters] = useState([]);
   const [anchorEl4, setAnchorEl4] = useState(null);
-  const [currentFilter, setCurrentFilter] = useState({ code: '', name: '', description: '', supplier_id: '', brand: '', measure_unit: '', weight: '', length: '', width: '', height: '', color: '', size: '', dimension_unit: '', weight_unit: '' });
-  const [suppliers, setSuppliers] = useState([]);
-  const filterRecords = { suppliers };
+  const [currentFilter, setCurrentFilter] = useState({ name: '', price: '', quantity: '', total: '', status: '', product_id: '', store_id: '' });
+  const [products, setProducts] = useState([]);
+  const [stores, setStores] = useState([]);
+  const filterRecords = { products, stores };
   const [isEditing, setIsEditing] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
 
@@ -44,25 +47,20 @@ const Product = () => {
   const [isSelectedAll, setIsSelectedAll] = useState(false);
 
   const [columns, setColumns] = useState(() => {
-    const savedColumns = localStorage.getItem('productColumns');
+    const savedColumns = localStorage.getItem('purchaseOrderColumns');
     return savedColumns ? JSON.parse(savedColumns) : [
-        { name: 'code', label: 'Code', className: 'bg-white text-left', selected: true },
-        { name: 'name', label: 'Name', className: 'bg-white text-left', selected: true },
-        { name: 'description', label: 'Description', className: 'bg-white text-left', selected: false },
-        { name: 'supplier', label: 'Supplier', className: 'bg-white text-left', selected: true },
-        { name: 'brand', label: 'Brand', className: 'bg-white text-left', selected: false },
-        { name: 'measure_unit', label: 'Measure Unit', className: 'bg-white text-left', selected: false },
-        { name: 'weight', label: 'Weight', className: 'bg-white text-left', selected: false },
-        { name: 'height', label: 'Height', className: 'bg-white text-left', selected: false },
-        { name: 'color', label: 'Color', className: 'bg-white text-left', selected: false },
-        { name: 'size', label: 'Size', className: 'bg-white text-left', selected: false },
-        { name: 'dimension_unit', label: 'Dimension Unit', className: 'bg-white text-left', selected: false },
-        { name: 'weight_unit', label: 'Weight Unit', className: 'bg-white text-left', selected: false },
+      { name: 'name', label: 'Name', className: 'bg-white text-left', selected: true },
+      { name: 'price', label: 'Price', className: 'bg-white text-left', selected: false },
+      { name: 'quantity', label: 'Quantity', className: 'bg-white text-left', selected: false },
+      { name: 'total', label: 'Total', className: 'bg-white text-left', selected: true },
+      { name: 'status', label: 'Status', className: 'bg-white text-left', selected: true },
+      { name: 'product', label: 'Product', className: 'bg-white text-left', selected: true },
+      { name: 'store', label: 'Store', className: 'bg-white text-left', selected: true }
     ];
   });
 
   useEffect(() => {
-    localStorage.setItem('productColumns', JSON.stringify(columns));
+    localStorage.setItem('purchaseOrderColumns', JSON.stringify(columns));
   }, [columns]);
 
   const history = useHistory();
@@ -70,7 +68,7 @@ const Product = () => {
   const { ids, setIds } = UseIDs();
 
   const handleNavigation = () => {
-    history.push('/product/create');
+    history.push('/purchase-order/create');
   };
 
   const fetchRecords = useCallback(() => {
@@ -79,7 +77,7 @@ const Product = () => {
       history.push('/500'); // Navigate to the 500 error page
     };
     fetchAll(
-      API_ENDPOINTS.GET_PRODUCTS,
+      API_ENDPOINTS.GET_PURCHASE_ORDERS,
       page,
       rows,
       order,
@@ -159,8 +157,12 @@ const Product = () => {
     setColumns(value);
   }
 
-  const handleSuppliers = (value) => {
-    setSuppliers(value);
+  const handleProducts = (value) => {
+    setProducts(value);
+  }
+
+  const handleStores = (value) => {
+    setStores(value);
   }
 
   const handleBatchDelete = () => {
@@ -168,14 +170,14 @@ const Product = () => {
       setNumSelected(0);
       setSelected([]);
       setIsSelectedAll(false);
-      toast.success('Deleted Products Successfully');
+      toast.success('Deleted Purchase Orders Successfully');
     };
 
     const errorCallback = (error) => {
-      HandleTableErrorCallback(error, 'Product', ids, setIds);
+      HandleTableErrorCallback(error, 'Purchase Order', ids, setIds);
     };
 
-    handleBatchDeleteRecords(selected, API_ENDPOINTS.DELETE_PRODUCTS, fetchRecords, successCallback, errorCallback)
+    handleBatchDeleteRecords(selected, API_ENDPOINTS.DELETE_PURCHASE_ORDERS, fetchRecords, successCallback, errorCallback)
   }
 
   const handleSelectAll = () => {
@@ -210,7 +212,7 @@ const Product = () => {
           handleIsEditing={handleIsEditing}
           handleEditIndex={handleEditIndex}
           editIndex={editIndex}
-          filterContent={<FilterContent currentFilter={currentFilter} setCurrentFilter={setCurrentFilter} suppliers={suppliers} handleSuppliers={handleSuppliers} />}
+          filterContent={<FilterContent currentFilter={currentFilter} setCurrentFilter={setCurrentFilter} products={products} handleProducts={handleProducts} stores={stores} handleStores={handleStores} />}
           filterRecords={filterRecords} // Pass records object
         />}
         tableHeading={<TableHeading
@@ -222,7 +224,7 @@ const Product = () => {
         />}
         tableContent={
           !loading && records.data.length === 0 ? (
-            <NoRecords context='Products' />
+            <NoRecords context='Purchase Orders' />
           ) : (
             <TableContent
               fetchRecords={fetchRecords}
@@ -237,7 +239,7 @@ const Product = () => {
             />
           )
         }
-        Heading='Products'
+        Heading='Purchase Orders'
         handleClick={handleNavigation}
         handlePageChange={handlePageChange}
         pageCount={totalPages}
@@ -256,4 +258,4 @@ const Product = () => {
   )
 }
 
-export default Product
+export default PurchaseOrder

@@ -10,6 +10,7 @@ export const SelectedIDsProvider = ({ children }) => {
         products: [],
         suppliers: [],
         customers: [],
+        purchase_orders: [],
     });
 
     return (
