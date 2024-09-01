@@ -51,6 +51,14 @@ const API_ENDPOINTS = {
   GET_CUSTOMERS: (from, to) => `${BASE_URL}/api/get/customers/?from=${from}&to=${to}`,
   GET_CUSTOMER: (id) => `${BASE_URL}/api/get/customer/${id}/`,
 
+  DELETE_PURCHASE_ORDER: (id) => `${BASE_URL}/api/delete/purchase_order/${id}/`,
+  DELETE_PURCHASE_ORDER_STOCK: (id) => `${BASE_URL}/api/delete/purchase_order_stock/${id}/`,
+  DELETE_PURCHASE_ORDERS: () => `${BASE_URL}/api/delete/purchase_orders/`,
+  POST_PURCHASE_ORDER: () => `${BASE_URL}/api/post/purchase_order/`,
+  PUT_PURCHASE_ORDER: (id) => `${BASE_URL}/api/put/purchase_order/${id}/`,
+  GET_PURCHASE_ORDERS: (from, to) => `${BASE_URL}/api/get/purchase_orders/?from=${from}&to=${to}`,
+  GET_PURCHASE_ORDER: (id) => `${BASE_URL}/api/get/purchase_order/${id}/`,
+
 };
 
 export default API_ENDPOINTS;

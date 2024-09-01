@@ -7,7 +7,7 @@ import {
   Select
 } from '@material-ui/core';
 
-const InputSelect = ({ selectItems, label, value, onChange, error }) => {
+const InputSelect = ({ selectItems, label, value, onChange, error, disabled }) => {
   // Custom menu props to limit the visible items and enable scrolling
   const menuProps = {
     PaperProps: {
@@ -24,6 +24,7 @@ const InputSelect = ({ selectItems, label, value, onChange, error }) => {
     variant="outlined"
     className="m-3"
     error={error}
+    disabled={disabled}
     >
       <InputLabel id="country-select-label">{label}</InputLabel>
       <Select

@@ -31,14 +31,58 @@ const Form = ({ handleClick, icon, title }) => {
         handleFetchRecord(id, API_ENDPOINTS.GET_INVENTORY, setData, setEditLoading);
     };
 
+    // const isFormValid = () => {
+    //     return  data.code &&
+    //             data.store_id &&
+    //             data.product_id;
+    // };
+
+    // const handleInputChange = (field) => (e) => {
+    //     setData({ ...data, [field]: e.target.value });
+    // };
+
+    useEffect(() => {
+        console.log(data.in_stock)
+        console.log(data.min_stock)
+        console.log(data.max_stock)
+    }, [data.in_stock, data.min_stock, data.max_stock]);
+
     const isFormValid = () => {
-        return  data.code &&
-                data.store_id &&
-                data.product_id;
+        const { in_stock, min_stock, max_stock } = data;
+
+        const isStockValid =
+            // If in_stock is provided, validate it against max_stock and min_stock if they are also provided
+            (in_stock === undefined || in_stock === '' ||
+                ((max_stock === undefined || max_stock === '') &&
+                (min_stock === undefined || min_stock === '') ||
+                (Number(in_stock) >= Number(min_stock) || min_stock === undefined || min_stock === '') &&
+                (Number(max_stock) >= Number(in_stock) || max_stock === undefined || max_stock === ''))) &&
+
+            // If min_stock is provided, validate it against max_stock if it's provided
+            (min_stock === undefined || min_stock === '' ||
+                (max_stock === undefined || max_stock === '' ||
+                (Number(max_stock) >= Number(min_stock)))) &&
+
+            // If max_stock is provided, validate it against min_stock if it's provided
+            (max_stock === undefined || max_stock === '' ||
+                (min_stock === undefined || min_stock === '' ||
+                (Number(max_stock) >= Number(min_stock))));
+
+        return (
+            data.code &&
+            data.store_id &&
+            data.product_id &&
+            isStockValid // Apply stock validation conditionally
+        );
     };
 
     const handleInputChange = (field) => (e) => {
-        setData({ ...data, [field]: e.target.value });
+        let value = e.target.value;
+        if (['in_stock', 'min_stock', 'max_stock'].includes(field)) {
+            // Ensure that the value is numeric
+            value = value === '' ? '' : Number(value);
+        }
+        setData({ ...data, [field]: value });
     };
 
     return (
@@ -90,6 +134,7 @@ const Form = ({ handleClick, icon, title }) => {
                         onChange={handleInputChange('store_id')}
                         value={data.store_id ?? ""}
                         error={isEmpty(data.store_id)}
+                        disabled={!!id} // Disable if id is present
                         />
                     </Grid>
                     <Grid item xs={6}>
@@ -104,6 +149,7 @@ const Form = ({ handleClick, icon, title }) => {
                         onChange={handleInputChange('product_id')}
                         value={data.product_id ?? ""}
                         error={isEmpty(data.product_id)}
+                        disabled={!!id} // Disable if id is present
                         />
                     </Grid>
                     <Grid item xs={12}>
