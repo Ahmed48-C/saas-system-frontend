@@ -174,6 +174,7 @@ const Form = ({ handleClick, icon, title }) => {
                         onChange={handleInputChange('store_id')}
                         value={data.store_id ?? ""}
                         error={isEmpty(data.store_id)}
+                        disabled={!!id}
                         />
                     </Grid>
                     <Grid item xs={6}>
@@ -188,6 +189,7 @@ const Form = ({ handleClick, icon, title }) => {
                         onChange={handleInputChange('product_id')}
                         value={data.product_id ?? ""}
                         error={isEmpty(data.product_id)}
+                        disabled={!!id}
                         />
                     </Grid>
                     <Grid item xs={12}>

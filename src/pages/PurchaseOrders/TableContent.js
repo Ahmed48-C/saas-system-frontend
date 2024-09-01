@@ -106,12 +106,12 @@ const Row = ({
     handleButtonClick();
   };
 
-  const handleDeleteClick = (id) => {
+  const handleDeleteClick = (id, endpoint) => {
     const successCallback = (data) => {
       toast.success('Deleted Purchase Order Successfully');
     };
 
-    handleDeleteRecord(id, API_ENDPOINTS.DELETE_PURCHASE_ORDER, fetchRecords, successCallback, (error) => {
+    handleDeleteRecord(id, endpoint, fetchRecords, successCallback, (error) => {
       HandleTableErrorCallback(error, 'Purchase Order', ids, setIds); // Pass the error and entity name to the reusable function
     });
   };
@@ -166,8 +166,9 @@ const Row = ({
                     aria-label="vertical outlined primary button group"
                     variant="contained"
                   >
-                    <Button className="d-30 px-5 btn-icon hover-scale-sm text-white" onClick={() => handleEditClick(row.id)}>Edit</Button>
-                    <Button className="d-30 px-5 btn-icon hover-scale-sm text-white" onClick={() => handleDeleteClick(row.id)}>Delete</Button>
+                    <Button className="px-1 btn-icon hover-scale-sm text-white" onClick={() => handleEditClick(row.id)} style={{ padding: '4px 8px' }}>Edit</Button>
+                    <Button className="px-1 btn-icon hover-scale-sm text-white" onClick={() => handleDeleteClick(row.id, API_ENDPOINTS.DELETE_PURCHASE_ORDER)} style={{ padding: '4px 8px' }}>Delete & Keep Stock</Button>
+                    <Button className="px-1 btn-icon hover-scale-sm text-white" onClick={() => handleDeleteClick(row.id, API_ENDPOINTS.DELETE_PURCHASE_ORDER_STOCK)} style={{ padding: '4px 8px' }}>Delete & Remove Stock</Button>
                   </ButtonGroup>
                 </div>
               </Fade>
