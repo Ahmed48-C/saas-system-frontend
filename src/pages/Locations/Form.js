@@ -200,7 +200,7 @@ const Form = ({ handleClick, icon, title }) => {
                                 className="d-40 btn-success"
                                 onClick={() => {
                                     handleClick(locationsData);
-                                    setLocationsData({});
+                                    // setLocationsData({});
                                 }}
                                 disabled={!isFormValid()} // Disable button if form is not valid
                                 >
