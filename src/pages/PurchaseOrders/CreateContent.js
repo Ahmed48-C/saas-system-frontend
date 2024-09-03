@@ -25,7 +25,13 @@ const CreateContent = () => {
       };
 
       const errorCallback = (error) => {
-        toast.error('Error ' + error.message);
+        console.log(error);
+        if (error.message && error.response.data.detail) {
+          toast.error('Error: ' + error.response.data.detail);
+        } else {
+          // Show the general error message if it's not a duplicate key error
+          toast.error('Error: ' + error.message);
+        }
       };
 
       handleSubmitRecord(postData, API_ENDPOINTS.POST_PURCHASE_ORDER, successCallback, errorCallback);

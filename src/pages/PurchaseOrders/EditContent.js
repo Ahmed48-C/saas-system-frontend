@@ -27,7 +27,13 @@ const EditContent = ({ editLoading }) => {
       };
 
       const errorCallback = (error) => {
-        toast.error('Error ' + error.message);
+        if (error.message && error.response.data.detail.includes('Cannot')) {
+          toast.error('Error: ' + error.response.data.detail);
+        } else if (error.message && error.response.data.detail.includes('Maximum')) {
+          toast.error('Error: ' + error.response.data.detail);
+        } else {
+          toast.error('Error: ' + error.message);
+        }
       };
 
       handleUpdateRecord(id, updateData, API_ENDPOINTS.PUT_PURCHASE_ORDER, successCallback, errorCallback);
