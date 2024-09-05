@@ -379,6 +379,30 @@ const EditPurchaseOrders = lazy(() =>
   import('./pages/PurchaseOrders/EditContent')
 );
 
+const Balances = lazy(() =>
+  import('./pages/Balances/index')
+);
+
+const CreateBalances = lazy(() =>
+  import('./pages/Balances/CreateContent')
+);
+
+const Deposits = lazy(() =>
+  import('./pages/Deposits/index')
+);
+
+const CreateDeposits = lazy(() =>
+  import('./pages/Deposits/CreateContent')
+);
+
+const Withdraws = lazy(() =>
+  import('./pages/Withdraws/index')
+);
+
+const CreateWithdraws = lazy(() =>
+  import('./pages/Withdraws/CreateContent')
+);
+
 
 const Routes = () => {
   const SuspenseLoading = () => {
@@ -544,6 +568,39 @@ const Routes = () => {
                                 exact
                                 path="/purchase-order/edit/:id"
                                 component={EditPurchaseOrders}
+                            />
+
+                            <Route
+                                exact
+                                path="/balances"
+                                component={Balances}
+                            />
+                            <Route
+                                exact
+                                path="/balance/create"
+                                component={CreateBalances}
+                            />
+
+                            <Route
+                                exact
+                                path="/deposits"
+                                component={Deposits}
+                            />
+                            <Route
+                                exact
+                                path="/deposit/create"
+                                component={CreateDeposits}
+                            />
+
+                            <Route
+                                exact
+                                path="/withdraws"
+                                component={Withdraws}
+                            />
+                            <Route
+                                exact
+                                path="/withdraw/create"
+                                component={CreateWithdraws}
                             />
 
                             {/* <Route path="/400" component={BadRequest400} />

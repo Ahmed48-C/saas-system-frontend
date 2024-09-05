@@ -59,6 +59,20 @@ const API_ENDPOINTS = {
   GET_PURCHASE_ORDERS: (from, to) => `${BASE_URL}/api/get/purchase_orders/?from=${from}&to=${to}`,
   GET_PURCHASE_ORDER: (id) => `${BASE_URL}/api/get/purchase_order/${id}/`,
 
+  DELETE_BALANCE: (id) => `${BASE_URL}/api/delete/balance/${id}/`,
+  DELETE_BALANCES: () => `${BASE_URL}/api/delete/balances/`,
+  POST_BALANCE: () => `${BASE_URL}/api/post/balance/`,
+  PUT_BALANCE: (id) => `${BASE_URL}/api/put/balance/${id}/`,
+  GET_BALANCES: (from, to) => `${BASE_URL}/api/get/balances/?from=${from}&to=${to}`,
+  GET_BALANCE: (id) => `${BASE_URL}/api/get/balance/${id}/`,
+
+  DELETE_BALANCE_LOG: (id) => `${BASE_URL}/api/delete/balance_log/${id}/`,
+  DELETE_BALANCE_LOGS: () => `${BASE_URL}/api/delete/balance_logs/`,
+  POST_BALANCE_LOG: () => `${BASE_URL}/api/post/balance_log/`,
+  PUT_BALANCE_LOG: (id) => `${BASE_URL}/api/put/balance_log/${id}/`,
+  GET_BALANCE_LOGS: (from, to) => `${BASE_URL}/api/get/balance_logs/?from=${from}&to=${to}`,
+  GET_BALANCE_LOG: (id) => `${BASE_URL}/api/get/balance_log/${id}/`,
+
 };
 
 export default API_ENDPOINTS;
