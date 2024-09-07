@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { InputSelect, Loader, Textarea } from '../../pages-components'
 import { Grid } from '@material-ui/core'
-import axios from 'axios';
-import API_ENDPOINTS from '../../config/apis';
 import { formatFilterRecordDropdown } from '../../functions/pages/formatFilterRecordDropdown';
 import { filterFetchDropdownRecords } from '../../functions/pages/filterFetchDropdownRecords';
 
@@ -15,7 +13,7 @@ const FilterContent = ({ currentFilter, setCurrentFilter, handleProducts, produc
         filterFetchDropdownRecords(`http://127.0.0.1:8000/api/get/products/`, handleProducts)
         filterFetchDropdownRecords(`http://127.0.0.1:8000/api/get/stores/`, handleStores)
         setLoading(false);
-    }, []);
+    }, [handleProducts, handleStores]);
 
     return (
         <>

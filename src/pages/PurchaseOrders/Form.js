@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Box, Button, Divider, FormControl, Grid, Tooltip } from '@material-ui/core'
 import { InputSelect, Loader, Textarea } from '../../pages-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -19,6 +19,10 @@ const Form = ({ handleClick, icon, title }) => {
     const [balances, setBalances] = useState([]);
     const statuses = ['Pending', 'Completed']
 
+    const fetchData = useCallback(() => {
+        handleFetchRecord(id, API_ENDPOINTS.GET_PURCHASE_ORDER, setData, setEditLoading);
+    }, [id]);
+
     useEffect(() => {
         if (id) {
             fetchData();
@@ -27,11 +31,7 @@ const Form = ({ handleClick, icon, title }) => {
         formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/stores/`, setStores)
         formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/products/`, setProducts)
         formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/balances/`, setBalances)
-    }, [id]);
-
-    const fetchData = () => {
-        handleFetchRecord(id, API_ENDPOINTS.GET_PURCHASE_ORDER, setData, setEditLoading);
-    };
+    }, [id, fetchData]);
 
     const calculateTotal = (price, quantity) => {
         const total = (parseFloat(price) || 0) * (parseFloat(quantity) || 0);

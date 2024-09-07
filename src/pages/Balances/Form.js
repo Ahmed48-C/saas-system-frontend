@@ -1,17 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Box, Button, Divider, FormControl, Grid, Tooltip } from '@material-ui/core'
-import { InputSelect, Loader, Textarea } from '../../pages-components'
+import { Loader, Textarea } from '../../pages-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useCountries } from 'use-react-countries'
 import isEmpty from '../../functions/pages/isEmpty'
-import { useParams } from 'react-router-dom';
-import API_ENDPOINTS from '../../config/apis'
-import { handleFetchRecord } from '../../functions/pages/handleFetchRecord'
 
 const Form = ({ handleClick, icon, title }) => {
 
     const [data, setData] = useState({});
-    const [editLoading, setEditLoading] = useState(false); // Add loading state
 
     const isFormValid = () => {
         return  data.name &&
@@ -44,9 +39,6 @@ const Form = ({ handleClick, icon, title }) => {
 
     return (
         <>
-            {editLoading ? (
-                <Loader /> // Render the Loader component while loading
-            ) : (
             <FormControl fullWidth>
                 <Grid container spacing={3} className="my-4" style={{ width: '100%' }}>
                     <Grid item xs={12}>
@@ -121,7 +113,6 @@ const Form = ({ handleClick, icon, title }) => {
                     </Grid>
                 </Grid>
             </FormControl>
-            )}
         </>
     )
 }

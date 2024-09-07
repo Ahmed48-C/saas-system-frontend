@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Box, Button, Divider, FormControl, Grid, Tooltip } from '@material-ui/core'
 import { InputSelect, Loader, Textarea } from '../../pages-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -17,17 +17,17 @@ const Form = ({ handleClick, icon, title }) => {
     const [editLoading, setEditLoading] = useState(false);
     const [locations, setLocations] = useState([]);
 
+    const fetchData = useCallback(() => {
+        handleFetchRecord(id, API_ENDPOINTS.GET_CUSTOMER, setData, setEditLoading);
+    }, [id]);
+
     useEffect(() => {
         if (id) {
             fetchData();
         }
 
         formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/locations/`, setLocations);
-    }, [id]);
-
-    const fetchData = () => {
-        handleFetchRecord(id, API_ENDPOINTS.GET_CUSTOMER, setData, setEditLoading);
-    };
+    }, [id, fetchData]);
 
     const isFormValid = () => {
         return  data.code &&
@@ -40,10 +40,6 @@ const Form = ({ handleClick, icon, title }) => {
 
     const handleInputChange = (field) => (e) => {
         setData({ ...data, [field]: e.target.value });
-    };
-
-    const handleUnitChange = (setValue) => (event) => {
-        setValue(event.target.value);
     };
 
     return (

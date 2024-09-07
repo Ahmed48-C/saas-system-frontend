@@ -9,7 +9,6 @@ import TableHeading from '../../functions/pages/tableHeading';
 import { fetchAll } from '../../functions/pages/handleFetchAll';
 import handleBatchDeleteRecords from '../../functions/pages/handleBatchDeleteRecords';
 import { toast } from 'react-toastify';
-import { updateSelectedWithIds } from '../../functions/pages/updateSelectedWithIds';
 import { UseIDs } from '../../config/SelectedIdsContext';
 import HandleTableErrorCallback from '../../functions/pages/HandleTableErrorCallback';
 

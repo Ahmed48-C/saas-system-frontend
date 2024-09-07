@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Box, Button, Divider, FormControl, Grid, Tooltip } from '@material-ui/core'
 import { InputSelect, Loader, Textarea } from '../../pages-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -6,8 +6,6 @@ import isEmpty from '../../functions/pages/isEmpty'
 import { useParams } from 'react-router-dom';
 import API_ENDPOINTS from '../../config/apis'
 import { handleFetchRecord } from '../../functions/pages/handleFetchRecord'
-import AdornmentTextarea from '../../pages-components/AdornmentTextArea'
-import getUnits from '../../config/getUnits'
 import { formatFormRecordDropdown } from '../../functions/pages/formatFormRecordDropdown'
 import { formFetchDropdownRecords } from '../../functions/pages/formFetchDropdownRecords'
 
@@ -18,17 +16,21 @@ const Form = ({ handleClick, icon, title }) => {
     const [editLoading, setEditLoading] = useState(false);
     const [balances, setBalances] = useState([]);
 
+    const fetchData = useCallback(() => {
+        handleFetchRecord(id, API_ENDPOINTS.GET_BALANCE_LOG, setData, setEditLoading);
+    }, [id]);
+
     useEffect(() => {
         if (id) {
             fetchData();
         }
 
         formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/balances/`, setBalances)
-    }, [id]);
+    }, [id, fetchData]);
 
-    const fetchData = () => {
-        handleFetchRecord(id, API_ENDPOINTS.GET_BALANCE_LOG, setData, setEditLoading);
-    };
+    // const fetchData = () => {
+    //     handleFetchRecord(id, API_ENDPOINTS.GET_BALANCE_LOG, setData, setEditLoading);
+    // };
 
     const isFormValid = () => {
         return  data.balance_id &&

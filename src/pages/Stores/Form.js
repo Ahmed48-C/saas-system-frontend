@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Box, Button, Divider, FormControl, Grid, Tooltip } from '@material-ui/core'
 import { InputSelect, Loader, Textarea } from '../../pages-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -14,15 +14,15 @@ const Form = ({ handleClick, icon, title }) => {
     const [data, setData] = useState({});
     const [editLoading, setEditLoading] = useState(false); // Add loading state
 
+    const fetchData = useCallback(() => {
+        handleFetchRecord(id, API_ENDPOINTS.GET_STORE, setData, setEditLoading);
+    }, [id]);
+
     useEffect(() => {
         if (id) {
             fetchData();
         }
-    }, [id]);
-
-    const fetchData = () => {
-        handleFetchRecord(id, API_ENDPOINTS.GET_STORE, setData, setEditLoading);
-    };
+    }, [id, fetchData]);
 
     const { countries } = useCountries();
 

@@ -21,8 +21,6 @@ import {
   ListItem,
   FormControlLabel,
   Checkbox,
-  Grid,
-  CardContent,
 } from '@material-ui/core';
 
 import Pagination from '@material-ui/lab/Pagination';
@@ -146,8 +144,6 @@ const MainTable = ({ tableContent, tableButtons, Heading, handleClick, tableHead
     };
 
     const open = Boolean(columnsAnchorEl);
-
-    const [activeTab, setActiveTab] = useState('1');
 
     const history = useHistory();
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Box, Button, Divider, FormControl, Grid, Tooltip } from '@material-ui/core'
 import { InputSelect, Loader, Textarea } from '../../pages-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -25,17 +25,17 @@ const Form = ({ handleClick, icon, title }) => {
 
     const weightUnits = units.mass || [];
 
+    const fetchData = useCallback(() => {
+        handleFetchRecord(id, API_ENDPOINTS.GET_PRODUCT, setData, setEditLoading);
+    }, [id]);
+
     useEffect(() => {
         if (id) {
             fetchData();
         }
 
         formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/suppliers/`, setSuppliers)
-    }, [id]);
-
-    const fetchData = () => {
-        handleFetchRecord(id, API_ENDPOINTS.GET_PRODUCT, setData, setEditLoading);
-    };
+    }, [id, fetchData]);
 
     const isFormValid = () => {
         return  data.code &&

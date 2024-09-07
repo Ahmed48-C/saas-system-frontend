@@ -13,7 +13,7 @@ const FilterContent = ({ currentFilter, setCurrentFilter, handleProducts, produc
         filterFetchDropdownRecords(`http://127.0.0.1:8000/api/get/stores/`, handleStores)
         filterFetchDropdownRecords(`http://127.0.0.1:8000/api/get/balances/`, handleBalances)
         setLoading(false);
-    }, []);
+    }, [handleProducts, handleStores, handleBalances]);
 
     const handleInputChange = (field) => (e) => {
         let value = e.target.value;
