@@ -19,6 +19,7 @@ const EditContent = ({ editLoading }) => {
         status: data.status,
         store_id: data.store_id,
         product_id: data.product_id,
+        balance_id: data.balance_id,
       };
 
       const successCallback = (data) => {
@@ -30,6 +31,8 @@ const EditContent = ({ editLoading }) => {
         if (error.message && error.response.data.detail.includes('Cannot')) {
           toast.error('Error: ' + error.response.data.detail);
         } else if (error.message && error.response.data.detail.includes('Maximum')) {
+          toast.error('Error: ' + error.response.data.detail);
+        } else if (error.message && error.response.data.detail) {
           toast.error('Error: ' + error.response.data.detail);
         } else {
           toast.error('Error: ' + error.message);

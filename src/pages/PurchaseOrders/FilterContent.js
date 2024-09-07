@@ -4,13 +4,14 @@ import { Grid } from '@material-ui/core'
 import { formatFilterRecordDropdown } from '../../functions/pages/formatFilterRecordDropdown';
 import { filterFetchDropdownRecords } from '../../functions/pages/filterFetchDropdownRecords';
 
-const FilterContent = ({ currentFilter, setCurrentFilter, handleProducts, products, stores, handleStores }) => {
+const FilterContent = ({ currentFilter, setCurrentFilter, handleProducts, products, stores, handleStores, handleBalances, balances }) => {
     const [loading, setLoading] = useState(true);
     const statuses = ['Pending', 'Completed']
 
     useEffect(() => {
         filterFetchDropdownRecords(`http://127.0.0.1:8000/api/get/products/`, handleProducts)
         filterFetchDropdownRecords(`http://127.0.0.1:8000/api/get/stores/`, handleStores)
+        filterFetchDropdownRecords(`http://127.0.0.1:8000/api/get/balances/`, handleBalances)
         setLoading(false);
     }, []);
 
@@ -136,6 +137,19 @@ const FilterContent = ({ currentFilter, setCurrentFilter, handleProducts, produc
                     id='product'
                     onChange={(e) => setCurrentFilter({ ...currentFilter, product_id: e.target.value })}
                     value={currentFilter.product_id}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <InputSelect
+                    selectItems={balances.map(balance => ({
+                        value: balance.id.toString(),
+                        name: formatFilterRecordDropdown(balance.name)
+                    }))}
+                    label='Balance'
+                    name='balance'
+                    id='balance'
+                    onChange={(e) => setCurrentFilter({ ...currentFilter, balance_id: e.target.value })}
+                    value={currentFilter.balance_id}
                 />
             </Grid>
             </>

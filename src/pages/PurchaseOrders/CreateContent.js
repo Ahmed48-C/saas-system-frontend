@@ -17,6 +17,7 @@ const CreateContent = () => {
         status: data.status,
         store_id: data.store_id,
         product_id: data.product_id,
+        balance_id: data.balance_id,
       };
 
       const successCallback = (data) => {

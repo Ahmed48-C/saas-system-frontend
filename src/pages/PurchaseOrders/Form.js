@@ -16,6 +16,7 @@ const Form = ({ handleClick, icon, title }) => {
     const [editLoading, setEditLoading] = useState(false); // Add loading state
     const [stores, setStores] = useState([]);
     const [products, setProducts] = useState([]);
+    const [balances, setBalances] = useState([]);
     const statuses = ['Pending', 'Completed']
 
     useEffect(() => {
@@ -25,6 +26,7 @@ const Form = ({ handleClick, icon, title }) => {
 
         formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/stores/`, setStores)
         formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/products/`, setProducts)
+        formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/balances/`, setBalances)
     }, [id]);
 
     const fetchData = () => {
@@ -41,7 +43,8 @@ const Form = ({ handleClick, icon, title }) => {
                 data.price &&
                 data.quantity &&
                 data.store_id &&
-                data.product_id;
+                data.product_id &&
+                data.balance_id;
     };
 
     const handleInputChange = (field) => (e) => {
@@ -189,6 +192,21 @@ const Form = ({ handleClick, icon, title }) => {
                         onChange={handleInputChange('product_id')}
                         value={data.product_id ?? ""}
                         error={isEmpty(data.product_id)}
+                        disabled={!!id}
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <InputSelect
+                        selectItems={balances.map(balance => ({
+                            value: balance.id,
+                            name: formatFormRecordDropdown(balance.name)
+                        }))}
+                        label='Balance'
+                        name='balance_id'
+                        id='balance_id'
+                        onChange={handleInputChange('balance_id')}
+                        value={data.balance_id ?? ""}
+                        error={isEmpty(data.balance_id)}
                         disabled={!!id}
                         />
                     </Grid>
