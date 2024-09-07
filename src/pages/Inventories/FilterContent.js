@@ -13,7 +13,7 @@ const FilterContent = ({ currentFilter, setCurrentFilter, handleProducts, produc
         filterFetchDropdownRecords(`http://127.0.0.1:8000/api/get/products/`, handleProducts)
         filterFetchDropdownRecords(`http://127.0.0.1:8000/api/get/stores/`, handleStores)
         setLoading(false);
-    }, [handleProducts, handleStores]);
+    }, []);
 
     return (
         <>
