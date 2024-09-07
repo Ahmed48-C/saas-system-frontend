@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { FilterBar, MainTable } from '../../pages-components'
 import NoRecords from '../../pages-components/NoRecords';
 import TableContent from './TableContent';
@@ -11,6 +11,9 @@ import handleBatchDeleteRecords from '../../functions/pages/handleBatchDeleteRec
 import { toast } from 'react-toastify';
 import { UseIDs } from '../../config/SelectedIdsContext';
 import HandleTableErrorCallback from '../../functions/pages/HandleTableErrorCallback';
+import { Card, CardContent, Grid } from '@material-ui/core';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMoneyBill } from '@fortawesome/free-solid-svg-icons'; // Import the money sign icon
 
 const headers = [
   { key: '', label: '', className: 'bg-white text-center' },
@@ -203,6 +206,67 @@ const PurchaseOrder = () => {
     setIsSelectedAll(false);
   }
 
+  const MoneyInfo = () => {
+    const { completedTotal, pendingTotal } = useMemo(() => {
+      if (!Array.isArray(records.data) || records.data.length === 0) {
+        return { completedTotal: 0, pendingTotal: 0 }; // Return default values if data is not available
+      }
+
+      return records.data.reduce(
+        (acc, record) => {
+          if (record.status === 'Completed') {
+            acc.completedTotal += parseFloat(record.total) || 0;
+          } else if (record.status === 'Pending') {
+            acc.pendingTotal += parseFloat(record.total) || 0;
+          }
+          return acc;
+        },
+        { completedTotal: 0, pendingTotal: 0 }
+      );
+    }, [records.data]); // Make sure to include records.data in the dependency array
+
+    return (
+      <Grid container spacing={6} style={{ justifyContent: 'space-between' }}>
+        <Grid item xl={6} md={6}>
+          <Card className="card-box card-box-border-bottom border-success">
+            <CardContent style={{ paddingBottom: 0 }}>
+              <div className="text-center">
+                <div className="mt-1">
+                  <FontAwesomeIcon
+                    icon={faMoneyBill}
+                    className="font-size-xxl text-success"
+                  />
+                </div>
+                <div className="mt-3 line-height-sm mb-2">
+                  <b className="font-size-lg pr-1">${completedTotal.toFixed(2)}</b>
+                  <span className="text-black-50">Completed</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xl={6} md={6}>
+          <Card className="card-box card-box-border-bottom border-warning">
+            <CardContent style={{ paddingBottom: 0 }}>
+              <div className="text-center">
+                <div className="mt-1">
+                  <FontAwesomeIcon
+                    icon={faMoneyBill}
+                    className="font-size-xxl text-warning"
+                  />
+                </div>
+                <div className="mt-3 line-height-sm mb-2">
+                  <b className="font-size-lg pr-1">${pendingTotal.toFixed(2)}</b>
+                  <span className="text-black-50">Pending</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
+    );
+  };
+
   return (
     <>
       <MainTable
@@ -264,6 +328,7 @@ const PurchaseOrder = () => {
         columns={columns}
         handleColumns={handleColumns}
         tabs={tabs}
+        contentAboveFilter={<MoneyInfo />}
       />
     </>
   )

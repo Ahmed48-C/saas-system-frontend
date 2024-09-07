@@ -21,6 +21,8 @@ import {
   ListItem,
   FormControlLabel,
   Checkbox,
+  Grid,
+  CardContent,
 } from '@material-ui/core';
 
 import Pagination from '@material-ui/lab/Pagination';
@@ -34,7 +36,7 @@ import clsx from 'clsx';
 
 import { useHistory } from 'react-router-dom';
 
-const MainTable = ({ tableContent, tableButtons, Heading, handleClick, tableHeading, handlePageChange, pageCount, filterBar, page, numSelected, handleBatchDelete, isSelectedAll, handleSelectAll, handleDeselectAll, rows, handleRows, columns, handleColumns, tabs }) => {
+const MainTable = ({ tableContent, tableButtons, Heading, handleClick, tableHeading, handlePageChange, pageCount, filterBar, page, numSelected, handleBatchDelete, isSelectedAll, handleSelectAll, handleDeselectAll, rows, handleRows, columns, handleColumns, tabs, contentAboveFilter }) => {
 
     // const [rows, setRows] = useState('50');
     const [pointerEvents, setPointerEvents] = useState('auto');
@@ -164,39 +166,6 @@ const MainTable = ({ tableContent, tableButtons, Heading, handleClick, tableHead
           {/* <Card className="card-box mb-spacing-6-x2"> */}
           <Card className="card-box">
 
-            {/* <List className="nav-tabs nav-tabs-primary d-flex" style={{ paddingLeft: 0 }}>
-              <ListItem
-                style={{ marginRight: 0 }}
-                button
-                disableRipple
-                selected={activeTab === '0'}
-                onClick={() => {
-                  setActiveTab('0');
-                }}>
-                Home
-              </ListItem>
-              <ListItem
-                style={{ marginRight: 0 }}
-                button
-                disableRipple
-                selected={activeTab === '1'}
-                onClick={() => {
-                  setActiveTab('1');
-                }}>
-                Profile
-              </ListItem>
-              <ListItem
-                style={{ marginRight: 0 }}
-                button
-                disableRipple
-                selected={activeTab === '2'}
-                onClick={() => {
-                  setActiveTab('2');
-                }}>
-                Messages
-              </ListItem>
-            </List> */}
-
             <List className="nav-tabs nav-tabs-primary d-flex" style={{ paddingLeft: 0 }}>
               {tabs.map((tab, index) => (
                 <ListItem
@@ -281,6 +250,11 @@ const MainTable = ({ tableContent, tableButtons, Heading, handleClick, tableHead
             )}
             {/* </div> */}
             {tableButtons}
+            <div>
+              {/* <div className="search-wrapper"> */}
+              {contentAboveFilter}
+              {/* </div> */}
+            </div>
             <div>
               {/* <div className="search-wrapper"> */}
                 {filterBar}
