@@ -30,12 +30,6 @@ const SidebarMenu = (props) => {
 
   const toggleSidebarMobile = () => setSidebarToggleMobile(false);
 
-  const [dashboardOpen, setDashboardOpen] = useState(false);
-  const toggleDashboard = (event) => {
-    setDashboardOpen(!dashboardOpen);
-    event.preventDefault();
-  };
-
   const [salesOpen, setSalesOpen] = useState(false);
   const toggleSales = (event) => {
     setSalesOpen(!salesOpen);
@@ -72,33 +66,9 @@ const SidebarMenu = (props) => {
     event.preventDefault();
   };
 
-  const [productsServicesOpen, setProductsServicesOpen] = useState(false);
-  const toggleProductsServices = (event) => {
-    setProductsServicesOpen(!productsServicesOpen);
-    event.preventDefault();
-  };
-
-  const [InventoryOpen, setInventoryOpen] = useState(false);
-  const toggleIventory = (event) => {
-    setInventoryOpen(!InventoryOpen);
-    event.preventDefault();
-  };
-
-  const [suppliersOpen, setSuppliersOpen] = useState(false);
-  const toggleSuppliers = (event) => {
-    setSuppliersOpen(!suppliersOpen);
-    event.preventDefault();
-  };
-
   const [controlPanelOpen, setControlPanelOpen] = useState(false);
   const toggleControlPanel = (event) => {
     setControlPanelOpen(!controlPanelOpen);
-    event.preventDefault();
-  };
-
-  const [locationsOpen, setLocationsOpen] = useState(false);
-  const toggleLocations = (event) => {
-    setLocationsOpen(!locationsOpen);
     event.preventDefault();
   };
 

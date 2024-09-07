@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Box, Button, Divider, FormControl, Grid, Tooltip } from '@material-ui/core'
 import { InputSelect, Loader, Textarea } from '../../pages-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -6,7 +6,6 @@ import isEmpty from '../../functions/pages/isEmpty'
 import { useParams } from 'react-router-dom';
 import API_ENDPOINTS from '../../config/apis'
 import { handleFetchRecord } from '../../functions/pages/handleFetchRecord'
-import axios from 'axios'
 import { formatFormRecordDropdown } from '../../functions/pages/formatFormRecordDropdown'
 import { formFetchDropdownRecords } from '../../functions/pages/formFetchDropdownRecords'
 
@@ -18,6 +17,10 @@ const Form = ({ handleClick, icon, title }) => {
     const [stores, setStores] = useState([]);
     const [products, setProducts] = useState([]);
 
+    const fetchData = useCallback(() => {
+        handleFetchRecord(id, API_ENDPOINTS.GET_INVENTORY, setData, setEditLoading);
+    }, [id]);
+
     useEffect(() => {
         if (id) {
             fetchData();
@@ -25,11 +28,7 @@ const Form = ({ handleClick, icon, title }) => {
 
         formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/stores/`, setStores)
         formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/products/`, setProducts)
-    }, [id]);
-
-    const fetchData = () => {
-        handleFetchRecord(id, API_ENDPOINTS.GET_INVENTORY, setData, setEditLoading);
-    };
+    }, [id, fetchData]);
 
     // const isFormValid = () => {
     //     return  data.code &&

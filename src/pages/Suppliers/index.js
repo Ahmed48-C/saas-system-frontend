@@ -11,7 +11,6 @@ import handleBatchDeleteRecords from '../../functions/pages/handleBatchDeleteRec
 import { toast } from 'react-toastify';
 import HandleTableErrorCallback from '../../functions/pages/HandleTableErrorCallback';
 import { UseIDs } from '../../config/SelectedIdsContext';
-import { updateSelectedWithIds } from '../../functions/pages/updateSelectedWithIds';
 
 const headers = [
   { key: '', label: '', className: 'bg-white text-center' },
