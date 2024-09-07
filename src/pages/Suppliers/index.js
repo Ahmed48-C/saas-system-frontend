@@ -21,6 +21,11 @@ const headers = [
   { key: 'actions', label: 'Actions', className: 'bg-white text-center', sortable: false }
 ];
 
+const tabs = [
+  { url: '/suppliers', title: 'Suppliers' },
+  { url: '/customers', title: 'Customers' }
+];
+
 const Supplier = () => {
   const heading = 'Supplier'
   const [loading, setLoading] = useState(true);
@@ -245,6 +250,7 @@ const Supplier = () => {
         handleRows={handleRows} // Pass setRows function
         columns={columns}
         handleColumns={handleColumns}
+        tabs={tabs}
       />
     </>
   )

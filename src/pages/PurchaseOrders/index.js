@@ -22,6 +22,10 @@ const headers = [
   { key: 'actions', label: 'Actions', className: 'bg-white text-center', sortable: false }
 ];
 
+const tabs = [
+  { url: '/purchase-orders', title: 'Purchase Order' }
+];
+
 const PurchaseOrder = () => {
   const heading = 'Purchase Order'
   const [loading, setLoading] = useState(true);
@@ -253,6 +257,7 @@ const PurchaseOrder = () => {
         handleRows={handleRows} // Pass setRows function
         columns={columns}
         handleColumns={handleColumns}
+        tabs={tabs}
       />
     </>
   )
