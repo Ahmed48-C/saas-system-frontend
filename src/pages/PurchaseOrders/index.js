@@ -39,10 +39,11 @@ const PurchaseOrder = () => {
 
   const [filters, setFilters] = useState([]);
   const [anchorEl4, setAnchorEl4] = useState(null);
-  const [currentFilter, setCurrentFilter] = useState({ name: '', price: '', quantity: '', total: '', status: '', product_id: '', store_id: '' });
+  const [currentFilter, setCurrentFilter] = useState({ name: '', price: '', quantity: '', total: '', status: '', product_id: '', store_id: '', balance_id: '' });
   const [products, setProducts] = useState([]);
   const [stores, setStores] = useState([]);
-  const filterRecords = { products, stores };
+  const [balances, setBalances] = useState([]);
+  const filterRecords = { products, stores, balances };
   const [isEditing, setIsEditing] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
 
@@ -59,7 +60,8 @@ const PurchaseOrder = () => {
       { name: 'total', label: 'Total', className: 'bg-white text-left', selected: true },
       { name: 'status', label: 'Status', className: 'bg-white text-left', selected: true },
       { name: 'product', label: 'Product', className: 'bg-white text-left', selected: true },
-      { name: 'store', label: 'Store', className: 'bg-white text-left', selected: true }
+      { name: 'store', label: 'Store', className: 'bg-white text-left', selected: true },
+      { name: 'balance', label: 'Balance', className: 'bg-white text-left', selected: true }
     ];
   });
 
@@ -169,6 +171,10 @@ const PurchaseOrder = () => {
     setStores(value);
   }
 
+  const handleBalances = (value) => {
+    setBalances(value);
+  }
+
   const handleBatchDelete = () => {
     const successCallback = (data) => {
       setNumSelected(0);
@@ -216,7 +222,7 @@ const PurchaseOrder = () => {
           handleIsEditing={handleIsEditing}
           handleEditIndex={handleEditIndex}
           editIndex={editIndex}
-          filterContent={<FilterContent currentFilter={currentFilter} setCurrentFilter={setCurrentFilter} products={products} handleProducts={handleProducts} stores={stores} handleStores={handleStores} />}
+          filterContent={<FilterContent currentFilter={currentFilter} setCurrentFilter={setCurrentFilter} products={products} handleProducts={handleProducts} stores={stores} handleStores={handleStores} balances={balances} handleBalances={handleBalances} />}
           filterRecords={filterRecords} // Pass records object
         />}
         tableHeading={<TableHeading
