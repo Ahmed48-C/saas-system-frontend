@@ -11,7 +11,7 @@ const FilterContent = ({ currentFilter, setCurrentFilter, handleBalances, balanc
     useEffect(() => {
         filterFetchDropdownRecords(`http://127.0.0.1:8000/api/get/balances/`, handleBalances)
         setLoading(false);
-    }, [handleBalances]);
+    }, []);
 
     const handleInputChange = (field) => (e) => {
         let value = e.target.value;

@@ -10,7 +10,7 @@ const FilterContent = ({ currentFilter, setCurrentFilter, handleLocations, locat
     useEffect(() => {;
         filterFetchDropdownRecords(`http://127.0.0.1:8000/api/get/locations/`, handleLocations)
         setLoading(false);
-    }, [handleLocations]);
+    }, []);
 
     return (
         <>
