@@ -9,15 +9,17 @@ const CreateContent = () => {
   const history = useHistory();
 
     const handleSubmitClick = (data) => {
+
       const postData = {
-        name: data.name,
-        price: data.price,
-        quantity: data.quantity,
+        code: data.code,
+        // price: data.price,
+        // quantity: data.quantity,
         total: data.total,
         status: data.status,
         store_id: data.store_id,
-        product_id: data.product_id,
+        // product_id: data.product_id,
         balance_id: data.balance_id,
+        items: data.items,
       };
 
       const successCallback = (data) => {
