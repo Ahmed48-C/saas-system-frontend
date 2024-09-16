@@ -96,11 +96,33 @@ const Form = ({ handleClick, icon, title }) => {
     //             data.balance_id;
     // };
 
+    // const isFormValid = () => {
+    //     return  data.code &&
+    //             data.store_id &&
+    //             data.balance_id &&
+    //             data.items.length > 0;
+    // };
+
     const isFormValid = () => {
-        return  data.code &&
-                data.store_id &&
-                data.balance_id &&
-                data.items.length > 0;
+        // Ensure all basic fields are filled
+        if (!data.code || !data.store_id || !data.balance_id) {
+            return false;
+        }
+
+        // Check if items array is not empty
+        if (data.items.length === 0) {
+            return false;
+        }
+
+        // Validate each item in the items array
+        const areItemsValid = data.items.every(item =>
+            item.product_id &&               // Ensure product_id is not empty
+            item.price > 0 &&                // Ensure price is greater than 0
+            item.quantity > 0 &&             // Ensure quantity is greater than 0
+            item.total > 0                   // Ensure total is greater than 0
+        );
+
+        return areItemsValid;
     };
 
     const handleInputChange = (field) => (e) => {
@@ -256,13 +278,13 @@ const Form = ({ handleClick, icon, title }) => {
     const ProductInputSelect = ({ selectItems, label, value, onChange, error, disabled }) => {
         // Custom menu props to limit the visible items and enable scrolling
         const menuProps = {
-          PaperProps: {
-            style: {
-              maxHeight: 400, // Set the maximum height for the dropdown menu
+            PaperProps: {
+                style: {
+                maxHeight: 400, // Set the maximum height for the dropdown menu
+                },
             },
-          },
         };
-      
+
         return (
             <FormControl
             fullWidth
@@ -292,7 +314,11 @@ const Form = ({ handleClick, icon, title }) => {
                 </Select>
             </FormControl>
         );
-      }
+    }
+
+    useEffect(() => {
+        console.log(" TOTAL: ", data.total)
+    }, [data.total])
 
     return (
         <>
@@ -356,7 +382,7 @@ const Form = ({ handleClick, icon, title }) => {
                         id='total'
                         value={data.total ?? "0.00"}
                         key='total'
-                        error={isEmpty(data.total)}
+                        error={data.total <= 0 || data.total === undefined}
                         readOnly
                         />
                     </Grid>

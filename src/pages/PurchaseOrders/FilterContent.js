@@ -50,11 +50,11 @@ const FilterContent = ({ currentFilter, setCurrentFilter, handleProducts, produc
                     style={{ margin: 0 }}
                     rows={1}
                     rowsMax={2}
-                    label='Name'
-                    name='name'
-                    id='name'
-                    value={currentFilter.name}
-                    onChange={(e) => setCurrentFilter({ ...currentFilter, name: e.target.value })}
+                    label='Code'
+                    name='code'
+                    id='code'
+                    value={currentFilter.code}
+                    onChange={(e) => setCurrentFilter({ ...currentFilter, code: e.target.value })}
                     maxLength={80}
                 />
             </Grid>
