@@ -159,3 +159,158 @@ const FilterContent = ({ currentFilter, setCurrentFilter, handleProducts, produc
 }
 
 export default FilterContent
+
+// FOR FILTERCONTENT ITEMS
+// const FilterContent = ({ currentFilter, setCurrentFilter, handleProducts, products, stores, handleStores, handleBalances, balances }) => {
+//     const [loading, setLoading] = useState(true);
+//     const statuses = ['Pending', 'Completed'];
+
+//     useEffect(() => {
+//         filterFetchDropdownRecords(`http://127.0.0.1:8000/api/get/products/`, handleProducts);
+//         filterFetchDropdownRecords(`http://127.0.0.1:8000/api/get/stores/`, handleStores);
+//         filterFetchDropdownRecords(`http://127.0.0.1:8000/api/get/balances/`, handleBalances);
+//         setLoading(false);
+//     }, []);
+
+//     const handleInputChange = (index, field) => (e) => {
+//         let value = e.target.value;
+
+//         const updatedItems = currentFilter.items.map((item, i) => 
+//             i === index ? { ...item, [field]: value } : item
+//         );
+
+//         setCurrentFilter({ ...currentFilter, items: updatedItems });
+//     };
+
+//     const addItem = () => {
+//         setCurrentFilter({
+//             ...currentFilter,
+//             items: [...currentFilter.items, { product_id: '', price: '', quantity: '' }],
+//         });
+//     };
+
+//     const removeItem = (index) => {
+//         const updatedItems = currentFilter.items.filter((_, i) => i !== index);
+//         setCurrentFilter({ ...currentFilter, items: updatedItems });
+//     };
+
+//     return (
+//         <>
+//             {loading ? (
+//                 <Grid item xs={12} style={{ display: 'flex', justifyContent: 'center', paddingLeft: '32px' }}>
+//                     <Loader />
+//                 </Grid>
+//             ) : (
+//             <>
+//                 <Grid item xs={12}>
+//                     <Textarea
+//                         style={{ margin: 0 }}
+//                         rows={1}
+//                         rowsMax={2}
+//                         label='Name'
+//                         name='name'
+//                         id='name'
+//                         value={currentFilter.name}
+//                         onChange={(e) => setCurrentFilter({ ...currentFilter, name: e.target.value })}
+//                         maxLength={80}
+//                     />
+//                 </Grid>
+
+//                 {currentFilter.items.map((item, index) => (
+//                     <div key={index}>
+//                         <Grid item xs={12}>
+//                             <InputSelect
+//                                 selectItems={products.map(product => ({
+//                                     value: product.id.toString(),
+//                                     name: formatFilterRecordDropdown(product.name)
+//                                 }))}
+//                                 label='Product'
+//                                 name={`product-${index}`}
+//                                 id={`product-${index}`}
+//                                 onChange={handleInputChange(index, 'product_id')}
+//                                 value={item.product_id}
+//                             />
+//                         </Grid>
+
+//                         <Grid item xs={12}>
+//                             <Textarea
+//                                 style={{ margin: 0 }}
+//                                 rows={1}
+//                                 rowsMax={2}
+//                                 label='Price'
+//                                 name={`price-${index}`}
+//                                 id={`price-${index}`}
+//                                 value={item.price}
+//                                 onChange={handleInputChange(index, 'price')}
+//                                 maxLength={15}
+//                             />
+//                         </Grid>
+
+//                         <Grid item xs={12}>
+//                             <Textarea
+//                                 style={{ margin: 0 }}
+//                                 rows={1}
+//                                 rowsMax={2}
+//                                 label='Quantity'
+//                                 name={`quantity-${index}`}
+//                                 id={`quantity-${index}`}
+//                                 value={item.quantity}
+//                                 onChange={handleInputChange(index, 'quantity')}
+//                                 maxLength={15}
+//                             />
+//                         </Grid>
+
+//                         <Button onClick={() => removeItem(index)}>Remove Item</Button>
+//                     </div>
+//                 ))}
+
+//                 <Button onClick={addItem}>Add Item</Button>
+
+//                 <Grid item xs={12}>
+//                     <InputSelect
+//                         selectItems={statuses.map(status => ({
+//                             value: status,
+//                             name: formatFilterRecordDropdown(status)
+//                         }))}
+//                         label='Status'
+//                         name='status'
+//                         id='status'
+//                         onChange={(e) => setCurrentFilter({ ...currentFilter, status: e.target.value })}
+//                         value={currentFilter.status}
+//                     />
+//                 </Grid>
+
+//                 <Grid item xs={12}>
+//                     <InputSelect
+//                         selectItems={stores.map(store => ({
+//                             value: store.id.toString(),
+//                             name: formatFilterRecordDropdown(store.name)
+//                         }))}
+//                         label='Store'
+//                         name='store'
+//                         id='store'
+//                         onChange={(e) => setCurrentFilter({ ...currentFilter, store_id: e.target.value })}
+//                         value={currentFilter.store_id}
+//                     />
+//                 </Grid>
+
+//                 <Grid item xs={12}>
+//                     <InputSelect
+//                         selectItems={balances.map(balance => ({
+//                             value: balance.id.toString(),
+//                             name: formatFilterRecordDropdown(balance.name)
+//                         }))}
+//                         label='Balance'
+//                         name='balance'
+//                         id='balance'
+//                         onChange={(e) => setCurrentFilter({ ...currentFilter, balance_id: e.target.value })}
+//                         value={currentFilter.balance_id}
+//                     />
+//                 </Grid>
+//             </>
+//             )}
+//         </>
+//     )
+// };
+
+// export default FilterContent;

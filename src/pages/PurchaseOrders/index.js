@@ -43,6 +43,17 @@ const PurchaseOrder = () => {
   const [filters, setFilters] = useState([]);
   const [anchorEl4, setAnchorEl4] = useState(null);
   const [currentFilter, setCurrentFilter] = useState({ name: '', price: '', quantity: '', total: '', status: '', product_id: '', store_id: '', balance_id: '' });
+  // FOR FILTERCONTENT ITEMS
+  // const [currentFilter, setCurrentFilter] = useState({
+  //   name: '',
+  //   items: [
+  //       { product_id: '', price: '', quantity: '' }  // Default single item
+  //   ],
+  //   total: '',
+  //   status: '',
+  //   store_id: '',
+  //   balance_id: ''
+  // });
   const [products, setProducts] = useState([]);
   const [stores, setStores] = useState([]);
   const [balances, setBalances] = useState([]);
@@ -58,11 +69,12 @@ const PurchaseOrder = () => {
     const savedColumns = localStorage.getItem('purchaseOrderColumns');
     return savedColumns ? JSON.parse(savedColumns) : [
       { name: 'name', label: 'Name', className: 'bg-white text-left', selected: true },
-      { name: 'price', label: 'Price', className: 'bg-white text-left', selected: false },
-      { name: 'quantity', label: 'Quantity', className: 'bg-white text-left', selected: false },
+      // { name: 'price', label: 'Price', className: 'bg-white text-left', selected: false },
+      // { name: 'quantity', label: 'Quantity', className: 'bg-white text-left', selected: false },
       { name: 'total', label: 'Total', className: 'bg-white text-left', selected: true },
       { name: 'status', label: 'Status', className: 'bg-white text-left', selected: true },
-      { name: 'product', label: 'Product', className: 'bg-white text-left', selected: true },
+      // { name: 'product', label: 'Product', className: 'bg-white text-left', selected: true },
+      { name: 'items', label: 'Items', className: 'bg-white text-left', selected: true },
       { name: 'store', label: 'Store', className: 'bg-white text-left', selected: true },
       { name: 'balance', label: 'Balance', className: 'bg-white text-left', selected: true }
     ];

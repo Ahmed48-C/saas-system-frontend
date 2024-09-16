@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, ButtonGroup, Checkbox, Fade, Popper, TableRow } from '@material-ui/core';
+import { Button, ButtonGroup, Checkbox, Collapse, Fade, IconButton, Popper, TableRow } from '@material-ui/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Loader } from '../../pages-components';
 import { useHistory } from 'react-router-dom';
@@ -12,6 +12,7 @@ import { UseIDs } from '../../config/SelectedIdsContext'
 import { updateSelectedWithIds } from '../../functions/pages/updateSelectedWithIds';
 import { handleCheckboxChange } from '../../functions/pages/handleCheckboxChange';
 import { selectedRowStyles } from '../../theme/selectedRowStyles';
+import { ExpandLess, ExpandMore } from '@material-ui/icons';
 
 const TableContent = ({
   fetchRecords,
@@ -77,6 +78,26 @@ const TableContent = ({
   );
 };
 
+const CollapsibleRow = ({ product, details, isOpen, onExpand }) => {
+  return (
+    <div style={{ marginBottom: '4px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <span>{product}</span>
+        <IconButton size="small" onClick={onExpand}>
+          {isOpen ? <ExpandLess /> : <ExpandMore />}
+        </IconButton>
+      </div>
+      <Collapse in={isOpen} timeout="auto" unmountOnExit>
+        <div style={{ paddingLeft: '16px' }}>
+          <p>Price: {details.price}</p>
+          <p>Quantity: {details.quantity}</p>
+          <p>Total: {details.total}</p>
+        </div>
+      </Collapse>
+    </div>
+  );
+};
+
 const Row = ({
   row,
   anchorEl,
@@ -95,6 +116,13 @@ const Row = ({
   const id = open ? 'transitions-popper' : undefined;
   const classes = selectedRowStyles();
   const { ids, setIds } = UseIDs();
+
+  const [expandedRow, setExpandedRow] = useState(null);
+
+  const handleExpandClick = (index) => {
+    // Toggle open state for the clicked row, close others
+    setExpandedRow(expandedRow === index ? null : index);
+  };
 
   const handleButtonClick = () => {
     setAnchorEl(null);
@@ -130,7 +158,7 @@ const Row = ({
         {/* {columns.filter(column => column.selected).map((column, index) => (
           <td key={index}>{row[column.name]}</td>
         ))} */}
-        {columns.filter(column => column.selected).map((column, index) => {
+        {/* {columns.filter(column => column.selected).map((column, index) => {
           if (column.name === 'status') {
             return (
               <td key={index}>
@@ -143,6 +171,64 @@ const Row = ({
             return (
               <td key={index}>{row[column.name]}</td>
             );
+          }
+        })} */}
+        {/* {columns.filter(column => column.selected).map((column, index) => {
+          const value = row[column.name];
+
+          if (column.name === 'status') {
+            return (
+              <td key={index}>
+                <div className={`badge h-auto py-0 px-3 ${value === 'Completed' ? 'badge-success' : 'badge-warning'}`}>
+                  {value}
+                </div>
+              </td>
+            );
+          } else if (column.name === 'items' && Array.isArray(value)) {
+            // Handle the case where column.name is 'items' and the value is an array
+            return (
+              <td key={index}>
+                {value.map((item, i) => (
+                  <div key={i} style={{ marginBottom: '4px' }}>
+                    <span>{item.product}</span> - <span>Total: {item.total}</span>
+                  </div>
+                ))}
+              </td>
+            );
+          } else {
+            // Render primitive values (string, number, etc.)
+            return <td key={index}>{value}</td>;
+          }
+        })} */}
+        {columns.filter(column => column.selected).map((column, index) => {
+          const value = row[column.name];
+
+          if (column.name === 'status') {
+            return (
+              <td key={index}>
+                <div className={`badge h-auto py-0 px-3 ${value === 'Completed' ? 'badge-success' : 'badge-warning'}`}>
+                  {value}
+                </div>
+              </td>
+            );
+          } else if (column.name === 'items' && Array.isArray(value)) {
+            // Handle the case where column.name is 'items' and the value is an array
+            return (
+              <td key={index}>
+                {value.map((item, i) => (
+                  <CollapsibleRow
+                    key={i}
+                    index={i}
+                    product={item.product}
+                    details={item}
+                    isOpen={expandedRow === i}
+                    onExpand={() => handleExpandClick(i)}
+                  />
+                ))}
+              </td>
+            );
+          } else {
+            return <td key={index}>{value}</td>;
           }
         })}
         <td className="text-center">

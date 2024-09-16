@@ -44,9 +44,65 @@ const FilterBar = ({
             .join(', ');
     };
 
+    // FOR FILTERCONTENT ITEMS
+    // const formatFilter = (filter) => {
+    //     return Object.entries(filter)
+    //         .filter(([key, value]) => {
+    //             // Check if value is a string and use trim, otherwise check if it's an array or object
+    //             if (typeof value === 'string') {
+    //                 return value.trim() !== '';
+    //             } else if (Array.isArray(value)) {
+    //                 return value.length > 0; // For arrays like `items`, check if it's non-empty
+    //             } else if (typeof value === 'object' && value !== null) {
+    //                 // For other objects (in case), check if it has any keys
+    //                 return Object.keys(value).length > 0;
+    //             }
+    //             return !!value; // Fallback for other data types (e.g., numbers, booleans)
+    //         })
+    //         .map(([key, value]) => {
+    //             if (key === 'items' && Array.isArray(value)) {
+    //                 // Format the items array
+    //                 return value.map((item, index) => {
+    //                     const { product_id, price, quantity } = item;
+    //                     return `Item ${index + 1} - Product: ${product_id}, Price: ${price}, Quantity: ${quantity}`;
+    //                 }).join(', ');
+    //             }
+
+    //             // Check if key contains _id and fetch the name from records
+    //             if (key.includes('_id') && filterRecords) {
+    //                 const recordType = key.split('_')[0] + 's'; // e.g., location from location_id -> locations
+    //                 const record = filterRecords[recordType]?.find(item => item.id === Number(value));
+
+    //                 // If record is found, check for the name, otherwise fall back to the first field
+    //                 if (record) {
+    //                     const displayName = record.name || Object.values(record)[1];
+    //                     return `${key.replace('_id', '')}: ${displayName}`;
+    //                 }
+    //                 return `${key.replace('_id', '')}: ${value}`;
+    //             }
+
+    //             return `${key}: ${value}`;
+    //         })
+    //         .join(', ');
+    // };
+
     const isFormValid = () => {
         return Object.values(currentFilter).some(value => value.trim() !== '');
     };
+
+    // FOR FILTERCONTENT ITEMS
+    // const isFormValid = () => {
+    //     return Object.values(currentFilter).some(value => {
+    //         if (typeof value === 'string') {
+    //             return value.trim() !== '';  // Check if the string is non-empty after trimming
+    //         } else if (Array.isArray(value)) {
+    //             return value.length > 0;  // Check if the array is non-empty
+    //         } else if (typeof value === 'object' && value !== null) {
+    //             return Object.keys(value).length > 0;  // Check if the object has keys (non-empty object)
+    //         }
+    //         return !!value;  // Fallback for other types (numbers, booleans)
+    //     });
+    // };
 
     const handleClickFilter = (event) => {
         handleAnchorEl4(event.currentTarget);
@@ -87,6 +143,31 @@ const FilterBar = ({
         }
         handleCloseFilter();
     };
+
+    // FOR FILTERCONTENT ITEMS
+    // const handleClick = () => {
+    //     const nonEmptyFilter = Object.fromEntries(
+    //         Object.entries(currentFilter).filter(([_, value]) => {
+    //             if (typeof value === 'string') {
+    //                 return value.trim() !== '';  // If string, check if it's not empty after trimming
+    //             } else if (Array.isArray(value)) {
+    //                 return value.length > 0;  // If array, check if it's non-empty
+    //             } else if (typeof value === 'object' && value !== null) {
+    //                 return Object.keys(value).length > 0;  // If object, check if it has keys
+    //             }
+    //             return !!value;  // Fallback for other types (e.g., numbers, booleans)
+    //         })
+    //     );
+
+    //     if (isEditing) {
+    //         const updatedFilters = [...filters];
+    //         updatedFilters[editIndex] = nonEmptyFilter;
+    //         handleFilters(updatedFilters);
+    //     } else {
+    //         handleFilters([...filters, nonEmptyFilter]);
+    //     }
+    //     handleCloseFilter();
+    // };
 
     const handleCloseFilter = () => {
         handleAnchorEl4(null);

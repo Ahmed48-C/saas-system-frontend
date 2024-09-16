@@ -90,7 +90,7 @@ const Form = ({ handleClick, icon, title }) => {
                 <Loader /> // Render the Loader component while loading
             ) : (
             <FormControl fullWidth>
-                <Grid container spacing={3} className="my-4" style={{ width: '100%' }}>
+                <Grid container spacing={4} className="my-4" style={{ width: '100%' }}>
                     <Grid item xs={12}>
                         <div>
                             <div className="app-page-title--first">
@@ -102,7 +102,11 @@ const Form = ({ handleClick, icon, title }) => {
                         </div>
                     </Grid>
                     <Grid item xs={12}>
-                        <div className="font-size-lg font-weight-bold">DETAILS</div>
+                        <div className="app-page-title--first">
+                            <div className="app-page-title--heading">
+                                <h1>DETAILS</h1>
+                            </div>
+                        </div>
                     </Grid>
                     <Grid item xs={12}>
                         <Divider className="my-4" />
