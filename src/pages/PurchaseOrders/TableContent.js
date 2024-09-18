@@ -68,7 +68,6 @@ const TableContent = ({
         handlePopperClick={handlePopperClick}
         fetchRecords={fetchRecords}
         setCurrentRowId={setCurrentRowId}
-        // handleCheckboxChange={handleCheckboxChange}
         handleCheckboxChange={(id) => handleCheckboxChange(id, selected, handleSelected, handleNumSelected, records, handleIsSelectedAll)}
         isSelected={selected.includes(row.id)}
         dense={dense}
@@ -155,51 +154,6 @@ const Row = ({
             onChange={() => handleCheckboxChange(row.id)}
           />
         </td>
-        {/* {columns.filter(column => column.selected).map((column, index) => (
-          <td key={index}>{row[column.name]}</td>
-        ))} */}
-        {/* {columns.filter(column => column.selected).map((column, index) => {
-          if (column.name === 'status') {
-            return (
-              <td key={index}>
-                <div className={`badge h-auto py-0 px-3 ${row[column.name] === 'Completed' ? 'badge-success' : 'badge-warning'}`}>
-                  {row[column.name]}
-                </div>
-              </td>
-            );
-          } else {
-            return (
-              <td key={index}>{row[column.name]}</td>
-            );
-          }
-        })} */}
-        {/* {columns.filter(column => column.selected).map((column, index) => {
-          const value = row[column.name];
-
-          if (column.name === 'status') {
-            return (
-              <td key={index}>
-                <div className={`badge h-auto py-0 px-3 ${value === 'Completed' ? 'badge-success' : 'badge-warning'}`}>
-                  {value}
-                </div>
-              </td>
-            );
-          } else if (column.name === 'items' && Array.isArray(value)) {
-            // Handle the case where column.name is 'items' and the value is an array
-            return (
-              <td key={index}>
-                {value.map((item, i) => (
-                  <div key={i} style={{ marginBottom: '4px' }}>
-                    <span>{item.product}</span> - <span>Total: {item.total}</span>
-                  </div>
-                ))}
-              </td>
-            );
-          } else {
-            // Render primitive values (string, number, etc.)
-            return <td key={index}>{value}</td>;
-          }
-        })} */}
         {columns.filter(column => column.selected).map((column, index) => {
           const value = row[column.name];
 
@@ -246,16 +200,6 @@ const Row = ({
             {({ TransitionProps }) => (
               <Fade {...TransitionProps} timeout={350}>
                 <div>
-                  {/* <ButtonGroup
-                    orientation="vertical"
-                    color="primary"
-                    aria-label="vertical outlined primary button group"
-                    variant="contained"
-                  >
-                    <Button className="px-1 btn-icon hover-scale-sm text-white" onClick={() => handleEditClick(row.id)} style={{ padding: '4px 8px' }}>Edit</Button>
-                    <Button className="px-1 btn-icon hover-scale-sm text-white" onClick={() => handleDeleteClick(row.id, API_ENDPOINTS.DELETE_PURCHASE_ORDER)} style={{ padding: '4px 8px' }}>Delete & Keep Stock</Button>
-                    <Button className="px-1 btn-icon hover-scale-sm text-white" onClick={() => handleDeleteClick(row.id, API_ENDPOINTS.DELETE_PURCHASE_ORDER_STOCK)} style={{ padding: '4px 8px' }}>Delete & Remove Stock</Button>
-                  </ButtonGroup> */}
                   {row.status === 'Pending' ? (
                       <ButtonGroup
                         orientation="vertical"

@@ -67,7 +67,6 @@ const FilterContent = ({ currentFilter, setCurrentFilter, handleProducts, produc
                     name='price'
                     id='price'
                     value={currentFilter.price}
-                    // onChange={(e) => setCurrentFilter({ ...currentFilter, price: e.target.value })}
                     onChange={handleInputChange('price')}
                     maxLength={15}
                 />
@@ -81,7 +80,6 @@ const FilterContent = ({ currentFilter, setCurrentFilter, handleProducts, produc
                     name='quantity'
                     id='quantity'
                     value={currentFilter.quantity}
-                    // onChange={(e) => setCurrentFilter({ ...currentFilter, quantity: e.target.value })}
                     onChange={handleInputChange('quantity')}
                     maxLength={15}
                 />
@@ -95,7 +93,6 @@ const FilterContent = ({ currentFilter, setCurrentFilter, handleProducts, produc
                     name='total'
                     id='total'
                     value={currentFilter.total}
-                    // onChange={(e) => setCurrentFilter({ ...currentFilter, total: e.target.value })}
                     onChange={handleInputChange('total')}
                     maxLength={35}
                 />

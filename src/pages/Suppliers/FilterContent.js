@@ -6,7 +6,6 @@ import { filterFetchDropdownRecords } from '../../functions/pages/filterFetchDro
 
 const FilterContent = ({ currentFilter, setCurrentFilter, handleLocations, locations }) => {
     const [loading, setLoading] = useState(true);
-    // const [locations, setLocations] = useState([]);
 
     useEffect(() => {;
         filterFetchDropdownRecords(`http://127.0.0.1:8000/api/get/locations/`, handleLocations)

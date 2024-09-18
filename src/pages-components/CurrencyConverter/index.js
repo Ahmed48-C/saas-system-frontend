@@ -188,17 +188,6 @@ const CurrencyConverter = () => {
                             }}
                         />
                     </Grid>
-                    {/* <Grid item xs={12} md={6}>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={handleConvert}
-                            fullWidth
-                            disabled={loading}
-                        >
-                            {loading ? <Loader /> : 'Convert'}
-                        </Button>
-                    </Grid> */}
                     <Grid item xs={12}>
                         {loading ? (
                             <div

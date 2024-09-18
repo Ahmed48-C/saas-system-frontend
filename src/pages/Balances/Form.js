@@ -13,10 +13,6 @@ const Form = ({ handleClick, icon, title }) => {
                 data.amount;
     };
 
-    // const handleInputChange = (field) => (e) => {
-    //     setData({ ...data, [field]: e.target.value });
-    // };
-
     const calculateTotal = (price, quantity) => {
         const total = (parseFloat(price) || 0) * (parseFloat(quantity) || 0);
         return total.toFixed(2); // Ensure total is rounded to two decimal places
@@ -59,9 +55,6 @@ const Form = ({ handleClick, icon, title }) => {
                             <Divider className="my-4" />
                         </div>
                     </Grid>
-                    {/* <Grid item xs={12}>
-                        <Divider className="my-4" />
-                    </Grid> */}
                     <Grid item xs={12}>
                         <Textarea
                         rows={1}
@@ -104,7 +97,6 @@ const Form = ({ handleClick, icon, title }) => {
                                 className="d-40 btn-success"
                                 onClick={() => {
                                     handleClick(data);
-                                    // setData({});
                                 }}
                                 disabled={!isFormValid()} // Disable button if form is not valid
                                 >
