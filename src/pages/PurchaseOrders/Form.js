@@ -328,9 +328,9 @@ const Form = ({ handleClick, icon, title }) => {
             <FormControl fullWidth>
                 <Grid container spacing={5} className="my-4" style={{ width: '100%' }}>
 
-                    <Grid item xs={12}>
+                    <Grid item xs={12} style={{ paddingLeft: '35px', paddingRight: '0px' }}>
                         <Box display="flex" justifyContent="space-between" alignItems="center">
-                            <div className="app-page-title--first">
+                            <div className="">
                                 <div className="app-page-title--heading">
                                     <h1>{title}</h1>
                                 </div>
@@ -342,17 +342,19 @@ const Form = ({ handleClick, icon, title }) => {
                         <Divider className="my-4" />
                     </Grid>
 
-                    <Grid item xs={12}>
-                        <div className="app-page-title--first">
-                            <div className="app-page-title--heading">
+                    <Grid item xs={12} style={{ paddingLeft: '35px', paddingRight: '0px' }}>
+                        <div className="">
+                            <div className="app-page-title--heading" style={{ textAlign: 'left', paddingRight: 0 }}>
                                 <h1>DETAILS</h1>
                             </div>
+                            <Divider className="my-4" />
                         </div>
                     </Grid>
-
+                    {/*
                     <Grid item xs={12}>
                         <Divider className="my-4" />
                     </Grid>
+                    */}
 
                     <Grid item xs={6}>
                         <Textarea
@@ -629,7 +631,7 @@ const Form = ({ handleClick, icon, title }) => {
                         </Card>
                     </Grid> */}
 
-                    <Grid item xs={12} style={{ padding: '0 0 0 15px' }}>
+                    <Grid item xs={12} style={{ padding: '0 0 0 35px' }}>
                         <Card className="p-3 shadow-sm mb-4" style={{ borderRadius: '8px' }}>
                             <DragDropContext onDragEnd={handleDragEnd}>
                                 <Droppable droppableId="droppable">
@@ -638,13 +640,13 @@ const Form = ({ handleClick, icon, title }) => {
                                             ref={provided.innerRef}
                                             {...provided.droppableProps}
                                         >
-                                            <Table className="table table-alternate-spaced" size="small">
+                                            {/* <Table className="table table-alternate-spaced" size="small">
                                                 <thead>
                                                     <tr>
-                                                        <th style={{ width: '300px', paddingLeft: 28 }} scope="col">Product</th>
-                                                        <th scope="col" style={{ paddingLeft: 28 }}>Price</th>
-                                                        <th scope="col">Quantity</th>
-                                                        <th scope="col">Total</th>
+                                                        <th style={{ width: '25%', paddingLeft: 28 }} scope="col">Product</th>
+                                                        <th scope="col" style={{ width: '25%', paddingLeft: 28 }}>Price</th>
+                                                        <th scope="col" style={{ width: '25%' }}>Quantity</th>
+                                                        <th scope="col" style={{ width: '25%' }}>Total</th>
                                                         <th scope="col" className="text-right">Actions</th>
                                                     </tr>
                                                 </thead>
@@ -652,7 +654,6 @@ const Form = ({ handleClick, icon, title }) => {
                                                 {data.items.map((row, index) => (
                                                     <Draggable key={index} draggableId={`draggable-${index}`} index={index}>
                                                         {(provided) => (
-                                                            <>
                                                                 <tr
                                                                     ref={provided.innerRef}
                                                                     {...provided.draggableProps}
@@ -663,7 +664,7 @@ const Form = ({ handleClick, icon, title }) => {
                                                                         borderRadius: '12px'
                                                                     }}
                                                                 >
-                                                                    <td style={{ padding: '0px 8px' }}>
+                                                                    <td style={{ padding: '0px 8px', width: '25%' }}>
                                                                         <ProductInputSelect
                                                                             selectItems={products.map(product => ({
                                                                                 value: product.id,
@@ -672,11 +673,11 @@ const Form = ({ handleClick, icon, title }) => {
                                                                             value={row.product_id}
                                                                             onChange={e => handleProductChange(index, 'product_id', e.target.value)}
                                                                             fullWidth
-                                                                            // style={{ minWidth: '90px'}}
+                                                                            style={{ minWidth: '90px'}}
                                                                             // size="small"
                                                                         />
                                                                     </td>
-                                                                    <td>
+                                                                    <td style={{ width: '25%' }}>
                                                                         <TextField
                                                                             value={row.price}
                                                                             onChange={e => handleProductChange(index, 'price', e.target.value)}
@@ -688,7 +689,7 @@ const Form = ({ handleClick, icon, title }) => {
                                                                             fullWidth
                                                                         />
                                                                     </td>
-                                                                    <td>
+                                                                    <td style={{ width: '25%' }}>
                                                                         <TextField
                                                                             value={row.quantity}
                                                                             onChange={e => handleProductChange(index, 'quantity', e.target.value)}
@@ -700,10 +701,9 @@ const Form = ({ handleClick, icon, title }) => {
                                                                             fullWidth
                                                                         />
                                                                     </td>
-                                                                    <td>
+                                                                    <td style={{ width: '25%' }}>
                                                                         <TextField
                                                                             value={row.total} // Calculate total
-                                                                            // variant="outlined"
                                                                             size="small"
                                                                             style={{ minWidth: '90px', padding: '4px 8px' }}
                                                                             fullWidth
@@ -722,13 +722,98 @@ const Form = ({ handleClick, icon, title }) => {
                                                                         </Button>
                                                                     </td>
                                                                 </tr>
-                                                                {/* <tr className="divider" style={{ height: '1px', backgroundColor: '#ddd' }}></tr> */}
-                                                            </>
                                                         )}
                                                     </Draggable>
                                                 ))}
                                                 </tbody>
-                                            </Table>
+                                            </Table> */}
+                                            <Table className="table table-alternate-spaced" size="small" style={{ width: '100%' }}>
+                                                <thead>
+                                                    <tr style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                                    <th style={{ flex: 2 }} scope="col">Product</th>
+                                                    <th style={{ flex: 2 }} scope="col">Price</th>
+                                                    <th style={{ flex: 2 }} scope="col">Quantity</th>
+                                                    <th style={{ flex: 2 }} scope="col">Total</th>
+                                                    <th style={{ flex: 1, textAlign: 'right' }} scope="col">Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {data.items.map((row, index) => (
+                                                    <Draggable key={index} draggableId={`draggable-${index}`} index={index}>
+                                                        {(provided) => (
+                                                        <tr
+                                                            ref={provided.innerRef}
+                                                            {...provided.draggableProps}
+                                                            {...provided.dragHandleProps}
+                                                            style={{
+                                                                ...provided.draggableProps.style,
+                                                                display: 'flex',
+                                                                justifyContent: 'space-between',
+                                                                boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.1)',
+                                                                borderRadius: '12px',
+                                                                marginBottom: '10px'
+                                                            }}
+                                                        >
+                                                            <td style={{ flex: 2 }}>
+                                                            <ProductInputSelect
+                                                                selectItems={products.map(product => ({
+                                                                value: product.id,
+                                                                name: formatFormRecordDropdown(product.name)
+                                                                }))}
+                                                                value={row.product_id}
+                                                                onChange={e => handleProductChange(index, 'product_id', e.target.value)}
+                                                                fullWidth
+                                                                style={{ minWidth: '110px' }}
+                                                            />
+                                                            </td>
+                                                            <td style={{ flex: 2 }}>
+                                                            <TextField
+                                                                value={row.price}
+                                                                onChange={e => handleProductChange(index, 'price', e.target.value)}
+                                                                inputMode="decimal"
+                                                                maxLength={10}
+                                                                size="small"
+                                                                style={{ minWidth: '110px', padding: '4px 8px', paddingLeft: '14px' }}
+                                                                fullWidth
+                                                            />
+                                                            </td>
+                                                            <td style={{ flex: 2 }}>
+                                                            <TextField
+                                                                value={row.quantity}
+                                                                onChange={e => handleProductChange(index, 'quantity', e.target.value)}
+                                                                inputMode="decimal"
+                                                                maxLength={10}
+                                                                size="small"
+                                                                style={{ minWidth: '110px', padding: '4px 8px' }}
+                                                                fullWidth
+                                                            />
+                                                            </td>
+                                                            <td style={{ flex: 2 }}>
+                                                            <TextField
+                                                                value={row.total} // Calculate total
+                                                                size="small"
+                                                                style={{ minWidth: '110px', padding: '4px 8px' }}
+                                                                fullWidth
+                                                                inputProps={{ readOnly: true }} // Make total read-only
+                                                            />
+                                                            </td>
+                                                            <td style={{ flex: 1, textAlign: 'right' }}>
+                                                            <Button
+                                                                variant="outlined"
+                                                                size="small"
+                                                                className="btn-neutral-first"
+                                                                onClick={() => removeProductRow(index)}
+                                                                style={{ padding: '9px' }}
+                                                            >
+                                                                <DeleteOutline style={{ fontSize: '21px' }} />
+                                                            </Button>
+                                                            </td>
+                                                        </tr>
+                                                        )}
+                                                    </Draggable>
+                                                    ))}
+                                                </tbody>
+                                                </Table>
                                             {provided.placeholder}
                                         </div>
                                     )}
@@ -758,7 +843,7 @@ const Form = ({ handleClick, icon, title }) => {
                         </Card>
                     </Grid>
 
-                    <Grid item xs={12}>
+                    <Grid item xs={12} style={{ paddingLeft: '35px', paddingRight: '0px' }}>
                         <Divider className="my-4" />
                     </Grid>
 
