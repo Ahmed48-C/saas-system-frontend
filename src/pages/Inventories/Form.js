@@ -30,16 +30,6 @@ const Form = ({ handleClick, icon, title }) => {
         formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/products/`, setProducts)
     }, [id, fetchData]);
 
-    // const isFormValid = () => {
-    //     return  data.code &&
-    //             data.store_id &&
-    //             data.product_id;
-    // };
-
-    // const handleInputChange = (field) => (e) => {
-    //     setData({ ...data, [field]: e.target.value });
-    // };
-
     useEffect(() => {
         console.log(data.in_stock)
         console.log(data.min_stock)
@@ -109,9 +99,6 @@ const Form = ({ handleClick, icon, title }) => {
                             <Divider className="my-4" />
                         </div>
                     </Grid>
-                    {/* <Grid item xs={12}>
-                        <Divider className="my-4" />
-                    </Grid> */}
                     <Grid item xs={6}>
                         <Textarea
                         rows={1}
@@ -243,7 +230,6 @@ const Form = ({ handleClick, icon, title }) => {
                                 className="d-40 btn-success"
                                 onClick={() => {
                                     handleClick(data);
-                                    // setData({});
                                 }}
                                 disabled={!isFormValid()} // Disable button if form is not valid
                                 >

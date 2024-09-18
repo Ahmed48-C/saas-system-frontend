@@ -9,7 +9,7 @@ export const useReminders = () => useContext(RemindersContext);
 
 export const RemindersProvider = ({ children }) => {
     const [reminders, setReminders] = useState([]);
-    const [loading, setLoading] = useState(false); // Optional: Loading state
+    const [loading, setLoading] = useState(false);
 
     const fetchAllReminders = () => {
         setLoading(true);

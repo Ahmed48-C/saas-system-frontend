@@ -6,7 +6,6 @@ import { filterFetchDropdownRecords } from '../../functions/pages/filterFetchDro
 
 const FilterContent = ({ currentFilter, setCurrentFilter, handleBalances, balances }) => {
     const [loading, setLoading] = useState(true);
-    // const [balances, setBalances] = useState([]);
 
     useEffect(() => {
         filterFetchDropdownRecords(`http://127.0.0.1:8000/api/get/balances/`, handleBalances)
@@ -58,7 +57,6 @@ const FilterContent = ({ currentFilter, setCurrentFilter, handleBalances, balanc
                     name='amount'
                     id='amount'
                     value={currentFilter.amount}
-                    // onChange={(e) => setCurrentFilter({ ...currentFilter, amount: e.target.value })}
                     onChange={handleInputChange('amount')}
                     maxLength={15}
                 />

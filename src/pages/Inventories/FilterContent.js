@@ -6,8 +6,6 @@ import { filterFetchDropdownRecords } from '../../functions/pages/filterFetchDro
 
 const FilterContent = ({ currentFilter, setCurrentFilter, handleProducts, products, stores, handleStores }) => {
     const [loading, setLoading] = useState(true);
-    // const [products, setProducts] = useState([]);
-    // const [stores, setStores] = useState([]);
 
     useEffect(() => {
         filterFetchDropdownRecords(`http://127.0.0.1:8000/api/get/products/`, handleProducts)

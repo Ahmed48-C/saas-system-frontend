@@ -66,9 +66,6 @@ const Form = ({ handleClick, icon, title }) => {
                             <Divider className="my-4" />
                         </div>
                     </Grid>
-                    {/* <Grid item xs={12}>
-                        <Divider className="my-4" />
-                    </Grid> */}
                     <Grid item xs={6}>
                         <Textarea
                         rows={1}
@@ -156,7 +153,6 @@ const Form = ({ handleClick, icon, title }) => {
                         onChange={handleInputChange('contact_name')}
                         value={suppliersData.contact_name ?? ""}
                         key='contact_name'
-                        // error={isEmpty(suppliersData.contact_name)}
                         maxLength={80}
                         />
                     </Grid>
@@ -170,7 +166,6 @@ const Form = ({ handleClick, icon, title }) => {
                         onChange={handleInputChange('contact_phone')}
                         value={suppliersData.contact_phone ?? ""}
                         key='contact_phone'
-                        // error={isEmpty(suppliersData.contact_phone)}
                         maxLength={80}
                         />
                     </Grid>
@@ -187,7 +182,6 @@ const Form = ({ handleClick, icon, title }) => {
                                 className="d-40 btn-success"
                                 onClick={() => {
                                     handleClick(suppliersData);
-                                    // setSuppliersData({});
                                 }}
                                 disabled={!isFormValid()} // Disable button if form is not valid
                                 >

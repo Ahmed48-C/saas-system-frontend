@@ -72,9 +72,6 @@ const Form = ({ handleClick, icon, title }) => {
                             <Divider className="my-4" />
                         </div>
                     </Grid>
-                    {/* <Grid item xs={12}>
-                        <Divider className="my-4" />
-                    </Grid> */}
                     <Grid item xs={6}>
                         <Textarea
                         rows={1}
@@ -204,7 +201,6 @@ const Form = ({ handleClick, icon, title }) => {
                                 className="d-40 btn-success"
                                 onClick={() => {
                                     handleClick(data);
-                                    // setData({});
                                 }}
                                 disabled={!isFormValid()} // Disable button if form is not valid
                                 >

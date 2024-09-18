@@ -67,7 +67,6 @@ const TableContent = ({
         handlePopperClick={handlePopperClick}
         fetchRecords={fetchRecords}
         setCurrentRowId={setCurrentRowId}
-        // handleCheckboxChange={handleCheckboxChange}
         handleCheckboxChange={(id) => handleCheckboxChange(id, selected, handleSelected, handleNumSelected, records, handleIsSelectedAll)}
         isSelected={selected.includes(row.id)}
         dense={dense}

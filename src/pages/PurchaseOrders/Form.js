@@ -288,13 +288,9 @@ const Form = ({ handleClick, icon, title }) => {
         return (
             <FormControl
             fullWidth
-            // variant="standard"
-            //   variant="outlined"
-            //   className="m-3"
             error={error}
             disabled={disabled}
             >
-                {/* <InputLabel id="country-select-label">{label}</InputLabel> */}
                 <Select
                 labelId="country-select-label"
                 id="country-select"
@@ -350,12 +346,6 @@ const Form = ({ handleClick, icon, title }) => {
                             <Divider className="my-4" />
                         </div>
                     </Grid>
-                    {/*
-                    <Grid item xs={12}>
-                        <Divider className="my-4" />
-                    </Grid>
-                    */}
-
                     <Grid item xs={6}>
                         <Textarea
                         rows={1}
@@ -435,201 +425,6 @@ const Form = ({ handleClick, icon, title }) => {
                         disabled={!!id}
                         />
                     </Grid>
-
-                    {/* <Grid item xs={12} style={{ padding: '0 0 0 35px' }}>
-                        <Card className="p-4 shadow-xxl mb-spacing-6-x2" >
-                            <div className="table-responsive-md">
-                                <Table className="table table-alternate-spaced">
-                                    <thead>
-                                        <tr>
-                                            <th style={{ width: '400px', paddingLeft: 28 }} scope="col">Product</th>
-                                            <th scope="col" style={{ paddingLeft: 28 }}>Price</th>
-                                            <th scope="col">Quantity</th>
-                                            <th scope="col" className="text-right">Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {items.map((row, index) => (
-                                            <>
-                                            <tr key={index} style={{ boxShadow: '0px 0px 0px 2px rgba(0, 0, 0, 0.2)', borderRadius: '4px' }}>
-                                                <td style={{ marginBottom: 15 }}>
-                                                    <InputSelect
-                                                        selectItems={products.map(product => ({
-                                                            value: product.id,
-                                                            name: product.name
-                                                        }))}
-                                                        value={row.product_id}
-                                                        onChange={e => handleProductChange(index, 'product_id', e.target.value)}
-                                                        style={{ minWidth: '90px'}}
-                                                    />
-                                                </td>
-                                                <td>
-                                                    <TextField
-                                                        value={row.price}
-                                                        onChange={e => handleProductChange(index, 'price', e.target.value)}
-                                                        inputMode="decimal"
-                                                        maxLength={15}
-                                                        variant="outlined"
-                                                        fullWidth
-                                                        style={{ minWidth: '90px', paddingLeft: '14px'}}
-                                                    />
-                                                </td>
-                                                <td>
-                                                    <TextField
-                                                        value={row.quantity}
-                                                        onChange={e => handleProductChange(index, 'quantity', e.target.value)}
-                                                        inputMode="decimal"
-                                                        maxLength={15}
-                                                        variant="outlined"
-                                                        fullWidth
-                                                        style={{ minWidth: '90px'}}
-                                                    />
-                                                </td>
-                                                <td className="text-right">
-                                                    <Button
-                                                        variant="contained"
-                                                        size="small"
-                                                        className="d-40 btn-neutral-first"
-                                                        onClick={() => removeProductRow(index)}
-                                                    >
-                                                        <DeleteOutline />
-                                                    </Button>
-                                                </td>
-                                            </tr>
-                                            <tr className="divider"></tr>
-                                            </>
-                                        ))}
-                                        <tr style={{ boxShadow: '0px 0px 0px 2px rgba(0, 0, 0, 0.2)', borderRadius: '4px' }}>
-                                            <td colSpan={4} className="text-right">
-                                                <span>
-                                                    <Button
-                                                        variant="contained"
-                                                        size="small"
-                                                        className="d-40 btn-neutral-first"
-                                                        onClick={addProductRow}
-                                                        >
-                                                            <AddOutlined />
-                                                    </Button>
-                                                </span>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </Table>
-                            </div>
-                        </Card>
-                    </Grid> */}
-
-                    {/* <Grid item xs={12} style={{ padding: '0 0 0 35px' }}>
-                        <Card className="p-4 shadow-xxl mb-spacing-6-x2">
-                            <DragDropContext onDragEnd={handleDragEnd}>
-                                <Droppable droppableId="droppable">
-                                    {(provided) => (
-                                        <div
-                                            ref={provided.innerRef}
-                                            {...provided.droppableProps}
-                                        >
-                                            <Table className="table table-alternate-spaced">
-                                                <thead>
-                                                    <tr>
-                                                        <th style={{ width: '400px', paddingLeft: 28 }} scope="col">Product</th>
-                                                        <th scope="col" style={{ paddingLeft: 28 }}>Price</th>
-                                                        <th scope="col">Quantity</th>
-                                                        <th scope="col" className="text-right">Actions</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {items.map((row, index) => (
-                                                        <Draggable key={index} draggableId={`draggable-${index}`} index={index}>
-                                                            {(provided) => (
-                                                                <>
-                                                                <tr
-                                                                    ref={provided.innerRef}
-                                                                    {...provided.draggableProps}
-                                                                    {...provided.dragHandleProps}
-                                                                    style={{
-                                                                        ...provided.draggableProps.style,
-                                                                        boxShadow: '0px 0px 0px 2px rgba(0, 0, 0, 0.2)',
-                                                                        borderRadius: '4px'
-                                                                    }}
-                                                                >
-                                                                    <td style={{ marginBottom: 15 }}>
-                                                                        <InputSelect
-                                                                            selectItems={products.map(product => ({
-                                                                                value: product.id,
-                                                                                name: product.name
-                                                                            }))}
-                                                                            value={row.product_id}
-                                                                            onChange={e => handleProductChange(index, 'product_id', e.target.value)}
-                                                                            style={{ minWidth: '90px'}}
-                                                                        />
-                                                                    </td>
-                                                                    <td>
-                                                                        <TextField
-                                                                            value={row.price}
-                                                                            onChange={e => handleProductChange(index, 'price', e.target.value)}
-                                                                            inputMode="decimal"
-                                                                            maxLength={15}
-                                                                            variant="outlined"
-                                                                            fullWidth
-                                                                            style={{ minWidth: '90px', paddingLeft: '14px'}}
-                                                                        />
-                                                                    </td>
-                                                                    <td>
-                                                                        <TextField
-                                                                            value={row.quantity}
-                                                                            onChange={e => handleProductChange(index, 'quantity', e.target.value)}
-                                                                            inputMode="decimal"
-                                                                            maxLength={15}
-                                                                            variant="outlined"
-                                                                            fullWidth
-                                                                            style={{ minWidth: '90px'}}
-                                                                        />
-                                                                    </td>
-                                                                    <td className="text-right">
-                                                                        <Button
-                                                                            variant="contained"
-                                                                            size="small"
-                                                                            className="d-40 btn-neutral-first"
-                                                                            onClick={() => removeProductRow(index)}
-                                                                        >
-                                                                            <DeleteOutline />
-                                                                        </Button>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr className="divider"></tr>
-                                                                </>
-                                                            )}
-                                                        </Draggable>
-                                                    ))}
-                                                </tbody>
-                                            </Table>
-                                            {provided.placeholder}
-                                        </div>
-                                    )}
-                                </Droppable>
-                            </DragDropContext>
-                            <div style={{ boxShadow: '0px 0px 0px 2px rgba(0, 0, 0, 0.2)', borderRadius: '4px'}}>
-                                <Table className="table table-alternate-spaced">
-                                    <tbody>
-                                        <tr>
-                                            <td colSpan={4} className="text-right">
-                                                <span>
-                                                    <Button
-                                                        variant="contained"
-                                                        size="small"
-                                                        className="d-40 btn-neutral-first"
-                                                        onClick={addProductRow}
-                                                    >
-                                                        <AddOutlined />
-                                                    </Button>
-                                                </span>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </Table>
-                            </div>
-                        </Card>
-                    </Grid> */}
 
                     <Grid item xs={12} style={{ padding: '0 0 0 35px' }}>
                         <Card className="p-3 shadow-sm mb-4" style={{ borderRadius: '8px' }}>

@@ -43,7 +43,6 @@ const FilterContent = ({ currentFilter, setCurrentFilter }) => {
                     name='amount'
                     id='amount'
                     value={currentFilter.amount}
-                    // onChange={(e) => setCurrentFilter({ ...currentFilter, amount: e.target.value })}
                     onChange={handleInputChange('amount')}
                     maxLength={15}
                 />

@@ -10,9 +10,6 @@ const handleBatchDeleteRecords = (ids, endpoint, fetchRecords, successCallback, 
         if (successCallback) {
             successCallback(response.data);
         }
-        // setTimeout(() =>
-
-        // 1500);
     })
     .catch(error => {
         console.error('Error deleting records:', error);
