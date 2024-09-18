@@ -54,26 +54,27 @@ const Form = ({ handleClick, icon, title }) => {
             ) : (
             <FormControl fullWidth>
                 <Grid container spacing={4} className="my-4" style={{ width: '100%' }}>
-                    <Grid item xs={12}>
+                    <Grid item xs={12} style={{ paddingLeft: '35px', paddingRight: '0px' }}>
                         <div>
-                            <div className="app-page-title--first">
-                                <div className="app-page-title--heading">
+                            <div className="">
+                                <div className="app-page-title--heading" style={{ textAlign: 'left', paddingRight: 0 }}>
                                     <h1>{title}</h1>
                                 </div>
                             </div>
                             <Divider className="my-4" />
                         </div>
                     </Grid>
-                    <Grid item xs={12}>
-                        <div className="app-page-title--first">
-                            <div className="app-page-title--heading">
+                    <Grid item xs={12} style={{ paddingLeft: '35px', paddingRight: '0px' }}>
+                        <div className="">
+                            <div className="app-page-title--heading" style={{ textAlign: 'left', paddingRight: 0 }}>
                                 <h1>DETAILS</h1>
                             </div>
+                            <Divider className="my-4" />
                         </div>
                     </Grid>
-                    <Grid item xs={12}>
+                    {/* <Grid item xs={12}>
                         <Divider className="my-4" />
-                    </Grid>
+                    </Grid> */}
                     <Grid item xs={6}>
                         <Textarea
                         rows={1}
@@ -114,13 +115,13 @@ const Form = ({ handleClick, icon, title }) => {
                         key='note'
                         />
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={12} style={{ paddingLeft: '35px', paddingRight: '0px' }}>
                         <Divider className="my-4" />
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={12} style={{ paddingLeft: '35px', paddingRight: '0px' }}>
                         <div className="font-size-lg font-weight-bold">ADRESSS</div>
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={12} style={{ paddingLeft: '35px', paddingRight: '0px' }}>
                         <Divider className="my-4" />
                     </Grid>
                     <Grid item xs={6}>
@@ -190,7 +191,7 @@ const Form = ({ handleClick, icon, title }) => {
                         error={isEmpty(data.country)}
                         />
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={12} style={{ paddingLeft: '35px', paddingRight: '0px' }}>
                         <Divider className="my-4" />
                     </Grid>
                     <Grid item xs={12}>
