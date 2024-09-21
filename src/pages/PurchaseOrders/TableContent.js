@@ -217,7 +217,7 @@ const Row = ({
                         aria-label="vertical outlined primary button group"
                         variant="contained"
                       >
-                        <Button className="px-1 btn-icon hover-scale-sm text-white" onClick={() => handleEditClick(row.id)} style={{ padding: '4px 8px' }}>Edit</Button>
+                        {/* <Button className="px-1 btn-icon hover-scale-sm text-white" onClick={() => handleEditClick(row.id)} style={{ padding: '4px 8px' }}>Edit</Button> */}
                         <Button className="px-1 btn-icon hover-scale-sm text-white" onClick={() => handleDeleteClick(row.id, API_ENDPOINTS.DELETE_PURCHASE_ORDER)} style={{ padding: '4px 8px' }}>Delete & Keep Stock</Button>
                         <Button className="px-1 btn-icon hover-scale-sm text-white" onClick={() => handleDeleteClick(row.id, API_ENDPOINTS.DELETE_PURCHASE_ORDER_STOCK)} style={{ padding: '4px 8px' }}>Delete & Remove Stock</Button>
                       </ButtonGroup>

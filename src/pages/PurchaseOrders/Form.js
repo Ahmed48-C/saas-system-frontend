@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState, useRef } from 'react'
-import { Box, Button, Card, Divider, FormControl, Grid, IconButton, InputLabel, MenuItem, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Tooltip } from '@material-ui/core'
+import { Box, Button, Card, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, FormControl, FormControlLabel, Grid, IconButton, InputLabel, MenuItem, Select, Switch, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Tooltip } from '@material-ui/core'
 import { InputSelect, Loader, Textarea } from '../../pages-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import isEmpty from '../../functions/pages/isEmpty'
@@ -315,6 +315,40 @@ const Form = ({ handleClick, icon, title }) => {
     useEffect(() => {
         console.log(" TOTAL: ", data.total)
     }, [data.total])
+
+    const [open, setOpen] = useState(false);
+    const [dontShowAgain, setDontShowAgain] = useState(false);
+
+    // Load the user's preference from localStorage when the component mounts
+    useEffect(() => {
+        const storedPreference = localStorage.getItem('dontShowAgain');
+        if (storedPreference === 'true') {
+            setDontShowAgain(true);
+        }
+    }, []);
+
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
+    const handleButtonClick = () => {
+        // If the user has selected "Don't show this again", directly call handleClick
+        if (dontShowAgain || data.status !== 'Completed') {
+            handleClick(data);
+        } else {
+            handleOpen(); // Show the confirmation dialog if status is 'Completed'
+        }
+    };
+
+    const handleConfirm = () => {
+        handleClick(data); // Call handleClick on confirm
+        handleClose(); // Close the dialog
+    };
+
+    const handleCheckboxChange = (event) => {
+        const { checked } = event.target;
+        setDontShowAgain(checked);
+        localStorage.setItem('dontShowAgain', checked); // Store the preference in localStorage
+    };
 
     return (
         <>
@@ -642,7 +676,7 @@ const Form = ({ handleClick, icon, title }) => {
                         <Divider className="my-4" />
                     </Grid>
 
-                    <Grid item xs={12}>
+                    {/* <Grid item xs={12}>
                         <Box display="flex" justifyContent="flex-end">
                         <Tooltip title="Submit">
                             <span>
@@ -663,6 +697,46 @@ const Form = ({ handleClick, icon, title }) => {
                             </span>
                         </Tooltip>
                         </Box>
+                    </Grid> */}
+
+                    <Grid item xs={12}>
+                        <Box display="flex" justifyContent="flex-end">
+                            <Tooltip title="Submit">
+                                <span>
+                                    <Button
+                                    variant="contained"
+                                    size="small"
+                                    className="d-40 btn-success"
+                                    onClick={handleButtonClick}
+                                    disabled={!isFormValid()} // Disable button if form is not valid
+                                    >
+                                    <span className="btn-wrapper--icon">
+                                        <FontAwesomeIcon icon={['fas', icon]} className="opacity-8" />
+                                    </span>
+                                    </Button>
+                                </span>
+                            </Tooltip>
+                        </Box>
+
+                        {/* Confirmation Dialog */}
+                        <Dialog open={open} onClose={handleClose}>
+                            <DialogTitle>Confirm Action</DialogTitle>
+                            <DialogContent>
+                                <DialogContentText>
+                                    Purchase orders with 'Completed' status cannot be edited. Are you sure you want to proceed?
+                                </DialogContentText>
+
+                                {/* "Don't show this again" checkbox */}
+                                <FormControlLabel
+                                    control={<Checkbox checked={dontShowAgain} onChange={handleCheckboxChange} color="primary" />}
+                                    label="Don't show this again"
+                                />
+                            </DialogContent>
+                            <DialogActions>
+                                <Button onClick={handleClose} color="primary">Cancel</Button>
+                                <Button onClick={handleConfirm} color="primary" variant="contained">Confirm</Button>
+                            </DialogActions>
+                        </Dialog>
                     </Grid>
 
                 </Grid>
