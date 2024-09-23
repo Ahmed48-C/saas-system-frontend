@@ -403,6 +403,14 @@ const CreateWithdraws = lazy(() =>
   import('./pages/Withdraws/CreateContent')
 );
 
+const Transfers = lazy(() =>
+  import('./pages/Transfers/index')
+);
+
+const CreateTransfers = lazy(() =>
+  import('./pages/Transfers/CreateContent')
+);
+
 
 const Routes = () => {
   const SuspenseLoading = () => {
@@ -601,6 +609,17 @@ const Routes = () => {
                                 exact
                                 path="/withdraw/create"
                                 component={CreateWithdraws}
+                            />
+
+                            <Route
+                                exact
+                                path="/transfers"
+                                component={Transfers}
+                            />
+                            <Route
+                                exact
+                                path="/transfer/create"
+                                component={CreateTransfers}
                             />
 
                             {/* <Route path="/400" component={BadRequest400} />

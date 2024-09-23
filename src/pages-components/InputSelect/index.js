@@ -4,10 +4,11 @@ import {
   InputLabel,
   MenuItem,
   FormControl,
-  Select
+  Select,
+  FormHelperText
 } from '@material-ui/core';
 
-const InputSelect = ({ selectItems, label, value, onChange, error, disabled }) => {
+const InputSelect = ({ selectItems, label, value, onChange, error, disabled, helperText }) => {
   // Custom menu props to limit the visible items and enable scrolling
   const menuProps = {
     PaperProps: {
@@ -44,6 +45,7 @@ const InputSelect = ({ selectItems, label, value, onChange, error, disabled }) =
           </MenuItem>
         ))}
       </Select>
+      <FormHelperText>{helperText}</FormHelperText>
     </FormControl>
   );
 }

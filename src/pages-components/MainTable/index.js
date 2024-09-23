@@ -166,7 +166,7 @@ const MainTable = ({ tableContent, tableButtons, Heading, handleClick, tableHead
               {tabs.map((tab, index) => (
                 <ListItem
                   key={index}
-                  style={{ marginRight: 0 }}
+                  style={{ marginRight: 0, display: 'flex', justifyContent: 'center', marginTop: 0 }}
                   button
                   disableRipple
                   selected={window.location.pathname === tab.url}

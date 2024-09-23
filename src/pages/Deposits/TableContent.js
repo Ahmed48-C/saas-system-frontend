@@ -12,6 +12,7 @@ import { UseIDs } from '../../config/SelectedIdsContext'
 import { updateSelectedWithIds } from '../../functions/pages/updateSelectedWithIds';
 import { handleCheckboxChange } from '../../functions/pages/handleCheckboxChange';
 import { selectedRowStyles } from '../../theme/selectedRowStyles';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const TableContent = ({
   fetchRecords,
@@ -125,11 +126,24 @@ const Row = ({
             onChange={() => handleCheckboxChange(row.id)}
           />
         </td>
-        {columns.filter(column => column.selected).map((column, index) => (
-          <td key={index}>{row[column.name]}</td>
-        ))}
+        {columns.filter(column => column.selected).map((column, index) => {
+          if (column.name === 'type') {
+            return (
+              <td key={index} className='text-success'>
+                {row[column.name]}
+              </td>
+            );
+          } else {
+            return (
+              <td key={index}>
+                {row[column.name]}
+              </td>
+            );
+          }
+        })}
         <td className="text-center">
-          <Button
+          <Button startIcon={<DeleteIcon />} className="px-2 btn-icon hover-scale-sm text-white btn-danger" onClick={() => handleDeleteClick(row.id)} style={{ padding: '4px 8px' }}>Delete</Button>
+          {/* <Button
             size="small"
             className="btn-link d-30 p-0 btn-icon hover-scale-sm"
             onClick={(event) => handlePopperClick(event, row.id)}
@@ -154,7 +168,7 @@ const Row = ({
                 </div>
               </Fade>
             )}
-          </Popper>
+          </Popper> */}
         </td>
       </TableRow>
     </>

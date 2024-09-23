@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { Button, ButtonGroup, Checkbox, Fade, Popper, TableRow } from '@material-ui/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Loader } from '../../pages-components';
@@ -40,8 +40,8 @@ const TableContent = ({
     };
 
     useEffect(() => {
-        updateSelectedWithIds('balances', ids, setIds, handleSelected, handleNumSelected);
-    }, [ids.balances]);
+        updateSelectedWithIds('transfers', ids, setIds, handleSelected, handleNumSelected);
+    }, [ids.transfers]);
 
     useEffect(() => {
         if (records && records.data && records.data.length > 0) {
@@ -103,11 +103,11 @@ const Row = ({
 
     const handleDeleteClick = (id) => {
         const successCallback = (data) => {
-            toast.success('Deleted Balance Successfully');
+            toast.success('Deleted Transfer Successfully');
         };
 
-        handleDeleteRecord(id, API_ENDPOINTS.DELETE_BALANCE, fetchRecords, successCallback, (error) => {
-            HandleTableErrorCallback(error, 'Balance', ids, setIds); // Pass the error and entity name to the reusable function
+        handleDeleteRecord(id, API_ENDPOINTS.DELETE_TRANSFER, fetchRecords, successCallback, (error) => {
+            HandleTableErrorCallback(error, 'Transfer', ids, setIds); // Pass the error and entity name to the reusable function
         });
     };
 
