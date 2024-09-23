@@ -151,7 +151,7 @@ const Row = ({
                             variant="contained"
                         >
                             <Button className="px-1 btn-icon hover-scale-sm text-white" onClick={() => handleEditClick(row.id)} style={{ padding: '4px 8px' }}>Edit</Button>
-                            <Button className="px-1 btn-icon hover-scale-sm text-white" onClick={() => handleDeleteClick(row.id)} style={{ padding: '4px 8px' }}>Delete</Button>
+                            <Button className="px-1 btn-icon hover-scale-sm text-white btn-danger" onClick={() => handleDeleteClick(row.id)} style={{ padding: '4px 8px' }}>Delete</Button>
                         </ButtonGroup>
                     </div>
                     </Fade>

@@ -72,6 +72,12 @@ const API_ENDPOINTS = {
   GET_BALANCE_LOGS: (from, to) => `${BASE_URL}/api/get/balance_logs/?from=${from}&to=${to}`,
   GET_BALANCE_LOG: (id) => `${BASE_URL}/api/get/balance_log/${id}/`,
 
+  DELETE_TRANSFER: (id) => `${BASE_URL}/api/delete/transfer/${id}/`,
+  DELETE_TRANSFERS: () => `${BASE_URL}/api/delete/transfers/`,
+  POST_TRANSFER: () => `${BASE_URL}/api/post/transfer/`,
+  PUT_TRANSFER: (id) => `${BASE_URL}/api/put/transfer/${id}/`,
+  GET_TRANSFERS: (from, to) => `${BASE_URL}/api/get/transfers/?from=${from}&to=${to}`,
+  GET_TRANSFER: (id) => `${BASE_URL}/api/get/transfer/${id}/`,
 };
 
 export default API_ENDPOINTS;

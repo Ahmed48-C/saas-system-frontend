@@ -22,7 +22,8 @@ const headers = [
 const tabs = [
     { url: '/balances', title: 'Balances' },
     { url: '/deposits', title: 'Deposits' },
-    { url: '/withdraws', title: 'Withdraws' }
+    { url: '/withdraws', title: 'Withdraws' },
+    { url: '/transfers', title: 'Transfers' }
 ];
 
 const Balances = () => {
