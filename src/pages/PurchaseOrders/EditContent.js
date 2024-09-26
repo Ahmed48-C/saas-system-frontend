@@ -27,7 +27,21 @@ const EditContent = ({ editLoading }) => {
       };
 
       const errorCallback = (error) => {
-        if (error.message && error.response.data.detail.includes('Cannot')) {
+        if (error.response && error.response.data && error.response.data.items) {
+          const items = error.response.data.items;
+
+          items.forEach((item, index) => {
+            if (item.price && item.price.length > 0) {
+              const priceError = item.price.find(err =>
+                err.includes("Ensure that there are no more than 13 digits before the decimal point.")
+              );
+              if (priceError) {
+                // Show the error message with the index of the item
+                toast.error(`Error in item ${index + 1}: ${priceError}`);
+              }
+            }
+          });
+        } else if (error.message && error.response.data.detail.includes('Cannot')) {
           toast.error('Error: ' + error.response.data.detail);
         } else if (error.message && error.response.data.detail.includes('Maximum')) {
           toast.error('Error: ' + error.response.data.detail);

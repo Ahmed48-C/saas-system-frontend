@@ -192,10 +192,17 @@ const Form = ({ handleClick, icon, title }) => {
         if (field === 'product_id') {
             // Ensure product is an integer
             updatedItems[index][field] = parseInt(value, 10) || 0;
-        } else if (field === 'price') {
+        }
+        // else if (field === 'price') {
+        //     // Allow numeric input including decimals with max 2 decimal places
+        //     if (value === '' || /^[0-9]*\.?[0-9]{0,2}$/.test(value)) {
+        //         updatedItems[index][field] = parseFloat(value) || 0.0;
+        //     }
+        else if (field === 'price') {
             // Allow numeric input including decimals with max 2 decimal places
             if (value === '' || /^[0-9]*\.?[0-9]{0,2}$/.test(value)) {
-                updatedItems[index][field] = parseFloat(value) || 0.0;
+                // Don't convert to float directly to avoid premature truncation of decimals
+                updatedItems[index][field] = value;
             }
         } else if (field === 'quantity') {
             // Allow only whole numbers
@@ -473,6 +480,7 @@ const Form = ({ handleClick, icon, title }) => {
                                             <Table className="table table-alternate-spaced" size="small" style={{ width: '100%' }}>
                                                 <thead>
                                                     <tr style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                                    {/* <th style={{ flex: 1 }} scope="col">No.</th> */}
                                                     <th style={{ flex: 2 }} scope="col">Product</th>
                                                     <th style={{ flex: 2 }} scope="col">Price</th>
                                                     <th style={{ flex: 2 }} scope="col">Quantity</th>
@@ -480,7 +488,7 @@ const Form = ({ handleClick, icon, title }) => {
                                                     <th style={{ flex: 1, textAlign: 'right' }} scope="col">Actions</th>
                                                     </tr>
                                                 </thead>
-                                                <tbody>
+                                                {/* <tbody>
                                                     {data.items.map((row, index) => (
                                                     <Draggable key={index} draggableId={`draggable-${index}`} index={index}>
                                                         {(provided) => (
@@ -555,6 +563,92 @@ const Form = ({ handleClick, icon, title }) => {
                                                         )}
                                                     </Draggable>
                                                     ))}
+                                                </tbody> */}
+                                                <tbody>
+                                                    {data.items.map((row, index) => {
+                                                        // Get the IDs of selected products
+                                                        const selectedProductIds = data.items
+                                                            .filter((item, idx) => idx !== index) // Exclude the current row
+                                                            .map(item => item.product_id); // Extract product IDs
+
+                                                        // Filter the products to exclude selected ones
+                                                        const availableProducts = products.filter(product => !selectedProductIds.includes(product.id));
+
+                                                        return (
+                                                            <Draggable key={index} draggableId={`draggable-${index}`} index={index}>
+                                                                {(provided) => (
+                                                                    <tr
+                                                                        ref={provided.innerRef}
+                                                                        {...provided.draggableProps}
+                                                                        {...provided.dragHandleProps}
+                                                                        style={{
+                                                                            ...provided.draggableProps.style,
+                                                                            display: 'flex',
+                                                                            justifyContent: 'space-between',
+                                                                            boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.1)',
+                                                                            borderRadius: '12px',
+                                                                            marginBottom: '10px'
+                                                                        }}
+                                                                    >
+                                                                        <td style={{ flex: 2 }}>
+                                                                            <ProductInputSelect
+                                                                                selectItems={availableProducts.map(product => ({
+                                                                                    value: product.id,
+                                                                                    name: formatFormRecordDropdown(product.name)
+                                                                                }))}
+                                                                                value={row.product_id}
+                                                                                onChange={e => handleProductChange(index, 'product_id', e.target.value)}
+                                                                                fullWidth
+                                                                                style={{ minWidth: '110px' }}
+                                                                            />
+                                                                        </td>
+                                                                        <td style={{ flex: 2 }}>
+                                                                            <TextField
+                                                                                value={row.price}
+                                                                                onChange={e => handleProductChange(index, 'price', e.target.value)}
+                                                                                inputMode="decimal"
+                                                                                maxLength={10}
+                                                                                size="small"
+                                                                                style={{ minWidth: '110px', padding: '4px 8px', paddingLeft: '14px' }}
+                                                                                fullWidth
+                                                                            />
+                                                                        </td>
+                                                                        <td style={{ flex: 2 }}>
+                                                                            <TextField
+                                                                                value={row.quantity}
+                                                                                onChange={e => handleProductChange(index, 'quantity', e.target.value)}
+                                                                                inputMode="decimal"
+                                                                                maxLength={10}
+                                                                                size="small"
+                                                                                style={{ minWidth: '110px', padding: '4px 8px' }}
+                                                                                fullWidth
+                                                                            />
+                                                                        </td>
+                                                                        <td style={{ flex: 2 }}>
+                                                                            <TextField
+                                                                                value={row.total} // Calculate total
+                                                                                size="small"
+                                                                                style={{ minWidth: '110px', padding: '4px 8px' }}
+                                                                                fullWidth
+                                                                                inputProps={{ readOnly: true }} // Make total read-only
+                                                                            />
+                                                                        </td>
+                                                                        <td style={{ flex: 1, textAlign: 'right' }}>
+                                                                            <Button
+                                                                                variant="outlined"
+                                                                                size="small"
+                                                                                className="btn-neutral-first"
+                                                                                onClick={() => removeProductRow(index)}
+                                                                                style={{ padding: '9px' }}
+                                                                            >
+                                                                                <DeleteOutline style={{ fontSize: '21px' }} />
+                                                                            </Button>
+                                                                        </td>
+                                                                    </tr>
+                                                                )}
+                                                            </Draggable>
+                                                        );
+                                                    })}
                                                 </tbody>
                                                 </Table>
                                             {provided.placeholder}
