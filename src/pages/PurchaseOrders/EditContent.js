@@ -18,6 +18,7 @@ const EditContent = ({ editLoading }) => {
         status: data.status,
         store_id: data.store_id,
         balance_id: data.balance_id,
+        customer_id: data.customer_id,
         items: data.items,
       };
 
