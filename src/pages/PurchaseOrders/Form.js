@@ -11,6 +11,7 @@ import { formFetchDropdownRecords } from '../../functions/pages/formFetchDropdow
 import { AddOutlined, DeleteOutline } from '@material-ui/icons'
 
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'; // Import drag-and-drop components
+import axios from 'axios'
 
 const Form = ({ handleClick, icon, title }) => {
     const { id } = useParams(); // Get the ID from the URL
@@ -38,10 +39,36 @@ const Form = ({ handleClick, icon, title }) => {
             fetchData();
         }
 
+        const fetchLastPurchaseOrder = async () => {
+            try {
+                const response = await axios.get('http://127.0.0.1:8000/api/get/purchase_order/last/');
+                const lastOrderId = response.data.id;
+
+                console.log(response.data);
+
+                console.log(lastOrderId);
+
+                // Calculate the new code, at least 1000
+                const newCode = lastOrderId + 1 + 1000;
+
+                console.log(newCode);
+
+                // Update the state with the new code
+                setData((prevData) => ({
+                    ...prevData,
+                    code: newCode
+                }));
+
+            } catch (error) {
+                console.error('Error fetching the last purchase order:', error);
+            }
+        };
+
         formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/stores/`, setStores)
         formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/products/`, setProducts)
         formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/balances/`, setBalances)
         formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/customers/`, setCustomers)
+        fetchLastPurchaseOrder();
     }, [id, fetchData]);
 
     useEffect(() => {
