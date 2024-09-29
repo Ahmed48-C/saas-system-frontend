@@ -19,6 +19,7 @@ const EditContent = ({ editLoading }) => {
             min_stock: data.min_stock,
             max_stock: data.max_stock,
             store_id: data.store_id,
+            supplier_id: data.supplier_id,
             product_id: data.product_id,
         };
 

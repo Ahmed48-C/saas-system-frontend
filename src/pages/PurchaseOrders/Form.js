@@ -25,7 +25,7 @@ const Form = ({ handleClick, icon, title }) => {
     const [stores, setStores] = useState([]);
     const [products, setProducts] = useState([]);
     const [balances, setBalances] = useState([]);
-    const [customers, setCustomers] = useState([]);
+    const [suppliers, setSuppliers] = useState([]);
     // const [items, setItems] = useState([{product: '', price: '', quantity: '', total: ''}]); // New state to hold the product list
     const [total, setTotal] = useState(0); // State to hold total value
     const statuses = ['Pending', 'Completed']
@@ -67,7 +67,7 @@ const Form = ({ handleClick, icon, title }) => {
         formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/stores/`, setStores)
         formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/products/`, setProducts)
         formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/balances/`, setBalances)
-        formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/customers/`, setCustomers)
+        formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/suppliers/`, setSuppliers)
         fetchLastPurchaseOrder();
     }, [id, fetchData]);
 
@@ -134,7 +134,7 @@ const Form = ({ handleClick, icon, title }) => {
 
     const isFormValid = () => {
         // Ensure all basic fields are filled
-        if (!data.code || !data.store_id || !data.balance_id || !data.customer_id) {
+        if (!data.code || !data.store_id || !data.balance_id || !data.supplier_id) {
             return false;
         }
 
@@ -466,16 +466,16 @@ const Form = ({ handleClick, icon, title }) => {
 
                     <Grid item xs={4}>
                         <InputSelect
-                        selectItems={customers.map(customer => ({
-                            value: customer.id,
-                            name: formatFormRecordDropdown(customer.name)
+                        selectItems={suppliers.map(supplier => ({
+                            value: supplier.id,
+                            name: formatFormRecordDropdown(supplier.name)
                         }))}
-                        label='Customer'
-                        name='customer_id'
-                        id='customer_id'
-                        onChange={handleInputChange('customer_id')}
-                        value={data.customer_id ?? ""}
-                        error={isEmpty(data.customer_id)}
+                        label='Supplier'
+                        name='supplier_id'
+                        id='supplier_id'
+                        onChange={handleInputChange('supplier_id')}
+                        value={data.supplier_id ?? ""}
+                        error={isEmpty(data.supplier_id)}
                         disabled={!!id}
                         />
                     </Grid>

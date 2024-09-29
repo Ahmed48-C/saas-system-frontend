@@ -16,7 +16,7 @@ const headers = [
   { key: '', label: '', className: 'bg-white text-center' },
   { key: 'code', label: 'Code', className: 'bg-white text-left' },
   { key: 'name', label: 'Name', className: 'bg-white text-left' },
-  { key: 'supplier', label: 'Supplier', className: 'bg-white text-left' },
+  // { key: 'supplier', label: 'Supplier', className: 'bg-white text-left' },
   { key: 'actions', label: 'Actions', className: 'bg-white text-center', sortable: false }
 ];
 
@@ -37,9 +37,11 @@ const Product = () => {
 
   const [filters, setFilters] = useState([]);
   const [anchorEl4, setAnchorEl4] = useState(null);
-  const [currentFilter, setCurrentFilter] = useState({ code: '', name: '', description: '', supplier_id: '', brand: '', measure_unit: '', weight: '', length: '', width: '', height: '', color: '', size: '', dimension_unit: '', weight_unit: '' });
-  const [suppliers, setSuppliers] = useState([]);
-  const filterRecords = { suppliers };
+  const [currentFilter, setCurrentFilter] = useState({ code: '', name: '', description: '', 
+    // supplier_id: '', 
+    brand: '', measure_unit: '', weight: '', length: '', width: '', height: '', color: '', size: '', dimension_unit: '', weight_unit: '' });
+  // const [suppliers, setSuppliers] = useState([]);
+  // const filterRecords = { suppliers };
   const [isEditing, setIsEditing] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
 
@@ -53,7 +55,7 @@ const Product = () => {
         { name: 'code', label: 'Code', className: 'bg-white text-left', selected: true },
         { name: 'name', label: 'Name', className: 'bg-white text-left', selected: true },
         { name: 'description', label: 'Description', className: 'bg-white text-left', selected: false },
-        { name: 'supplier', label: 'Supplier', className: 'bg-white text-left', selected: true },
+        // { name: 'supplier', label: 'Supplier', className: 'bg-white text-left', selected: true },
         { name: 'brand', label: 'Brand', className: 'bg-white text-left', selected: false },
         { name: 'measure_unit', label: 'Measure Unit', className: 'bg-white text-left', selected: false },
         { name: 'weight', label: 'Weight', className: 'bg-white text-left', selected: false },
@@ -163,9 +165,9 @@ const Product = () => {
     setColumns(value);
   }
 
-  const handleSuppliers = (value) => {
-    setSuppliers(value);
-  }
+  // const handleSuppliers = (value) => {
+  //   setSuppliers(value);
+  // }
 
   const handleBatchDelete = () => {
     const successCallback = (data) => {
@@ -214,8 +216,10 @@ const Product = () => {
           handleIsEditing={handleIsEditing}
           handleEditIndex={handleEditIndex}
           editIndex={editIndex}
-          filterContent={<FilterContent currentFilter={currentFilter} setCurrentFilter={setCurrentFilter} suppliers={suppliers} handleSuppliers={handleSuppliers} />}
-          filterRecords={filterRecords} // Pass records object
+          filterContent={<FilterContent currentFilter={currentFilter} setCurrentFilter={setCurrentFilter} 
+          // suppliers={suppliers} handleSuppliers={handleSuppliers} 
+          />}
+          // filterRecords={filterRecords} // Pass records object
         />}
         tableHeading={<TableHeading
           order={order}

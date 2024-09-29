@@ -18,7 +18,7 @@ const EditContent = ({ editLoading }) => {
         status: data.status,
         store_id: data.store_id,
         balance_id: data.balance_id,
-        customer_id: data.customer_id,
+        supplier_id: data.supplier_id,
         items: data.items,
       };
 
@@ -33,12 +33,14 @@ const EditContent = ({ editLoading }) => {
 
           items.forEach((item, index) => {
             if (item.price && item.price.length > 0) {
-              const priceError = item.price.find(err =>
+              // const priceError = item.price.find(err =>
+              //   err.includes("Ensure that there are no more than 13 digits before the decimal point.")
+              // );
+              if (item.price.find(err =>
                 err.includes("Ensure that there are no more than 13 digits before the decimal point.")
-              );
-              if (priceError) {
+              )) {
                 // Show the error message with the index of the item
-                toast.error(`Error in item ${index + 1}: ${priceError}`);
+                toast.error(`Error in item ${index + 1}: Ensure that there are no more than 13 digits before the decimal point.`);
               }
             }
           });

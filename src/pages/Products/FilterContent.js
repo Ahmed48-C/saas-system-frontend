@@ -4,21 +4,26 @@ import { Grid } from '@material-ui/core'
 import { formatFilterRecordDropdown } from '../../functions/pages/formatFilterRecordDropdown';
 import { filterFetchDropdownRecords } from '../../functions/pages/filterFetchDropdownRecords';
 
-const FilterContent = ({ currentFilter, setCurrentFilter, handleSuppliers, suppliers }) => {
-    const [loading, setLoading] = useState(true);
+const FilterContent = ({
+    currentFilter,
+    setCurrentFilter,
+    // handleSuppliers,
+    // suppliers 
+    }) => {
+    // const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        filterFetchDropdownRecords(`http://127.0.0.1:8000/api/get/suppliers/`, handleSuppliers)
-        setLoading(false);
-    }, []);
+    // useEffect(() => {
+    //     filterFetchDropdownRecords(`http://127.0.0.1:8000/api/get/suppliers/`, handleSuppliers)
+    //     setLoading(false);
+    // }, []);
 
     return (
         <>
-        {loading ? (
+        {/* {loading ? ( */}
             <Grid item xs={12} style={{ display: 'flex', justifyContent: 'center', paddingLeft: '32px' }}>
                 <Loader />
             </Grid>
-        ) : (
+        {/* ) : ( */}
         <>
             <Grid item xs={12}>
                 <Textarea
@@ -58,7 +63,7 @@ const FilterContent = ({ currentFilter, setCurrentFilter, handleSuppliers, suppl
                     onChange={(e) => setCurrentFilter({ ...currentFilter, description: e.target.value })}
                 />
             </Grid>
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
                 <InputSelect
                     selectItems={suppliers.map(supplier => ({
                         value: supplier.id.toString(),
@@ -70,7 +75,7 @@ const FilterContent = ({ currentFilter, setCurrentFilter, handleSuppliers, suppl
                     onChange={(e) => setCurrentFilter({ ...currentFilter, supplier_id: e.target.value })}
                     value={currentFilter.supplier_id}
                 />
-            </Grid>
+            </Grid> */}
             <Grid item xs={12}>
                 <Textarea
                     style={{ margin: 0 }}
@@ -176,7 +181,7 @@ const FilterContent = ({ currentFilter, setCurrentFilter, handleSuppliers, suppl
                 />
             </Grid>
             </>
-            )}
+            {/* )} */}
         </>
     )
 }
