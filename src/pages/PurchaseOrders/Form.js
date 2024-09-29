@@ -16,7 +16,6 @@ import axios from 'axios'
 const Form = ({ handleClick, icon, title }) => {
     const { id } = useParams(); // Get the ID from the URL
 
-    // const [data, setData] = useState({});
     const [data, setData] = useState({
         items: [{ product_id: '', price: 0.0, quantity: 0, total: 0.00 }],
         // You can include other parts of data as well
@@ -26,13 +25,23 @@ const Form = ({ handleClick, icon, title }) => {
     const [products, setProducts] = useState([]);
     const [balances, setBalances] = useState([]);
     const [suppliers, setSuppliers] = useState([]);
-    // const [items, setItems] = useState([{product: '', price: '', quantity: '', total: ''}]); // New state to hold the product list
-    const [total, setTotal] = useState(0); // State to hold total value
     const statuses = ['Pending', 'Completed']
 
     const fetchData = useCallback(() => {
         handleFetchRecord(id, API_ENDPOINTS.GET_PURCHASE_ORDER, setData, setEditLoading);
     }, [id]);
+
+    const generatePurchaseOrderCode = () => {
+        const now = new Date();
+        const year = now.getFullYear().toString().slice(-2);
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        const hour = String(now.getHours()).padStart(2, '0');
+        const minute = String(now.getMinutes()).padStart(2, '0');
+        const second = String(now.getSeconds()).padStart(2, '0');
+
+        return `PO-${day}${hour}${minute}${second}`;
+    };
 
     useEffect(() => {
         if (id) {
@@ -68,38 +77,23 @@ const Form = ({ handleClick, icon, title }) => {
         formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/products/`, setProducts)
         formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/balances/`, setBalances)
         formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/suppliers/`, setSuppliers)
-        fetchLastPurchaseOrder();
+
+        // if (!id) {
+        //     fetchLastPurchaseOrder();
+        // }
+
+        if (!id) {
+            const newCode = generatePurchaseOrderCode();
+            setData((prevData) => ({
+                ...prevData,
+                code: newCode,
+            }));
+        }
     }, [id, fetchData]);
 
     useEffect(() => {
         console.log('Products:', products); // Log products to verify
     }, [products]);
-
-    // useEffect(() => {
-    //     calculateTotal();
-    //     console.log(items);
-    // }, [items]); // Recalculate total whenever items changes
-
-    // const calculateTotal = (price, quantity) => {
-    //     const total = (parseFloat(price) || 0) * (parseFloat(quantity) || 0);
-    //     return total.toFixed(2); // Ensure total is rounded to two decimal places
-    // };
-
-    // const calculateTotal = () => {
-    //     const totalValue = items.reduce((acc, product) => {
-    //         const price = parseFloat(product.price) || 0;
-    //         const quantity = parseFloat(product.quantity) || 0;
-    //         return acc + (price * quantity);
-    //     }, 0);
-
-    //     setTotal(totalValue.toFixed(2)); // Update the total state
-
-    //     // Also update the total in the data object
-    //     setData((prevData) => ({
-    //         ...prevData,
-    //         total: totalValue.toFixed(2) // Ensure total is formatted to 2 decimal places
-    //     }));
-    // };
 
     const calculateTotal = () => {
         const totalValue = data.items.reduce((acc, product) => {
@@ -114,23 +108,6 @@ const Form = ({ handleClick, icon, title }) => {
             total: totalValue.toFixed(2) // Ensure total is formatted to 2 decimal places
         }));
     };
-
-
-    // const isFormValid = () => {
-    //     return  data.name &&
-    //             data.price &&
-    //             data.quantity &&
-    //             data.store_id &&
-    //             data.product_id &&
-    //             data.balance_id;
-    // };
-
-    // const isFormValid = () => {
-    //     return  data.code &&
-    //             data.store_id &&
-    //             data.balance_id &&
-    //             data.items.length > 0;
-    // };
 
     const isFormValid = () => {
         // Ensure all basic fields are filled
@@ -176,45 +153,6 @@ const Form = ({ handleClick, icon, title }) => {
         }
     };
 
-    // const handleProductChange = (index, field, value) => {
-    //     const updatedProducts = [...items];
-    //     updatedProducts[index][field] = value;
-    //     setItems(updatedProducts);
-    // };
-
-    // const handleProductChange = (index, field, value) => {
-    //     const updatedItems = [...items];
-
-    //     if (field === 'product_id' || field === 'quantity') {
-    //         updatedItems[index][field] = parseInt(value, 10) || 0; // Ensure integer for product_id and quantity
-    //     } else if (field === 'price') {
-    //         updatedItems[index][field] = parseFloat(value) || 0.0; // Ensure float for price
-    //     }
-
-    //     // Calculate the total for the row
-    //     updatedItems[index].total = (updatedProductList[index].price * updatedProductList[index].quantity).toFixed(2);
-
-    //     setProductList(updatedProductList);
-    // };
-
-    // const handleProductChange = (index, field, value) => {
-    //     const updatedProductList = [...data.productList];
-
-    //     if (field === 'product_id' || field === 'quantity') {
-    //         updatedProductList[index][field] = parseInt(value, 10) || 0; // Ensure integer for product_id and quantity
-    //     } else if (field === 'price') {
-    //         updatedProductList[index][field] = parseFloat(value) || 0.0; // Ensure float for price
-    //     }
-
-    //     // Calculate the total for the row
-    //     updatedProductList[index].total = (updatedProductList[index].price * updatedProductList[index].quantity).toFixed(2);
-
-    //     setData(prevData => ({
-    //         ...prevData,
-    //         productList: updatedProductList
-    //     }));
-    // };
-
     const handleProductChange = (index, field, value) => {
         const updatedItems = [...data.items];
 
@@ -222,11 +160,6 @@ const Form = ({ handleClick, icon, title }) => {
             // Ensure product is an integer
             updatedItems[index][field] = parseInt(value, 10) || 0;
         }
-        // else if (field === 'price') {
-        //     // Allow numeric input including decimals with max 2 decimal places
-        //     if (value === '' || /^[0-9]*\.?[0-9]{0,2}$/.test(value)) {
-        //         updatedItems[index][field] = parseFloat(value) || 0.0;
-        //     }
         else if (field === 'price') {
             // Allow numeric input including decimals with max 2 decimal places
             if (value === '' || /^[0-9]*\.?[0-9]{0,2}$/.test(value)) {
@@ -253,15 +186,6 @@ const Form = ({ handleClick, icon, title }) => {
         calculateTotal();
     };
 
-
-    // const addProductRow = () => {
-    //     setItems([...productList, { product_id: '', price: '', quantity: '', total: '' }]);
-    // };
-
-    // const addProductRow = () => {
-    //     setProductList([...productList, { product_id: '', price: 0.0, quantity: 0, total: '0.00' }]);
-    // };
-
     const addProductRow = () => {
         setData(prevData => ({
             ...prevData,
@@ -272,27 +196,12 @@ const Form = ({ handleClick, icon, title }) => {
         }));
     };
 
-    // const removeProductRow = (index) => {
-    //     const updatedProducts = items.filter((_, i) => i !== index);
-    //     setItems(updatedProducts);
-    // };
-
     const removeProductRow = (index) => {
         setData(prevData => ({
             ...prevData,
             items: prevData.items.filter((_, i) => i !== index)
         }));
     };
-
-    // const handleDragEnd = (result) => {
-    //     if (!result.destination) return;
-
-    //     const reorderedProducts = Array.from(items);
-    //     const [movedProduct] = reorderedProducts.splice(result.source.index, 1);
-    //     reorderedProducts.splice(result.destination.index, 0, movedProduct);
-
-    //     setItems(reorderedProducts);
-    // };
 
     const handleDragEnd = (result) => {
         if (!result.destination) return;
@@ -533,82 +442,6 @@ const Form = ({ handleClick, icon, title }) => {
                                                     <th style={{ flex: 1, textAlign: 'right' }} scope="col">Actions</th>
                                                     </tr>
                                                 </thead>
-                                                {/* <tbody>
-                                                    {data.items.map((row, index) => (
-                                                    <Draggable key={index} draggableId={`draggable-${index}`} index={index}>
-                                                        {(provided) => (
-                                                        <tr
-                                                            ref={provided.innerRef}
-                                                            {...provided.draggableProps}
-                                                            {...provided.dragHandleProps}
-                                                            style={{
-                                                                ...provided.draggableProps.style,
-                                                                display: 'flex',
-                                                                justifyContent: 'space-between',
-                                                                boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.1)',
-                                                                borderRadius: '12px',
-                                                                marginBottom: '10px'
-                                                            }}
-                                                        >
-                                                            <td style={{ flex: 2 }}>
-                                                            <ProductInputSelect
-                                                                selectItems={products.map(product => ({
-                                                                value: product.id,
-                                                                name: formatFormRecordDropdown(product.name)
-                                                                }))}
-                                                                value={row.product_id}
-                                                                onChange={e => handleProductChange(index, 'product_id', e.target.value)}
-                                                                fullWidth
-                                                                style={{ minWidth: '110px' }}
-                                                            />
-                                                            </td>
-                                                            <td style={{ flex: 2 }}>
-                                                            <TextField
-                                                                value={row.price}
-                                                                onChange={e => handleProductChange(index, 'price', e.target.value)}
-                                                                inputMode="decimal"
-                                                                maxLength={10}
-                                                                size="small"
-                                                                style={{ minWidth: '110px', padding: '4px 8px', paddingLeft: '14px' }}
-                                                                fullWidth
-                                                            />
-                                                            </td>
-                                                            <td style={{ flex: 2 }}>
-                                                            <TextField
-                                                                value={row.quantity}
-                                                                onChange={e => handleProductChange(index, 'quantity', e.target.value)}
-                                                                inputMode="decimal"
-                                                                maxLength={10}
-                                                                size="small"
-                                                                style={{ minWidth: '110px', padding: '4px 8px' }}
-                                                                fullWidth
-                                                            />
-                                                            </td>
-                                                            <td style={{ flex: 2 }}>
-                                                            <TextField
-                                                                value={row.total} // Calculate total
-                                                                size="small"
-                                                                style={{ minWidth: '110px', padding: '4px 8px' }}
-                                                                fullWidth
-                                                                inputProps={{ readOnly: true }} // Make total read-only
-                                                            />
-                                                            </td>
-                                                            <td style={{ flex: 1, textAlign: 'right' }}>
-                                                            <Button
-                                                                variant="outlined"
-                                                                size="small"
-                                                                className="btn-neutral-first"
-                                                                onClick={() => removeProductRow(index)}
-                                                                style={{ padding: '9px' }}
-                                                            >
-                                                                <DeleteOutline style={{ fontSize: '21px' }} />
-                                                            </Button>
-                                                            </td>
-                                                        </tr>
-                                                        )}
-                                                    </Draggable>
-                                                    ))}
-                                                </tbody> */}
                                                 <tbody>
                                                     {data.items.map((row, index) => {
                                                         // Get the IDs of selected products
@@ -728,29 +561,6 @@ const Form = ({ handleClick, icon, title }) => {
                     <Grid item xs={12} style={{ paddingLeft: '35px', paddingRight: '0px' }}>
                         <Divider className="my-4" />
                     </Grid>
-
-                    {/* <Grid item xs={12}>
-                        <Box display="flex" justifyContent="flex-end">
-                        <Tooltip title="Submit">
-                            <span>
-                                <Button
-                                variant="contained"
-                                size="small"
-                                className="d-40 btn-success"
-                                onClick={() => {
-                                    handleClick(data);
-                                    // setData({});
-                                }}
-                                disabled={!isFormValid()} // Disable button if form is not valid
-                                >
-                                <span className="btn-wrapper--icon">
-                                    <FontAwesomeIcon icon={['fas', icon]} className="opacity-8" />
-                                </span>
-                                </Button>
-                            </span>
-                        </Tooltip>
-                        </Box>
-                    </Grid> */}
 
                     <Grid item xs={12}>
                         <Box display="flex" justifyContent="flex-end">
