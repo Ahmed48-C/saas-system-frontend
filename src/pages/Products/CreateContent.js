@@ -13,7 +13,7 @@ const CreateContent = () => {
         code: data.code,
         name: data.name,
         description: data.description,
-        supplier_id: data.supplier_id,
+        // supplier_id: data.supplier_id,
         brand: data.brand,
         measure_unit: data.measure_unit,
         weight: data.weight,

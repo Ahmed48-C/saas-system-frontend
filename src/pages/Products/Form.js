@@ -16,7 +16,7 @@ const Form = ({ handleClick, icon, title }) => {
 
     const [data, setData] = useState({});
     const [editLoading, setEditLoading] = useState(false);
-    const [suppliers, setSuppliers] = useState([]);
+    // const [suppliers, setSuppliers] = useState([]);
 
     const units = getUnits();
 
@@ -34,13 +34,13 @@ const Form = ({ handleClick, icon, title }) => {
             fetchData();
         }
 
-        formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/suppliers/`, setSuppliers)
+        // formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/suppliers/`, setSuppliers)
     }, [id, fetchData]);
 
     const isFormValid = () => {
         return  data.code &&
-                data.name &&
-                data.supplier_id;
+                data.name ;
+                // data.supplier_id;
     };
 
     const handleInputChange = (field) => (e) => {
@@ -117,7 +117,7 @@ const Form = ({ handleClick, icon, title }) => {
                         maxLength={254}
                         />
                     </Grid>
-                    <Grid item xs={4}>
+                    {/* <Grid item xs={4}>
                         <InputSelect
                         selectItems={suppliers.map(supplier => ({
                             value: supplier.id,
@@ -130,7 +130,7 @@ const Form = ({ handleClick, icon, title }) => {
                         value={data.supplier_id ?? ""}
                         error={isEmpty(data.supplier_id)}
                         />
-                    </Grid>
+                    </Grid> */}
                     <Grid item xs={4}>
                         <Textarea
                         rows={1}
