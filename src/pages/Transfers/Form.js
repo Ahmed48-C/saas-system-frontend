@@ -238,7 +238,13 @@ const Form = ({ handleClick, icon, title }) => {
                             onChange={handleInputChange('amount')}
                             value={data.amount ?? ""}
                             key='amount'
-                            error={isEmpty(data.amount)}
+                            // error={isEmpty(data.amount)}
+                            // Conditionally change the label color if there's an error
+                            InputLabelProps={{
+                                style: { color: 'red' }, // Change label color only when error is true
+                            }}
+                            // Remove the error prop from TextField to avoid making the entire field red
+                            FormHelperTextProps={true}
                             maxLength={15}
                             InputProps={{
                                 endAdornment: (
