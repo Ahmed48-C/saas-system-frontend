@@ -27,6 +27,18 @@ const Form = ({ handleClick, icon, title }) => {
     const [suppliers, setSuppliers] = useState([]);
     const statuses = ['Pending', 'Completed']
 
+    const [loadingSuppliers, setLoadingSuppliers] = useState(false);
+    const [errorSuppliers, setErrorSuppliers] = useState('');
+
+    const [loadingStores, setLoadingStores] = useState(false);
+    const [errorStores, setErrorStores] = useState('');
+
+    const [loadingBalances, setLoadingBalances] = useState(false);
+    const [errorBalances, setErrorBalances] = useState('');
+
+    const [loadingProducts, setLoadingProducts] = useState(false);
+    const [errorProducts, setErrorProducts] = useState('');
+
     const fetchData = useCallback(() => {
         handleFetchRecord(id, API_ENDPOINTS.GET_PURCHASE_ORDER, setData, setEditLoading);
     }, [id]);
@@ -73,10 +85,52 @@ const Form = ({ handleClick, icon, title }) => {
             }
         };
 
-        formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/stores/`, setStores)
-        formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/products/`, setProducts)
-        formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/balances/`, setBalances)
-        formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/suppliers/`, setSuppliers)
+        // formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/stores/`, setStores)
+        // formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/products/`, setProducts)
+        // formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/balances/`, setBalances)
+        // formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/suppliers/`, setSuppliers)
+
+        const fetchDropdownData = async () => {
+
+            setLoadingSuppliers(true);
+            setLoadingProducts(true);
+            setLoadingStores(true);
+            setLoadingBalances(true);
+
+            try {
+                await formFetchDropdownRecords('http://127.0.0.1:8000/api/get/suppliers/', setSuppliers);
+                setLoadingSuppliers(false);
+            } catch (error) {
+                setErrorSuppliers('Error fetching suppliers');
+                setLoadingSuppliers(false);
+            }
+
+            try {
+                await formFetchDropdownRecords('http://127.0.0.1:8000/api/get/stores/', setStores);
+                setLoadingStores(false);
+            } catch (error) {
+                setErrorStores('Error fetching stores');
+                setLoadingStores(false);
+            }
+
+            try {
+                await formFetchDropdownRecords('http://127.0.0.1:8000/api/get/balances/', setBalances);
+                setLoadingBalances(false);
+            } catch (error) {
+                setErrorBalances('Error fetching balances');
+                setLoadingBalances(false);
+            }
+
+            try {
+                await formFetchDropdownRecords('http://127.0.0.1:8000/api/get/products/', setProducts);
+                setLoadingProducts(false);
+            } catch (error) {
+                setErrorProducts('Error fetching products');
+                setLoadingProducts(false);
+            }
+        };
+
+        fetchDropdownData();
 
         // if (!id) {
         //     fetchLastPurchaseOrder();
@@ -386,6 +440,8 @@ const Form = ({ handleClick, icon, title }) => {
                         value={data.supplier_id ?? ""}
                         error={isEmpty(data.supplier_id)}
                         disabled={!!id}
+                        loading={loadingSuppliers}
+                        errorMessage={errorSuppliers}
                         />
                     </Grid>
 
@@ -402,6 +458,8 @@ const Form = ({ handleClick, icon, title }) => {
                         value={data.store_id ?? ""}
                         error={isEmpty(data.store_id)}
                         disabled={!!id}
+                        loading={loadingStores}
+                        errorMessage={errorStores}
                         />
                     </Grid>
 
@@ -418,6 +476,8 @@ const Form = ({ handleClick, icon, title }) => {
                         value={data.balance_id ?? ""}
                         error={isEmpty(data.balance_id)}
                         disabled={!!id}
+                        loading={loadingBalances}
+                        errorMessage={errorBalances}
                         />
                     </Grid>
 

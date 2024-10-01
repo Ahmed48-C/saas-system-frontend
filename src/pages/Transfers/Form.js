@@ -18,9 +18,28 @@ const Form = ({ handleClick, icon, title }) => {
     const [balanceFromAmount, setBalanceFromAmount] = useState(0); // Track selected balance_from amount
     const [balanceToAmount, setBalanceToAmount] = useState(0); // Track selected balance_to amount
 
+    const [loadingBalances, setLoadingBalances] = useState(false);
+    const [errorBalances, setErrorBalances] = useState('');
+
     useEffect(() => {
 
-        formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/balances/`, setBalances)
+        const fetchDropdownData = async () => {
+
+            setLoadingBalances(true);
+
+            try {
+                await formFetchDropdownRecords('http://127.0.0.1:8000/api/get/balances/', setBalances);
+                setLoadingBalances(false);
+            } catch (error) {
+                setErrorBalances('Error fetching suppliers');
+                setLoadingBalances(false);
+            }
+
+        };
+
+        fetchDropdownData();
+
+        // formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/balances/`, setBalances)
     }, []);
 
     const isFormValid = () => {
@@ -167,6 +186,8 @@ const Form = ({ handleClick, icon, title }) => {
                                     </InputAdornment>
                                 )
                             }}
+                            loading={loadingBalances}
+                            errorMessage={errorBalances}
                         />
                     </Grid>
                     <Grid item xs={12} md={2} style={{ display: 'flex', justifyContent: 'center', paddingLeft: '48px' }}>
@@ -198,6 +219,8 @@ const Form = ({ handleClick, icon, title }) => {
                                     </InputAdornment>
                                 )
                             }}
+                            loading={loadingBalances}
+                            errorMessage={errorBalances}
                         />
                     </Grid>
                     <Grid item xs={12}>

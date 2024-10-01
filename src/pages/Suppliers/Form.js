@@ -17,6 +17,9 @@ const Form = ({ handleClick, icon, title }) => {
     const [editLoading, setEditLoading] = useState(false);
     const [locations, setLocations] = useState([]);
 
+    const [loadingLocations, setLoadingLocations] = useState(false);
+    const [errorLocations, setErrorLocations] = useState('');
+
     const fetchData = useCallback(() => {
         handleFetchRecord(id, API_ENDPOINTS.GET_SUPPLIER, suppliersData, setEditLoading);
     }, [id]);
@@ -26,7 +29,23 @@ const Form = ({ handleClick, icon, title }) => {
             fetchData();
         }
 
-        formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/locations/`, setLocations);
+        const fetchDropdownData = async () => {
+
+            setLoadingLocations(true);
+
+            try {
+                await formFetchDropdownRecords('http://127.0.0.1:8000/api/get/locations/', setLocations);
+                setLoadingLocations(false);
+            } catch (error) {
+                setErrorLocations('Error fetching suppliers');
+                setLoadingLocations(false);
+            }
+
+        };
+
+        fetchDropdownData();
+
+        // formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/locations/`, setLocations);
     }, [id, fetchData]);
 
     const isFormValid = () => {
@@ -135,6 +154,8 @@ const Form = ({ handleClick, icon, title }) => {
                         onChange={handleInputChange('location_id')}
                         value={suppliersData.location_id ?? ""}
                         error={isEmpty(suppliersData.location_id)}
+                        loading={loadingLocations}
+                        errorMessage={errorLocations}
                         />
                     </Grid>
                     <Grid item xs={12} style={{ paddingLeft: '35px', paddingRight: '0px' }}>
