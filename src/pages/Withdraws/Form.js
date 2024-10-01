@@ -16,6 +16,9 @@ const Form = ({ handleClick, icon, title }) => {
     const [editLoading, setEditLoading] = useState(false);
     const [balances, setBalances] = useState([]);
 
+    const [loadingBalances, setLoadingBalances] = useState(false);
+    const [errorBalances, setErrorBalances] = useState('');
+
     const fetchData = useCallback(() => {
         handleFetchRecord(id, API_ENDPOINTS.GET_BALANCE_LOG, setData, setEditLoading);
     }, [id]);
@@ -25,7 +28,23 @@ const Form = ({ handleClick, icon, title }) => {
             fetchData();
         }
 
-        formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/balances/`, setBalances)
+        const fetchDropdownData = async () => {
+
+            setLoadingBalances(true);
+
+            try {
+                await formFetchDropdownRecords('http://127.0.0.1:8000/api/get/balances/', setBalances);
+                setLoadingBalances(false);
+            } catch (error) {
+                setErrorBalances('Error fetching suppliers');
+                setLoadingBalances(false);
+            }
+
+        };
+
+        fetchDropdownData();
+
+        // formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/balances/`, setBalances)
     }, [id, fetchData]);
 
     const isFormValid = () => {
@@ -90,6 +109,8 @@ const Form = ({ handleClick, icon, title }) => {
                         onChange={handleInputChange('balance_id')}
                         value={data.balance_id ?? ""}
                         error={isEmpty(data.balance_id)}
+                        loading={loadingBalances}
+                        errorMessage={errorBalances}
                         />
                     </Grid>
                     <Grid item xs={12}>

@@ -18,6 +18,15 @@ const Form = ({ handleClick, icon, title }) => {
     const [suppliers, setSuppliers] = useState([]);
     const [products, setProducts] = useState([]);
 
+    const [loadingSuppliers, setLoadingSuppliers] = useState(false);
+    const [errorSuppliers, setErrorSuppliers] = useState('');
+
+    const [loadingStores, setLoadingStores] = useState(false);
+    const [errorStores, setErrorStores] = useState('');
+
+    const [loadingProducts, setLoadingProducts] = useState(false);
+    const [errorProducts, setErrorProducts] = useState('');
+
     const fetchData = useCallback(() => {
         handleFetchRecord(id, API_ENDPOINTS.GET_INVENTORY, setData, setEditLoading);
     }, [id]);
@@ -27,9 +36,42 @@ const Form = ({ handleClick, icon, title }) => {
             fetchData();
         }
 
-        formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/stores/`, setStores)
-        formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/suppliers/`, setSuppliers)
-        formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/products/`, setProducts)
+        const fetchDropdownData = async () => {
+
+            setLoadingSuppliers(true);
+            setLoadingProducts(true);
+            setLoadingStores(true);
+
+            try {
+                await formFetchDropdownRecords('http://127.0.0.1:8000/api/get/suppliers/', setSuppliers);
+                setLoadingSuppliers(false);
+            } catch (error) {
+                setErrorSuppliers('Error fetching suppliers');
+                setLoadingSuppliers(false);
+            }
+
+            try {
+                await formFetchDropdownRecords('http://127.0.0.1:8000/api/get/stores/', setStores);
+                setLoadingStores(false);
+            } catch (error) {
+                setErrorStores('Error fetching stores');
+                setLoadingStores(false);
+            }
+
+            try {
+                await formFetchDropdownRecords('http://127.0.0.1:8000/api/get/products/', setProducts);
+                setLoadingProducts(false);
+            } catch (error) {
+                setErrorProducts('Error fetching products');
+                setLoadingProducts(false);
+            }
+        };
+
+        fetchDropdownData();
+
+        // formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/stores/`, setStores)
+        // formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/suppliers/`, setSuppliers)
+        // formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/products/`, setProducts)
     }, [id, fetchData]);
 
     useEffect(() => {
@@ -129,6 +171,8 @@ const Form = ({ handleClick, icon, title }) => {
                         value={data.store_id ?? ""}
                         error={isEmpty(data.store_id)}
                         disabled={!!id} // Disable if id is present
+                        loading={loadingStores}
+                        errorMessage={errorStores}
                         />
                     </Grid>
                     <Grid item xs={6}>
@@ -144,6 +188,8 @@ const Form = ({ handleClick, icon, title }) => {
                         value={data.supplier_id ?? ""}
                         error={isEmpty(data.supplier_id)}
                         disabled={!!id} // Disable if id is present
+                        loading={loadingSuppliers}
+                        errorMessage={errorSuppliers}
                         />
                     </Grid>
                     <Grid item xs={6}>
@@ -159,6 +205,8 @@ const Form = ({ handleClick, icon, title }) => {
                         value={data.product_id ?? ""}
                         error={isEmpty(data.product_id)}
                         disabled={!!id} // Disable if id is present
+                        loading={loadingProducts}
+                        errorMessage={errorProducts}
                         />
                     </Grid>
                     <Grid item xs={12} style={{ paddingLeft: '35px', paddingRight: '0px' }}>
