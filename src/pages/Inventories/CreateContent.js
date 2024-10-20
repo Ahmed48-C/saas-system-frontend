@@ -10,7 +10,6 @@ const CreateContent = () => {
 
     const handleSubmitClick = (data) => {
         const postData = {
-            code: data.code,
             in_stock: data.in_stock,
             on_order: data.on_order,
             reserved: data.reserved,
