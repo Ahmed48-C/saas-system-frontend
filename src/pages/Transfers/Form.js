@@ -84,7 +84,7 @@ const Form = ({ handleClick, icon, title }) => {
         if (field === 'amount') {
             const maxAmount = getBalanceFromAmount();
             // Allow numeric input including decimals with max 2 decimal places
-            if (value === '' || (/^[0-9]*\.?[0-9]{0,2}$/.test(value) && parseFloat(value) <= maxAmount)) {
+            if (value === '' || (parseFloat(value) > 0 && /^[0-9]*\.?[0-9]{0,2}$/.test(value) && parseFloat(value) <= maxAmount)) {
                 setData({ ...data, [field]: value });
             }
         } else {
