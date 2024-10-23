@@ -27,22 +27,36 @@ const TimePicker = ({ label, value, onChange, id, ampm, minutesStep, error, key,
           className="m-3"
           margin="normal"
           id={id}
-          label={label}
+          label={error ? `${label} *` : label}
           value={value}
           key={key}
           onChange={handleTimeChange}
           ampm={ampm}
           minutesStep={minutesStep}
-          error={error}
+          // error={error}
           name={name}
           helperText={error ? '' : ''}
+          // Conditionally change the label color if there's an error
+          InputLabelProps={{
+            style: { color: error ? 'red' : '' }, // Change label color only when error is true
+          }}
+          // Remove the error prop from TextField to avoid making the entire field red
+          FormHelperTextProps={{ error }}
+          // Use a custom TextField component to get the outlined variant
           TextFieldComponent={(props) => (
             <TextField
               {...props}
               variant="outlined"
-              error={error}
+              // error={error}
             />
           )}
+          // TextFieldComponent={(props) => (
+          //   <TextField
+          //     {...props}
+          //     variant="outlined"
+          //     error={error}
+          //   />
+          // )}
           KeyboardButtonProps={{
             'aria-label': 'change time',
           }}

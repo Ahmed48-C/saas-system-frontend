@@ -50,7 +50,7 @@ const AdornmentTextarea = ({ rows, rowsMax, label, value, onChange, key, error, 
         className="m-3"
         fullWidth
         id={id}
-        label={label}
+        label={error ? `${label} *` : label}
         onChange={onChange}
         value={value}
         multiline
