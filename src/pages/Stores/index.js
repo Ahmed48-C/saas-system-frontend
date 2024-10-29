@@ -37,7 +37,7 @@ const Stores = () => {
 
     const [filters, setFilters] = useState([]);
     const [anchorEl4, setAnchorEl4] = useState(null);
-    const [currentFilter, setCurrentFilter] = useState({ code: '', name: '', note: '', street: '', city: '', state: '', postcode: '', country: '' });
+    const [currentFilter, setCurrentFilter] = useState({ code: '', name: '', note: '', street: '', city: '', state: '', postcode: '', country: '', total_stock: '' });
     const [isEditing, setIsEditing] = useState(false);
     const [editIndex, setEditIndex] = useState(null);
 
@@ -55,7 +55,8 @@ const Stores = () => {
             { name: 'city', label: 'City', className: 'bg-white text-left', selected: false },
             { name: 'state', label: 'state', className: 'bg-white text-left', selected: false },
             { name: 'postcode', label: 'Postcode', className: 'bg-white text-left', selected: false },
-            { name: 'country', label: 'Country', className: 'bg-white text-left', selected: false }
+            { name: 'country', label: 'Country', className: 'bg-white text-left', selected: false },
+            { name: 'total_stock', label: 'Total Stock', className: 'bg-white text-left', selected: true }
         ];
     });
 

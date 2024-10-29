@@ -14,6 +14,18 @@ const FilterContent = ({ currentFilter, setCurrentFilter }) => {
     }))
     .sort((a, b) => a.name.localeCompare(b.name));
 
+    const handleInputChange = (field) => (e) => {
+        let value = e.target.value;
+
+        if (field === 'total_stock') {
+            // Allow only whole numbers (no decimals)
+            if (value === '' || /^[0-9]*$/.test(value)) {
+                const updatedFilter = { ...currentFilter, [field]: value };
+                setCurrentFilter(updatedFilter);
+            }
+        }
+    };
+
     return (
         <>
             <Grid item xs={12}>
@@ -114,6 +126,18 @@ const FilterContent = ({ currentFilter, setCurrentFilter }) => {
                     id='country'
                     value={currentFilter.country}
                     onChange={(e) => setCurrentFilter({ ...currentFilter, country: e.target.value })}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <Textarea
+                    style={{ margin: 0 }}
+                    rows={1}
+                    rowsMax={2}
+                    label='Total Stock'
+                    name='total_stock'
+                    id='total_stock'
+                    value={currentFilter.total_stock}
+                    onChange={handleInputChange('total_stock')}
                 />
             </Grid>
         </>
