@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, ButtonGroup, Checkbox, Fade, Popper, TableRow } from '@material-ui/core';
+import { Button, ButtonGroup, Checkbox, Fade, Popper, TableRow, Tooltip } from '@material-ui/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Loader } from '../../pages-components';
 import { useHistory } from 'react-router-dom';
@@ -126,7 +126,26 @@ const Row = ({
                 <td key={index}>{row[column.name]}</td>
             ))}
             <td className="text-center">
-                <Button startIcon={<DeleteIcon />} className="px-2 btn-icon hover-scale-sm text-white btn-danger" onClick={() => handleDeleteClick(row.id)} style={{ padding: '4px 8px' }}>Delete</Button>
+                {/* <Button startIcon={<DeleteIcon />} className="px-2 btn-icon hover-scale-sm text-white btn-danger" onClick={() => handleDeleteClick(row.id)} style={{ padding: '4px 8px' }}>Delete</Button> */}
+                <ButtonGroup
+                orientation="horizontal"
+                color="secondary"
+                variant="contained"
+                >
+                    <Tooltip title="Delete">
+                        <Button
+                            style={{ minWidth: '32px', minHeight: '32px', paddingRight: '6px', paddingLeft: '5px' }}
+                            variant="contained"
+                            size="small"
+                            className="btn-primary text-white btn-danger"
+                            onClick={() => handleDeleteClick(row.id)}
+                        >
+                            <span className="btn-wrapper--icon">
+                            <DeleteIcon fontSize='small' />
+                            </span>
+                        </Button>
+                    </Tooltip>
+                </ButtonGroup>
                 {/* <Button
                 size="small"
                 className="btn-link d-30 p-0 btn-icon hover-scale-sm"

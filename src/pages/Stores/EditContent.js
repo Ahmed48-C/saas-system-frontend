@@ -20,6 +20,7 @@ const EditContent = ({ editLoading }) => {
             state: data.state,
             postcode: data.postcode,
             country: data.country,
+            total_stock: data.total_stock,
         };
 
         const successCallback = (data) => {
