@@ -2,7 +2,7 @@ import React from 'react'
 import Form from './Form';
 import { Loader } from '../../pages-components';
 import { useParams, useHistory } from 'react-router-dom';
-import API_ENDPOINTS from '../../config/apis';
+import {API_ENDPOINTS} from '../../config/apis';
 import { handleUpdateRecord } from '../../functions/pages/handleUpdateRecord';
 import { toast } from 'react-toastify';
 

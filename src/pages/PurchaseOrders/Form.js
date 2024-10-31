@@ -4,7 +4,7 @@ import { InputSelect, Loader, Textarea } from '../../pages-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import isEmpty from '../../functions/pages/isEmpty'
 import { useParams } from 'react-router-dom';
-import API_ENDPOINTS from '../../config/apis'
+import { API_ENDPOINTS, BASE_URL} from '../../config/apis'
 import { handleFetchRecord } from '../../functions/pages/handleFetchRecord'
 import { formatFormRecordDropdown } from '../../functions/pages/formatFormRecordDropdown'
 import { formFetchDropdownRecords } from '../../functions/pages/formFetchDropdownRecords'
@@ -62,7 +62,7 @@ const Form = ({ handleClick, icon, title }) => {
 
         const fetchLastPurchaseOrder = async () => {
             try {
-                const response = await axios.get('http://127.0.0.1:8000/api/get/purchase_order/last/');
+                const response = await axios.get(`${BASE_URL}/api/get/purchase_order/last/`);
                 const lastOrderId = response.data.id;
 
                 console.log(response.data);
@@ -98,7 +98,7 @@ const Form = ({ handleClick, icon, title }) => {
             setLoadingBalances(true);
 
             try {
-                await formFetchDropdownRecords('http://127.0.0.1:8000/api/get/suppliers/', setSuppliers);
+                await formFetchDropdownRecords(`${BASE_URL}/api/get/suppliers/`, setSuppliers);
                 setLoadingSuppliers(false);
             } catch (error) {
                 setErrorSuppliers('Error fetching suppliers');
@@ -106,7 +106,7 @@ const Form = ({ handleClick, icon, title }) => {
             }
 
             try {
-                await formFetchDropdownRecords('http://127.0.0.1:8000/api/get/stores/', setStores);
+                await formFetchDropdownRecords(`${BASE_URL}/api/get/stores/`, setStores);
                 setLoadingStores(false);
             } catch (error) {
                 setErrorStores('Error fetching stores');
@@ -114,7 +114,7 @@ const Form = ({ handleClick, icon, title }) => {
             }
 
             try {
-                await formFetchDropdownRecords('http://127.0.0.1:8000/api/get/balances/', setBalances);
+                await formFetchDropdownRecords(`${BASE_URL}/api/get/balances/`, setBalances);
                 setLoadingBalances(false);
             } catch (error) {
                 setErrorBalances('Error fetching balances');
@@ -122,7 +122,7 @@ const Form = ({ handleClick, icon, title }) => {
             }
 
             try {
-                await formFetchDropdownRecords('http://127.0.0.1:8000/api/get/products/', setProducts);
+                await formFetchDropdownRecords(`${BASE_URL}/api/get/products/`, setProducts);
                 setLoadingProducts(false);
             } catch (error) {
                 setErrorProducts('Error fetching products');

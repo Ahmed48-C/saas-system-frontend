@@ -1,7 +1,7 @@
 import { Button, FormControl, Grid, IconButton, makeStyles, Paper, Typography } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
-import API_ENDPOINTS from '../../config/apis';
+import {API_ENDPOINTS} from '../../config/apis';
 import { handleSubmitRecord } from '../../functions/pages/handleSubmitRecord';
 import handleDeleteRecord from '../../functions/pages/handleDeleteRecord';
 import Textarea from '../Textarea';

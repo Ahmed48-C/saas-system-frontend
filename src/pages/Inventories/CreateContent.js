@@ -1,7 +1,7 @@
 import React from 'react'
 import Form from './Form';
 import { useHistory } from 'react-router-dom';
-import API_ENDPOINTS from '../../config/apis';
+import {API_ENDPOINTS} from '../../config/apis';
 import { handleSubmitRecord } from '../../functions/pages/handleSubmitRecord';
 import { toast } from 'react-toastify';
 

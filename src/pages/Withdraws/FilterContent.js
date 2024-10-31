@@ -3,12 +3,13 @@ import { InputSelect, Loader, Textarea } from '../../pages-components'
 import { Grid } from '@material-ui/core'
 import { formatFilterRecordDropdown } from '../../functions/pages/formatFilterRecordDropdown';
 import { filterFetchDropdownRecords } from '../../functions/pages/filterFetchDropdownRecords';
+import { BASE_URL } from '../../config/apis';
 
 const FilterContent = ({ currentFilter, setCurrentFilter, handleBalances, balances }) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        filterFetchDropdownRecords(`http://127.0.0.1:8000/api/get/balances/`, handleBalances)
+        filterFetchDropdownRecords(`${BASE_URL}/api/get/balances/`, handleBalances)
         setLoading(false);
     }, []);
 

@@ -4,7 +4,7 @@ import { InputSelect, Loader, Textarea } from '../../pages-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import isEmpty from '../../functions/pages/isEmpty'
 import { useParams } from 'react-router-dom';
-import API_ENDPOINTS from '../../config/apis'
+import {API_ENDPOINTS} from '../../config/apis'
 import { handleFetchRecord } from '../../functions/pages/handleFetchRecord'
 import AdornmentTextarea from '../../pages-components/AdornmentTextArea'
 import getUnits from '../../config/getUnits'

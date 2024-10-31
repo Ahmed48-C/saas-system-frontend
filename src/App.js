@@ -10,7 +10,7 @@ import Routes from './Routes';
 import ScrollToTop from './utils/ScrollToTop';
 import { RemindersProvider, useReminders } from './config/RemindersContext';
 import axios from 'axios';
-import API_ENDPOINTS from './config/apis';
+import {API_ENDPOINTS} from './config/apis';
 import reminderSound from './assets/images/reminder-sound.mp3';
 import { SelectedIDsProvider } from './config/SelectedIdsContext';
 

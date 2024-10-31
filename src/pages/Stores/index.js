@@ -3,7 +3,7 @@ import { FilterBar, MainTable } from '../../pages-components'
 import NoRecords from '../../pages-components/NoRecords';
 import TableContent from './TableContent';
 import { useHistory } from 'react-router-dom';
-import API_ENDPOINTS from '../../config/apis';
+import {API_ENDPOINTS} from '../../config/apis';
 import FilterContent from './FilterContent';
 import TableHeading from '../../functions/pages/tableHeading';
 import { fetchAll } from '../../functions/pages/handleFetchAll';

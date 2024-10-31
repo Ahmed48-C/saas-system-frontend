@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { createContext, useContext, useState } from 'react';
 import { toast } from 'react-toastify';
-import API_ENDPOINTS from './apis';
+import {API_ENDPOINTS} from './apis';
 
 const RemindersContext = createContext();
 
