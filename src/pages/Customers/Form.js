@@ -4,11 +4,12 @@ import { InputSelect, Loader, Textarea } from '../../pages-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import isEmpty from '../../functions/pages/isEmpty'
 import { useParams } from 'react-router-dom';
-import API_ENDPOINTS from '../../config/apis'
+import {API_ENDPOINTS} from '../../config/apis'
 import { handleFetchRecord } from '../../functions/pages/handleFetchRecord'
 import { formatFormRecordDropdown } from '../../functions/pages/formatFormRecordDropdown'
 import { formFetchDropdownRecords } from '../../functions/pages/formFetchDropdownRecords'
 import { emailValidator } from '../../functions/pages/emailValidator'
+import { BASE_URL } from '../../config/apis';
 
 const Form = ({ handleClick, icon, title }) => {
     const { id } = useParams();
@@ -34,7 +35,7 @@ const Form = ({ handleClick, icon, title }) => {
             setLoadingLocations(true);
 
             try {
-                await formFetchDropdownRecords('http://127.0.0.1:8000/api/get/locations/', setLocations);
+                await formFetchDropdownRecords(`${BASE_URL}/api/get/locations/`, setLocations);
                 setLoadingLocations(false);
             } catch (error) {
                 setErrorLocations('Error fetching suppliers');

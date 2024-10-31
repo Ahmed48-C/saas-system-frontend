@@ -2,10 +2,10 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { Box, Button, Divider, FormControl, Grid, Tooltip } from '@material-ui/core'
 import { InputSelect, Loader, Textarea } from '../../pages-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useCountries } from 'use-react-countries'
+import { countryList } from '../../config/common'
 import isEmpty from '../../functions/pages/isEmpty'
 import { useParams } from 'react-router-dom';
-import API_ENDPOINTS from '../../config/apis'
+import { API_ENDPOINTS, BASE_URL} from '../../config/apis'
 import { handleFetchRecord } from '../../functions/pages/handleFetchRecord'
 
 const Form = ({ handleClick, icon, title }) => {
@@ -24,14 +24,21 @@ const Form = ({ handleClick, icon, title }) => {
         }
     }, [id, fetchData]);
 
-    const { countries } = useCountries();
+    // State to hold the list of countries
+    const [countryOptions, setCountryOptions] = useState([]);
 
-    const countryOptions = countries
-    .map(country => ({
-        name: country.name,
-        value: country.name, // Setting value to country name
-    }))
-    .sort((a, b) => a.name.localeCompare(b.name));
+    useEffect(() => {
+        // Map through country list and sort them alphabetically
+        const sortedCountries = countryList
+            .map(country => ({
+                name: country,
+                value: country // Setting value to country name
+            }))
+            .sort((a, b) => a.name.localeCompare(b.name));
+
+        // Set the sorted countries in the state
+        setCountryOptions(sortedCountries);
+    }, []);
 
     const isFormValid = () => {
         return  data.code &&

@@ -1,18 +1,26 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { InputSelect, Textarea } from '../../pages-components'
 import { Grid } from '@material-ui/core'
-import { useCountries } from 'use-react-countries';
+import { countryList } from '../../config/common'
+import { BASE_URL } from '../../config/apis';
 
 const FilterContent = ({ currentFilter, setCurrentFilter }) => {
 
-    const { countries } = useCountries();
+    // State to hold the list of countries
+    const [countryOptions, setCountryOptions] = useState([]);
 
-    const countryOptions = countries
-    .map(country => ({
-        name: country.name,
-        value: country.name, // Setting value to country name
-    }))
-    .sort((a, b) => a.name.localeCompare(b.name));
+    useEffect(() => {
+        // Map through country list and sort them alphabetically
+        const sortedCountries = countryList
+            .map(country => ({
+                name: country,
+                value: country // Setting value to country name
+            }))
+            .sort((a, b) => a.name.localeCompare(b.name));
+
+        // Set the sorted countries in the state
+        setCountryOptions(sortedCountries);
+    }, []);
 
     return (
         <>

@@ -3,7 +3,7 @@ import { Button, ButtonGroup, Checkbox, Fade, Popper, TableRow } from '@material
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Loader } from '../../pages-components';
 import { useHistory } from 'react-router-dom';
-import API_ENDPOINTS from '../../config/apis';
+import {API_ENDPOINTS} from '../../config/apis';
 import handleDeleteRecord from '../../functions/pages/handleDeleteRecord';
 import clsx from 'clsx';
 import { toast } from 'react-toastify';

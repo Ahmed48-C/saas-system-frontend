@@ -45,7 +45,7 @@ const SidebarCollapsed = (props) => {
         <div className="app-sidebar--header">
           <div className="app-sidebar-logo">
             <NavLink
-              to="/DashboardAnalytics"
+              to="/ui/DashboardAnalytics"
               title="Bamburgh React Admin Dashboard with Material-UI PRO"
               className="app-sidebar-logo">
               <div className="app-sidebar-logo--icon">
@@ -67,7 +67,7 @@ const SidebarCollapsed = (props) => {
                   arrow
                   placement="right"
                   title="Chat">
-                  <NavLink activeClassName="active" to="/PageChat">
+                  <NavLink activeClassName="active" to="/ui/PageChat">
                     <span>
                       <VerifiedUserTwoToneIcon />
                     </span>
@@ -80,7 +80,7 @@ const SidebarCollapsed = (props) => {
                   arrow
                   placement="right"
                   title="Calendar">
-                  <NavLink activeClassName="active" to="/PageCalendar">
+                  <NavLink activeClassName="active" to="/ui/PageCalendar">
                     <span>
                       <RoomTwoToneIcon />
                     </span>
@@ -93,7 +93,7 @@ const SidebarCollapsed = (props) => {
                   arrow
                   placement="right"
                   title="File Manager">
-                  <NavLink activeClassName="active" to="/PageFileManager">
+                  <NavLink activeClassName="active" to="/ui/PageFileManager">
                     <span>
                       <CameraAltTwoToneIcon />
                     </span>
@@ -106,7 +106,7 @@ const SidebarCollapsed = (props) => {
                   arrow
                   placement="right"
                   title="Projects">
-                  <NavLink activeClassName="active" to="/PageProjects">
+                  <NavLink activeClassName="active" to="/ui/PageProjects">
                     <span>
                       <CollectionsTwoToneIcon />
                     </span>
@@ -119,7 +119,7 @@ const SidebarCollapsed = (props) => {
                   arrow
                   placement="right"
                   title="Profile">
-                  <NavLink activeClassName="active" to="/PageProfile">
+                  <NavLink activeClassName="active" to="/ui/PageProfile">
                     <span>
                       <FavoriteTwoToneIcon />
                     </span>
@@ -132,7 +132,7 @@ const SidebarCollapsed = (props) => {
                   arrow
                   placement="right"
                   title="Monitoring Dashboard">
-                  <NavLink activeClassName="active" to="/DashboardMonitoring">
+                  <NavLink activeClassName="active" to="/ui/DashboardMonitoring">
                     <span>
                       <BusinessCenterTwoToneIcon />
                     </span>
@@ -145,7 +145,7 @@ const SidebarCollapsed = (props) => {
                   arrow
                   placement="right"
                   title="Analytics Dashboard">
-                  <NavLink activeClassName="active" to="/DashboardAnalytics">
+                  <NavLink activeClassName="active" to="/ui/DashboardAnalytics">
                     <span>
                       <AssessmentTwoToneIcon />
                     </span>
@@ -158,7 +158,7 @@ const SidebarCollapsed = (props) => {
                   arrow
                   placement="right"
                   title="Statistics Dashboard">
-                  <NavLink activeClassName="active" to="/DashboardStatistics">
+                  <NavLink activeClassName="active" to="/ui/DashboardStatistics">
                     <span>
                       <CameraTwoToneIcon />
                     </span>
@@ -176,7 +176,7 @@ const SidebarCollapsed = (props) => {
                   component={NavLink}
                   variant="contained"
                   className="btn-warning btn-icon m-1 p-0 shadow-none text-center font-size-lg d-40 rounded"
-                  to="/DashboardAnalytics">
+                  to="/ui/DashboardAnalytics">
                   <FontAwesomeIcon icon={['fas', 'arrow-left']} />
                 </Button>
               </Tooltip>

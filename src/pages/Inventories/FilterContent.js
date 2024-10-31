@@ -3,14 +3,15 @@ import { InputSelect, Loader, Textarea } from '../../pages-components'
 import { Grid } from '@material-ui/core'
 import { formatFilterRecordDropdown } from '../../functions/pages/formatFilterRecordDropdown';
 import { filterFetchDropdownRecords } from '../../functions/pages/filterFetchDropdownRecords';
+import { BASE_URL } from '../../config/apis';
 
 const FilterContent = ({ currentFilter, setCurrentFilter, handleProducts, products, stores, handleStores, suppliers, handleSuppliers }) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        filterFetchDropdownRecords(`http://127.0.0.1:8000/api/get/products/`, handleProducts)
-        filterFetchDropdownRecords(`http://127.0.0.1:8000/api/get/stores/`, handleStores)
-        filterFetchDropdownRecords(`http://127.0.0.1:8000/api/get/suppliers/`, handleSuppliers)
+        filterFetchDropdownRecords(`${BASE_URL}/api/get/products/`, handleProducts)
+        filterFetchDropdownRecords(`${BASE_URL}/api/get/stores/`, handleStores)
+        filterFetchDropdownRecords(`${BASE_URL}/api/get/suppliers/`, handleSuppliers)
         setLoading(false);
     }, []);
 

@@ -86,7 +86,7 @@ const SidebarMenu = (props) => {
                 activeClassName="active"
                 onClick={toggleSidebarMobile}
                 className="nav-link-simple"
-                to="/Dashboard">
+                to="/ui/Dashboard">
                 <span className="sidebar-icon">
                   {/* <BallotTwoToneIcon /> */}
                   <DashboardIcon />
@@ -116,42 +116,42 @@ const SidebarMenu = (props) => {
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
-                      to="/DashboardMonitoring">
+                      to="/ui/DashboardMonitoring">
                       Quote
                     </NavLink>
                   </li>
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
-                      to="/DashboardCommerce">
+                      to="/ui/DashboardCommerce">
                       Invoice
                     </NavLink>
                   </li>
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
-                      to="/DashboardAnalytics">
+                      to="/ui/DashboardAnalytics">
                       Sale Order
                     </NavLink>
                   </li>
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
-                      to="/DashboardStatistics">
+                      to="/ui/DashboardStatistics">
                       Credit Note
                     </NavLink>
                   </li>
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
-                      to="/DashboardStatistics">
+                      to="/ui/DashboardStatistics">
                       Payment
                     </NavLink>
                   </li>
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
-                      to="/DashboardStatistics">
+                      to="/ui/DashboardStatistics">
                       Refund
                     </NavLink>
                   </li>
@@ -177,35 +177,35 @@ const SidebarMenu = (props) => {
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
-                      to="/purchase-orders">
+                      to="/ui/purchase-orders">
                       Purchase Order
                     </NavLink>
                   </li>
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
-                      to="/DashboardCommerce">
+                      to="/ui/DashboardCommerce">
                       Bill
                     </NavLink>
                   </li>
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
-                      to="/DashboardAnalytics">
+                      to="/ui/DashboardAnalytics">
                       Credit Note
                     </NavLink>
                   </li>
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
-                      to="/DashboardStatistics">
+                      to="/ui/DashboardStatistics">
                       Payment
                     </NavLink>
                   </li>
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
-                      to="/DashboardStatistics">
+                      to="/ui/DashboardStatistics">
                       Refund
                     </NavLink>
                   </li>
@@ -231,28 +231,28 @@ const SidebarMenu = (props) => {
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
-                      to="/balances">
+                      to="/ui/balances">
                       Balances
                     </NavLink>
                   </li>
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
-                      to="/deposits">
+                      to="/ui/deposits">
                       Deposits
                     </NavLink>
                   </li>
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
-                      to="/withdraws">
+                      to="/ui/withdraws">
                       Withdraws
                     </NavLink>
                   </li>
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
-                      to="/transfers">
+                      to="/ui/transfers">
                       Transfers
                     </NavLink>
                   </li>
@@ -297,21 +297,21 @@ const SidebarMenu = (props) => {
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
-                      to="/DashboardMonitoring">
+                      to="/ui/DashboardMonitoring">
                       Employees
                     </NavLink>
                   </li>
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
-                      to="/suppliers">
+                      to="/ui/suppliers">
                       Suppliers
                     </NavLink>
                   </li>
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
-                      to="/customers">
+                      to="/ui/customers">
                       Customers
                     </NavLink>
                   </li>
@@ -355,28 +355,28 @@ const SidebarMenu = (props) => {
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
-                      to="/DashboardMonitoring">
+                      to="/ui/DashboardMonitoring">
                       Monitoring
                     </NavLink>
                   </li>
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
-                      to="/DashboardCommerce">
+                      to="/ui/DashboardCommerce">
                       Commerce
                     </NavLink>
                   </li>
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
-                      to="/DashboardAnalytics">
+                      to="/ui/DashboardAnalytics">
                       Analytics
                     </NavLink>
                   </li>
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
-                      to="/DashboardStatistics">
+                      to="/ui/DashboardStatistics">
                       Statistics
                     </NavLink>
                   </li>
@@ -388,7 +388,7 @@ const SidebarMenu = (props) => {
                 activeClassName="active"
                 onClick={toggleSidebarMobile}
                 className="nav-link-simple"
-                to="/products">
+                to="/ui/products">
                 <span className="sidebar-icon">
                   {/* <BallotTwoToneIcon /> */}
                   <BuildIcon />
@@ -423,7 +423,7 @@ const SidebarMenu = (props) => {
                 activeClassName="active"
                 onClick={toggleSidebarMobile}
                 className="nav-link-simple"
-                to="/inventories">
+                to="/ui/inventories">
                 <span className="sidebar-icon">
                   {/* <BallotTwoToneIcon /> */}
                   <ArchiveIcon />
@@ -452,28 +452,28 @@ const SidebarMenu = (props) => {
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
-                      to="/DashboardMonitoring">
+                      to="/ui/DashboardMonitoring">
                       Monitoring
                     </NavLink>
                   </li>
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
-                      to="/DashboardCommerce">
+                      to="/ui/DashboardCommerce">
                       Commerce
                     </NavLink>
                   </li>
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
-                      to="/DashboardAnalytics">
+                      to="/ui/DashboardAnalytics">
                       Analytics
                     </NavLink>
                   </li>
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
-                      to="/DashboardStatistics">
+                      to="/ui/DashboardStatistics">
                       Statistics
                     </NavLink>
                   </li>
@@ -498,14 +498,14 @@ const SidebarMenu = (props) => {
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
-                      to="/locations">
+                      to="/ui/locations">
                       Locations
                     </NavLink>
                   </li>
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
-                      to="/stores">
+                      to="/ui/stores">
                       Stores
                     </NavLink>
                   </li>

@@ -457,175 +457,175 @@ const Routes = () => {
               <AnimatePresence>
                   <Suspense fallback={<SuspenseLoading />}>
                       <Switch>
-                          <Redirect exact from="/" to="/dashboard" />
+                          <Redirect exact from="/" to="/ui/dashboard" />
                           {/* <Route> */}
 
                             <Route
                                 exact
-                                path="/dashboard"
+                                path="/ui/dashboard"
                                 component={Dashboard}
                             />
 
                             <Route
                                 exact
-                                path="/locations"
+                                path="/ui/locations"
                                 component={Locations}
                             />
                             <Route
                                 exact
-                                path="/location/create"
+                                path="/ui/location/create"
                                 component={CreateLocations}
                             />
                             <Route
                                 exact
-                                path="/location/edit/:id"
+                                path="/ui/location/edit/:id"
                                 component={EditLocations}
                             />
 
                             <Route
                                 exact
-                                path="/stores"
+                                path="/ui/stores"
                                 component={Stores}
                             />
                             <Route
                                 exact
-                                path="/store/create"
+                                path="/ui/store/create"
                                 component={CreateStores}
                             />
                             <Route
                                 exact
-                                path="/store/edit/:id"
+                                path="/ui/store/edit/:id"
                                 component={EditStores}
                             />
 
                             <Route
                                 exact
-                                path="/suppliers"
+                                path="/ui/suppliers"
                                 component={Suppliers}
                             />
                             <Route
                                 exact
-                                path="/supplier/create"
+                                path="/ui/supplier/create"
                                 component={CreateSuppliers}
                             />
                             <Route
                                 exact
-                                path="/supplier/edit/:id"
+                                path="/ui/supplier/edit/:id"
                                 component={EditSuppliers}
                             />
 
                             <Route
                                 exact
-                                path="/customers"
+                                path="/ui/customers"
                                 component={Customers}
                             />
                             <Route
                                 exact
-                                path="/customer/create"
+                                path="/ui/customer/create"
                                 component={CreateCustomers}
                             />
                             <Route
                                 exact
-                                path="/customer/edit/:id"
+                                path="/ui/customer/edit/:id"
                                 component={EditCustomers}
                             />
 
                             <Route
                                 exact
-                                path="/products"
+                                path="/ui/products"
                                 component={Products}
                             />
                             <Route
                                 exact
-                                path="/product/create"
+                                path="/ui/product/create"
                                 component={CreateProducts}
                             />
                             <Route
                                 exact
-                                path="/product/edit/:id"
+                                path="/ui/product/edit/:id"
                                 component={EditProducts}
                             />
 
                             <Route
                                 exact
-                                path="/inventories"
+                                path="/ui/inventories"
                                 component={Inventories}
                             />
                             <Route
                                 exact
-                                path="/inventory/create"
+                                path="/ui/inventory/create"
                                 component={CreateInventories}
                             />
                             <Route
                                 exact
-                                path="/inventory/edit/:id"
+                                path="/ui/inventory/edit/:id"
                                 component={EditInventories}
                             />
 
                             <Route
                                 exact
-                                path="/purchase-orders"
+                                path="/ui/purchase-orders"
                                 component={PurchaseOrders}
                             />
                             <Route
                                 exact
-                                path="/purchase-order/create"
+                                path="/ui/purchase-order/create"
                                 component={CreatePurchaseOrders}
                             />
                             <Route
                                 exact
-                                path="/purchase-order/edit/:id"
+                                path="/ui/purchase-order/edit/:id"
                                 component={EditPurchaseOrders}
                             />
 
                             <Route
                                 exact
-                                path="/balances"
+                                path="/ui/balances"
                                 component={Balances}
                             />
                             <Route
                                 exact
-                                path="/balance/create"
+                                path="/ui/balance/create"
                                 component={CreateBalances}
                             />
 
                             <Route
                                 exact
-                                path="/deposits"
+                                path="/ui/deposits"
                                 component={Deposits}
                             />
                             <Route
                                 exact
-                                path="/deposit/create"
+                                path="/ui/deposit/create"
                                 component={CreateDeposits}
                             />
 
                             <Route
                                 exact
-                                path="/withdraws"
+                                path="/ui/withdraws"
                                 component={Withdraws}
                             />
                             <Route
                                 exact
-                                path="/withdraw/create"
+                                path="/ui/withdraw/create"
                                 component={CreateWithdraws}
                             />
 
                             <Route
                                 exact
-                                path="/transfers"
+                                path="/ui/transfers"
                                 component={Transfers}
                             />
                             <Route
                                 exact
-                                path="/transfer/create"
+                                path="/ui/transfer/create"
                                 component={CreateTransfers}
                             />
 
-                            {/* <Route path="/400" component={BadRequest400} />
-                            <Route path="/401" component={Unauthorized401} />
-                            <Route path="/403" component={Forbidden403} /> */}
-                            <Route path="/500" component={InternalServerError500} />
+                            {/* <Route path="/ui/400" component={BadRequest400} />
+                            <Route path="/ui/401" component={Unauthorized401} />
+                            <Route path="/ui/403" component={Forbidden403} /> */}
+                            <Route path="/ui/500" component={InternalServerError500} />
                             {/* Catch all other routes */}
                             <Route component={NotFound404} />
                           {/* </Route> */}

@@ -1,6 +1,7 @@
-const BASE_URL = 'http://127.0.0.1:8000';
+export const BASE_URL = 'http://127.0.0.1:8000';
+// export const BASE_URL = 'https://azzamting.pythonanywhere.com/';
 
-const API_ENDPOINTS = {
+export const API_ENDPOINTS = {
 
   DELETE_LOCATION: (id) => `${BASE_URL}/api/delete/location/${id}/`,
   DELETE_LOCATIONS: () => `${BASE_URL}/api/delete/locations/`,
@@ -79,5 +80,3 @@ const API_ENDPOINTS = {
   GET_TRANSFERS: (from, to) => `${BASE_URL}/api/get/transfers/?from=${from}&to=${to}`,
   GET_TRANSFER: (id) => `${BASE_URL}/api/get/transfer/${id}/`,
 };
-
-export default API_ENDPOINTS;
