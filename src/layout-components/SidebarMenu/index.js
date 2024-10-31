@@ -100,6 +100,60 @@ const SidebarMenu = (props) => {
             <li>
               <a
                 href="#/"
+                onClick={togglePurchases}
+                className={clsx({ active: purchasesOpen })}>
+                <span className="sidebar-icon">
+                  {/* <VerifiedUserTwoToneIcon /> */}
+                  <ShoppingCartIcon />
+                </span>
+                <span className="sidebar-item-label">Purchases</span>
+                <span className="sidebar-icon-indicator">
+                  <ChevronRightTwoToneIcon />
+                </span>
+              </a>
+              <Collapse in={purchasesOpen}>
+                <ul>
+                  <li>
+                    <NavLink
+                      onClick={toggleSidebarMobile}
+                      to="/ui/purchase-orders">
+                      Purchase Order
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink
+                      onClick={toggleSidebarMobile}
+                      to="/ui/DashboardCommerce">
+                      Bill
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink
+                      onClick={toggleSidebarMobile}
+                      to="/ui/DashboardAnalytics">
+                      Credit Note
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink
+                      onClick={toggleSidebarMobile}
+                      to="/ui/DashboardStatistics">
+                      Payment
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink
+                      onClick={toggleSidebarMobile}
+                      to="/ui/DashboardStatistics">
+                      Refund
+                    </NavLink>
+                  </li>
+                </ul>
+              </Collapse>
+            </li>
+            <li>
+              <a
+                href="#/"
                 onClick={toggleSales}
                 className={clsx({ active: salesOpen })}>
                 <span className="sidebar-icon">
@@ -138,60 +192,6 @@ const SidebarMenu = (props) => {
                     <NavLink
                       onClick={toggleSidebarMobile}
                       to="/ui/DashboardStatistics">
-                      Credit Note
-                    </NavLink>
-                  </li>
-                  <li>
-                    <NavLink
-                      onClick={toggleSidebarMobile}
-                      to="/ui/DashboardStatistics">
-                      Payment
-                    </NavLink>
-                  </li>
-                  <li>
-                    <NavLink
-                      onClick={toggleSidebarMobile}
-                      to="/ui/DashboardStatistics">
-                      Refund
-                    </NavLink>
-                  </li>
-                </ul>
-              </Collapse>
-            </li>
-            <li>
-              <a
-                href="#/"
-                onClick={togglePurchases}
-                className={clsx({ active: purchasesOpen })}>
-                <span className="sidebar-icon">
-                  {/* <VerifiedUserTwoToneIcon /> */}
-                  <ShoppingCartIcon />
-                </span>
-                <span className="sidebar-item-label">Purchases</span>
-                <span className="sidebar-icon-indicator">
-                  <ChevronRightTwoToneIcon />
-                </span>
-              </a>
-              <Collapse in={purchasesOpen}>
-                <ul>
-                  <li>
-                    <NavLink
-                      onClick={toggleSidebarMobile}
-                      to="/ui/purchase-orders">
-                      Purchase Order
-                    </NavLink>
-                  </li>
-                  <li>
-                    <NavLink
-                      onClick={toggleSidebarMobile}
-                      to="/ui/DashboardCommerce">
-                      Bill
-                    </NavLink>
-                  </li>
-                  <li>
-                    <NavLink
-                      onClick={toggleSidebarMobile}
-                      to="/ui/DashboardAnalytics">
                       Credit Note
                     </NavLink>
                   </li>

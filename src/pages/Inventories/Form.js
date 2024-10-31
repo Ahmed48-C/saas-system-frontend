@@ -103,7 +103,6 @@ const Form = ({ handleClick, icon, title }) => {
                 (Number(max_stock) >= Number(min_stock))));
 
         return (
-            data.code &&
             data.store_id &&
             data.supplier_id &&
             data.product_id &&
@@ -144,20 +143,6 @@ const Form = ({ handleClick, icon, title }) => {
                             </div>
                             <Divider className="my-4" />
                         </div>
-                    </Grid>
-                    <Grid item xs={6}>
-                        <Textarea
-                        rows={1}
-                        rowsMax={2}
-                        label='Code'
-                        name='code'
-                        id='code'
-                        onChange={handleInputChange('code')}
-                        value={data.code ?? ""}
-                        key='code'
-                        error={isEmpty(data.code)}
-                        maxLength={80}
-                        />
                     </Grid>
                     <Grid item xs={6}>
                         <InputSelect

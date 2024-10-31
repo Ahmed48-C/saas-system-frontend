@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, ButtonGroup, Checkbox, Collapse, Fade, IconButton, Popper, TableRow } from '@material-ui/core';
+import { Button, ButtonGroup, Checkbox, Collapse, Fade, IconButton, Popper, TableRow, Tooltip } from '@material-ui/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Loader } from '../../pages-components';
 import { useHistory } from 'react-router-dom';
@@ -13,6 +13,8 @@ import { updateSelectedWithIds } from '../../functions/pages/updateSelectedWithI
 import { handleCheckboxChange } from '../../functions/pages/handleCheckboxChange';
 import { selectedRowStyles } from '../../theme/selectedRowStyles';
 import { ExpandLess, ExpandMore } from '@material-ui/icons';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
 
 const TableContent = ({
   fetchRecords,
@@ -217,7 +219,6 @@ const Row = ({
                         aria-label="vertical outlined primary button group"
                         variant="contained"
                       >
-                        {/* <Button className="px-1 btn-icon hover-scale-sm text-white" onClick={() => handleEditClick(row.id)} style={{ padding: '4px 8px' }}>Edit</Button> */}
                         <Button className="px-1 btn-icon hover-scale-sm text-white btn-danger" onClick={() => handleDeleteClick(row.id, API_ENDPOINTS.DELETE_PURCHASE_ORDER)} style={{ padding: '4px 8px' }}>Delete & Keep Stock</Button>
                         <Button className="px-1 btn-icon hover-scale-sm text-white btn-danger" onClick={() => handleDeleteClick(row.id, API_ENDPOINTS.DELETE_PURCHASE_ORDER_STOCK)} style={{ padding: '4px 8px' }}>Delete & Remove Stock</Button>
                       </ButtonGroup>
@@ -226,6 +227,70 @@ const Row = ({
               </Fade>
             )}
           </Popper>
+          {/* {row.status === 'Pending' ? (
+            <ButtonGroup
+              orientation="horizontal"
+              color="secondary"
+              variant="contained"
+            >
+              <Tooltip title="Delete">
+                <Button
+                  style={{ minWidth: '32px', minHeight: '32px', paddingRight: '6px', paddingLeft: '5px' }}
+                  variant="contained"
+                  size="small"
+                  className="btn-primary text-white btn-danger"
+                  onClick={() => handleDeleteClick(row.id)}
+                >
+                  <span className="btn-wrapper--icon">
+                    <DeleteIcon fontSize='small' />
+                  </span>
+                </Button>
+              </Tooltip>
+              <Tooltip title="Edit">
+                <Button
+                  style={{ minWidth: '32px', minHeight: '32px', paddingRight: '6px', paddingLeft: '5px' }}
+                  variant="contained"
+                  size="small"
+                  className="btn-primary text-white btn-info"
+                  onClick={() => handleEditClick(row.id)}
+                >
+                  <span className="btn-wrapper--icon">
+                    <EditIcon fontSize='small' />
+                  </span>
+                </Button>
+              </Tooltip>
+            </ButtonGroup>
+          ) : (
+            <>
+              <Button
+                size="small"
+                className="btn-link d-30 p-0 btn-icon hover-scale-sm"
+                onClick={(event) => handlePopperClick(event, row.id)}
+              >
+                <FontAwesomeIcon
+                  icon={['fas', 'ellipsis-h']}
+                  className="font-size-lg"
+                />
+              </Button>
+              <Popper id={id} open={open} anchorEl={anchorEl} transition>
+                {({ TransitionProps }) => (
+                  <Fade {...TransitionProps} timeout={350}>
+                    <div>
+                      <ButtonGroup
+                        orientation="vertical"
+                        color="primary"
+                        aria-label="vertical outlined primary button group"
+                        variant="contained"
+                      >
+                        <Button className="px-1 btn-icon hover-scale-sm text-white btn-danger" onClick={() => handleDeleteClick(row.id, API_ENDPOINTS.DELETE_PURCHASE_ORDER)} style={{ padding: '4px 8px' }}>Delete & Keep Stock</Button>
+                        <Button className="px-1 btn-icon hover-scale-sm text-white btn-danger" onClick={() => handleDeleteClick(row.id, API_ENDPOINTS.DELETE_PURCHASE_ORDER_STOCK)} style={{ padding: '4px 8px' }}>Delete & Remove Stock</Button>
+                      </ButtonGroup>
+                    </div>
+                  </Fade>
+                )}
+              </Popper>
+            </>
+          )} */}
         </td>
       </TableRow>
     </>

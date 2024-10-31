@@ -14,7 +14,6 @@ import { UseIDs } from '../../config/SelectedIdsContext';
 
 const headers = [
     { key: '', label: '', className: 'bg-white text-center' },
-    { key: 'code', label: 'Code', className: 'bg-white text-left' },
     { key: 'product', label: 'Product', className: 'bg-white text-left' },
     { key: 'store', label: 'Store', className: 'bg-white text-left' },
     { key: 'supplier', label: 'Supplier', className: 'bg-white text-left' },
@@ -38,7 +37,7 @@ const Inventories = () => {
 
     const [filters, setFilters] = useState([]);
     const [anchorEl4, setAnchorEl4] = useState(null);
-    const [currentFilter, setCurrentFilter] = useState({ code: '', in_stock: '', on_order: '', reserved: '', min_stock: '', max_stock: '', product_id: '', store_id: '', supplier_id: '' });
+    const [currentFilter, setCurrentFilter] = useState({ in_stock: '', on_order: '', reserved: '', min_stock: '', max_stock: '', product_id: '', store_id: '', supplier_id: '' });
     const [products, setProducts] = useState([]);
     const [stores, setStores] = useState([]);
     const [suppliers, setSuppliers] = useState([]);
@@ -53,8 +52,7 @@ const Inventories = () => {
     const [columns, setColumns] = useState(() => {
         const savedColumns = localStorage.getItem('inventoryColumns');
         return savedColumns ? JSON.parse(savedColumns) : [
-            { name: 'code', label: 'Code', className: 'bg-white text-left', selected: true },
-            { name: 'in_stock', label: 'In Stock', className: 'bg-white text-left', selected: false },
+            { name: 'in_stock', label: 'In Stock', className: 'bg-white text-left', selected: true },
             { name: 'on_order', label: 'On Order', className: 'bg-white text-left', selected: false },
             { name: 'reserved', label: 'Reserved', className: 'bg-white text-left', selected: false },
             { name: 'min_stock', label: 'Min Stock', className: 'bg-white text-left', selected: false },

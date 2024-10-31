@@ -34,7 +34,7 @@ const Textarea = ({ rows, rowsMax, label, value, onChange, key, error, id, maxLe
       className="m-3"
       fullWidth
       id={id}
-      label={label}
+      label={error ? `${label} *` : label}
       onChange={onChange}
       value={value}
       multiline

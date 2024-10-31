@@ -15,20 +15,26 @@ const DatePicker = ({ label, value, onChange, format, id, disablePast,
           className="m-3"
           key={key}
           id={id}
-          label={label}
+          label={error ? `${label} *` : label}
           format={format}
           value={value}
           onChange={onChange}
           disablePast={disablePast}
-          error={error}
+          // error={error}
           name={name}
           helperText={error ? '' : ''}
+          // Conditionally change the label color if there's an error
+          InputLabelProps={{
+            style: { color: error ? 'red' : '' }, // Change label color only when error is true
+          }}
+          // Remove the error prop from TextField to avoid making the entire field red
+          FormHelperTextProps={{ error }}
           // Use a custom TextField component to get the outlined variant
           TextFieldComponent={(props) => (
             <TextField
               {...props}
               variant="outlined"
-              error={error}
+              // error={error}
             />
           )}
           KeyboardButtonProps={{

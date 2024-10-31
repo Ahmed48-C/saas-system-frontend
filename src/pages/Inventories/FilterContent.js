@@ -28,19 +28,6 @@ const FilterContent = ({ currentFilter, setCurrentFilter, handleProducts, produc
                     style={{ margin: 0 }}
                     rows={1}
                     rowsMax={2}
-                    label='Code'
-                    name='code'
-                    id='code'
-                    value={currentFilter.code}
-                    onChange={(e) => setCurrentFilter({ ...currentFilter, code: e.target.value })}
-                    maxLength={80}
-                />
-            </Grid>
-            <Grid item xs={12}>
-                <Textarea
-                    style={{ margin: 0 }}
-                    rows={1}
-                    rowsMax={2}
                     label='In Stock'
                     name='in_stock'
                     id='in_stock'

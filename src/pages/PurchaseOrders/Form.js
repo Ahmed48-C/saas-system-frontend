@@ -467,7 +467,7 @@ const Form = ({ handleClick, icon, title }) => {
                         <InputSelect
                         selectItems={balances.map(balance => ({
                             value: balance.id,
-                            name: formatFormRecordDropdown(balance.name)
+                            name: `${formatFormRecordDropdown(balance.name)} (Balance: ${balance.amount})`
                         }))}
                         label='Balance'
                         name='balance_id'

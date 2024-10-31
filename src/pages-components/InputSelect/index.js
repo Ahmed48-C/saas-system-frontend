@@ -96,7 +96,7 @@ const InputSelect = ({ selectItems, label, value, onChange, error, disabled, hel
         id="input-select-label"
         style={{ color: error ? 'red' : '' }} // Conditionally set label color based on error
       >
-        {label}
+        {error ? `${label} *` : label}
       </InputLabel>
       <Select
         labelId="input-select-label"

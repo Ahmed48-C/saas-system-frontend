@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, ButtonGroup, Checkbox, Fade, Popper, TableRow } from '@material-ui/core';
+import { Button, ButtonGroup, Checkbox, Fade, Popper, TableRow, Tooltip } from '@material-ui/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Loader } from '../../pages-components';
 import { useHistory } from 'react-router-dom';
@@ -12,6 +12,8 @@ import { UseIDs } from '../../config/SelectedIdsContext'
 import { updateSelectedWithIds } from '../../functions/pages/updateSelectedWithIds';
 import { handleCheckboxChange } from '../../functions/pages/handleCheckboxChange';
 import { selectedRowStyles } from '../../theme/selectedRowStyles';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
 
 const TableContent = ({
     fetchSuppliers,
@@ -131,7 +133,7 @@ const SupplierRow = ({
           <td key={index}>{row[column.name]}</td>
         ))}
         <td className="text-center">
-          <Button
+          {/* <Button
             size="small"
             className="btn-link d-30 p-0 btn-icon hover-scale-sm"
             onClick={(event) => handlePopperClick(event, row.id)}
@@ -157,7 +159,39 @@ const SupplierRow = ({
                 </div>
               </Fade>
             )}
-          </Popper>
+          </Popper> */}
+          <ButtonGroup
+            orientation="horizontal"
+            color="secondary"
+            variant="contained"
+          >
+            <Tooltip title="Delete">
+              <Button
+                style={{ minWidth: '32px', minHeight: '32px', paddingRight: '6px', paddingLeft: '5px' }}
+                variant="contained"
+                size="small"
+                className="btn-primary text-white btn-danger"
+                onClick={() => handleDeleteClick(row.id)}
+              >
+                <span className="btn-wrapper--icon">
+                  <DeleteIcon fontSize='small' />
+                </span>
+              </Button>
+            </Tooltip>
+            <Tooltip title="Edit">
+              <Button
+                style={{ minWidth: '32px', minHeight: '32px', paddingRight: '6px', paddingLeft: '5px' }}
+                variant="contained"
+                size="small"
+                className="btn-primary text-white btn-info"
+                onClick={() => handleEditClick(row.id)}
+              >
+                <span className="btn-wrapper--icon">
+                  <EditIcon fontSize='small' />
+                </span>
+              </Button>
+            </Tooltip>
+          </ButtonGroup>
         </td>
       </TableRow>
     </>
