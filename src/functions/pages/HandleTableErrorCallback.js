@@ -48,16 +48,21 @@ const HandleTableErrorCallback = (error, entityName = 'Item', ids, setIds) => {
                 }));
             }
 
+            // toast.error(
+            //     <>
+            //         Error: These {entityName}s are referenced by other objects and cannot be deleted. Go to
+            //         <NavLink
+            //             to={`/${relatedModel}`}
+            //             style={{ color: 'blue', marginLeft: '10px' }}
+            //             onClick={setIDs}
+            //         >
+            //             {relatedModel.charAt(0).toUpperCase() + relatedModel.slice(1)}
+            //         </NavLink>
+            //     </>
+            // );
             toast.error(
                 <>
-                    Error: These {entityName}s are referenced by other objects and cannot be deleted. Go to
-                    <NavLink
-                        to={`/${relatedModel}`}
-                        style={{ color: 'blue', marginLeft: '10px' }}
-                        onClick={setIDs}
-                    >
-                        {relatedModel.charAt(0).toUpperCase() + relatedModel.slice(1)}
-                    </NavLink>
+                    Error: This item(s) can’t be deleted because it’s connected to other records.
                 </>
             );
         } else {
