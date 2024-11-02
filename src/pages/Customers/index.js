@@ -21,8 +21,8 @@ const headers = [
 ];
 
 const tabs = [
-  { url: '/suppliers', title: 'Suppliers' },
-  { url: '/customers', title: 'Customers' }
+  { url: '/ui/suppliers', title: 'Suppliers' },
+  { url: '/ui/customers', title: 'Customers' }
 ];
 
 const Customer = () => {
@@ -68,13 +68,13 @@ const Customer = () => {
   const { ids, setIds } = UseIDs();
 
   const handleNavigation = () => {
-    history.push('/customer/create');
+    history.push('/ui/customer/create');
   };
 
   const fetchRecords = useCallback(() => {
     const errorCallback = (error) => {
       console.log('Error occurred:', error);
-      history.push('/500'); // Navigate to the 500 error page
+      history.push('/ui/500'); // Navigate to the 500 error page
     };
     fetchAll(
       API_ENDPOINTS.GET_CUSTOMERS,

@@ -29,7 +29,7 @@ const EditContent = ({ editLoading }) => {
       };
 
       const successCallback = (data) => {
-        history.push('/products');
+        history.push('/ui/products');
         toast.success('Edited Product Successfully');
       };
 

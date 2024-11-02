@@ -21,7 +21,7 @@ const headers = [
 ];
 
 const tabs = [
-  { url: '/products', title: 'Products' }
+  { url: '/ui/products', title: 'Products' }
 ];
 
 const Product = () => {
@@ -76,13 +76,13 @@ const Product = () => {
   const { ids, setIds } = UseIDs();
 
   const handleNavigation = () => {
-    history.push('/product/create');
+    history.push('/ui/product/create');
   };
 
   const fetchRecords = useCallback(() => {
     const errorCallback = (error) => {
       console.log('Error occurred:', error);
-      history.push('/500'); // Navigate to the 500 error page
+      history.push('/ui/500'); // Navigate to the 500 error page
     };
     fetchAll(
       API_ENDPOINTS.GET_PRODUCTS,

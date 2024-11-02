@@ -21,7 +21,7 @@ const CreateContent = () => {
         };
 
         const successCallback = (data) => {
-            history.push('/inventories');
+            history.push('/ui/inventories');
             toast.success('Added Inventory Successfully');
         };
 

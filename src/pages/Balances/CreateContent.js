@@ -15,7 +15,7 @@ const CreateContent = () => {
         };
 
         const successCallback = (data) => {
-            history.push('/balances');
+            history.push('/ui/balances');
             toast.success('Added Balance Successfully');
         };
 

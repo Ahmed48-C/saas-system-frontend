@@ -22,7 +22,7 @@ const CreateContent = () => {
         };
 
         const successCallback = (data) => {
-            history.push('/stores');
+            history.push('/ui/stores');
             toast.success('Added Store Successfully');
         };
 
