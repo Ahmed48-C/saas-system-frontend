@@ -21,7 +21,7 @@ const EditContent = ({ editLoading }) => {
       };
 
       const successCallback = (data) => {
-        history.push('/suppliers');
+        history.push('/ui/suppliers');
         toast.success('Edited Supplier Successfully');
       };
 

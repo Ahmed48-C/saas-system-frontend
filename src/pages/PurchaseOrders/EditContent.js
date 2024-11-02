@@ -23,7 +23,7 @@ const EditContent = ({ editLoading }) => {
       };
 
       const successCallback = (data) => {
-        history.push('/purchase-orders');
+        history.push('/ui/purchase-orders');
         toast.success('Edited Purchase Order Successfully');
       };
 

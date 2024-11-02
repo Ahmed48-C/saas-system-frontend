@@ -104,7 +104,7 @@ const SupplierRow = ({
   };
 
   const handleEditClick = (id) => {
-    history.push(`/supplier/edit/${id}`);
+    history.push(`/ui/supplier/edit/${id}`);
     handleButtonClick();
   };
 

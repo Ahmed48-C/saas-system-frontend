@@ -20,7 +20,7 @@ const EditContent = ({ editLoading }) => {
       };
 
       const successCallback = (data) => {
-        history.push('/customers');
+        history.push('/ui/customers');
         toast.success('Edited Customer Successfully');
       };
 

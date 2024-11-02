@@ -131,7 +131,7 @@ const Row = ({
   };
 
   const handleEditClick = (id) => {
-    history.push(`/purchase-order/edit/${id}`);
+    history.push(`/ui/purchase-order/edit/${id}`);
     handleButtonClick();
   };
 

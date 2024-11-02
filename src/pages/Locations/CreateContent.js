@@ -21,7 +21,7 @@ const CreateContent = () => {
     };
 
     const successCallback = (data) => {
-      history.push('/locations');
+      history.push('/ui/locations');
       toast.success('Added Location Successfully');
     };
 

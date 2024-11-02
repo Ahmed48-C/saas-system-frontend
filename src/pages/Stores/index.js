@@ -20,8 +20,8 @@ const headers = [
 ];
 
 const tabs = [
-    { url: '/locations', title: 'Locations' },
-    { url: '/stores', title: 'Stores' }
+    { url: '/ui/locations', title: 'Locations' },
+    { url: '/ui/stores', title: 'Stores' }
 ];
 
 const Stores = () => {
@@ -69,13 +69,13 @@ const Stores = () => {
     const { ids, setIds } = UseIDs();
 
     const handleNavigation = () => {
-        history.push('/store/create');
+        history.push('/ui/store/create');
     };
 
     const fetchRecords = useCallback(() => {
         const errorCallback = (error) => {
         console.log('Error occurred:', error);
-        history.push('/500'); // Navigate to the 500 error page
+        history.push('/ui/500'); // Navigate to the 500 error page
         };
         fetchAll(
         API_ENDPOINTS.GET_STORES,

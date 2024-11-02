@@ -12,7 +12,7 @@ const InternalServerError = ({ title, description }) => {
     };
 
     const handleGoHome = () => {
-        history.push('/'); // Navigate to the homepage
+        history.push('/ui'); // Navigate to the homepage
     };
 
     return (

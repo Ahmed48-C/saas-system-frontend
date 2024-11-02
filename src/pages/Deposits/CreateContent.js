@@ -18,7 +18,7 @@ const CreateContent = () => {
       };
 
       const successCallback = (data) => {
-        history.push('/deposits');
+        history.push('/ui/deposits');
         toast.success('Added Deposit Successfully');
       };
 

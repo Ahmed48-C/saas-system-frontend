@@ -26,7 +26,7 @@ const headers = [
 ];
 
 const tabs = [
-  { url: '/purchase-orders', title: 'Purchase Order' }
+  { url: '/ui/purchase-orders', title: 'Purchase Order' }
 ];
 
 const PurchaseOrder = () => {
@@ -92,13 +92,13 @@ const PurchaseOrder = () => {
   const { ids, setIds } = UseIDs();
 
   const handleNavigation = () => {
-    history.push('/purchase-order/create');
+    history.push('/ui/purchase-order/create');
   };
 
   const fetchRecords = useCallback(() => {
     const errorCallback = (error) => {
       console.log('Error occurred:', error);
-      history.push('/500'); // Navigate to the 500 error page
+      history.push('/ui/500'); // Navigate to the 500 error page
     };
     fetchAll(
       API_ENDPOINTS.GET_PURCHASE_ORDERS,
