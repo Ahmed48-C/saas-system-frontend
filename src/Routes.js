@@ -457,7 +457,7 @@ const Routes = () => {
               <AnimatePresence>
                   <Suspense fallback={<SuspenseLoading />}>
                       <Switch>
-                          <Redirect exact from="/" to="/ui/dashboard" />
+                          <Redirect exact from="/ui" to="/ui/dashboard" />
                           {/* <Route> */}
 
                             <Route

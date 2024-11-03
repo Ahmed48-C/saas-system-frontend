@@ -29,7 +29,7 @@ const CreateContent = () => {
       };
 
       const successCallback = (data) => {
-        history.push('/products');
+        history.push('/ui/products');
         toast.success('Added Product Successfully');
       };
 

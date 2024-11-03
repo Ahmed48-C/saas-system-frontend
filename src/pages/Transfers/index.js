@@ -23,10 +23,10 @@ const headers = [
 ];
 
 const tabs = [
-  { url: '/balances', title: 'Balances' },
-  { url: '/deposits', title: 'Deposits' },
-  { url: '/withdraws', title: 'Withdraws' },
-  { url: '/transfers', title: 'Transfers' }
+  { url: '/ui/balances', title: 'Balances' },
+  { url: '/ui/deposits', title: 'Deposits' },
+  { url: '/ui/withdraws', title: 'Withdraws' },
+  { url: '/ui/transfers', title: 'Transfers' }
 ];
 
 const Transfer = () => {
@@ -72,13 +72,13 @@ const Transfer = () => {
   const { ids, setIds } = UseIDs();
 
   const handleNavigation = () => {
-    history.push('/transfer/create');
+    history.push('/ui/transfer/create');
   };
 
   const fetchRecords = useCallback(() => {
     const errorCallback = (error) => {
       console.log('Error occurred:', error);
-      history.push('/500'); // Navigate to the 500 error page
+      history.push('/ui/500'); // Navigate to the 500 error page
     };
     fetchAll(
       API_ENDPOINTS.GET_TRANSFERS,

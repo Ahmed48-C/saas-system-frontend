@@ -18,7 +18,7 @@ const CreateContent = () => {
       };
 
       const successCallback = (data) => {
-        history.push('/withdraws');
+        history.push('/ui/withdraws');
         toast.success('Added Withdraw Successfully');
       };
 

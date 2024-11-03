@@ -23,7 +23,7 @@ const EditContent = ({ editLoading }) => {
       };
 
       const successCallback = (data) => {
-        history.push('/locations');
+        history.push('/ui/locations');
         toast.success('Edited Location Successfully');
       };
 

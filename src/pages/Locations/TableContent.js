@@ -110,7 +110,7 @@ const TableContent = ({
     };
 
     const handleEditClick = (id) => {
-      history.push(`/location/edit/${id}`);
+      history.push(`/ui/location/edit/${id}`);
       handleButtonClick();
     };
 

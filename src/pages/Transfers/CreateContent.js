@@ -17,7 +17,7 @@ const CreateContent = () => {
       };
 
       const successCallback = (data) => {
-        history.push('/transfers');
+        history.push('/ui/transfers');
         toast.success('Added Transfer Successfully');
       };
 

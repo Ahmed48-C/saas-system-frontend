@@ -21,7 +21,7 @@ const headers = [
 ];
 
 const tabs = [
-    { url: '/inventories', title: 'Inventories' }
+    { url: '/ui/inventories', title: 'Inventories' }
 ];
 
 const Inventories = () => {
@@ -72,13 +72,13 @@ const Inventories = () => {
     const { ids, setIds } = UseIDs();
 
     const handleNavigation = () => {
-        history.push('/inventory/create');
+        history.push('/ui/inventory/create');
     };
 
     const fetchRecords = useCallback(() => {
         const errorCallback = (error) => {
             console.log('Error occurred:', error);
-            history.push('/500'); // Navigate to the 500 error page
+            history.push('/ui/500'); // Navigate to the 500 error page
         };
 
         fetchAll(

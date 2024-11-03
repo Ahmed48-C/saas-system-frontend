@@ -23,7 +23,7 @@ const EditContent = ({ editLoading }) => {
         };
 
         const successCallback = (data) => {
-            history.push('/inventories');
+            history.push('/ui/inventories');
             toast.success('Edited Inventory Successfully');
         };
 

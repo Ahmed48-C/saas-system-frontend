@@ -21,7 +21,7 @@ const CreateContent = () => {
       };
 
       const successCallback = (data) => {
-        history.push('/purchase-orders');
+        history.push('/ui/purchase-orders');
         toast.success('Added Purchase Order Successfully');
       };
 

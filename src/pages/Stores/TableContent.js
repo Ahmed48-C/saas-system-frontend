@@ -103,7 +103,7 @@ const Row = ({
     };
 
     const handleEditClick = (id) => {
-        history.push(`/store/edit/${id}`);
+        history.push(`/ui/store/edit/${id}`);
         handleButtonClick();
     };
 

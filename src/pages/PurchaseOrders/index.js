@@ -26,7 +26,7 @@ const headers = [
 ];
 
 const tabs = [
-  { url: '/purchase-orders', title: 'Purchase Order' }
+  { url: '/ui/purchase-orders', title: 'Purchase Order' }
 ];
 
 const PurchaseOrder = () => {
@@ -42,18 +42,8 @@ const PurchaseOrder = () => {
 
   const [filters, setFilters] = useState([]);
   const [anchorEl4, setAnchorEl4] = useState(null);
-  const [currentFilter, setCurrentFilter] = useState({ code: '', price: '', quantity: '', total: '', status: '', product_id: '', store_id: '', balance_id: '', supplier_id: '' });
-  // FOR FILTERCONTENT ITEMS
-  // const [currentFilter, setCurrentFilter] = useState({
-  //   name: '',
-  //   items: [
-  //       { product_id: '', price: '', quantity: '' }  // Default single item
-  //   ],
-  //   total: '',
-  //   status: '',
-  //   store_id: '',
-  //   balance_id: ''
-  // });
+  // const [currentFilter, setCurrentFilter] = useState({ code: '', price: '', quantity: '', total: '', status: '', product_id: '', store_id: '', balance_id: '', supplier_id: '' });
+  const [currentFilter, setCurrentFilter] = useState({ code: '', price: '', quantity: '', total: '', status: '', items__product_id: '', store_id: '', balance_id: '', supplier_id: '', items__price: '', items__quantity: '', items__total: '' });
   const [products, setProducts] = useState([]);
   const [stores, setStores] = useState([]);
   const [balances, setBalances] = useState([]);
@@ -92,13 +82,13 @@ const PurchaseOrder = () => {
   const { ids, setIds } = UseIDs();
 
   const handleNavigation = () => {
-    history.push('/purchase-order/create');
+    history.push('/ui/purchase-order/create');
   };
 
   const fetchRecords = useCallback(() => {
     const errorCallback = (error) => {
       console.log('Error occurred:', error);
-      history.push('/500'); // Navigate to the 500 error page
+      history.push('/ui/500'); // Navigate to the 500 error page
     };
     fetchAll(
       API_ENDPOINTS.GET_PURCHASE_ORDERS,

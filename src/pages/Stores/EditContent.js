@@ -24,7 +24,7 @@ const EditContent = ({ editLoading }) => {
         };
 
         const successCallback = (data) => {
-            history.push('/stores');
+            history.push('/ui/stores');
             toast.success('Edited Store Successfully');
         };
 
