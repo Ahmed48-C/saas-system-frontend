@@ -24,6 +24,8 @@ const CreateContent = () => {
         size: data.size,
         dimension_unit: data.dimension_unit,
         weight_unit: data.weight_unit,
+        image: data.image,
+        image_file: data.image_file,
       };
 
       const successCallback = (data) => {
