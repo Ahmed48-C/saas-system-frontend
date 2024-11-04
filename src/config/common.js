@@ -28,3 +28,5 @@ export const countryList = [
     "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe"
 ];
 
+// Edit this values to control the allowed upload files size by MB
+export const maxFileSizeInMBForUploadImage = 10;

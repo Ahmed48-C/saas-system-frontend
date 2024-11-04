@@ -10,6 +10,11 @@ import AdornmentTextarea from '../../pages-components/AdornmentTextArea'
 import getUnits from '../../config/getUnits'
 import { formatFormRecordDropdown } from '../../functions/pages/formatFormRecordDropdown'
 import { formFetchDropdownRecords } from '../../functions/pages/formFetchDropdownRecords'
+import CardImageUpload from '../../pages-components/MediaUploader';
+import { imageUploadHandler } from "../../config/uploadHandler";
+import {
+    maxFileSizeInMBForUploadImage,
+} from "../../config/common";
 
 const Form = ({ handleClick, icon, title }) => {
     const { id } = useParams();
@@ -45,6 +50,11 @@ const Form = ({ handleClick, icon, title }) => {
 
     const handleInputChange = (field) => (e) => {
         setData({ ...data, [field]: e.target.value });
+    };
+
+
+    const handleUploadChange = (uploadData) => {
+        setData({ ...data, ...uploadData });
     };
 
     const handleUnitChange = (setValue) => (event) => {
@@ -155,6 +165,48 @@ const Form = ({ handleClick, icon, title }) => {
                         value={data.measure_unit ?? ""}
                         key='measure_unit'
                         maxLength={80}
+                        />
+                    </Grid>
+                    <Grid item xs={8}>
+                        <CardImageUpload
+                            // disabled={false}
+                            // error={"test error"}
+                            // helperText={"helper text"}
+                            id="product_image"
+                            imgSrc={data.image_file}
+                            imageSpec={"Product Image Specs", "Product"}
+                            maxFileSize={maxFileSizeInMBForUploadImage}
+                            removeImageHandler={
+                                inputRef =>
+                                    (function() {
+                                        if (inputRef.current?.value) {
+                                            inputRef.current.value = "";
+                                        }
+
+                                        const newFormData = {
+                                            ...data,
+                                            image: null,
+                                            image_file: null,
+                                        };
+
+                                        if (data.new_upload) {
+                                            newFormData.new_upload = false;
+                                        }
+                                        setData(newFormData);
+                                    })
+                            }
+                            imgHandler={
+                                event => {
+                                    imageUploadHandler(
+                                        event,
+                                        handleUploadChange,
+                                        "image",
+                                        "image_file",
+                                    );
+                                }
+                            }
+                            imageFormat={"format" + ": PNG"}
+                            title={"Product Image", "Product"}
                         />
                     </Grid>
                     <Grid item xs={12} style={{ paddingLeft: '35px', paddingRight: '0px' }}>
