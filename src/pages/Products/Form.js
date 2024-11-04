@@ -167,14 +167,14 @@ const Form = ({ handleClick, icon, title }) => {
                         maxLength={80}
                         />
                     </Grid>
-                    <Grid item xs={8}>
+                    <Grid item xs={8} style={{ paddingLeft: '35px', paddingRight: '0px' }}>
                         <CardImageUpload
                             // disabled={false}
                             // error={"test error"}
                             // helperText={"helper text"}
                             id="product_image"
                             imgSrc={data.image_file}
-                            imageSpec={"Product Image Specs", "Product"}
+                            imageSpec={("Product Image Specs", "Product")}
                             maxFileSize={maxFileSizeInMBForUploadImage}
                             removeImageHandler={
                                 inputRef =>
@@ -206,7 +206,7 @@ const Form = ({ handleClick, icon, title }) => {
                                 }
                             }
                             imageFormat={"format" + ": PNG"}
-                            title={"Product Image", "Product"}
+                            title={("Product Image", "Product")}
                         />
                     </Grid>
                     <Grid item xs={12} style={{ paddingLeft: '35px', paddingRight: '0px' }}>

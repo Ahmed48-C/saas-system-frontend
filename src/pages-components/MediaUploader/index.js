@@ -125,10 +125,10 @@ const CardImageUpload = forwardRef(
                 variant="outlined"
                 margin="dense"
             >
-                {
+                {/* {
                     label
-                }
-                <InputBase
+                } */}
+                {/* <InputBase
                     aria-describedby={helperTextId}
                     // className={clsx(classes.input)}
                     disabled={disabled}
@@ -142,7 +142,7 @@ const CardImageUpload = forwardRef(
                     name={name}
                     onChange={onChange}
                     type="file"
-                />
+                /> */}
                 {
                     src
                         ? (
