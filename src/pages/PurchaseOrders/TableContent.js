@@ -15,6 +15,7 @@ import { selectedRowStyles } from '../../theme/selectedRowStyles';
 import { ExpandLess, ExpandMore } from '@material-ui/icons';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+import ConfirmDelete from '../../pages-components/ConfirmDelete';
 
 const TableContent = ({
   fetchRecords,
@@ -112,6 +113,8 @@ const Row = ({
   dense,
   columns,
 }) => {
+  const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
+
   const history = useHistory();
   const open = Boolean(anchorEl) && currentRowId === row.id;
   const id = open ? 'transitions-popper' : undefined;
@@ -119,6 +122,8 @@ const Row = ({
   const { ids, setIds } = UseIDs();
 
   const [expandedRow, setExpandedRow] = useState(null);
+
+  const [deleteType, setDeleteType] = useState(""); // Track which delete action is being confirmed
 
   const handleExpandClick = (index) => {
     // Toggle open state for the clicked row, close others
@@ -135,12 +140,13 @@ const Row = ({
     handleButtonClick();
   };
 
-  const handleDeleteClick = (id, endpoint) => {
+  // const handleDeleteClick = (id, endpoint) => {
+  const handleDeleteClick = (endpoint) => {
     const successCallback = (data) => {
       toast.success('Deleted Purchase Order Successfully');
     };
 
-    handleDeleteRecord(id, endpoint, fetchRecords, successCallback, (error) => {
+    handleDeleteRecord(row.id, endpoint, fetchRecords, successCallback, (error) => {
       HandleTableErrorCallback(error, 'Purchase Order', ids, setIds); // Pass the error and entity name to the reusable function
     });
   };
@@ -210,7 +216,8 @@ const Row = ({
                         variant="contained"
                       >
                         <Button className="px-1 btn-icon hover-scale-sm text-white" onClick={() => handleEditClick(row.id)} style={{ padding: '4px 8px' }}>Edit</Button>
-                        <Button className="px-1 btn-icon hover-scale-sm text-white btn-danger" onClick={() => handleDeleteClick(row.id, API_ENDPOINTS.DELETE_PURCHASE_ORDER)} style={{ padding: '4px 8px' }}>Delete</Button>
+                        {/* <Button className="px-1 btn-icon hover-scale-sm text-white btn-danger" onClick={() => handleDeleteClick(row.id, API_ENDPOINTS.DELETE_PURCHASE_ORDER)} style={{ padding: '4px 8px' }}>Delete</Button> */}
+                        <Button className="px-1 btn-icon hover-scale-sm text-white btn-danger" onClick={() => {setDeleteType("keepStock"); setOpenConfirmDialog(true)}} style={{ padding: '4px 8px' }}>Delete & Keep Stock</Button>
                       </ButtonGroup>
                     ) : (
                       <ButtonGroup
@@ -219,80 +226,23 @@ const Row = ({
                         aria-label="vertical outlined primary button group"
                         variant="contained"
                       >
-                        <Button className="px-1 btn-icon hover-scale-sm text-white btn-danger" onClick={() => handleDeleteClick(row.id, API_ENDPOINTS.DELETE_PURCHASE_ORDER)} style={{ padding: '4px 8px' }}>Delete & Keep Stock</Button>
-                        <Button className="px-1 btn-icon hover-scale-sm text-white btn-danger" onClick={() => handleDeleteClick(row.id, API_ENDPOINTS.DELETE_PURCHASE_ORDER_STOCK)} style={{ padding: '4px 8px' }}>Delete & Remove Stock</Button>
+                        {/* <Button className="px-1 btn-icon hover-scale-sm text-white btn-danger" onClick={() => handleDeleteClick(row.id, API_ENDPOINTS.DELETE_PURCHASE_ORDER)} style={{ padding: '4px 8px' }}>Delete & Keep Stock</Button>
+                        <Button className="px-1 btn-icon hover-scale-sm text-white btn-danger" onClick={() => handleDeleteClick(row.id, API_ENDPOINTS.DELETE_PURCHASE_ORDER_STOCK)} style={{ padding: '4px 8px' }}>Delete & Remove Stock</Button> */}
+                        <Button className="px-1 btn-icon hover-scale-sm text-white btn-danger" onClick={() => {setDeleteType("keepStock"); setOpenConfirmDialog(true)}} style={{ padding: '4px 8px' }}>Delete & Keep Stock</Button>
+                        <Button className="px-1 btn-icon hover-scale-sm text-white btn-danger" onClick={() => {setDeleteType("removeStock"); setOpenConfirmDialog(true)}} style={{ padding: '4px 8px' }}>Delete & Remove Stock</Button>
                       </ButtonGroup>
                     )}
                 </div>
               </Fade>
             )}
           </Popper>
-          {/* {row.status === 'Pending' ? (
-            <ButtonGroup
-              orientation="horizontal"
-              color="secondary"
-              variant="contained"
-            >
-              <Tooltip title="Delete">
-                <Button
-                  style={{ minWidth: '32px', minHeight: '32px', paddingRight: '6px', paddingLeft: '5px' }}
-                  variant="contained"
-                  size="small"
-                  className="btn-primary text-white btn-danger"
-                  onClick={() => handleDeleteClick(row.id)}
-                >
-                  <span className="btn-wrapper--icon">
-                    <DeleteIcon fontSize='small' />
-                  </span>
-                </Button>
-              </Tooltip>
-              <Tooltip title="Edit">
-                <Button
-                  style={{ minWidth: '32px', minHeight: '32px', paddingRight: '6px', paddingLeft: '5px' }}
-                  variant="contained"
-                  size="small"
-                  className="btn-primary text-white btn-info"
-                  onClick={() => handleEditClick(row.id)}
-                >
-                  <span className="btn-wrapper--icon">
-                    <EditIcon fontSize='small' />
-                  </span>
-                </Button>
-              </Tooltip>
-            </ButtonGroup>
-          ) : (
-            <>
-              <Button
-                size="small"
-                className="btn-link d-30 p-0 btn-icon hover-scale-sm"
-                onClick={(event) => handlePopperClick(event, row.id)}
-              >
-                <FontAwesomeIcon
-                  icon={['fas', 'ellipsis-h']}
-                  className="font-size-lg"
-                />
-              </Button>
-              <Popper id={id} open={open} anchorEl={anchorEl} transition>
-                {({ TransitionProps }) => (
-                  <Fade {...TransitionProps} timeout={350}>
-                    <div>
-                      <ButtonGroup
-                        orientation="vertical"
-                        color="primary"
-                        aria-label="vertical outlined primary button group"
-                        variant="contained"
-                      >
-                        <Button className="px-1 btn-icon hover-scale-sm text-white btn-danger" onClick={() => handleDeleteClick(row.id, API_ENDPOINTS.DELETE_PURCHASE_ORDER)} style={{ padding: '4px 8px' }}>Delete & Keep Stock</Button>
-                        <Button className="px-1 btn-icon hover-scale-sm text-white btn-danger" onClick={() => handleDeleteClick(row.id, API_ENDPOINTS.DELETE_PURCHASE_ORDER_STOCK)} style={{ padding: '4px 8px' }}>Delete & Remove Stock</Button>
-                      </ButtonGroup>
-                    </div>
-                  </Fade>
-                )}
-              </Popper>
-            </>
-          )} */}
         </td>
       </TableRow>
+      <ConfirmDelete
+        open={openConfirmDialog}
+        setOpen={setOpenConfirmDialog}
+        handleDeleteClick={() => handleDeleteClick(deleteType === "removeStock" ? API_ENDPOINTS.DELETE_PURCHASE_ORDER_STOCK : API_ENDPOINTS.DELETE_PURCHASE_ORDER)}
+      />
     </>
   );
 };

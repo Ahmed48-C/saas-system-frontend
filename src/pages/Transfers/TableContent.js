@@ -13,6 +13,7 @@ import { updateSelectedWithIds } from '../../functions/pages/updateSelectedWithI
 import { handleCheckboxChange } from '../../functions/pages/handleCheckboxChange';
 import { selectedRowStyles } from '../../theme/selectedRowStyles';
 import DeleteIcon from '@material-ui/icons/Delete';
+import ConfirmDelete from '../../pages-components/ConfirmDelete';
 
 const TableContent = ({
     fetchRecords,
@@ -90,6 +91,8 @@ const Row = ({
     dense,
     columns,
 }) => {
+    const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
+
     const history = useHistory();
     const open = Boolean(anchorEl) && currentRowId === row.id;
     const id = open ? 'transitions-popper' : undefined;
@@ -106,7 +109,7 @@ const Row = ({
             toast.success('Deleted Transfer Successfully');
         };
 
-        handleDeleteRecord(id, API_ENDPOINTS.DELETE_TRANSFER, fetchRecords, successCallback, (error) => {
+        handleDeleteRecord(row.id, API_ENDPOINTS.DELETE_TRANSFER, fetchRecords, successCallback, (error) => {
             HandleTableErrorCallback(error, 'Transfer', ids, setIds); // Pass the error and entity name to the reusable function
         });
     };
@@ -126,7 +129,6 @@ const Row = ({
                 <td key={index}>{row[column.name]}</td>
             ))}
             <td className="text-center">
-                {/* <Button startIcon={<DeleteIcon />} className="px-2 btn-icon hover-scale-sm text-white btn-danger" onClick={() => handleDeleteClick(row.id)} style={{ padding: '4px 8px' }}>Delete</Button> */}
                 <ButtonGroup
                 orientation="horizontal"
                 color="secondary"
@@ -138,7 +140,7 @@ const Row = ({
                             variant="contained"
                             size="small"
                             className="btn-primary text-white btn-danger"
-                            onClick={() => handleDeleteClick(row.id)}
+                            onClick={() => setOpenConfirmDialog(true)}
                         >
                             <span className="btn-wrapper--icon">
                             <DeleteIcon fontSize='small' />
@@ -146,34 +148,13 @@ const Row = ({
                         </Button>
                     </Tooltip>
                 </ButtonGroup>
-                {/* <Button
-                size="small"
-                className="btn-link d-30 p-0 btn-icon hover-scale-sm"
-                onClick={(event) => handlePopperClick(event, row.id)}
-                >
-                <FontAwesomeIcon
-                    icon={['fas', 'ellipsis-h']}
-                    className="font-size-lg"
-                />
-                </Button>
-                <Popper id={id} open={open} anchorEl={anchorEl} transition>
-                {({ TransitionProps }) => (
-                    <Fade {...TransitionProps} timeout={350}>
-                    <div>
-                        <ButtonGroup
-                            orientation="vertical"
-                            color="primary"
-                            aria-label="vertical outlined primary button group"
-                            variant="contained"
-                        >
-                            <Button className="px-1 btn-icon hover-scale-sm text-white" onClick={() => handleDeleteClick(row.id)} style={{ padding: '4px 8px' }}>Delete</Button>
-                        </ButtonGroup>
-                    </div>
-                    </Fade>
-                )}
-                </Popper> */}
             </td>
             </TableRow>
+            <ConfirmDelete
+                open={openConfirmDialog}
+                setOpen={setOpenConfirmDialog}
+                handleDeleteClick={handleDeleteClick}
+            />
         </>
     );
 };
