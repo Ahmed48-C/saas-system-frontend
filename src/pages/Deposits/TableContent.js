@@ -13,6 +13,7 @@ import { updateSelectedWithIds } from '../../functions/pages/updateSelectedWithI
 import { handleCheckboxChange } from '../../functions/pages/handleCheckboxChange';
 import { selectedRowStyles } from '../../theme/selectedRowStyles';
 import DeleteIcon from '@material-ui/icons/Delete';
+import ConfirmDelete from '../../pages-components/ConfirmDelete';
 
 const TableContent = ({
   fetchRecords,
@@ -90,6 +91,8 @@ const Row = ({
   dense,
   columns,
 }) => {
+  const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
+
   const history = useHistory();
   const open = Boolean(anchorEl) && currentRowId === row.id;
   const id = open ? 'transitions-popper' : undefined;
@@ -106,7 +109,8 @@ const Row = ({
       toast.success('Deleted Deposit Successfully');
     };
 
-    handleDeleteRecord(id, API_ENDPOINTS.DELETE_BALANCE_LOG, fetchRecords, successCallback, (error) => {
+    // handleDeleteRecord(id, API_ENDPOINTS.DELETE_BALANCE_LOG, fetchRecords, successCallback, (error) => {
+    handleDeleteRecord(row.id, API_ENDPOINTS.DELETE_BALANCE_LOG, fetchRecords, successCallback, (error) => {
       HandleTableErrorCallback(error, 'Deposit', ids, setIds); // Pass the error and entity name to the reusable function
     });
   };
@@ -154,7 +158,8 @@ const Row = ({
                   variant="contained"
                   size="small"
                   className="btn-primary text-white btn-danger"
-                  onClick={() => handleDeleteClick(row.id)}
+                  // onClick={() => handleDeleteClick(row.id)}
+                  onClick={() => setOpenConfirmDialog(true)}
                 >
                   <span className="btn-wrapper--icon">
                     <DeleteIcon fontSize='small' />
@@ -190,6 +195,11 @@ const Row = ({
           </Popper> */}
         </td>
       </TableRow>
+      <ConfirmDelete
+        open={openConfirmDialog}
+        setOpen={setOpenConfirmDialog}
+        handleDeleteClick={handleDeleteClick}
+      />
     </>
   );
 };
