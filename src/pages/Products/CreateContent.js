@@ -33,8 +33,28 @@ const CreateContent = () => {
         toast.success('Added Product Successfully');
       };
 
+      // const errorCallback = (error) => {
+      //   toast.error('Error ' + error.message);
+      // };
+
       const errorCallback = (error) => {
-        toast.error('Error ' + error.message);
+        let errorMessage = 'An unexpected error occurred';
+
+        if (error.response) {
+            if (error.response.data && typeof error.response.data === 'object' && error.response.data.detail) {
+                if (error.response.data.detail.includes('PNG')) {
+                  errorMessage = error.response.data.detail;
+                }
+            } else if (error.response.status === 500) {
+                // For server errors
+                errorMessage = 'An error occurred on the server. Please try again later.';
+            }
+        } else if (error.message) {
+            errorMessage = error.message;
+        }
+
+        toast.error('Error: ' + errorMessage);
+        console.log('Detailed error:', error);
       };
 
       handleSubmitRecord(postData, API_ENDPOINTS.POST_PRODUCT, successCallback, errorCallback);
