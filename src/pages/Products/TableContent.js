@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, ButtonGroup, Checkbox, Fade, Popper, TableRow, Tooltip } from '@material-ui/core';
+import { Button, ButtonGroup, Checkbox, Dialog, DialogContent, DialogTitle, Fade, Popper, TableRow, Tooltip } from '@material-ui/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Loader } from '../../pages-components';
 import { useHistory } from 'react-router-dom';
@@ -93,6 +93,11 @@ const Row = ({
   columns,
 }) => {
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
+  const [isImageZoomed, setIsImageZoomed] = useState(false); // State to track zoom
+
+  const handleImageClick = () => {
+    setIsImageZoomed(!isImageZoomed); // Toggle zoom state on click
+  };
 
   const history = useHistory();
   const open = Boolean(anchorEl) && currentRowId === row.id;
@@ -132,8 +137,34 @@ const Row = ({
             onChange={() => handleCheckboxChange(row.id)}
           />
         </td>
-        {columns.filter(column => column.selected).map((column, index) => (
+        {/* {columns.filter(column => column.selected).map((column, index) => (
           <td key={index}>{row[column.name]}</td>
+        ))} */}
+        {columns.filter(column => column.selected).map((column, index) => (
+          <td key={index}>
+            {column.name === 'image_file' && row[column.name] ? (
+              <img
+                src={row[column.name]}
+                alt={`${row.name || 'Image'}`}
+                onClick={handleImageClick}
+                onError={(e) => { e.target.style.display = 'none'; }} // Hide image if error
+                style={{
+                  width: '70px',
+                  height: '70px',
+                  objectFit: 'cover',
+                  cursor: 'pointer',
+                  transition: 'transform 0.3s ease, box-shadow 0.3s ease', // Add transition for box-shadow
+                  transform: isImageZoomed ? 'scale(2.4)' : 'scale(1)', // Zoom effect
+                  boxShadow: isImageZoomed ? '0 4px 8px rgba(0, 0, 0, 0.6)' : 'none', // Apply shadow when zoomed
+                  zIndex: isImageZoomed ? 9999 : 'auto', // Ensure it pops over other elements
+                  position: isImageZoomed ? 'relative' : 'static', // Make it relative for z-index to work
+                  borderRadius: '3px', // Consistent border radius
+                }}
+              />
+            ) : (
+              row[column.name] || ''
+            )}
+          </td>
         ))}
         <td className="text-center">
           {/* <Button
