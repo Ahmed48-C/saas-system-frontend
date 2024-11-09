@@ -52,6 +52,7 @@ const Product = () => {
   const [columns, setColumns] = useState(() => {
     const savedColumns = localStorage.getItem('productColumns');
     return savedColumns ? JSON.parse(savedColumns) : [
+        { name: 'image_file', label: 'Image', className: 'bg-white text-left', selected: true },
         { name: 'code', label: 'Code', className: 'bg-white text-left', selected: true },
         { name: 'name', label: 'Name', className: 'bg-white text-left', selected: true },
         { name: 'description', label: 'Description', className: 'bg-white text-left', selected: false },
