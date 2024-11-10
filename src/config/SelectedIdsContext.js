@@ -14,6 +14,7 @@ export const SelectedIDsProvider = ({ children }) => {
         balances: [],
         balance_logs: [],
         transfers: [],
+        sale_orders: [],
     });
 
     return (

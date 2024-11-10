@@ -411,6 +411,18 @@ const CreateTransfers = lazy(() =>
   import('./pages/Transfers/CreateContent')
 );
 
+const SaleOrders = lazy(() =>
+  import('./pages/SaleOrders/index')
+);
+
+const CreateSaleOrders = lazy(() =>
+  import('./pages/SaleOrders/CreateContent')
+);
+
+const EditSaleOrders = lazy(() =>
+  import('./pages/SaleOrders/EditContent')
+);
+
 
 const Routes = () => {
   const SuspenseLoading = () => {
@@ -620,6 +632,22 @@ const Routes = () => {
                                 exact
                                 path="/ui/transfer/create"
                                 component={CreateTransfers}
+                            />
+
+                            <Route
+                                exact
+                                path="/ui/sale-orders"
+                                component={SaleOrders}
+                            />
+                            <Route
+                                exact
+                                path="/ui/sale-order/create"
+                                component={CreateSaleOrders}
+                            />
+                            <Route
+                                exact
+                                path="/ui/sale-order/edit/:id"
+                                component={EditSaleOrders}
                             />
 
                             {/* <Route path="/ui/400" component={BadRequest400} />
