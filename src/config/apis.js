@@ -79,4 +79,11 @@ export const API_ENDPOINTS = {
   PUT_TRANSFER: (id) => `${BASE_URL}/api/put/transfer/${id}/`,
   GET_TRANSFERS: (from, to) => `${BASE_URL}/api/get/transfers/?from=${from}&to=${to}`,
   GET_TRANSFER: (id) => `${BASE_URL}/api/get/transfer/${id}/`,
+
+  DELETE_SALE_ORDER: (id) => `${BASE_URL}/api/delete/sales_order/${id}/`,
+  DELETE_SALE_ORDERS: () => `${BASE_URL}/api/delete/sales_orders/`,
+  POST_SALE_ORDER: () => `${BASE_URL}/api/post/sales_order/`,
+  PUT_SALE_ORDER: (id) => `${BASE_URL}/api/put/sales_order/${id}/`,
+  GET_SALE_ORDERS: (from, to) => `${BASE_URL}/api/get/sales_orders/?from=${from}&to=${to}`,
+  GET_SALE_ORDER: (id) => `${BASE_URL}/api/get/sales_order/${id}/`,
 };
