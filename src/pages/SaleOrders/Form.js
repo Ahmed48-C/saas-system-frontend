@@ -25,7 +25,8 @@ const Form = ({ handleClick, icon, title }) => {
     const [products, setProducts] = useState([]);
     const [balances, setBalances] = useState([]);
     const [customers, setCustomers] = useState([]);
-    const statuses = ['Pending', 'Completed']
+    // const statuses = ['Pending', 'Completed']
+    const [statuses, setStatuses] = useState([]);
 
     const [loadingCustomers, setLoadingCustomers] = useState(false);
     const [errorCustomers, setErrorCustomers] = useState('');
@@ -38,6 +39,9 @@ const Form = ({ handleClick, icon, title }) => {
 
     const [loadingProducts, setLoadingProducts] = useState(false);
     const [errorProducts, setErrorProducts] = useState('');
+
+    const [loadingStatuses, setLoadingStatuses] = useState(false);
+    const [errorStatuses, setErrorStatuses] = useState('');
 
     const fetchData = useCallback(() => {
         handleFetchRecord(id, API_ENDPOINTS.GET_SALE_ORDER, setData, setEditLoading);
@@ -96,6 +100,7 @@ const Form = ({ handleClick, icon, title }) => {
             setLoadingProducts(true);
             setLoadingStores(true);
             setLoadingBalances(true);
+            setLoadingStatuses(true);
 
             try {
                 await formFetchDropdownRecords(`${BASE_URL}/api/get/customers/`, setCustomers);
@@ -127,6 +132,14 @@ const Form = ({ handleClick, icon, title }) => {
             } catch (error) {
                 setErrorProducts('Error fetching products');
                 setLoadingProducts(false);
+            }
+
+            try {
+                await formFetchDropdownRecords(`${BASE_URL}/api/get/sales_status/`, setStatuses);
+                setLoadingStatuses(false);
+            } catch (error) {
+                setErrorStatuses('Error fetching statuses');
+                setLoadingStatuses(false);
             }
         };
 
@@ -420,6 +433,8 @@ const Form = ({ handleClick, icon, title }) => {
                         onChange={handleInputChange('status')}
                         value={data.status ?? ""}
                         error={isEmpty(data.status)}
+                        loading={loadingStatuses}
+                        errorMessage={errorStatuses}
                         />
                     </Grid>
 

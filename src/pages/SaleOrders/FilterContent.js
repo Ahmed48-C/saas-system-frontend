@@ -7,13 +7,14 @@ import { BASE_URL } from '../../config/apis';
 
 const FilterContent = ({ currentFilter, setCurrentFilter, handleProducts, products, stores, handleStores, handleBalances, balances, handleCustomers, customers }) => {
     const [loading, setLoading] = useState(true);
-    const statuses = ['Pending', 'Completed']
+    const [statuses, setStatuses] = useState([]);
 
     useEffect(() => {
         filterFetchDropdownRecords(`${BASE_URL}/api/get/products/`, handleProducts)
         filterFetchDropdownRecords(`${BASE_URL}/api/get/stores/`, handleStores)
         filterFetchDropdownRecords(`${BASE_URL}/api/get/balances/`, handleBalances)
         filterFetchDropdownRecords(`${BASE_URL}/api/get/customers/`, handleCustomers)
+        filterFetchDropdownRecords(`${BASE_URL}/api/get/sales_status/`, setStatuses)
         setLoading(false);
     }, []);
 
