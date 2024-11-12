@@ -21,7 +21,7 @@ const FilterContent = ({ currentFilter, setCurrentFilter, handleProducts, produc
         let value = e.target.value;
 
         // Allow empty value for clearing the input
-        if (['price', 'total', 'items__price', 'items__total'].includes(field)) {
+        if (['total', 'items__price', 'items__total'].includes(field)) {
             // Allow numeric input including decimals, but only up to 2 decimal places
             if (value === '' || /^[0-9]*\.?[0-9]{0,2}$/.test(value)) {
                 const updatedFilter = { ...currentFilter, [field]: value };
@@ -58,19 +58,6 @@ const FilterContent = ({ currentFilter, setCurrentFilter, handleProducts, produc
                     value={currentFilter.code}
                     onChange={(e) => setCurrentFilter({ ...currentFilter, code: e.target.value })}
                     maxLength={80}
-                />
-            </Grid>
-            <Grid item xs={12}>
-                <Textarea
-                    style={{ margin: 0 }}
-                    rows={1}
-                    rowsMax={2}
-                    label='Price'
-                    name='price'
-                    id='price'
-                    value={currentFilter.price}
-                    onChange={handleInputChange('price')}
-                    maxLength={15}
                 />
             </Grid>
             <Grid item xs={12}>

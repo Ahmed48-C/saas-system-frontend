@@ -7,7 +7,6 @@ import { BASE_URL } from '../../config/apis';
 
 const FilterContent = ({ currentFilter, setCurrentFilter, handleProducts, products, stores, handleStores, handleBalances, balances, handleCustomers, customers }) => {
     const [loading, setLoading] = useState(true);
-    const statuses = ['Pending', 'Completed']
 
     useEffect(() => {
         filterFetchDropdownRecords(`${BASE_URL}/api/get/products/`, handleProducts)
@@ -71,19 +70,6 @@ const FilterContent = ({ currentFilter, setCurrentFilter, handleProducts, produc
                     value={currentFilter.total}
                     onChange={handleInputChange('total')}
                     maxLength={35}
-                />
-            </Grid>
-            <Grid item xs={12}>
-                <InputSelect
-                    selectItems={statuses.map(status => ({
-                        value: status,
-                        name: formatFilterRecordDropdown(status)
-                    }))}
-                    label='Status'
-                    name='status'
-                    id='status'
-                    onChange={(e) => setCurrentFilter({ ...currentFilter, status: e.target.value })}
-                    value={currentFilter.status}
                 />
             </Grid>
             <Grid item xs={12}>
