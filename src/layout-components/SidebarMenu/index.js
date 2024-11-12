@@ -120,34 +120,34 @@ const SidebarMenu = (props) => {
                       Purchase Order
                     </NavLink>
                   </li>
-                  <li>
+                  {/* <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
                       to="/ui/DashboardCommerce">
                       Bill
                     </NavLink>
-                  </li>
-                  <li>
+                  </li> */}
+                  {/* <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
                       to="/ui/DashboardAnalytics">
                       Credit Note
                     </NavLink>
-                  </li>
-                  <li>
+                  </li> */}
+                  {/* <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
                       to="/ui/DashboardStatistics">
                       Payment
                     </NavLink>
-                  </li>
-                  <li>
+                  </li> */}
+                  {/* <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
                       to="/ui/DashboardStatistics">
                       Refund
                     </NavLink>
-                  </li>
+                  </li> */}
                 </ul>
               </Collapse>
             </li>
@@ -167,20 +167,20 @@ const SidebarMenu = (props) => {
               </a>
               <Collapse in={salesOpen}>
                 <ul>
-                  <li>
+                  {/* <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
                       to="/ui/DashboardMonitoring">
                       Quote
                     </NavLink>
-                  </li>
-                  <li>
+                  </li> */}
+                  {/* <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
                       to="/ui/DashboardCommerce">
                       Invoice
                     </NavLink>
-                  </li>
+                  </li> */}
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
@@ -195,27 +195,27 @@ const SidebarMenu = (props) => {
                       Completed Sale Order
                     </NavLink>
                   </li>
-                  <li>
+                  {/* <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
                       to="/ui/DashboardStatistics">
                       Credit Note
                     </NavLink>
-                  </li>
-                  <li>
+                  </li> */}
+                  {/* <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
                       to="/ui/DashboardStatistics">
                       Payment
                     </NavLink>
-                  </li>
-                  <li>
+                  </li> */}
+                  {/* <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
                       to="/ui/DashboardStatistics">
                       Refund
                     </NavLink>
-                  </li>
+                  </li> */}
                 </ul>
               </Collapse>
             </li>
@@ -266,13 +266,12 @@ const SidebarMenu = (props) => {
                 </ul>
               </Collapse>
             </li>
-            <li>
+            {/* <li>
               <a
                 href="#/"
                 onClick={toggleReports}
                 className={clsx({ active: reportsOpen })}>
                 <span className="sidebar-icon">
-                  {/* <VerifiedUserTwoToneIcon /> */}
                   <AssessmentIcon />
                 </span>
                 <span className="sidebar-item-label">Reports</span>
@@ -285,7 +284,7 @@ const SidebarMenu = (props) => {
                   
                 </ul>
               </Collapse>
-            </li>
+            </li> */}
             <li>
               <a
                 href="#/"
@@ -301,13 +300,13 @@ const SidebarMenu = (props) => {
               </a>
               <Collapse in={contactsOpen}>
                 <ul>
-                  <li>
+                  {/* <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
                       to="/ui/DashboardMonitoring">
                       Employees
                     </NavLink>
-                  </li>
+                  </li> */}
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
@@ -325,7 +324,7 @@ const SidebarMenu = (props) => {
                 </ul>
               </Collapse>
             </li>
-            <li>
+            {/* <li>
               <a
                 href="#/"
                 onClick={toggleAccounting}
@@ -343,7 +342,7 @@ const SidebarMenu = (props) => {
                   
                 </ul>
               </Collapse>
-            </li>
+            </li> */}
             {/* <li>
               <a
                 href="#/"
