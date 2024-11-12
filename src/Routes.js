@@ -423,6 +423,9 @@ const EditSaleOrders = lazy(() =>
   import('./pages/SaleOrders/EditContent')
 );
 
+const CompletedSaleOrders = lazy(() =>
+  import('./pages/CompletedSaleOrders/index')
+);
 
 const Routes = () => {
   const SuspenseLoading = () => {
@@ -648,6 +651,12 @@ const Routes = () => {
                                 exact
                                 path="/ui/sale-order/edit/:id"
                                 component={EditSaleOrders}
+                            />
+
+                            <Route
+                                exact
+                                path="/ui/completed-sale-orders"
+                                component={CompletedSaleOrders}
                             />
 
                             {/* <Route path="/ui/400" component={BadRequest400} />

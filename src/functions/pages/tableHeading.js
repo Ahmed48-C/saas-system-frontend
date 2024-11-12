@@ -1,7 +1,7 @@
 import React from 'react';
 import { TableSortLabel } from '@material-ui/core';
 
-const TableHeading = ({ order, orderBy, onRequestSort, headers, columns }) => {
+const TableHeading = ({ order, orderBy, onRequestSort, headers, columns, isActions = true, isBatchDelete = true }) => {
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -21,8 +21,10 @@ const TableHeading = ({ order, orderBy, onRequestSort, headers, columns }) => {
           ) : (
             header.label
           )} */}
-          <th className='bg-white text-center'>
-          </th>
+          {isBatchDelete && (
+            <th className='bg-white text-center'>
+            </th>
+          )}
         {columns.filter(column => column.selected).map((column, index) => (
           <th key={index} className={column.className}>
               <TableSortLabel
@@ -34,9 +36,12 @@ const TableHeading = ({ order, orderBy, onRequestSort, headers, columns }) => {
               </TableSortLabel>
           </th>
         ))}
-        <th className='bg-white text-center'>
-          Actions
-        </th>
+        {/* Conditionally render the "Actions" column if isActions is true */}
+        {isActions && (
+          <th className='bg-white text-center'>
+            Actions
+          </th>
+        )}
     </tr>
   );
 };

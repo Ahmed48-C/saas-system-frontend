@@ -43,7 +43,7 @@ const PurchaseOrder = () => {
   const [filters, setFilters] = useState([]);
   const [anchorEl4, setAnchorEl4] = useState(null);
   // const [currentFilter, setCurrentFilter] = useState({ code: '', price: '', quantity: '', total: '', status: '', product_id: '', store_id: '', balance_id: '', supplier_id: '' });
-  const [currentFilter, setCurrentFilter] = useState({ code: '', price: '', quantity: '', total: '', status: '', items__product_id: '', store_id: '', balance_id: '', supplier_id: '', items__price: '', items__quantity: '', items__total: '' });
+  const [currentFilter, setCurrentFilter] = useState({ code: '', quantity: '', total: '', status: '', items__product_id: '', store_id: '', balance_id: '', supplier_id: '', items__price: '', items__quantity: '', items__total: '' });
   const [products, setProducts] = useState([]);
   const [stores, setStores] = useState([]);
   const [balances, setBalances] = useState([]);

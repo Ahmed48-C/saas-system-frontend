@@ -86,4 +86,5 @@ export const API_ENDPOINTS = {
   PUT_SALE_ORDER: (id) => `${BASE_URL}/api/put/sales_order/${id}/`,
   GET_SALE_ORDERS: (from, to) => `${BASE_URL}/api/get/sales_orders/?from=${from}&to=${to}`,
   GET_SALE_ORDER: (id) => `${BASE_URL}/api/get/sales_order/${id}/`,
+  GET_COMPLETED_SALE_ORDERS: (from, to) => `${BASE_URL}/api/get/completed_sales_orders/?from=${from}&to=${to}`,
 };

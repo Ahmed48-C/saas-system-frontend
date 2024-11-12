@@ -34,7 +34,7 @@ import clsx from 'clsx';
 
 import { useHistory } from 'react-router-dom';
 
-const MainTable = ({ tableContent, tableButtons, Heading, handleClick, tableHeading, handlePageChange, pageCount, filterBar, page, numSelected, handleBatchDelete, isSelectedAll, handleSelectAll, handleDeselectAll, rows, handleRows, columns, handleColumns, tabs, contentAboveFilter }) => {
+const MainTable = ({ tableContent, tableButtons, Heading, handleClick, tableHeading, handlePageChange, pageCount, filterBar, page, numSelected, handleBatchDelete, isSelectedAll, handleSelectAll, handleDeselectAll, rows, handleRows, columns, handleColumns, tabs, contentAboveFilter, isAddRecord = true }) => {
 
     // const [rows, setRows] = useState('50');
     const [pointerEvents, setPointerEvents] = useState('auto');
@@ -231,7 +231,20 @@ const MainTable = ({ tableContent, tableButtons, Heading, handleClick, tableHead
                   component="div">
                   {Heading}
                 </Typography>
-                <Tooltip title="New">
+                {isAddRecord && (
+                  <Tooltip title="New">
+                    <Button
+                      variant="contained"
+                      size="small"
+                      className="d-40 btn-primary"
+                      onClick={handleClick}>
+                      <span className="btn-wrapper--icon">
+                        <FontAwesomeIcon icon={['fas', 'plus-circle']} />
+                      </span>
+                    </Button>
+                  </Tooltip>
+                )}
+                {/* <Tooltip title="New">
                   <Button
                     variant="contained"
                     size="small"
@@ -241,7 +254,7 @@ const MainTable = ({ tableContent, tableButtons, Heading, handleClick, tableHead
                       <FontAwesomeIcon icon={['fas', 'plus-circle']} />
                     </span>
                   </Button>
-                </Tooltip>
+                </Tooltip> */}
               </Toolbar>
             )}
             {/* </div> */}

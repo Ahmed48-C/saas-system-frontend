@@ -191,6 +191,13 @@ const SidebarMenu = (props) => {
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
+                      to="/ui/completed-sale-orders">
+                      Completed Sale Order
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink
+                      onClick={toggleSidebarMobile}
                       to="/ui/DashboardStatistics">
                       Credit Note
                     </NavLink>
