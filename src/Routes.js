@@ -427,6 +427,10 @@ const CompletedSaleOrders = lazy(() =>
   import('./pages/CompletedSaleOrders/index')
 );
 
+const DeliverySaleOrders = lazy(() =>
+  import('./pages/DeliverySaleOrders/index')
+);
+
 const Routes = () => {
   const SuspenseLoading = () => {
       const [show, setShow] = useState(false);
@@ -657,6 +661,12 @@ const Routes = () => {
                                 exact
                                 path="/ui/completed-sale-orders"
                                 component={CompletedSaleOrders}
+                            />
+
+                            <Route
+                                exact
+                                path="/ui/delivery-sale-orders"
+                                component={DeliverySaleOrders}
                             />
 
                             {/* <Route path="/ui/400" component={BadRequest400} />

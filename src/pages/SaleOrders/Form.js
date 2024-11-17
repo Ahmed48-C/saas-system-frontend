@@ -25,7 +25,6 @@ const Form = ({ handleClick, icon, title }) => {
     const [products, setProducts] = useState([]);
     const [balances, setBalances] = useState([]);
     const [customers, setCustomers] = useState([]);
-    // const statuses = ['Pending', 'Completed']
     const [statuses, setStatuses] = useState([]);
 
     const [loadingCustomers, setLoadingCustomers] = useState(false);

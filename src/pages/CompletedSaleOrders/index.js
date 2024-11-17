@@ -25,6 +25,7 @@ const headers = [
 
 const tabs = [
   { url: '/ui/sale-orders', title: 'Sale Order' },
+  { url: '/ui/delivery-sale-orders', title: 'Delivery Sale Order' },
   { url: '/ui/completed-sale-orders', title: 'Completed Sale Order' },
 ];
 
