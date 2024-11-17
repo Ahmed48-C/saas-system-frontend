@@ -43,8 +43,8 @@ const TableContent = ({
   };
 
   useEffect(() => {
-    updateSelectedWithIds('sale_orders', ids, setIds, handleSelected, handleNumSelected);
-  }, [ids.sale_orders]);
+    updateSelectedWithIds('delivery_sale_orders', ids, setIds, handleSelected, handleNumSelected);
+  }, [ids.delivery_sale_orders]);
 
   useEffect(() => {
     if (records && records.data && records.data.length > 0) {
@@ -113,7 +113,6 @@ const Row = ({
   dense,
   columns,
 }) => {
-  const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
 
   const history = useHistory();
   const open = Boolean(anchorEl) && currentRowId === row.id;
@@ -123,32 +122,9 @@ const Row = ({
 
   const [expandedRow, setExpandedRow] = useState(null);
 
-  const [deleteType, setDeleteType] = useState(""); // Track which delete action is being confirmed
-
   const handleExpandClick = (index) => {
     // Toggle open state for the clicked row, close others
     setExpandedRow(expandedRow === index ? null : index);
-  };
-
-  const handleButtonClick = () => {
-    setAnchorEl(null);
-    setCurrentRowId(null);
-  };
-
-  const handleEditClick = (id) => {
-    history.push(`/ui/sale-order/edit/${id}`);
-    handleButtonClick();
-  };
-
-  // const handleDeleteClick = (id, endpoint) => {
-  const handleDeleteClick = (endpoint) => {
-    const successCallback = (data) => {
-      toast.success('Deleted Sale Order Successfully');
-    };
-
-    handleDeleteRecord(row.id, API_ENDPOINTS.DELETE_SALE_ORDER, fetchRecords, successCallback, (error) => {
-      HandleTableErrorCallback(error, 'Sale Order', ids, setIds); // Pass the error and entity name to the reusable function
-    });
   };
 
   return (
@@ -156,27 +132,23 @@ const Row = ({
       <TableRow
         className={clsx(isSelected && classes.highlight)}
       >
-        <td style={{ width: '50px' }}>
+        {/* <td style={{ width: '50px' }}>
           <Checkbox
             checked={isSelected}
             onChange={() => handleCheckboxChange(row.id)}
           />
-        </td>
+        </td> */}
         {columns.filter(column => column.selected).map((column, index) => {
           const value = row[column.name];
 
           if (column.name === 'status') {
             return (
               <td key={index}>
-                  <div className={`badge h-auto py-0 px-3 ${
-                      value === 'Completed' ? 'badge-success' :
-                      value === 'Delivery' ? 'badge-info' :
-                      'badge-warning'
-                  }`}>
-                      {value}
-                  </div>
+                <div className={`badge h-auto py-0 px-3 ${value === 'Delivery' ? 'badge-info' : 'badge-warning'}`}>
+                  {value}
+                </div>
               </td>
-          );
+            );
           } else if (column.name === 'items' && Array.isArray(value)) {
             // Handle the case where column.name is 'items' and the value is an array
             return (
@@ -197,58 +169,7 @@ const Row = ({
             return <td key={index}>{value}</td>;
           }
         })}
-        <td className="text-center">
-          <Button
-            size="small"
-            className="btn-link d-30 p-0 btn-icon hover-scale-sm"
-            onClick={(event) => handlePopperClick(event, row.id)}
-          >
-            <FontAwesomeIcon
-              icon={['fas', 'ellipsis-h']}
-              className="font-size-lg"
-            />
-          </Button>
-          <Popper id={id} open={open} anchorEl={anchorEl} transition>
-            {({ TransitionProps }) => (
-              <Fade {...TransitionProps} timeout={350}>
-                <div>
-                  {row.status === 'Pending' ? (
-                      <ButtonGroup
-                        orientation="vertical"
-                        color="primary"
-                        aria-label="vertical outlined primary button group"
-                        variant="contained"
-                      >
-                        <Button className="px-1 btn-icon hover-scale-sm text-white" onClick={() => handleEditClick(row.id)} style={{ padding: '4px 8px' }}>Edit</Button>
-                        {/* <Button className="px-1 btn-icon hover-scale-sm text-white btn-danger" onClick={() => handleDeleteClick(row.id, API_ENDPOINTS.DELETE_PURCHASE_ORDER)} style={{ padding: '4px 8px' }}>Delete</Button> */}
-                        {/* <Button className="px-1 btn-icon hover-scale-sm text-white btn-danger" onClick={() => {setDeleteType("keepStock"); setOpenConfirmDialog(true)}} style={{ padding: '4px 8px' }}>Delete & Keep Stock</Button> */}
-                        <Button className="px-1 btn-icon hover-scale-sm text-white btn-danger" onClick={() => setOpenConfirmDialog(true)} style={{ padding: '4px 8px' }}>Delete</Button>
-                      </ButtonGroup>
-                    ) : (
-                      <ButtonGroup
-                        orientation="vertical"
-                        color="primary"
-                        aria-label="vertical outlined primary button group"
-                        variant="contained"
-                      >
-                        <Button className="px-1 btn-icon hover-scale-sm text-white btn-danger" onClick={() => setOpenConfirmDialog(true)} style={{ padding: '4px 8px' }}>Delete</Button>
-                        {/* <Button className="px-1 btn-icon hover-scale-sm text-white btn-danger" onClick={() => handleDeleteClick(row.id, API_ENDPOINTS.DELETE_PURCHASE_ORDER_STOCK)} style={{ padding: '4px 8px' }}>Delete & Remove Stock</Button> */}
-                        {/* <Button className="px-1 btn-icon hover-scale-sm text-white btn-danger" onClick={() => {setDeleteType("keepStock"); setOpenConfirmDialog(true)}} style={{ padding: '4px 8px' }}>Delete & Keep Stock</Button>
-                        <Button className="px-1 btn-icon hover-scale-sm text-white btn-danger" onClick={() => {setDeleteType("removeStock"); setOpenConfirmDialog(true)}} style={{ padding: '4px 8px' }}>Delete & Remove Stock</Button> */}
-                      </ButtonGroup>
-                    )}
-                </div>
-              </Fade>
-            )}
-          </Popper>
-        </td>
       </TableRow>
-      <ConfirmDelete
-        open={openConfirmDialog}
-        setOpen={setOpenConfirmDialog}
-        // handleDeleteClick={() => handleDeleteClick(deleteType === "removeStock" ? API_ENDPOINTS.DELETE_PURCHASE_ORDER_STOCK : API_ENDPOINTS.DELETE_PURCHASE_ORDER)}
-        handleDeleteClick={handleDeleteClick}
-      />
     </>
   );
 };
