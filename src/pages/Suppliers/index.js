@@ -22,7 +22,8 @@ const headers = [
 
 const tabs = [
   { url: '/ui/suppliers', title: 'Suppliers' },
-  { url: '/ui/customers', title: 'Customers' }
+  { url: '/ui/couriers', title: 'Couriers' },
+  { url: '/ui/customers', title: 'Customers' },
 ];
 
 const Supplier = () => {

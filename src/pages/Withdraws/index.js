@@ -91,6 +91,7 @@ const Withdraw = () => {
       filters,
       (data) => {
         setRecords(data);
+        console.log(data)
         if (data.actual_total_count) {
           setTotalPages(Math.ceil(data.actual_total_count / rows));
         } else {
@@ -225,7 +226,7 @@ const Withdraw = () => {
           columns={columns}
         />}
         tableContent={
-          !loading && records.data.length === 0 ? (
+          !loading && records.data.filter(item => item.type === 'WITHDRAW').length === 0 ? (
             <NoRecords context='Withdraws' />
           ) : (
             <TableContent

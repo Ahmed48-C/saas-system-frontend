@@ -14,24 +14,22 @@ import HandleTableErrorCallback from '../../functions/pages/HandleTableErrorCall
 
 const headers = [
   { key: '', label: '', className: 'bg-white text-center' },
-  { key: 'balance', label: 'Balance', className: 'bg-white text-left' },
-  { key: 'amount', label: 'Amount', className: 'bg-white text-left' },
-  { key: 'type', label: 'Type', className: 'bg-white text-left' },
-  { key: 'note', label: 'Note', className: 'bg-white text-left' },
-  { key: 'date', label: 'Date', className: 'bg-white text-left' },
-  { key: 'action', label: 'Action', className: 'bg-white text-left' },
+  { key: 'name', label: 'Name', className: 'bg-white text-left' },
+  { key: 'phone', label: 'Phone', className: 'bg-white text-left' },
+  { key: 'vehicle_type', label: 'Vehicle Type', className: 'bg-white text-left' },
+  { key: 'is_available', label: 'Is Available', className: 'bg-white text-left' },
+  { key: 'default_delivery_cost', label: 'Default Delivery Cost', className: 'bg-white text-left' },
   { key: 'actions', label: 'Actions', className: 'bg-white text-center', sortable: false }
 ];
 
 const tabs = [
-  { url: '/ui/balances', title: 'Balances' },
-  { url: '/ui/deposits', title: 'Deposits' },
-  { url: '/ui/withdraws', title: 'Withdraws' },
-  { url: '/ui/transfers', title: 'Transfers' }
+  { url: '/ui/suppliers', title: 'Suppliers' },
+  { url: '/ui/couriers', title: 'Couriers' },
+  { url: '/ui/customers', title: 'Customers' },
 ];
 
-const Deposit = () => {
-  const heading = 'Deposit'
+const Courier = () => {
+  const heading = 'Courier'
   const [loading, setLoading] = useState(true);
   const [records, setRecords] = useState([]);
 
@@ -43,9 +41,9 @@ const Deposit = () => {
 
   const [filters, setFilters] = useState([]);
   const [anchorEl4, setAnchorEl4] = useState(null);
-  const [currentFilter, setCurrentFilter] = useState({ balance_id: '', amount: '', type: '', note: '', date: '', action: '' });
-  const [balances, setBalances] = useState([]);
-  const filterRecords = { balances };
+  const [currentFilter, setCurrentFilter] = useState({ name: '', phone: '', vehicle_type: '', is_available: '', default_delivery_cost: '' });
+  const [locations, setLocations] = useState([]);
+  const filterRecords = { locations };
   const [isEditing, setIsEditing] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
 
@@ -54,19 +52,18 @@ const Deposit = () => {
   const [isSelectedAll, setIsSelectedAll] = useState(false);
 
   const [columns, setColumns] = useState(() => {
-    const savedColumns = localStorage.getItem('depositColumns');
+    const savedColumns = localStorage.getItem('courierColumns');
     return savedColumns ? JSON.parse(savedColumns) : [
-        { name: 'balance', label: 'Balance', className: 'bg-white text-left', selected: true },
-        { name: 'amount', label: 'Amount', className: 'bg-white text-left', selected: true },
-        { name: 'type', label: 'Type', className: 'bg-white text-left', selected: true },
-        { name: 'note', label: 'Note', className: 'bg-white text-left', selected: false },
-        { name: 'date', label: 'date', className: 'bg-white text-left', selected: true },
-        { name: 'action', label: 'Action', className: 'bg-white text-left', selected: false },
+      { name: 'name', label: 'Name', className: 'bg-white text-left', selected: true },
+      { name: 'phone', label: 'Phone', className: 'bg-white text-left', selected: true },
+      { name: 'vehicle_type', label: 'Vehicle Type', className: 'bg-white text-left', selected: true },
+      { name: 'is_available', label: 'Is Available', className: 'bg-white text-left', selected: true },
+      { name: 'default_delivery_cost', label: 'Default Delivery Cost', className: 'bg-white text-left', selected: true },
     ];
   });
 
   useEffect(() => {
-    localStorage.setItem('depositColumns', JSON.stringify(columns));
+    localStorage.setItem('courierColumns', JSON.stringify(columns));
   }, [columns]);
 
   const history = useHistory();
@@ -74,7 +71,7 @@ const Deposit = () => {
   const { ids, setIds } = UseIDs();
 
   const handleNavigation = () => {
-    history.push('/ui/deposit/create');
+    history.push('/ui/courier/create');
   };
 
   const fetchRecords = useCallback(() => {
@@ -83,7 +80,7 @@ const Deposit = () => {
       history.push('/ui/500'); // Navigate to the 500 error page
     };
     fetchAll(
-      API_ENDPOINTS.GET_BALANCE_LOGS,
+      API_ENDPOINTS.GET_COURIERS,
       page,
       rows,
       order,
@@ -163,8 +160,8 @@ const Deposit = () => {
     setColumns(value);
   }
 
-  const handleBalances = (value) => {
-    setBalances(value);
+  const handleLocations = (value) => {
+    setLocations(value);
   }
 
   const handleBatchDelete = () => {
@@ -172,14 +169,14 @@ const Deposit = () => {
       setNumSelected(0);
       setSelected([]);
       setIsSelectedAll(false);
-      toast.success('Deleted Deposits Successfully');
+      toast.success('Deleted Couriers Successfully');
     };
 
     const errorCallback = (error) => {
-      HandleTableErrorCallback(error, 'Deposit', ids, setIds);
+      HandleTableErrorCallback(error, 'Courier', ids, setIds);
     };
 
-    handleBatchDeleteRecords(selected, API_ENDPOINTS.DELETE_BALANCE_LOGS, fetchRecords, successCallback, errorCallback)
+    handleBatchDeleteRecords(selected, API_ENDPOINTS.DELETE_COURIERS, fetchRecords, successCallback, errorCallback)
   }
 
   const handleSelectAll = () => {
@@ -214,7 +211,7 @@ const Deposit = () => {
           handleIsEditing={handleIsEditing}
           handleEditIndex={handleEditIndex}
           editIndex={editIndex}
-          filterContent={<FilterContent currentFilter={currentFilter} setCurrentFilter={setCurrentFilter} balances={balances} handleBalances={handleBalances} />}
+          filterContent={<FilterContent currentFilter={currentFilter} setCurrentFilter={setCurrentFilter} locations={locations} handleLocations={handleLocations} />}
           filterRecords={filterRecords} // Pass records object
         />}
         tableHeading={<TableHeading
@@ -225,8 +222,8 @@ const Deposit = () => {
           columns={columns}
         />}
         tableContent={
-          !loading && records.data.filter(item => item.type === 'DEPOSIT').length === 0 ? (
-            <NoRecords context='Deposits' />
+          !loading && records.data.length === 0 ? (
+            <NoRecords context='Couriers' />
           ) : (
             <TableContent
               fetchRecords={fetchRecords}
@@ -241,7 +238,7 @@ const Deposit = () => {
             />
           )
         }
-        Heading='Deposits'
+        Heading='Couriers'
         handleClick={handleNavigation}
         handlePageChange={handlePageChange}
         pageCount={totalPages}
@@ -261,4 +258,4 @@ const Deposit = () => {
   )
 }
 
-export default Deposit
+export default Courier
