@@ -15,14 +15,10 @@ const Form = ({ handleClick, icon, title }) => {
 
     const [data, setData] = useState({});
     const [editLoading, setEditLoading] = useState(false);
-    const [vehicleTypes, setVehicleTypes] = useState([]);
-    const [isAvailable, setIsAvailable] = useState(['true', 'false']);
-
-    const [loadingVehicleTypes, setLoadingVehicleTypes] = useState(false);
-    const [errorVehicleTypes, setErrorVehicleTypes] = useState('');
+    const [isActive, setIsActive] = useState(['true', 'false']);
 
     const fetchData = useCallback(() => {
-        handleFetchRecord(id, API_ENDPOINTS.GET_COURIER, setData, setEditLoading);
+        handleFetchRecord(id, API_ENDPOINTS.GET_CLIENT, setData, setEditLoading);
     }, [id]);
 
     useEffect(() => {
@@ -30,40 +26,22 @@ const Form = ({ handleClick, icon, title }) => {
             fetchData();
         }
 
-        const fetchDropdownData = async () => {
-
-            setLoadingVehicleTypes(true);
-
-            try {
-                await formFetchDropdownRecords(`${BASE_URL}/api/get/vehicle_types/`, setVehicleTypes);
-                setLoadingVehicleTypes(false);
-            } catch (error) {
-                setErrorVehicleTypes('Error fetching suppliers');
-                setLoadingVehicleTypes(false);
-            }
-
-        };
-
-        fetchDropdownData();
-
-        // formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/couriers/`, setLocations);
     }, [id, fetchData]);
 
     const isFormValid = () => {
         return  data.name &&
                 data.phone &&
-                data.vehicle_type &&
-                data.is_available?.toString() &&
-                data.default_delivery_cost;
+                data.is_active?.toString() &&
+                data.share_percentage;
     };
 
     const handleInputChange = (field) => (e) => {
         let value = e.target.value;   
 
-        if (field === 'default_delivery_cost') {
-            // Allow only whole numbers
-            if (value === '' || /^[0-9]*$/.test(value)) {
-                setData({ ...data, [field]: value })
+        if (field === 'share_percentage') {
+           // Allow only whole numbers and restrict max value to 100
+            if ((value === '' || /^[0-9]*$/.test(value)) && (+value <= 100 || value === '')) {
+                setData({ ...data, [field]: value });
             }
         } else {
             setData({ ...data, [field]: value });
@@ -139,45 +117,30 @@ const Form = ({ handleClick, icon, title }) => {
                     */}
                     <Grid item xs={6}>
                         <InputSelect
-                        selectItems={vehicleTypes.map(vehicle => ({
-                            value: vehicle,
-                            name: formatFormRecordDropdown(vehicle)
+                        selectItems={isActive.map(active => ({
+                            value: active,
+                            name: formatFormRecordDropdown(active)
                         }))}
-                        label='Vehicle Types'
-                        name='vehicle_type'
-                        id='vehicle_type'
-                        onChange={handleInputChange('vehicle_type')}
-                        value={data.vehicle_type ?? ""}
-                        error={isEmpty(data.vehicle_type)}
-                        loading={loadingVehicleTypes}
-                        errorMessage={errorVehicleTypes}
-                        />
-                    </Grid>
-                    <Grid item xs={6}>
-                        <InputSelect
-                        selectItems={isAvailable.map(available => ({
-                            value: available,
-                            name: formatFormRecordDropdown(available)
-                        }))}
-                        label='Is Available'
-                        name='is_available'
-                        id='is_available'
-                        onChange={handleInputChange('is_available')}
-                        value={data.is_available ?? ""}
-                        error={isEmpty(data.is_available)}
+                        label='Is Active'
+                        name='is_active'
+                        id='is_active'
+                        onChange={handleInputChange('is_active')}
+                        value={data.is_active ?? ""}
+                        error={isEmpty(data.is_active)}
                         />
                     </Grid>
                     <Grid item xs={6}>
                         <Textarea
                         rows={1}
                         rowsMax={2}
-                        label='Default Delivery Cost'
-                        name='default_delivery_cost'
-                        id='default_delivery_cost'
-                        onChange={handleInputChange('default_delivery_cost')}
-                        value={data.default_delivery_cost ?? ""}
-                        key='default_delivery_cost'
-                        error={isEmpty(data.default_delivery_cost)}
+                        label='Share Percentage'
+                        name='share_percentage'
+                        id='share_percentage'
+                        onChange={handleInputChange('share_percentage')}
+                        value={data.share_percentage ?? ""}
+                        key='share_percentage'
+                        error={isEmpty(data.share_percentage)}
+                        maxLength={5}
                         />
                     </Grid>
                     <Grid item xs={12} style={{ paddingLeft: '35px', paddingRight: '0px' }}>
