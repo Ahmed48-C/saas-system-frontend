@@ -16,6 +16,7 @@ export const SelectedIDsProvider = ({ children }) => {
         transfers: [],
         sale_orders: [],
         couriers: [],
+        clients: [],
     });
 
     return (

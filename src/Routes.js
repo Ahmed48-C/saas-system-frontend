@@ -443,6 +443,18 @@ const EditCouriers = lazy(() =>
   import('./pages/Couriers/EditContent')
 );
 
+const Clients = lazy(() =>
+  import('./pages/Clients/index')
+);
+
+const CreateClients = lazy(() =>
+  import('./pages/Clients/CreateContent')
+);
+
+const EditClients = lazy(() =>
+  import('./pages/Clients/EditContent')
+);
+
 const Routes = () => {
   const SuspenseLoading = () => {
       const [show, setShow] = useState(false);
@@ -695,6 +707,22 @@ const Routes = () => {
                               exact
                               path="/ui/courier/edit/:id"
                               component={EditCouriers}
+                            />
+
+                            <Route
+                              exact
+                              path="/ui/clients"
+                              component={Clients}
+                            />
+                            <Route
+                              exact
+                              path="/ui/client/create"
+                              component={CreateClients}
+                            />
+                            <Route
+                              exact
+                              path="/ui/client/edit/:id"
+                              component={EditClients}
                             />
 
                             {/* <Route path="/ui/400" component={BadRequest400} />

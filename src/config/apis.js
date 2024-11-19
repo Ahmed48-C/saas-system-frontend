@@ -95,4 +95,11 @@ export const API_ENDPOINTS = {
   PUT_COURIER: (id) => `${BASE_URL}/api/put/courier/${id}/`,
   GET_COURIERS: (from, to) => `${BASE_URL}/api/get/couriers/?from=${from}&to=${to}`,
   GET_COURIER: (id) => `${BASE_URL}/api/get/courier/${id}/`,
+
+  DELETE_CLIENT: (id) => `${BASE_URL}/api/delete/client/${id}/`,
+  DELETE_CLIENTS: () => `${BASE_URL}/api/delete/clients/`,
+  POST_CLIENT: () => `${BASE_URL}/api/post/client/`,
+  PUT_CLIENT: (id) => `${BASE_URL}/api/put/client/${id}/`,
+  GET_CLIENTS: (from, to) => `${BASE_URL}/api/get/clients/?from=${from}&to=${to}`,
+  GET_CLIENT: (id) => `${BASE_URL}/api/get/client/${id}/`,
 };

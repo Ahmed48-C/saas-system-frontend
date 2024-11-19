@@ -9,14 +9,15 @@ import TableHeading from '../../functions/pages/tableHeading';
 import { fetchAll } from '../../functions/pages/handleFetchAll';
 import handleBatchDeleteRecords from '../../functions/pages/handleBatchDeleteRecords';
 import { toast } from 'react-toastify';
-import HandleTableErrorCallback from '../../functions/pages/HandleTableErrorCallback';
 import { UseIDs } from '../../config/SelectedIdsContext';
+import HandleTableErrorCallback from '../../functions/pages/HandleTableErrorCallback';
 
 const headers = [
   { key: '', label: '', className: 'bg-white text-center' },
   { key: 'name', label: 'Name', className: 'bg-white text-left' },
   { key: 'phone', label: 'Phone', className: 'bg-white text-left' },
-  { key: 'email', label: 'Email', className: 'bg-white text-left' },
+  { key: 'is_active', label: 'Is Active', className: 'bg-white text-left' },
+  { key: 'share_percentage', label: 'Share Percentage', className: 'bg-white text-left' },
   { key: 'actions', label: 'Actions', className: 'bg-white text-center', sortable: false }
 ];
 
@@ -27,10 +28,10 @@ const tabs = [
   { url: '/ui/customers', title: 'Customers' },
 ];
 
-const Supplier = () => {
-  const heading = 'Supplier'
+const Client = () => {
+  const heading = 'Client'
   const [loading, setLoading] = useState(true);
-  const [suppliers, setSuppliers] = useState([]);
+  const [records, setRecords] = useState([]);
 
   const [order, setOrder] = useState('desc');
   const [orderBy, setOrderBy] = useState('id');
@@ -40,7 +41,7 @@ const Supplier = () => {
 
   const [filters, setFilters] = useState([]);
   const [anchorEl4, setAnchorEl4] = useState(null);
-  const [currentFilter, setCurrentFilter] = useState({ name: '', phone: '', email: '', contact_name: '', contact_phone: '', location_id: '' });
+  const [currentFilter, setCurrentFilter] = useState({ name: '', phone: '', is_active: '', share_percentage: '' });
   const [locations, setLocations] = useState([]);
   const filterRecords = { locations };
   const [isEditing, setIsEditing] = useState(false);
@@ -51,19 +52,17 @@ const Supplier = () => {
   const [isSelectedAll, setIsSelectedAll] = useState(false);
 
   const [columns, setColumns] = useState(() => {
-    const savedColumns = localStorage.getItem('supplierColumns');
+    const savedColumns = localStorage.getItem('clientColumns');
     return savedColumns ? JSON.parse(savedColumns) : [
       { name: 'name', label: 'Name', className: 'bg-white text-left', selected: true },
       { name: 'phone', label: 'Phone', className: 'bg-white text-left', selected: true },
-      { name: 'email', label: 'Email', className: 'bg-white text-left', selected: true },
-      { name: 'contact_name', label: 'Contact Name', className: 'bg-white text-left', selected: false },
-      { name: 'contact_phone', label: 'Contact Phone', className: 'bg-white text-left', selected: false },
-      { name: 'location', label: 'location', className: 'bg-white text-left', selected: false }
+      { name: 'is_active', label: 'Is Active', className: 'bg-white text-left', selected: true },
+      { name: 'share_percentage', label: 'Share Percentage', className: 'bg-white text-left', selected: true },
     ];
   });
 
   useEffect(() => {
-    localStorage.setItem('supplierColumns', JSON.stringify(columns));
+    localStorage.setItem('clientColumns', JSON.stringify(columns));
   }, [columns]);
 
   const history = useHistory();
@@ -71,22 +70,23 @@ const Supplier = () => {
   const { ids, setIds } = UseIDs();
 
   const handleNavigation = () => {
-    history.push('/ui/supplier/create');
+    history.push('/ui/client/create');
   };
 
-  const fetchSuppliers = useCallback(() => {
+  const fetchRecords = useCallback(() => {
     const errorCallback = (error) => {
+      console.log('Error occurred:', error);
       history.push('/ui/500'); // Navigate to the 500 error page
     };
     fetchAll(
-      API_ENDPOINTS.GET_SUPPLIERS,
+      API_ENDPOINTS.GET_CLIENTS,
       page,
       rows,
       order,
       orderBy,
       filters,
       (data) => {
-        setSuppliers(data);
+        setRecords(data);
         if (data.actual_total_count) {
           setTotalPages(Math.ceil(data.actual_total_count / rows));
         } else {
@@ -100,8 +100,8 @@ const Supplier = () => {
   }, [history, order, orderBy, page, filters, rows]);
 
   useEffect(() => {
-    fetchSuppliers();
-  }, [fetchSuppliers]);
+    fetchRecords();
+  }, [fetchRecords]);
 
   useEffect(() => {
     if (filters.length > 0) {
@@ -168,18 +168,18 @@ const Supplier = () => {
       setNumSelected(0);
       setSelected([]);
       setIsSelectedAll(false);
-      toast.success('Deleted Suppliers Successfully');
+      toast.success('Deleted Clients Successfully');
     };
 
     const errorCallback = (error) => {
-      HandleTableErrorCallback(error, 'Supplier', ids, setIds);
+      HandleTableErrorCallback(error, 'Client', ids, setIds);
     };
 
-    handleBatchDeleteRecords(selected, API_ENDPOINTS.DELETE_SUPPLIERS, fetchSuppliers, successCallback, errorCallback);
+    handleBatchDeleteRecords(selected, API_ENDPOINTS.DELETE_CLIENTS, fetchRecords, successCallback, errorCallback)
   }
 
   const handleSelectAll = () => {
-    const allIds = suppliers.data.map(record => record.id);
+    const allIds = records.data.map(record => record.id);
     setSelected(allIds);
     setNumSelected(allIds.length);
     setIsSelectedAll(true);
@@ -221,13 +221,13 @@ const Supplier = () => {
           columns={columns}
         />}
         tableContent={
-          !loading && suppliers.data.length === 0 ? (
-            <NoRecords context='Suppliers' />
+          !loading && records.data.length === 0 ? (
+            <NoRecords context='Clients' />
           ) : (
             <TableContent
-              fetchSuppliers={fetchSuppliers}
+              fetchRecords={fetchRecords}
               loading={loading}
-              suppliers={suppliers}
+              records={records}
               numSelected={numSelected}
               handleNumSelected={handleNumSelected}
               selected={selected}
@@ -237,7 +237,7 @@ const Supplier = () => {
             />
           )
         }
-        Heading='Suppliers'
+        Heading='Clients'
         handleClick={handleNavigation}
         handlePageChange={handlePageChange}
         pageCount={totalPages}
@@ -257,4 +257,4 @@ const Supplier = () => {
   )
 }
 
-export default Supplier
+export default Client
