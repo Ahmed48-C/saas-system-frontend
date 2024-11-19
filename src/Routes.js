@@ -431,6 +431,18 @@ const DeliverySaleOrders = lazy(() =>
   import('./pages/DeliverySaleOrders/index')
 );
 
+const Couriers = lazy(() =>
+  import('./pages/Couriers/index')
+);
+
+const CreateCouriers = lazy(() =>
+  import('./pages/Couriers/CreateContent')
+);
+
+const EditCouriers = lazy(() =>
+  import('./pages/Couriers/EditContent')
+);
+
 const Routes = () => {
   const SuspenseLoading = () => {
       const [show, setShow] = useState(false);
@@ -667,6 +679,22 @@ const Routes = () => {
                                 exact
                                 path="/ui/delivery-sale-orders"
                                 component={DeliverySaleOrders}
+                            />
+
+                            <Route
+                              exact
+                              path="/ui/couriers"
+                              component={Couriers}
+                            />
+                            <Route
+                              exact
+                              path="/ui/courier/create"
+                              component={CreateCouriers}
+                            />
+                            <Route
+                              exact
+                              path="/ui/courier/edit/:id"
+                              component={EditCouriers}
                             />
 
                             {/* <Route path="/ui/400" component={BadRequest400} />
