@@ -18,8 +18,13 @@ const ConfirmDelete = ({ open, setOpen, handleDeleteClick }) => {
         const storedPreference = localStorage.getItem("dontShowDeleteAgain");
         if (storedPreference === "true") {
             setDontShowDeleteAgain(true);
+            // Automatically trigger delete if preference is set
+            if (open) {
+                handleDeleteClick();
+                setOpen(false);
+            }
         }
-    }, []);
+    }, [open, handleDeleteClick, setOpen]);
 
     const handleClose = () => setOpen(false);
 
@@ -34,12 +39,14 @@ const ConfirmDelete = ({ open, setOpen, handleDeleteClick }) => {
         localStorage.setItem("dontShowDeleteAgain", checked);
     };
 
+    if (dontShowDeleteAgain && !open) return null; // Prevent dialog from rendering if preference is set
+
     return (
         <Dialog open={open} onClose={handleClose}>
             <DialogTitle>Confirm Action</DialogTitle>
             <DialogContent>
                 <DialogContentText>
-                    Are you sure you want to delete this record? This can not be undone.
+                    Are you sure you want to delete this record? This cannot be undone.
                 </DialogContentText>
                 <FormControlLabel
                     control={
