@@ -86,20 +86,20 @@ const Form = ({ handleClick, icon, title }) => {
 
         const isStockValid =
             // If in_stock is provided, validate it against max_stock and min_stock if they are also provided
-            (in_stock === undefined || in_stock === '' ||
-                ((max_stock === undefined || max_stock === '') &&
-                (min_stock === undefined || min_stock === '') ||
-                (Number(in_stock) >= Number(min_stock) || min_stock === undefined || min_stock === '') &&
-                (Number(max_stock) >= Number(in_stock) || max_stock === undefined || max_stock === ''))) &&
+            (in_stock === undefined || in_stock === null || in_stock === '' ||
+                ((max_stock === undefined || max_stock === null || max_stock === '') &&
+                (min_stock === undefined || min_stock === null || min_stock === '') ||
+                (Number(in_stock) >= Number(min_stock) || min_stock === undefined || min_stock === null || min_stock === '') &&
+                (Number(max_stock) >= Number(in_stock) || max_stock === undefined || max_stock === null || max_stock === ''))) &&
 
             // If min_stock is provided, validate it against max_stock if it's provided
-            (min_stock === undefined || min_stock === '' ||
-                (max_stock === undefined || max_stock === '' ||
+            (min_stock === undefined || min_stock === null || min_stock === '' ||
+                (max_stock === undefined || max_stock === null || max_stock === '' ||
                 (Number(max_stock) >= Number(min_stock)))) &&
 
             // If max_stock is provided, validate it against min_stock if it's provided
-            (max_stock === undefined || max_stock === '' ||
-                (min_stock === undefined || min_stock === '' ||
+            (max_stock === undefined || max_stock === null || max_stock === '' ||
+                (min_stock === undefined || min_stock === null || min_stock === '' ||
                 (Number(max_stock) >= Number(min_stock))));
 
         return (
