@@ -119,6 +119,18 @@ const Form = ({ handleClick, icon, title }) => {
         setData({ ...data, [field]: value });
     };
 
+    const handleSubmit = () => {
+        // Replace empty strings with null
+        const sanitizedData = { ...data };
+        ['in_stock', 'on_order', 'reserved', 'min_stock', 'max_stock'].forEach((field) => {
+            if (sanitizedData[field] === '') {
+                sanitizedData[field] = null;
+            }
+        });
+    
+        handleClick(sanitizedData); // Submit sanitized data
+    };
+
     return (
         <>
             {editLoading ? (
@@ -281,7 +293,7 @@ const Form = ({ handleClick, icon, title }) => {
                                 size="small"
                                 className="d-40 btn-success"
                                 onClick={() => {
-                                    handleClick(data);
+                                    handleSubmit();
                                 }}
                                 disabled={!isFormValid()} // Disable button if form is not valid
                                 >
