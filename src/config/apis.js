@@ -88,6 +88,7 @@ export const API_ENDPOINTS = {
   GET_SALE_ORDER: (id) => `${BASE_URL}/api/get/sales_order/${id}/`,
   GET_COMPLETED_SALE_ORDERS: (from, to) => `${BASE_URL}/api/get/completed_sales_orders/?from=${from}&to=${to}`,
   GET_DELIVERY_SALE_ORDERS: (from, to) => `${BASE_URL}/api/get/delivery_sales_orders/?from=${from}&to=${to}`,
+  GET_CANCELLED_SALE_ORDERS: (from, to) => `${BASE_URL}/api/get/cancelled_sales_orders/?from=${from}&to=${to}`,
 
   DELETE_COURIER: (id) => `${BASE_URL}/api/delete/courier/${id}/`,
   DELETE_COURIERS: () => `${BASE_URL}/api/delete/couriers/`,
