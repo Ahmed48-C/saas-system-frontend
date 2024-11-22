@@ -431,6 +431,10 @@ const DeliverySaleOrders = lazy(() =>
   import('./pages/DeliverySaleOrders/index')
 );
 
+const CancelledSaleOrders = lazy(() =>
+  import('./pages/CancelledSaleOrders/index')
+);
+
 const Couriers = lazy(() =>
   import('./pages/Couriers/index')
 );
@@ -691,6 +695,12 @@ const Routes = () => {
                                 exact
                                 path="/ui/delivery-sale-orders"
                                 component={DeliverySaleOrders}
+                            />
+
+                            <Route
+                                exact
+                                path="/ui/cancelled-sale-orders"
+                                component={CancelledSaleOrders}
                             />
 
                             <Route

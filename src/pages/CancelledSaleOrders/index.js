@@ -16,13 +16,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMoneyBill } from '@fortawesome/free-solid-svg-icons'; // Import the money sign icon
 
 const headers = [
-  { key: '', label: '', className: 'bg-white text-center' },
   { key: 'code', label: 'Code', className: 'bg-white text-left' },
   { key: 'price', label: 'Price', className: 'bg-white text-left' },
   { key: 'quantity', label: 'Quantity', className: 'bg-white text-left' },
   { key: 'total', label: 'Total', className: 'bg-white text-left' },
   { key: 'status', label: 'Status', className: 'bg-white text-left' },
-  { key: 'actions', label: 'Actions', className: 'bg-white text-center', sortable: false }
 ];
 
 const tabs = [
@@ -32,8 +30,8 @@ const tabs = [
   { url: '/ui/cancelled-sale-orders', title: 'Cancelled Sale Order' },
 ];
 
-const SaleOrder = () => {
-  const heading = 'Sale Order'
+const CancelledSaleOrder = () => {
+  const heading = 'Cancelled Sale Order'
   const [loading, setLoading] = useState(true);
   const [records, setRecords] = useState([]);
 
@@ -46,7 +44,7 @@ const SaleOrder = () => {
   const [filters, setFilters] = useState([]);
   const [anchorEl4, setAnchorEl4] = useState(null);
   // const [currentFilter, setCurrentFilter] = useState({ code: '', price: '', quantity: '', total: '', status: '', product_id: '', store_id: '', balance_id: '', customer_id: '' });
-  const [currentFilter, setCurrentFilter] = useState({ code: '', quantity: '', total: '', status: '', items__product_id: '', store_id: '', balance_id: '', customer_id: '', client_id: '', items__price: '', items__quantity: '', items__total: '' });
+  const [currentFilter, setCurrentFilter] = useState({ code: '', quantity: '', total: '', items__product_id: '', store_id: '', balance_id: '', customer_id: '', client_id: '', items__price: '', items__quantity: '', items__total: '' });
   const [products, setProducts] = useState([]);
   const [stores, setStores] = useState([]);
   const [balances, setBalances] = useState([]);
@@ -61,7 +59,7 @@ const SaleOrder = () => {
   const [isSelectedAll, setIsSelectedAll] = useState(false);
 
   const [columns, setColumns] = useState(() => {
-    const savedColumns = localStorage.getItem('saleOrderColumns');
+    const savedColumns = localStorage.getItem('cancelledSaleOrderColumns');
     return savedColumns ? JSON.parse(savedColumns) : [
       { name: 'code', label: 'Code', className: 'bg-white text-left', selected: true },
       // { name: 'price', label: 'Price', className: 'bg-white text-left', selected: false },
@@ -79,16 +77,12 @@ const SaleOrder = () => {
   });
 
   useEffect(() => {
-    localStorage.setItem('saleOrderColumns', JSON.stringify(columns));
+    localStorage.setItem('cancelledSaleOrderColumns', JSON.stringify(columns));
   }, [columns]);
 
   const history = useHistory();
 
   const { ids, setIds } = UseIDs();
-
-  const handleNavigation = () => {
-    history.push('/ui/sale-order/create');
-  };
 
   const fetchRecords = useCallback(() => {
     const errorCallback = (error) => {
@@ -96,7 +90,7 @@ const SaleOrder = () => {
       history.push('/ui/500'); // Navigate to the 500 error page
     };
     fetchAll(
-      API_ENDPOINTS.GET_SALE_ORDERS,
+      API_ENDPOINTS.GET_CANCELLED_SALE_ORDERS,
       page,
       rows,
       order,
@@ -201,11 +195,11 @@ const SaleOrder = () => {
       setNumSelected(0);
       setSelected([]);
       setIsSelectedAll(false);
-      toast.success('Deleted Sale Orders Successfully');
+      toast.success('Deleted Cancelled Sale Orders Successfully');
     };
 
     const errorCallback = (error) => {
-      HandleTableErrorCallback(error, 'Sale Order', ids, setIds);
+      HandleTableErrorCallback(error, 'Cancelled Sale Order', ids, setIds);
     };
 
     handleBatchDeleteRecords(selected, API_ENDPOINTS.DELETE_SALE_ORDERS, fetchRecords, successCallback, errorCallback)
@@ -225,87 +219,25 @@ const SaleOrder = () => {
   }
 
   const MoneyInfo = () => {
-    const { completedTotal, pendingTotal, deliveryTotal, cancelledTotal } = useMemo(() => {
+    const { cancelledTotal } = useMemo(() => {
       if (!Array.isArray(records.data) || records.data.length === 0) {
-        return { completedTotal: 0, pendingTotal: 0, deliveryTotal: 0, cancelledTotal: 0 }; // Return default values if data is not available
+        return { cancelledTotal: 0 }; // Return default values if data is not available
       }
 
       return records.data.reduce(
         (acc, record) => {
-          if (record.status === 'Completed') {
-            acc.completedTotal += parseFloat(record.total) || 0;
-          } else if (record.status === 'Pending') {
-            acc.pendingTotal += parseFloat(record.total) || 0;
-          }
-          else if (record.status === 'Delivery') {
-            acc.deliveryTotal += parseFloat(record.total) || 0;
-          }
-          else if (record.status === 'Cancelled') {
+          if (record.status === 'Cancelled') {
             acc.cancelledTotal += parseFloat(record.total) || 0;
           }
           return acc;
         },
-        { completedTotal: 0, pendingTotal: 0, deliveryTotal: 0, cancelledTotal: 0 }
+        { cancelledTotal: 0 }
       );
     }, [records.data]); // Make sure to include records.data in the dependency array
 
     return (
-      <Grid container spacing={6} style={{ justifyContent: 'space-between' }}>
-        <Grid item xl={3} md={3}>
-          <Card className="card-box card-box-border-bottom border-success">
-            <CardContent style={{ paddingBottom: 0 }}>
-              <div className="text-center">
-                <div className="mt-1">
-                  <FontAwesomeIcon
-                    icon={faMoneyBill}
-                    className="font-size-xxl text-success"
-                  />
-                </div>
-                <div className="mt-3 line-height-sm mb-2">
-                  <b className="font-size-lg pr-1">${completedTotal.toFixed(2)}</b>
-                  <span className="text-black-50">Completed</span>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid item xl={3} md={3}>
-          <Card className="card-box card-box-border-bottom border-warning">
-            <CardContent style={{ paddingBottom: 0 }}>
-              <div className="text-center">
-                <div className="mt-1">
-                  <FontAwesomeIcon
-                    icon={faMoneyBill}
-                    className="font-size-xxl text-warning"
-                  />
-                </div>
-                <div className="mt-3 line-height-sm mb-2">
-                  <b className="font-size-lg pr-1">${pendingTotal.toFixed(2)}</b>
-                  <span className="text-black-50">Pending</span>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid item xl={3} md={3}>
-          <Card className="card-box card-box-border-bottom border-info">
-            <CardContent style={{ paddingBottom: 0 }}>
-              <div className="text-center">
-                <div className="mt-1">
-                  <FontAwesomeIcon
-                    icon={faMoneyBill}
-                    className="font-size-xxl text-info"
-                  />
-                </div>
-                <div className="mt-3 line-height-sm mb-2">
-                  <b className="font-size-lg pr-1">${deliveryTotal.toFixed(2)}</b>
-                  <span className="text-black-50">Delivery</span>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid item xl={3} md={3}>
+      <Grid container>
+        <Grid item xl={12} md={12}>
           <Card className="card-box card-box-border-bottom border-danger">
             <CardContent style={{ paddingBottom: 0 }}>
               <div className="text-center">
@@ -355,10 +287,12 @@ const SaleOrder = () => {
           onRequestSort={handleRequestSort}
           headers={headers}
           columns={columns}
+          isActions={false}
+          isBatchDelete={false}
         />}
         tableContent={
           !loading && records.data.length === 0 ? (
-            <NoRecords context='Sale Orders' />
+            <NoRecords context='Cancelled Sale Orders' />
           ) : (
             <TableContent
               fetchRecords={fetchRecords}
@@ -373,8 +307,7 @@ const SaleOrder = () => {
             />
           )
         }
-        Heading='Sale Orders'
-        handleClick={handleNavigation}
+        Heading='Cancelled Sale Orders'
         handlePageChange={handlePageChange}
         pageCount={totalPages}
         page={page}
@@ -389,9 +322,10 @@ const SaleOrder = () => {
         handleColumns={handleColumns}
         tabs={tabs}
         contentAboveFilter={<MoneyInfo />}
+        isAddRecord={false}
       />
     </>
   )
 }
 
-export default SaleOrder
+export default CancelledSaleOrder

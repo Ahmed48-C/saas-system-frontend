@@ -27,6 +27,7 @@ const tabs = [
   { url: '/ui/sale-orders', title: 'Sale Order' },
   { url: '/ui/delivery-sale-orders', title: 'Delivery Sale Order' },
   { url: '/ui/completed-sale-orders', title: 'Completed Sale Order' },
+  { url: '/ui/cancelled-sale-orders', title: 'Cancelled Sale Order' },
 ];
 
 const CompletedSaleOrder = () => {
