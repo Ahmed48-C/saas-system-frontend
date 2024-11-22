@@ -25,10 +25,14 @@ const Form = ({ handleClick, icon, title }) => {
     const [products, setProducts] = useState([]);
     const [balances, setBalances] = useState([]);
     const [customers, setCustomers] = useState([]);
+    const [clients, setClients] = useState([]);
     const [statuses, setStatuses] = useState([]);
 
     const [loadingCustomers, setLoadingCustomers] = useState(false);
     const [errorCustomers, setErrorCustomers] = useState('');
+
+    const [loadingClients, setLoadingClients] = useState(false);
+    const [errorClients, setErrorClients] = useState('');
 
     const [loadingStores, setLoadingStores] = useState(false);
     const [errorStores, setErrorStores] = useState('');
@@ -96,6 +100,7 @@ const Form = ({ handleClick, icon, title }) => {
         const fetchDropdownData = async () => {
 
             setLoadingCustomers(true);
+            setLoadingClients(true);
             setLoadingProducts(true);
             setLoadingStores(true);
             setLoadingBalances(true);
@@ -107,6 +112,14 @@ const Form = ({ handleClick, icon, title }) => {
             } catch (error) {
                 setErrorCustomers('Error fetching customers');
                 setLoadingCustomers(false);
+            }
+
+            try {
+                await formFetchDropdownRecords(`${BASE_URL}/api/get/clients/`, setClients);
+                setLoadingClients(false);
+            } catch (error) {
+                setErrorClients('Error fetching clients');
+                setLoadingClients(false);
             }
 
             try {
@@ -173,7 +186,7 @@ const Form = ({ handleClick, icon, title }) => {
 
     const isFormValid = () => {
         // Ensure all basic fields are filled
-        if (!data.code || !data.store_id || !data.balance_id || !data.customer_id) {
+        if (!data.code || !data.store_id || !data.balance_id || !data.customer_id || !data.client_id) {
             return false;
         }
 
@@ -452,6 +465,24 @@ const Form = ({ handleClick, icon, title }) => {
                         disabled={!!id}
                         loading={loadingCustomers}
                         errorMessage={errorCustomers}
+                        />
+                    </Grid>
+
+                    <Grid item xs={6}>
+                        <InputSelect
+                        selectItems={clients.map(client => ({
+                            value: client.id,
+                            name: formatFormRecordDropdown(client.name)
+                        }))}
+                        label='Client'
+                        name='client_id'
+                        id='client_id'
+                        onChange={handleInputChange('client_id')}
+                        value={data.client_id ?? ""}
+                        error={isEmpty(data.client_id)}
+                        disabled={!!id}
+                        loading={loadingClients}
+                        errorMessage={errorClients}
                         />
                     </Grid>
 
