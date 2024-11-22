@@ -5,7 +5,7 @@ import { formatFilterRecordDropdown } from '../../functions/pages/formatFilterRe
 import { filterFetchDropdownRecords } from '../../functions/pages/filterFetchDropdownRecords';
 import { BASE_URL } from '../../config/apis';
 
-const FilterContent = ({ currentFilter, setCurrentFilter, handleProducts, products, stores, handleStores, handleBalances, balances, handleCustomers, customers }) => {
+const FilterContent = ({ currentFilter, setCurrentFilter, handleProducts, products, stores, handleStores, handleBalances, balances, handleCustomers, customers, handleClients, clients }) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -13,6 +13,7 @@ const FilterContent = ({ currentFilter, setCurrentFilter, handleProducts, produc
         filterFetchDropdownRecords(`${BASE_URL}/api/get/stores/`, handleStores)
         filterFetchDropdownRecords(`${BASE_URL}/api/get/balances/`, handleBalances)
         filterFetchDropdownRecords(`${BASE_URL}/api/get/customers/`, handleCustomers)
+        filterFetchDropdownRecords(`${BASE_URL}/api/get/clients/`, handleClients)
         setLoading(false);
     }, []);
 
@@ -83,6 +84,19 @@ const FilterContent = ({ currentFilter, setCurrentFilter, handleProducts, produc
                     id='customer'
                     onChange={(e) => setCurrentFilter({ ...currentFilter, customer_id: e.target.value })}
                     value={currentFilter.customer_id}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <InputSelect
+                    selectItems={clients.map(client => ({
+                        value: client.id.toString(),
+                        name: formatFilterRecordDropdown(client.name)
+                    }))}
+                    label='Client'
+                    name='client'
+                    id='client'
+                    onChange={(e) => setCurrentFilter({ ...currentFilter, client_id: e.target.value })}
+                    value={currentFilter.client_id}
                 />
             </Grid>
             <Grid item xs={12}>

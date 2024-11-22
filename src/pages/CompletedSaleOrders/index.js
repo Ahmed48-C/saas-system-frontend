@@ -43,12 +43,13 @@ const CompletedSaleOrder = () => {
   const [filters, setFilters] = useState([]);
   const [anchorEl4, setAnchorEl4] = useState(null);
   // const [currentFilter, setCurrentFilter] = useState({ code: '', price: '', quantity: '', total: '', status: '', product_id: '', store_id: '', balance_id: '', customer_id: '' });
-  const [currentFilter, setCurrentFilter] = useState({ code: '', quantity: '', total: '', items__product_id: '', store_id: '', balance_id: '', customer_id: '', items__price: '', items__quantity: '', items__total: '' });
+  const [currentFilter, setCurrentFilter] = useState({ code: '', quantity: '', total: '', items__product_id: '', store_id: '', balance_id: '', customer_id: '', client_id: '', items__price: '', items__quantity: '', items__total: '' });
   const [products, setProducts] = useState([]);
   const [stores, setStores] = useState([]);
   const [balances, setBalances] = useState([]);
   const [customers, setCustomers] = useState([]);
-  const filterRecords = { products, stores, balances, customers };
+  const [clients, setClients] = useState([]);
+  const filterRecords = { products, stores, balances, customers, clients };
   const [isEditing, setIsEditing] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
 
@@ -68,6 +69,7 @@ const CompletedSaleOrder = () => {
       { name: 'items', label: 'Items', className: 'bg-white text-left', selected: true },
       { name: 'store', label: 'Store', className: 'bg-white text-left', selected: true },
       { name: 'customer', label: 'Customer', className: 'bg-white text-left', selected: true },
+      { name: 'client', label: 'Client', className: 'bg-white text-left', selected: true },
       { name: 'balance', label: 'Balance', className: 'bg-white text-left', selected: true }
       // { name: 'customer', label: 'Customer', className: 'bg-white text-left', selected: true }
     ];
@@ -183,6 +185,10 @@ const CompletedSaleOrder = () => {
     setCustomers(value);
   }
 
+  const handleClients = (value) => {
+    setClients(value);
+  }
+
   const handleBatchDelete = () => {
     const successCallback = (data) => {
       setNumSelected(0);
@@ -271,7 +277,7 @@ const CompletedSaleOrder = () => {
           handleIsEditing={handleIsEditing}
           handleEditIndex={handleEditIndex}
           editIndex={editIndex}
-          filterContent={<FilterContent currentFilter={currentFilter} setCurrentFilter={setCurrentFilter} products={products} handleProducts={handleProducts} stores={stores} handleStores={handleStores} balances={balances} handleBalances={handleBalances} customers={customers} handleCustomers={handleCustomers} />}
+          filterContent={<FilterContent currentFilter={currentFilter} setCurrentFilter={setCurrentFilter} products={products} handleProducts={handleProducts} stores={stores} handleStores={handleStores} balances={balances} handleBalances={handleBalances} customers={customers} handleCustomers={handleCustomers} clients={clients} handleClients={handleClients} />}
           filterRecords={filterRecords} // Pass records object
         />}
         tableHeading={<TableHeading
