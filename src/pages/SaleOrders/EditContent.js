@@ -20,7 +20,11 @@ const EditContent = ({ editLoading }) => {
         balance_id: data.balance_id,
         customer_id: data.customer_id,
         client_id: data.client_id,
+        courier_id: data.courier_id,
+        tracking_number: data.tracking_number,
         items: data.items,
+
+        delivery_cost: data.delivery_cost,
       };
 
       const successCallback = (data) => {
