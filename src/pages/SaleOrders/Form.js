@@ -26,6 +26,7 @@ const Form = ({ handleClick, icon, title }) => {
     const [balances, setBalances] = useState([]);
     const [customers, setCustomers] = useState([]);
     const [clients, setClients] = useState([]);
+    const [couriers, setCouriers] = useState([]);
     const [statuses, setStatuses] = useState([]);
 
     const [loadingCustomers, setLoadingCustomers] = useState(false);
@@ -33,6 +34,9 @@ const Form = ({ handleClick, icon, title }) => {
 
     const [loadingClients, setLoadingClients] = useState(false);
     const [errorClients, setErrorClients] = useState('');
+
+    const [loadingCouriers, setLoadingCouriers] = useState(false);
+    const [errorCouriers, setErrorCouriers] = useState('');
 
     const [loadingStores, setLoadingStores] = useState(false);
     const [errorStores, setErrorStores] = useState('');
@@ -101,6 +105,7 @@ const Form = ({ handleClick, icon, title }) => {
 
             setLoadingCustomers(true);
             setLoadingClients(true);
+            setLoadingCouriers(true);
             setLoadingProducts(true);
             setLoadingStores(true);
             setLoadingBalances(true);
@@ -120,6 +125,14 @@ const Form = ({ handleClick, icon, title }) => {
             } catch (error) {
                 setErrorClients('Error fetching clients');
                 setLoadingClients(false);
+            }
+
+            try {
+                await formFetchDropdownRecords(`${BASE_URL}/api/get/couriers/`, setCouriers);
+                setLoadingCouriers(false);
+            } catch (error) {
+                setErrorCouriers('Error fetching couriers');
+                setLoadingCouriers(false);
             }
 
             try {
@@ -657,6 +670,62 @@ const Form = ({ handleClick, icon, title }) => {
                                 </Table>
                             </div>
                         </Card>
+                    </Grid>
+
+                    <Grid item xs={12} style={{ paddingLeft: '35px', paddingRight: '0px' }}>
+                        <div className="">
+                            <div className="app-page-title--heading" style={{ textAlign: 'left', paddingRight: 0 }}>
+                                <h1>Order Delivery</h1>
+                            </div>
+                            <Divider className="my-4" />
+                        </div>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Textarea
+                        rows={1}
+                        rowsMax={2}
+                        label='Delivery Cost'
+                        name='delivery_cost'
+                        id='delivery_cost'
+                        onChange={handleInputChange('delivery_cost')}
+                        value={data.delivery_cost ?? ""}
+                        key='delivery_cost'
+                        error={isEmpty(data.delivery_cost)}
+                        maxLength={80}
+                        />
+                    </Grid>
+
+                    <Grid item xs={6}>
+                        <Textarea
+                        rows={1}
+                        rowsMax={2}
+                        label='Tracking Number'
+                        name='tracking_number'
+                        id='tracking_number'
+                        onChange={handleInputChange('tracking_number')}
+                        value={data.tracking_number ?? ""}
+                        key='tracking_number'
+                        error={isEmpty(data.tracking_number)}
+                        maxLength={80}
+                        />
+                    </Grid>
+
+                    <Grid item xs={6}>
+                        <InputSelect
+                        selectItems={couriers.map(courier => ({
+                            value: courier.id,
+                            name: formatFormRecordDropdown(courier.name)
+                        }))}
+                        label='Courier'
+                        name='courier_id'
+                        id='courier_id'
+                        onChange={handleInputChange('courier_id')}
+                        value={data.courier_id ?? ""}
+                        error={isEmpty(data.courier_id)}
+                        disabled={!!id}
+                        loading={loadingCouriers}
+                        errorMessage={errorCouriers}
+                        />
                     </Grid>
 
                     <Grid item xs={12} style={{ paddingLeft: '35px', paddingRight: '0px' }}>
