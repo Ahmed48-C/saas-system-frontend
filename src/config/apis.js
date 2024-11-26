@@ -103,4 +103,8 @@ export const API_ENDPOINTS = {
   PUT_CLIENT: (id) => `${BASE_URL}/api/put/client/${id}/`,
   GET_CLIENTS: (from, to) => `${BASE_URL}/api/get/clients/?from=${from}&to=${to}`,
   GET_CLIENT: (id) => `${BASE_URL}/api/get/client/${id}/`,
+
+  DELETE_INVENTORY_LOG: (id) => `${BASE_URL}/api/delete/inventory_log/${id}/`,
+  DELETE_INVENTORY_LOGS: () => `${BASE_URL}/api/delete/inventory_logs/`,
+  GET_INVENTORY_LOGS: (from, to) => `${BASE_URL}/api/get/inventory_logs/?from=${from}&to=${to}`,
 };

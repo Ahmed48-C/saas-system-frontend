@@ -21,7 +21,8 @@ const headers = [
 ];
 
 const tabs = [
-    { url: '/ui/inventories', title: 'Inventories' }
+    { url: '/ui/inventories', title: 'Inventories' },
+    { url: '/ui/inventory-logs', title: 'Inventory Logs' }
 ];
 
 const Inventories = () => {
