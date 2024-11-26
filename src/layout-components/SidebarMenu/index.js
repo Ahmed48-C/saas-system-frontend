@@ -72,6 +72,12 @@ const SidebarMenu = (props) => {
     event.preventDefault();
   };
 
+  const [inventoryLogsOpen, setInventoryLogsOpen] = useState(false);
+  const toggleInventoryLogs = (event) => {
+    setInventoryLogsOpen(!inventoryLogsOpen);
+    event.preventDefault();
+  };
+
   return (
     <>
       <PerfectScrollbar>
@@ -453,21 +459,49 @@ const SidebarMenu = (props) => {
               </Collapse>
             </li> */}
             <li>
+              <a
+                href="#/"
+                onClick={toggleInventoryLogs}
+                className={clsx({ active: inventoryLogsOpen })}>
+                <span className="sidebar-icon">
+                <ArchiveIcon />
+                </span>
+                <span className="sidebar-item-label">Inventory</span>
+                <span className="sidebar-icon-indicator">
+                  <ChevronRightTwoToneIcon />
+                </span>
+              </a>
+              <Collapse in={inventoryLogsOpen}>
+                <ul>
+                  <li>
+                    <NavLink
+                      onClick={toggleSidebarMobile}
+                      to="/ui/inventories">
+                      Inventories
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink
+                      onClick={toggleSidebarMobile}
+                      to="/ui/inventory-logs">
+                      Inventory Logs
+                    </NavLink>
+                  </li>
+                </ul>
+              </Collapse>
+            </li>
+            {/* <li>
               <NavLink
                 activeClassName="active"
                 onClick={toggleSidebarMobile}
                 className="nav-link-simple"
                 to="/ui/inventories">
                 <span className="sidebar-icon">
-                  {/* <BallotTwoToneIcon /> */}
                   <ArchiveIcon />
                 </span>
                 Inventories
-                {/* <span className="sidebar-icon-indicator sidebar-icon-indicator-right">
-                  <ChevronRightTwoToneIcon />
-                </span> */}
               </NavLink>
-            </li>
+            </li> */}
             {/* <li>
               <a
                 href="#/"

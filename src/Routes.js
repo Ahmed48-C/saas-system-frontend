@@ -459,6 +459,11 @@ const EditClients = lazy(() =>
   import('./pages/Clients/EditContent')
 );
 
+const InventoryLogs = lazy(() =>
+  import('./pages/InventoryLogs/index')
+);
+
+
 const Routes = () => {
   const SuspenseLoading = () => {
       const [show, setShow] = useState(false);
@@ -733,6 +738,12 @@ const Routes = () => {
                               exact
                               path="/ui/client/edit/:id"
                               component={EditClients}
+                            />
+
+                            <Route
+                              exact
+                              path="/ui/inventory-logs"
+                              component={InventoryLogs}
                             />
 
                             {/* <Route path="/ui/400" component={BadRequest400} />
