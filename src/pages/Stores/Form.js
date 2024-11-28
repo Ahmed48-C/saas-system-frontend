@@ -62,14 +62,43 @@ const Form = ({ handleClick, icon, title }) => {
             <FormControl fullWidth>
                 <Grid container spacing={4} className="my-4" style={{ width: '100%' }}>
                     <Grid item xs={12} style={{ paddingLeft: '35px', paddingRight: '0px' }}>
-                        <div>
+                        {/* <div>
                             <div className="">
                                 <div className="app-page-title--heading" style={{ textAlign: 'left', paddingRight: 0 }}>
                                     <h1>{title}</h1>
                                 </div>
                             </div>
                             <Divider className="my-4" />
-                        </div>
+                        </div> */}
+                        <Box display="flex" justifyContent="space-between" alignItems="center">
+                            <div className="">
+                                <div className="app-page-title--heading">
+                                    <h1>{title}</h1>
+                                </div>
+                            </div>
+                            <div className="app-page-title--heading">
+                                <Box display="flex" justifyContent="flex-end">
+                                    <Tooltip title="Submit">
+                                        <span>
+                                            <Button
+                                            variant="contained"
+                                            size="small"
+                                            className="btn-success"
+                                            onClick={() => {
+                                                handleClick(data);
+                                            }}
+                                            disabled={!isFormValid()} // Disable button if form is not valid
+                                            >
+                                            <span className="btn-wrapper--text" style={{ paddingRight: '5px' }}>Save</span>
+                                            <span className="btn-wrapper--icon">
+                                                <FontAwesomeIcon icon={['fas', icon]} className="opacity-8" />
+                                            </span>
+                                            </Button>
+                                        </span>
+                                    </Tooltip>
+                                </Box>
+                            </div>
+                        </Box>
                     </Grid>
                     <Grid item xs={12} style={{ paddingLeft: '35px', paddingRight: '0px' }}>
                         <div className="">
@@ -205,12 +234,13 @@ const Form = ({ handleClick, icon, title }) => {
                                 <Button
                                 variant="contained"
                                 size="small"
-                                className="d-40 btn-success"
+                                className="btn-success"
                                 onClick={() => {
                                     handleClick(data);
                                 }}
                                 disabled={!isFormValid()} // Disable button if form is not valid
                                 >
+                                <span className="btn-wrapper--text" style={{ paddingRight: '5px' }}>Save</span>
                                 <span className="btn-wrapper--icon">
                                     <FontAwesomeIcon icon={['fas', icon]} className="opacity-8" />
                                 </span>

@@ -236,10 +236,11 @@ const MainTable = ({ tableContent, tableButtons, Heading, handleClick, tableHead
                     <Button
                       variant="contained"
                       size="small"
-                      className="d-40 btn-primary"
+                      className="btn-primary"
                       onClick={handleClick}>
+                      <span className="btn-wrapper--text" style={{ paddingRight: '5px' }}>New</span>
                       <span className="btn-wrapper--icon">
-                        <FontAwesomeIcon icon={['fas', 'plus-circle']} />
+                        <FontAwesomeIcon icon={['fas', 'plus']} style={{ marginBottom: '1px' }} />
                       </span>
                     </Button>
                   </Tooltip>
