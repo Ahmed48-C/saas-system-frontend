@@ -97,7 +97,7 @@ const FilterContent = ({ currentFilter, setCurrentFilter, handleStores, stores, 
                     id='auto_generated_note'
                     value={currentFilter.auto_generated_note}
                     onChange={(e) => setCurrentFilter({ ...currentFilter, auto_generated_note: e.target.value })}
-                    maxLength={100}
+                    maxLength={400}
                 />
             </Grid>
             <Grid item xs={12}>

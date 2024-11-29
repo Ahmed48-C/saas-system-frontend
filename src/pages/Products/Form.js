@@ -153,7 +153,6 @@ const Form = ({ handleClick, icon, title }) => {
                         onChange={handleInputChange('description')}
                         value={data.description ?? ""}
                         key='description'
-                        maxLength={254}
                         />
                     </Grid>
                     {/* <Grid item xs={4}>
@@ -180,7 +179,7 @@ const Form = ({ handleClick, icon, title }) => {
                         onChange={handleInputChange('brand')}
                         value={data.brand ?? ""}
                         key='brand'
-                        maxLength={80}
+                        maxLength={180}
                         />
                     </Grid>
                     <Grid item xs={4}>

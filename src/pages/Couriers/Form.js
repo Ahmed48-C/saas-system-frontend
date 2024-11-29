@@ -211,6 +211,7 @@ const Form = ({ handleClick, icon, title }) => {
                         value={data.default_delivery_cost ?? ""}
                         key='default_delivery_cost'
                         error={isEmpty(data.default_delivery_cost)}
+                        maxLength={15}
                         />
                     </Grid>
                     <Grid item xs={12} style={{ paddingLeft: '35px', paddingRight: '0px' }}>

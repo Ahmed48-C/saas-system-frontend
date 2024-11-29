@@ -175,7 +175,7 @@ const FilterContent = ({ currentFilter, setCurrentFilter, handleProducts, produc
                     id='items__quantity'
                     value={currentFilter.items__quantity}
                     onChange={handleInputChange('items__quantity')}
-                    maxLength={15}
+                    maxLength={10}
                 />
             </Grid>
             </>

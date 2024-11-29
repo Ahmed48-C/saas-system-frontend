@@ -54,10 +54,12 @@ const Form = ({ handleClick, icon, title }) => {
         return  data.code &&
                 data.name &&
                 // data.phone &&
-                phoneNumberValidator(data.phone) &&
-                data.email &&
+                // phoneNumberValidator(data.phone) &&
+                // data.email &&
                 data.location_id&&
-                emailValidator(data.email);
+                (isEmpty(data.phone) || phoneNumberValidator(data.phone))
+                (isEmpty(data.email) || emailValidator(data.email))
+                // emailValidator(data.email);
     };
 
     const handleInputChange = (field) => (e) => {
@@ -157,8 +159,8 @@ const Form = ({ handleClick, icon, title }) => {
                         value={data.phone ?? ""}
                         key='phone'
                         // error={isEmpty(data.phone)}
-                        error={isEmpty(data.phone) || !phoneNumberValidator(data.phone)}
-                        helperText={isEmpty(data.phone) || !phoneNumberValidator(data.phone) ? 'Enter a valid phone number.' : ''}
+                        error={!isEmpty(data.phone) && !phoneNumberValidator(data.phone)}
+                        helperText={!isEmpty(data.phone) && !phoneNumberValidator(data.phone) ? 'Enter a valid phone number.' : ''}
                         maxLength={15}
                         />
                     </Grid>
@@ -172,8 +174,8 @@ const Form = ({ handleClick, icon, title }) => {
                         onChange={handleInputChange('email')}
                         value={data.email ?? ""}
                         key='email'
-                        error={isEmpty(data.email) || !emailValidator(data.email)}
-                        helperText={isEmpty(data.email) || !emailValidator(data.email) ? 'Enter a valid email address.' : ''}
+                        error={!isEmpty(data.email) && !emailValidator(data.email)}
+                        helperText={!isEmpty(data.email) && !emailValidator(data.email) ? 'Enter a valid email address.' : ''}
                         maxLength={254}
                         />
                     </Grid>

@@ -100,7 +100,7 @@ const FilterContent = ({ currentFilter, setCurrentFilter }) => {
                     id='default_delivery_cost'
                     value={currentFilter.default_delivery_cost}
                     onChange={handleInputChange('default_delivery_cost')}
-                    maxLength={100}
+                    maxLength={15}
                 />
             </Grid>
             </>
