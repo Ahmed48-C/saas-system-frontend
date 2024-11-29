@@ -10,6 +10,7 @@ import { formatFormRecordDropdown } from '../../functions/pages/formatFormRecord
 import { formFetchDropdownRecords } from '../../functions/pages/formFetchDropdownRecords'
 import { emailValidator } from '../../functions/pages/emailValidator'
 import { BASE_URL } from '../../config/apis';
+import { phoneNumberValidator } from '../../functions/pages/phoneNumberValidator'
 
 const Form = ({ handleClick, icon, title }) => {
     const { id } = useParams();
@@ -52,7 +53,8 @@ const Form = ({ handleClick, icon, title }) => {
     const isFormValid = () => {
         return  data.code &&
                 data.name &&
-                data.phone &&
+                // data.phone &&
+                phoneNumberValidator(data.phone) &&
                 data.email &&
                 data.location_id&&
                 emailValidator(data.email);
@@ -154,8 +156,10 @@ const Form = ({ handleClick, icon, title }) => {
                         onChange={handleInputChange('phone')}
                         value={data.phone ?? ""}
                         key='phone'
-                        error={isEmpty(data.phone)}
-                        maxLength={80}
+                        // error={isEmpty(data.phone)}
+                        error={isEmpty(data.phone) || !phoneNumberValidator(data.phone)}
+                        helperText={isEmpty(data.phone) || !phoneNumberValidator(data.phone) ? 'Enter a valid phone number.' : ''}
+                        maxLength={15}
                         />
                     </Grid>
                     <Grid item xs={6}>

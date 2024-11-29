@@ -9,6 +9,7 @@ import { handleFetchRecord } from '../../functions/pages/handleFetchRecord'
 import { formatFormRecordDropdown } from '../../functions/pages/formatFormRecordDropdown'
 import { formFetchDropdownRecords } from '../../functions/pages/formFetchDropdownRecords'
 import { emailValidator } from '../../functions/pages/emailValidator'
+import { phoneNumberValidator } from '../../functions/pages/phoneNumberValidator'
 
 const Form = ({ handleClick, icon, title }) => {
     const { id } = useParams();
@@ -21,7 +22,7 @@ const Form = ({ handleClick, icon, title }) => {
     const [errorLocations, setErrorLocations] = useState('');
 
     const fetchData = useCallback(() => {
-        handleFetchRecord(id, API_ENDPOINTS.GET_SUPPLIER, suppliersData, setEditLoading);
+        handleFetchRecord(id, API_ENDPOINTS.GET_SUPPLIER, setSuppliersData, setEditLoading);
     }, [id]);
 
     useEffect(() => {
@@ -51,8 +52,10 @@ const Form = ({ handleClick, icon, title }) => {
     const isFormValid = () => {
         return  suppliersData.name &&
                 suppliersData.phone &&
+                phoneNumberValidator(suppliersData.phone) &&
                 suppliersData.email &&
                 suppliersData.location_id&&
+                (isEmpty(suppliersData.contact_phone) || phoneNumberValidator(suppliersData.contact_phone)) &&
                 emailValidator(suppliersData.email);
     };
 
@@ -138,8 +141,10 @@ const Form = ({ handleClick, icon, title }) => {
                         onChange={handleInputChange('phone')}
                         value={suppliersData.phone ?? ""}
                         key='phone'
-                        error={isEmpty(suppliersData.phone)}
-                        maxLength={80}
+                        // error={isEmpty(suppliersData.phone)}
+                        error={isEmpty(suppliersData.phone) || !phoneNumberValidator(suppliersData.phone)}
+                        helperText={isEmpty(suppliersData.phone) || !phoneNumberValidator(suppliersData.phone) ? 'Enter a valid phone number.' : ''}
+                        maxLength={15}
                         />
                     </Grid>
                     <Grid item xs={6}>
@@ -216,7 +221,13 @@ const Form = ({ handleClick, icon, title }) => {
                         onChange={handleInputChange('contact_phone')}
                         value={suppliersData.contact_phone ?? ""}
                         key='contact_phone'
-                        maxLength={80}
+                        maxLength={15}
+                        error={!isEmpty(suppliersData.contact_phone) && !phoneNumberValidator(suppliersData.contact_phone)}
+                        helperText={
+                            !isEmpty(suppliersData.contact_phone) && !phoneNumberValidator(suppliersData.contact_phone)
+                                ? 'Enter a valid phone number.'
+                                : ''
+                        }
                         />
                     </Grid>
                     <Grid item xs={12} style={{ paddingLeft: '35px', paddingRight: '0px' }}>
