@@ -589,7 +589,7 @@ const Form = ({ handleClick, icon, title }) => {
                                                                                 value={row.price}
                                                                                 onChange={e => handleProductChange(index, 'price', e.target.value)}
                                                                                 inputMode="decimal"
-                                                                                maxLength={10}
+                                                                                maxLength={15}
                                                                                 size="small"
                                                                                 style={{ minWidth: '110px', padding: '4px 8px', paddingLeft: '14px' }}
                                                                                 fullWidth

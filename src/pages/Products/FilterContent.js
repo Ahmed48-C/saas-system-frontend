@@ -86,7 +86,7 @@ const FilterContent = ({
                     id='brand'
                     value={currentFilter.brand}
                     onChange={(e) => setCurrentFilter({ ...currentFilter, brand: e.target.value })}
-                    maxLength={80}
+                    maxLength={180}
                 />
             </Grid>
             <Grid item xs={12}>
@@ -99,7 +99,7 @@ const FilterContent = ({
                     id='measure_unit'
                     value={currentFilter.measure_unit}
                     onChange={(e) => setCurrentFilter({ ...currentFilter, measure_unit: e.target.value })}
-                    maxLength={180}
+                    maxLength={80}
                 />
             </Grid>
             <Grid item xs={12}>

@@ -51,12 +51,14 @@ const Form = ({ handleClick, icon, title }) => {
 
     const isFormValid = () => {
         return  suppliersData.name &&
-                suppliersData.phone &&
-                phoneNumberValidator(suppliersData.phone) &&
-                suppliersData.email &&
+                // suppliersData.phone &&
+                // phoneNumberValidator(suppliersData.phone) &&
+                // suppliersData.email &&
                 suppliersData.location_id&&
                 (isEmpty(suppliersData.contact_phone) || phoneNumberValidator(suppliersData.contact_phone)) &&
-                emailValidator(suppliersData.email);
+                (isEmpty(suppliersData.phone) || phoneNumberValidator(suppliersData.phone)) &&
+                (isEmpty(suppliersData.email) || emailValidator(suppliersData.email)) ;
+                // emailValidator(suppliersData.email);
     };
 
     const handleInputChange = (field) => (e) => {
@@ -142,8 +144,8 @@ const Form = ({ handleClick, icon, title }) => {
                         value={suppliersData.phone ?? ""}
                         key='phone'
                         // error={isEmpty(suppliersData.phone)}
-                        error={isEmpty(suppliersData.phone) || !phoneNumberValidator(suppliersData.phone)}
-                        helperText={isEmpty(suppliersData.phone) || !phoneNumberValidator(suppliersData.phone) ? 'Enter a valid phone number.' : ''}
+                        error={!isEmpty(suppliersData.phone) && !phoneNumberValidator(suppliersData.phone)}
+                        helperText={!isEmpty(suppliersData.phone) && !phoneNumberValidator(suppliersData.phone) ? 'Enter a valid phone number.' : ''}
                         maxLength={15}
                         />
                     </Grid>
@@ -157,8 +159,8 @@ const Form = ({ handleClick, icon, title }) => {
                         onChange={handleInputChange('email')}
                         value={suppliersData.email ?? ""}
                         key='email'
-                        error={isEmpty(suppliersData.email) || !emailValidator(suppliersData.email)}
-                        helperText={isEmpty(suppliersData.email) || !emailValidator(suppliersData.email) ? 'Enter a valid email address.' : ''}
+                        error={!isEmpty(suppliersData.email) && !emailValidator(suppliersData.email)}
+                        helperText={!isEmpty(suppliersData.email) && !emailValidator(suppliersData.email) ? 'Enter a valid email address.' : ''}
                         maxLength={254}
                         />
                     </Grid>
