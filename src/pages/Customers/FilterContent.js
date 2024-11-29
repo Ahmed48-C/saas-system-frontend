@@ -57,7 +57,7 @@ const FilterContent = ({ currentFilter, setCurrentFilter, handleLocations, locat
                     id='phone'
                     value={currentFilter.phone}
                     onChange={(e) => setCurrentFilter({ ...currentFilter, phone: e.target.value })}
-                    maxLength={80}
+                    maxLength={15}
                 />
             </Grid>
             <Grid item xs={12}>
