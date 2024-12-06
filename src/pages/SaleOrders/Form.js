@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState, useRef } from 'react'
 import { Box, Button, Card, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, FormControl, FormControlLabel, Grid, IconButton, InputLabel, MenuItem, Select, Switch, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Tooltip } from '@material-ui/core'
-import { InputSelect, Loader, Textarea } from '../../pages-components'
+import { InputSelect, Loader, Textarea, ToggleSwitch } from '../../pages-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import isEmpty from '../../functions/pages/isEmpty'
 import { useParams } from 'react-router-dom';
@@ -12,12 +12,14 @@ import { AddOutlined, DeleteOutline } from '@material-ui/icons'
 
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'; // Import drag-and-drop components
 import axios from 'axios'
+import DateTime from '../../pages-components/DateTimePicker'
 
 const Form = ({ handleClick, icon, title }) => {
     const { id } = useParams(); // Get the ID from the URL
 
     const [data, setData] = useState({
         items: [{ product_id: '', price: 0.0, quantity: 0, total: 0.00 }],
+        isDeliveryOrder: false,
         // You can include other parts of data as well
     });
     const [editLoading, setEditLoading] = useState(false); // Add loading state
@@ -28,6 +30,15 @@ const Form = ({ handleClick, icon, title }) => {
     const [clients, setClients] = useState([]);
     const [couriers, setCouriers] = useState([]);
     const [statuses, setStatuses] = useState([]);
+
+    const [isFreeDelivery, setIsFreeDelivery] = useState(['true', 'false']);
+    const handleToggleChange = (event) => {
+        const { checked } = event.target;
+        setData((prevData) => ({
+            ...prevData,
+            isDeliveryOrder: checked,
+        }));
+    };
 
     const [loadingCustomers, setLoadingCustomers] = useState(false);
     const [errorCustomers, setErrorCustomers] = useState('');
@@ -209,6 +220,16 @@ const Form = ({ handleClick, icon, title }) => {
         }
 
         // Validate each item in the items array
+        // const areItemsValid = data.items.every(item =>
+        //     item.product_id &&               // Ensure product_id is not empty
+        //     item.price > 0 &&                // Ensure price is greater than 0
+        //     item.quantity > 0 &&             // Ensure quantity is greater than 0
+        //     item.total > 0                   // Ensure total is greater than 0
+        // );
+
+        // return areItemsValid;
+
+        // Validate each item in the items array
         const areItemsValid = data.items.every(item =>
             item.product_id &&               // Ensure product_id is not empty
             item.price > 0 &&                // Ensure price is greater than 0
@@ -216,7 +237,18 @@ const Form = ({ handleClick, icon, title }) => {
             item.total > 0                   // Ensure total is greater than 0
         );
 
-        return areItemsValid;
+        if (!areItemsValid) {
+            return false;
+        }
+
+        // If isDeliveryOrder is true, check delivery-related fields
+        if (data.isDeliveryOrder) {
+            if (!data.courier_id) {
+                return false;
+            }
+        }
+
+        return true; // All validations passed
     };
 
     const handleInputChange = (field) => (e) => {
@@ -235,6 +267,11 @@ const Form = ({ handleClick, icon, title }) => {
                 const updatedData = { ...data, [field]: value };
                 updatedData.total = calculateTotal(updatedData.price, updatedData.quantity);
                 setData(updatedData);
+            }
+        } else if (field === 'delivery_cost') {
+            // Allow only whole numbers
+            if (value === '' || /^[0-9]*$/.test(value)) {
+                setData({ ...data, [field]: value });
             }
         } else {
             setData({ ...data, [field]: value });
@@ -702,64 +739,141 @@ const Form = ({ handleClick, icon, title }) => {
                     </Grid>
 
                     <Grid item xs={12} style={{ paddingLeft: '35px', paddingRight: '0px' }}>
-                        <div className="">
+                        <Box display="flex" justifyContent="space-between" alignItems="center">
                             <div className="app-page-title--heading" style={{ textAlign: 'left', paddingRight: 0 }}>
                                 <h1>Order Delivery</h1>
                             </div>
-                            <Divider className="my-4" />
-                        </div>
-                    </Grid>
-                    <Grid item xs={6}>
-                        <Textarea
-                        rows={1}
-                        rowsMax={2}
-                        label='Delivery Cost'
-                        name='delivery_cost'
-                        id='delivery_cost'
-                        onChange={handleInputChange('delivery_cost')}
-                        value={data.delivery_cost ?? ""}
-                        key='delivery_cost'
-                        error={isEmpty(data.delivery_cost)}
-                        maxLength={80}
-                        />
-                    </Grid>
+                            <div className="app-page-title--heading">
+                                {/* <Box display="flex" justifyContent="flex-end"> */}
+                                    <ToggleSwitch
+                                        checked={data.isDeliveryOrder}
+                                        onChange={handleToggleChange}
+                                        name="isDeliveryOrder"
+                                        className="switch-medium"
+                                        color="primary"
+                                    />
+                                {/* </Box> */}
+                            </div>
+                        </Box>
 
-                    <Grid item xs={6}>
-                        <Textarea
-                        rows={1}
-                        rowsMax={2}
-                        label='Tracking Number'
-                        name='tracking_number'
-                        id='tracking_number'
-                        onChange={handleInputChange('tracking_number')}
-                        value={data.tracking_number ?? ""}
-                        key='tracking_number'
-                        error={isEmpty(data.tracking_number)}
-                        maxLength={80}
-                        />
-                    </Grid>
-
-                    <Grid item xs={6}>
-                        <InputSelect
-                        selectItems={couriers.map(courier => ({
-                            value: courier.id,
-                            name: formatFormRecordDropdown(courier.name)
-                        }))}
-                        label='Courier'
-                        name='courier_id'
-                        id='courier_id'
-                        onChange={handleInputChange('courier_id')}
-                        value={data.courier_id ?? ""}
-                        error={isEmpty(data.courier_id)}
-                        disabled={!!id}
-                        loading={loadingCouriers}
-                        errorMessage={errorCouriers}
-                        />
-                    </Grid>
-
-                    <Grid item xs={12} style={{ paddingLeft: '35px', paddingRight: '0px' }}>
                         <Divider className="my-4" />
                     </Grid>
+
+                    {/* Conditionally Render Delivery Fields */}
+                    {data.isDeliveryOrder && (
+                    <>
+                        <Grid item xs={6}>
+                            <Textarea
+                            rows={1}
+                            rowsMax={2}
+                            label='Delivery Cost'
+                            name='delivery_cost'
+                            id='delivery_cost'
+                            onChange={handleInputChange('delivery_cost')}
+                            value={data.delivery_cost ?? ""}
+                            key='delivery_cost'
+                            // error={isEmpty(data.delivery_cost)}
+                            maxLength={80}
+                            />
+                        </Grid>
+
+                        <Grid item xs={6}>
+                            <Textarea
+                            rows={1}
+                            rowsMax={2}
+                            label='Tracking Number'
+                            name='tracking_number'
+                            id='tracking_number'
+                            onChange={handleInputChange('tracking_number')}
+                            value={data.tracking_number ?? ""}
+                            key='tracking_number'
+                            // error={isEmpty(data.tracking_number)}
+                            maxLength={100}
+                            />
+                        </Grid>
+
+                        <Grid item xs={6}>
+                            <InputSelect
+                            selectItems={couriers.map(courier => ({
+                                value: courier.id,
+                                name: formatFormRecordDropdown(courier.name)
+                            }))}
+                            label='Courier'
+                            name='courier_id'
+                            id='courier_id'
+                            onChange={handleInputChange('courier_id')}
+                            value={data.courier_id ?? ""}
+                            error={isEmpty(data.courier_id)}
+                            disabled={!!id}
+                            loading={loadingCouriers}
+                            errorMessage={errorCouriers}
+                            />
+                        </Grid>
+
+                        <Grid item xs={6}>
+                            <InputSelect
+                            selectItems={isFreeDelivery.map(freeDelivery => ({
+                                value: freeDelivery,
+                                name: formatFormRecordDropdown(freeDelivery)
+                            }))}
+                            label='Is Available'
+                            name='is_free_delivery'
+                            id='is_free_delivery'
+                            onChange={handleInputChange('is_free_delivery')}
+                            value={data.is_free_delivery ?? ""}
+                            // error={isEmpty(data.is_free_delivery)}
+                            />
+                        </Grid>
+
+                        <Grid item xs={12}>
+                            <Textarea
+                            rows={1}
+                            rowsMax={2}
+                            label='Notes'
+                            name='notes'
+                            id='notes'
+                            onChange={handleInputChange('notes')}
+                            value={data.notes ?? ""}
+                            key='notes'
+                            // error={isEmpty(data.notes)}
+                            />
+                        </Grid>
+
+                        <Grid item xs={6}>
+                            <DateTime
+                                label="Pickup At"
+                                value={data.pickup_at ?? ""}
+                                onChange={handleInputChange('pickup_at')}
+                                // error={error}
+                                id="pickup_at"
+                                // helperText={error ? 'Date and time are required.' : ''}
+                                // minDateTime="2024-01-01T00:00"
+                                // maxDateTime="2024-12-31T23:59"
+                                required={false}
+                                disablePast={true} // Prevent selection of past dates
+                            />
+                        </Grid>
+
+                        <Grid item xs={6}>
+                            <DateTime
+                                label="Delivery At"
+                                value={data.delivery_at ?? ""}
+                                onChange={handleInputChange('delivery_at')}
+                                // error={error}
+                                id="delivery_at"
+                                // helperText={error ? 'Date and time are required.' : ''}
+                                // minDateTime="2024-01-01T00:00"
+                                // maxDateTime="2024-12-31T23:59"
+                                required={false}
+                                disablePast={true} // Prevent selection of past dates
+                            />
+                        </Grid>
+
+                        <Grid item xs={12} style={{ paddingLeft: '35px', paddingRight: '0px' }}>
+                            <Divider className="my-4" />
+                        </Grid>
+                    </>
+                    )}
 
                     <Grid item xs={12}>
                         <Box display="flex" justifyContent="flex-end">
