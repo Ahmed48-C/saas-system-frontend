@@ -9,6 +9,7 @@ const CreateContent = () => {
   const history = useHistory();
 
     const handleSubmitClick = (data) => {
+      console.log("THE DATA",data)
 
       const postData = {
         code: data.code,
@@ -18,11 +19,16 @@ const CreateContent = () => {
         balance_id: data.balance_id,
         customer_id: data.customer_id,
         client_id: data.client_id,
-        courier_id: data.courier_id,
-        tracking_number: data.tracking_number,
         items: data.items,
 
+        pickup_at: data.pickup_at,
+        delivery_at: data.delivery_at,
+        is_free_delivery: data.is_free_delivery,
+        notes: data.notes,
         delivery_cost: data.delivery_cost,
+        courier_id: data.courier_id,
+        tracking_number: data.tracking_number,
+        isDeliveryOrder: data.isDeliveryOrder,
       };
 
       const successCallback = (data) => {

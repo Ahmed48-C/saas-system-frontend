@@ -1,25 +1,16 @@
-import React, { useState } from 'react';
-
+import React from 'react';
 import { Switch } from '@material-ui/core';
 
-const ToggleSwitch = () => {
-  const [toggle, setToggle] = useState(true);
-
-  const handleChange = (event) => {
-    setToggle({ ...toggle, [event.target.name]: event.target.checked });
-  };
-
+const ToggleSwitch = ({ checked, onChange, name, color = 'secondary', className }) => {
   return (
-    <>
-      <Switch
-        onChange={handleChange}
-        checked={toggle}
-        name="checkedB"
-        color="secondary"
-        className="switch-small"
-      />
-    </>
+    <Switch
+      checked={checked}
+      onChange={onChange}
+      name={name}
+      color={color}
+      className={className}
+    />
   );
-}
+};
 
 export default ToggleSwitch;
