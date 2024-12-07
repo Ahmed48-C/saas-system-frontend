@@ -463,6 +463,10 @@ const InventoryLogs = lazy(() =>
   import('./pages/InventoryLogs/index')
 );
 
+const ClientBalances = lazy(() =>
+  import('./pages/ClientBalances/index')
+);
+
 
 const Routes = () => {
   const SuspenseLoading = () => {
@@ -744,6 +748,12 @@ const Routes = () => {
                               exact
                               path="/ui/inventory-logs"
                               component={InventoryLogs}
+                            />
+
+                            <Route
+                              exact
+                              path="/ui/client-balances"
+                              component={ClientBalances}
                             />
 
                             {/* <Route path="/ui/400" component={BadRequest400} />

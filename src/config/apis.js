@@ -107,4 +107,6 @@ export const API_ENDPOINTS = {
   DELETE_INVENTORY_LOG: (id) => `${BASE_URL}/api/delete/inventory_log/${id}/`,
   DELETE_INVENTORY_LOGS: () => `${BASE_URL}/api/delete/inventory_logs/`,
   GET_INVENTORY_LOGS: (from, to) => `${BASE_URL}/api/get/inventory_logs/?from=${from}&to=${to}`,
+
+  GET_CLIENT_BALANCES: (from, to) => `${BASE_URL}/api/get/client_balances/?from=${from}&to=${to}`,
 };
