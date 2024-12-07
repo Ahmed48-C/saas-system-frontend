@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { FilterBar, MainTable } from '../../pages-components'
 import NoRecords from '../../pages-components/NoRecords';
 import TableContent from './TableContent';
@@ -11,25 +11,25 @@ import handleBatchDeleteRecords from '../../functions/pages/handleBatchDeleteRec
 import { toast } from 'react-toastify';
 import { UseIDs } from '../../config/SelectedIdsContext';
 import HandleTableErrorCallback from '../../functions/pages/HandleTableErrorCallback';
+import { Card, CardContent, Grid } from '@material-ui/core';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMoneyBill } from '@fortawesome/free-solid-svg-icons'; // Import the money sign icon
 
 const headers = [
-  { key: '', label: '', className: 'bg-white text-center' },
-  { key: 'name', label: 'Name', className: 'bg-white text-left' },
-  { key: 'phone', label: 'Phone', className: 'bg-white text-left' },
-  { key: 'vehicle_type', label: 'Vehicle Type', className: 'bg-white text-left' },
-  { key: 'is_available', label: 'Is Available', className: 'bg-white text-left' },
-  { key: 'default_delivery_cost', label: 'Default Delivery Cost', className: 'bg-white text-left' },
-  { key: 'actions', label: 'Actions', className: 'bg-white text-center', sortable: false }
+  { key: 'code', label: 'Code', className: 'bg-white text-left' },
+  { key: 'price', label: 'Price', className: 'bg-white text-left' },
+  { key: 'quantity', label: 'Quantity', className: 'bg-white text-left' },
+  { key: 'total', label: 'Total', className: 'bg-white text-left' },
+  { key: 'status', label: 'Status', className: 'bg-white text-left' },
 ];
 
 const tabs = [
-  { url: '/ui/suppliers', title: 'Suppliers' },
-  { url: '/ui/couriers', title: 'Couriers' },
-  { url: '/ui/customers', title: 'Customers' },
+  { url: '/ui/clients', title: 'Clients' },
+  { url: '/ui/client-balances', title: 'Client Balances' },
 ];
 
-const Courier = () => {
-  const heading = 'Courier'
+const ClientBalance = () => {
+  const heading = 'Client Balance'
   const [loading, setLoading] = useState(true);
   const [records, setRecords] = useState([]);
 
@@ -41,9 +41,9 @@ const Courier = () => {
 
   const [filters, setFilters] = useState([]);
   const [anchorEl4, setAnchorEl4] = useState(null);
-  const [currentFilter, setCurrentFilter] = useState({ name: '', phone: '', vehicle_type: '', is_available: '', default_delivery_cost: '' });
-  const [locations, setLocations] = useState([]);
-  const filterRecords = { locations };
+  const [currentFilter, setCurrentFilter] = useState({ client_id: '', amount: '', last_updated_at: '' });
+  const [clients, setClients] = useState([]);
+  const filterRecords = { clients };
   const [isEditing, setIsEditing] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
 
@@ -52,27 +52,21 @@ const Courier = () => {
   const [isSelectedAll, setIsSelectedAll] = useState(false);
 
   const [columns, setColumns] = useState(() => {
-    const savedColumns = localStorage.getItem('courierColumns');
+    const savedColumns = localStorage.getItem('clientBalanceColumns');
     return savedColumns ? JSON.parse(savedColumns) : [
-      { name: 'name', label: 'Name', className: 'bg-white text-left', selected: true },
-      { name: 'phone', label: 'Phone', className: 'bg-white text-left', selected: true },
-      { name: 'vehicle_type', label: 'Vehicle Type', className: 'bg-white text-left', selected: true },
-      { name: 'is_available', label: 'Is Available', className: 'bg-white text-left', selected: true },
-      { name: 'default_delivery_cost', label: 'Default Delivery Cost', className: 'bg-white text-left', selected: true },
+      { name: 'client', label: 'Client', className: 'bg-white text-left', selected: true },
+      { name: 'amount', label: 'Amount', className: 'bg-white text-left', selected: true },
+      { name: 'last_updated_at', label: 'Last Updated At', className: 'bg-white text-left', selected: true },
     ];
   });
 
   useEffect(() => {
-    localStorage.setItem('courierColumns', JSON.stringify(columns));
+    localStorage.setItem('clientBalanceColumns', JSON.stringify(columns));
   }, [columns]);
 
   const history = useHistory();
 
   const { ids, setIds } = UseIDs();
-
-  const handleNavigation = () => {
-    history.push('/ui/courier/create');
-  };
 
   const fetchRecords = useCallback(() => {
     const errorCallback = (error) => {
@@ -80,7 +74,7 @@ const Courier = () => {
       history.push('/ui/500'); // Navigate to the 500 error page
     };
     fetchAll(
-      API_ENDPOINTS.GET_COURIERS,
+      API_ENDPOINTS.GET_CLIENT_BALANCES,
       page,
       rows,
       order,
@@ -160,8 +154,8 @@ const Courier = () => {
     setColumns(value);
   }
 
-  const handleLocations = (value) => {
-    setLocations(value);
+  const handleClients = (value) => {
+    setClients(value);
   }
 
   const handleBatchDelete = () => {
@@ -169,14 +163,14 @@ const Courier = () => {
       setNumSelected(0);
       setSelected([]);
       setIsSelectedAll(false);
-      toast.success('Deleted Couriers Successfully');
+      toast.success('Deleted Client Balances Successfully');
     };
 
     const errorCallback = (error) => {
-      HandleTableErrorCallback(error, 'Courier', ids, setIds);
+      HandleTableErrorCallback(error, 'Client Balance', ids, setIds);
     };
 
-    handleBatchDeleteRecords(selected, API_ENDPOINTS.DELETE_COURIERS, fetchRecords, successCallback, errorCallback)
+    handleBatchDeleteRecords(selected, API_ENDPOINTS.DELETE_CLIENT_BALANCES, fetchRecords, successCallback, errorCallback)
   }
 
   const handleSelectAll = () => {
@@ -191,6 +185,45 @@ const Courier = () => {
     setNumSelected(0);
     setIsSelectedAll(false);
   }
+
+  const MoneyInfo = () => {
+    const { totalAmount } = useMemo(() => {
+      if (!Array.isArray(records.data) || records.data.length === 0) {
+        return { totalAmount: 0 }; // Return default values if data is not available
+      }
+
+      return records.data.reduce(
+        (acc, record) => {
+          acc.totalAmount += parseFloat(record.amount) || 0;
+          return acc;
+        },
+        { totalAmount: 0 }
+      );
+    }, [records.data]); // Make sure to include records.data in the dependency array
+
+    return (
+      <Grid container>
+        <Grid item xl={12} md={12}>
+          <Card className="card-box card-box-border-bottom border-success">
+            <CardContent style={{ paddingBottom: 0 }}>
+              <div className="text-center">
+                <div className="mt-1">
+                  <FontAwesomeIcon
+                    icon={faMoneyBill}
+                    className="font-size-xxl text-success"
+                  />
+                </div>
+                <div className="mt-3 line-height-sm mb-2">
+                  <b className="font-size-lg pr-1">${totalAmount.toFixed(2)}</b>
+                  <span className="text-black-50">Total Amount</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
+    );
+  };
 
   return (
     <>
@@ -211,7 +244,7 @@ const Courier = () => {
           handleIsEditing={handleIsEditing}
           handleEditIndex={handleEditIndex}
           editIndex={editIndex}
-          filterContent={<FilterContent currentFilter={currentFilter} setCurrentFilter={setCurrentFilter} locations={locations} handleLocations={handleLocations} />}
+          filterContent={<FilterContent currentFilter={currentFilter} setCurrentFilter={setCurrentFilter} clients={clients} handleClients={handleClients} />}
           filterRecords={filterRecords} // Pass records object
         />}
         tableHeading={<TableHeading
@@ -220,10 +253,12 @@ const Courier = () => {
           onRequestSort={handleRequestSort}
           headers={headers}
           columns={columns}
+          isActions={false}
+          isBatchDelete={false}
         />}
         tableContent={
           !loading && records.data.length === 0 ? (
-            <NoRecords context='Couriers' />
+            <NoRecords context='Client Balances' />
           ) : (
             <TableContent
               fetchRecords={fetchRecords}
@@ -238,8 +273,7 @@ const Courier = () => {
             />
           )
         }
-        Heading='Couriers'
-        handleClick={handleNavigation}
+        Heading='Client Balances'
         handlePageChange={handlePageChange}
         pageCount={totalPages}
         page={page}
@@ -253,9 +287,11 @@ const Courier = () => {
         columns={columns}
         handleColumns={handleColumns}
         tabs={tabs}
+        contentAboveFilter={<MoneyInfo />}
+        isAddRecord={false}
       />
     </>
   )
 }
 
-export default Courier
+export default ClientBalance

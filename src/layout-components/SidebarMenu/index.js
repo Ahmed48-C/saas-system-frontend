@@ -78,6 +78,12 @@ const SidebarMenu = (props) => {
     event.preventDefault();
   };
 
+  const [clientBalancesOpen, setClientBalancesOpen] = useState(false);
+  const toggleClientBalances = (event) => {
+    setClientBalancesOpen(!clientBalancesOpen);
+    event.preventDefault();
+  };
+
   return (
     <>
       <PerfectScrollbar>
@@ -341,19 +347,48 @@ const SidebarMenu = (props) => {
                       Couriers
                     </NavLink>
                   </li>
-                  <li>
+                  {/* <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
                       to="/ui/clients">
                       Clients
                     </NavLink>
-                  </li>
+                  </li> */}
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
                       to="/ui/customers">
                       Customers
                     </NavLink>
+                  </li>
+                  <li>
+                    <a
+                      href="#/"
+                      onClick={toggleClientBalances}
+                      className={clsx({ active: clientBalancesOpen })}>
+                      <span className="sidebar-item-label">Client</span>
+                      <span className="sidebar-icon-indicator">
+                        <ChevronRightTwoToneIcon />
+                      </span>
+                    </a>
+                    <Collapse in={clientBalancesOpen}>
+                      <ul>
+                        <li>
+                          <NavLink
+                            onClick={toggleSidebarMobile}
+                            to="/ui/clients">
+                            Clients
+                          </NavLink>
+                        </li>
+                        <li>
+                          <NavLink
+                            onClick={toggleSidebarMobile}
+                            to="/ui/client-balances">
+                            Client Balances
+                          </NavLink>
+                        </li>
+                      </ul>
+                    </Collapse>
                   </li>
                 </ul>
               </Collapse>
