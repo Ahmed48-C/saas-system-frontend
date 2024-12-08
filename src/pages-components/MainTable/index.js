@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -147,6 +147,60 @@ const MainTable = ({ tableContent, tableButtons, Heading, handleClick, tableHead
 
     const history = useHistory();
 
+    const tableContainerRef = useRef(null);
+    const customScrollbarRef = useRef(null);
+    const [isScrollable, setIsScrollable] = useState(false);
+    const [isDragging, setIsDragging] = useState(false);
+    const dragStartX = useRef(0);
+    const scrollStartX = useRef(0);
+
+    useEffect(() => {
+      if (tableContainerRef.current) {
+        const isContentScrollable =
+          tableContainerRef.current.scrollWidth > tableContainerRef.current.clientWidth;
+        setIsScrollable(isContentScrollable);
+      }
+    }, [tableHeading, tableContent]);
+
+    const handleHorizontalScroll = (e) => {
+      if (tableContainerRef.current) {
+        tableContainerRef.current.scrollLeft = e.target.scrollLeft;
+      }
+    };
+
+    const syncScrollbarPosition = () => {
+      if (tableContainerRef.current && customScrollbarRef.current) {
+        customScrollbarRef.current.scrollLeft = tableContainerRef.current.scrollLeft;
+      }
+    };
+
+    const handleMouseDown = (e) => {
+      setIsDragging(true);
+      dragStartX.current = e.clientX;
+      scrollStartX.current = tableContainerRef.current.scrollLeft;
+    };
+
+    const handleMouseMove = (e) => {
+      if (!isDragging || !tableContainerRef.current) return;
+      const dx = dragStartX.current - e.clientX;
+      tableContainerRef.current.scrollLeft = scrollStartX.current + dx;
+    };
+
+    const handleMouseUp = () => {
+      setIsDragging(false);
+    };
+
+    const handleTouchStart = (e) => {
+      dragStartX.current = e.touches[0].clientX;
+      scrollStartX.current = tableContainerRef.current.scrollLeft;
+    };
+
+    const handleTouchMove = (e) => {
+      if (!tableContainerRef.current) return;
+      const dx = dragStartX.current - e.touches[0].clientX;
+      tableContainerRef.current.scrollLeft = scrollStartX.current + dx;
+    };
+
     return (
       <>
         <motion.div
@@ -159,7 +213,6 @@ const MainTable = ({ tableContent, tableButtons, Heading, handleClick, tableHead
           onAnimationComplete={handleAnimationComplete}
           style={{ pointerEvents }}
         >
-          {/* <Card className="card-box mb-spacing-6-x2"> */}
           <Card className="card-box">
 
             <List className="nav-tabs nav-tabs-primary d-flex" style={{ paddingLeft: 0 }}>
@@ -176,7 +229,6 @@ const MainTable = ({ tableContent, tableButtons, Heading, handleClick, tableHead
               ))}
             </List>
 
-            {/* <div className="card-header py-3"> */}
             {numSelected > 0 ? (
               <Toolbar className={clsx(classes.highlight,'card-header py-3')}>
               <Typography
@@ -245,33 +297,17 @@ const MainTable = ({ tableContent, tableButtons, Heading, handleClick, tableHead
                     </Button>
                   </Tooltip>
                 )}
-                {/* <Tooltip title="New">
-                  <Button
-                    variant="contained"
-                    size="small"
-                    className="d-40 btn-primary"
-                    onClick={handleClick}>
-                    <span className="btn-wrapper--icon">
-                      <FontAwesomeIcon icon={['fas', 'plus-circle']} />
-                    </span>
-                  </Button>
-                </Tooltip> */}
               </Toolbar>
             )}
-            {/* </div> */}
             {tableButtons}
             <div>
-              {/* <div className="search-wrapper"> */}
               {contentAboveFilter}
-              {/* </div> */}
             </div>
             <div>
-              {/* <div className="search-wrapper"> */}
-                {filterBar}
-              {/* </div> */}
+              {filterBar}
             </div>
             <div className="divider" />
-            <div
+            {/* <div
               id="table-container"
               style={{
                 display: 'block',
@@ -290,6 +326,55 @@ const MainTable = ({ tableContent, tableButtons, Heading, handleClick, tableHead
                   {tableContent}
                 </tbody>
               </Table>
+            </div> */}
+            <div>
+              {/* Custom Horizontal Scrollbar */}
+              <div
+                ref={customScrollbarRef}
+                style={{
+                  overflowX: 'auto',
+                  overflowY: 'hidden',
+                  height: '20px',
+                  marginBottom: '10px',
+                  backgroundColor: '#f1f1f1',
+                  paddingRight: isScrollable ? '20px' : '0',
+                }}
+                onScroll={handleHorizontalScroll}
+              >
+                <div
+                  style={{
+                    width: tableContainerRef.current?.scrollWidth || '100%',
+                    height: '1px',
+                  }}
+                ></div>
+              </div>
+
+              {/* Table Container */}
+              <div
+                id="table-container"
+                ref={tableContainerRef}
+                onScroll={syncScrollbarPosition}
+                onMouseDown={handleMouseDown}
+                onMouseMove={handleMouseMove}
+                onMouseUp={handleMouseUp}
+                onMouseLeave={handleMouseUp}
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
+                style={{
+                  display: 'block',
+                  width: '100%',
+                  overflowX: 'auto',
+                  overflowY: 'auto',
+                  WebkitOverflowScrolling: 'touch',
+                  maxHeight: divHeight,
+                  cursor: isDragging ? 'grabbing' : 'grab',
+                }}
+              >
+                <Table className="table text-nowrap mb-0">
+                  <thead>{tableHeading}</thead>
+                  <tbody>{tableContent}</tbody>
+                </Table>
+              </div>
             </div>
             <div className="card-footer py-3 d-flex justify-content-between">
               <Pagination
@@ -368,7 +453,6 @@ const MainTable = ({ tableContent, tableButtons, Heading, handleClick, tableHead
                             />
                           }
                           label={column.name}
-                          // style={{ marginLeft: 'auto', marginRight: 'auto' }} // Center the label and checkbox
                         />
                       </ListItem>
                     ))}
