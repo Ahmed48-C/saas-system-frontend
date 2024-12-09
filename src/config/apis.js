@@ -109,4 +109,8 @@ export const API_ENDPOINTS = {
   GET_INVENTORY_LOGS: (from, to) => `${BASE_URL}/api/get/inventory_logs/?from=${from}&to=${to}`,
 
   GET_CLIENT_BALANCES: (from, to) => `${BASE_URL}/api/get/client_balances/?from=${from}&to=${to}`,
+
+  GET_BALANCES_HISTORY: (from, to) => `${BASE_URL}/api/get/balances_history/?from=${from}&to=${to}`,
+  DELETE_BALANCE_HISTORY: (id) => `${BASE_URL}/api/delete/balance_history/${id}/`,
+  DELETE_BALANCES_HISTORY: () => `${BASE_URL}/api/delete/balances_history/`,
 };

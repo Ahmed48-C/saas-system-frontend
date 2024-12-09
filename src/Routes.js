@@ -467,6 +467,10 @@ const ClientBalances = lazy(() =>
   import('./pages/ClientBalances/index')
 );
 
+const BalancesHistory = lazy(() =>
+  import('./pages/BalancesHistory/index')
+);
+
 
 const Routes = () => {
   const SuspenseLoading = () => {
@@ -754,6 +758,12 @@ const Routes = () => {
                               exact
                               path="/ui/client-balances"
                               component={ClientBalances}
+                            />
+
+                            <Route
+                              exact
+                              path="/ui/balances-history"
+                              component={BalancesHistory}
                             />
 
                             {/* <Route path="/ui/400" component={BadRequest400} />
