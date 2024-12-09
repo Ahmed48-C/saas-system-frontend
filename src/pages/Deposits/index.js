@@ -25,6 +25,7 @@ const headers = [
 
 const tabs = [
   { url: '/ui/balances', title: 'Balances' },
+  { url: '/ui/balances-history', title: 'Balances History' },
   { url: '/ui/deposits', title: 'Deposits' },
   { url: '/ui/withdraws', title: 'Withdraws' },
   { url: '/ui/transfers', title: 'Transfers' }

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { FilterBar, MainTable } from '../../pages-components'
 import NoRecords from '../../pages-components/NoRecords';
 import TableContent from './TableContent';
@@ -11,16 +11,16 @@ import handleBatchDeleteRecords from '../../functions/pages/handleBatchDeleteRec
 import { toast } from 'react-toastify';
 import { UseIDs } from '../../config/SelectedIdsContext';
 import HandleTableErrorCallback from '../../functions/pages/HandleTableErrorCallback';
+import { Card, CardContent, Grid } from '@material-ui/core';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMoneyBill } from '@fortawesome/free-solid-svg-icons'; // Import the money sign icon
 
 const headers = [
-  { key: '', label: '', className: 'bg-white text-center' },
-  { key: 'balance', label: 'Balance', className: 'bg-white text-left' },
-  { key: 'amount', label: 'Amount', className: 'bg-white text-left' },
-  { key: 'type', label: 'Type', className: 'bg-white text-left' },
-  { key: 'note', label: 'Note', className: 'bg-white text-left' },
-  { key: 'date', label: 'Date', className: 'bg-white text-left' },
-  { key: 'action', label: 'Action', className: 'bg-white text-left' },
-  { key: 'actions', label: 'Actions', className: 'bg-white text-center', sortable: false }
+  { key: 'code', label: 'Code', className: 'bg-white text-left' },
+  { key: 'price', label: 'Price', className: 'bg-white text-left' },
+  { key: 'quantity', label: 'Quantity', className: 'bg-white text-left' },
+  { key: 'total', label: 'Total', className: 'bg-white text-left' },
+  { key: 'status', label: 'Status', className: 'bg-white text-left' },
 ];
 
 const tabs = [
@@ -31,8 +31,8 @@ const tabs = [
   { url: '/ui/transfers', title: 'Transfers' }
 ];
 
-const Withdraw = () => {
-  const heading = 'Withdraw'
+const BalanceHistory = () => {
+  const heading = 'Balance History'
   const [loading, setLoading] = useState(true);
   const [records, setRecords] = useState([]);
 
@@ -44,7 +44,7 @@ const Withdraw = () => {
 
   const [filters, setFilters] = useState([]);
   const [anchorEl4, setAnchorEl4] = useState(null);
-  const [currentFilter, setCurrentFilter] = useState({ balance_id: '', amount: '', type: '', note: '', date: '', action: '' });
+  const [currentFilter, setCurrentFilter] = useState({ amount: '', previous_amount: '', current_amount: '', balance_id: '', action: '', note: '', transfer_date: '' });
   const [balances, setBalances] = useState([]);
   const filterRecords = { balances };
   const [isEditing, setIsEditing] = useState(false);
@@ -55,28 +55,25 @@ const Withdraw = () => {
   const [isSelectedAll, setIsSelectedAll] = useState(false);
 
   const [columns, setColumns] = useState(() => {
-    const savedColumns = localStorage.getItem('withdrawColumns');
+    const savedColumns = localStorage.getItem('balanceHistoryColumns');
     return savedColumns ? JSON.parse(savedColumns) : [
-        { name: 'balance', label: 'Balance', className: 'bg-white text-left', selected: true },
-        { name: 'amount', label: 'Amount', className: 'bg-white text-left', selected: true },
-        { name: 'type', label: 'Type', className: 'bg-white text-left', selected: true },
-        { name: 'note', label: 'Note', className: 'bg-white text-left', selected: false },
-        { name: 'date', label: 'date', className: 'bg-white text-left', selected: true },
-        { name: 'action', label: 'Action', className: 'bg-white text-left', selected: false },
+      { name: 'amount', label: 'Amount', className: 'bg-white text-left', selected: true },
+      { name: 'previous_amount', label: 'Previous Amount', className: 'bg-white text-left', selected: true },
+      { name: 'current_amount', label: 'Current Amount', className: 'bg-white text-left', selected: true },
+      { name: 'balance', label: 'Balance', className: 'bg-white text-left', selected: true },
+      { name: 'action', label: 'Action', className: 'bg-white text-left', selected: true },
+      { name: 'note', label: 'Note', className: 'bg-white text-left', selected: true },
+      { name: 'transfer_date', label: 'Transfer Date', className: 'bg-white text-left', selected: true },
     ];
   });
 
   useEffect(() => {
-    localStorage.setItem('withdrawColumns', JSON.stringify(columns));
+    localStorage.setItem('balanceHistoryColumns', JSON.stringify(columns));
   }, [columns]);
 
   const history = useHistory();
 
   const { ids, setIds } = UseIDs();
-
-  const handleNavigation = () => {
-    history.push('/ui/withdraw/create');
-  };
 
   const fetchRecords = useCallback(() => {
     const errorCallback = (error) => {
@@ -84,7 +81,7 @@ const Withdraw = () => {
       history.push('/ui/500'); // Navigate to the 500 error page
     };
     fetchAll(
-      API_ENDPOINTS.GET_BALANCE_LOGS,
+      API_ENDPOINTS.GET_BALANCES_HISTORY,
       page,
       rows,
       order,
@@ -92,7 +89,6 @@ const Withdraw = () => {
       filters,
       (data) => {
         setRecords(data);
-        console.log(data)
         if (data.actual_total_count) {
           setTotalPages(Math.ceil(data.actual_total_count / rows));
         } else {
@@ -174,14 +170,14 @@ const Withdraw = () => {
       setNumSelected(0);
       setSelected([]);
       setIsSelectedAll(false);
-      toast.success('Deleted Withdraws Successfully');
+      toast.success('Deleted Balances History Successfully');
     };
 
     const errorCallback = (error) => {
-      HandleTableErrorCallback(error, 'Withdraw', ids, setIds);
+      HandleTableErrorCallback(error, 'Balance History', ids, setIds);
     };
 
-    handleBatchDeleteRecords(selected, API_ENDPOINTS.DELETE_BALANCE_LOGS, fetchRecords, successCallback, errorCallback)
+    handleBatchDeleteRecords(selected, API_ENDPOINTS.DELETE_BALANCES_HISTORY, fetchRecords, successCallback, errorCallback)
   }
 
   const handleSelectAll = () => {
@@ -196,6 +192,45 @@ const Withdraw = () => {
     setNumSelected(0);
     setIsSelectedAll(false);
   }
+
+  const MoneyInfo = () => {
+    const { totalAmount } = useMemo(() => {
+      if (!Array.isArray(records.data) || records.data.length === 0) {
+        return { totalAmount: 0 }; // Return default values if data is not available
+      }
+
+      return records.data.reduce(
+        (acc, record) => {
+          acc.totalAmount += parseFloat(record.amount) || 0;
+          return acc;
+        },
+        { totalAmount: 0 }
+      );
+    }, [records.data]); // Make sure to include records.data in the dependency array
+
+    return (
+      <Grid container>
+        <Grid item xl={12} md={12}>
+          <Card className="card-box card-box-border-bottom border-success">
+            <CardContent style={{ paddingBottom: 0 }}>
+              <div className="text-center">
+                <div className="mt-1">
+                  <FontAwesomeIcon
+                    icon={faMoneyBill}
+                    className="font-size-xxl text-success"
+                  />
+                </div>
+                <div className="mt-3 line-height-sm mb-2">
+                  <b className="font-size-lg pr-1">${totalAmount.toFixed(2)}</b>
+                  <span className="text-black-50">Total Amount</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
+    );
+  };
 
   return (
     <>
@@ -225,10 +260,12 @@ const Withdraw = () => {
           onRequestSort={handleRequestSort}
           headers={headers}
           columns={columns}
+          isActions={false}
+          isBatchDelete={false}
         />}
         tableContent={
-          !loading && records.data.filter(item => item.type === 'WITHDRAW').length === 0 ? (
-            <NoRecords context='Withdraws' />
+          !loading && records.data.length === 0 ? (
+            <NoRecords context='Balances History' />
           ) : (
             <TableContent
               fetchRecords={fetchRecords}
@@ -243,8 +280,7 @@ const Withdraw = () => {
             />
           )
         }
-        Heading='Withdraws'
-        handleClick={handleNavigation}
+        Heading='Balances History'
         handlePageChange={handlePageChange}
         pageCount={totalPages}
         page={page}
@@ -258,9 +294,11 @@ const Withdraw = () => {
         columns={columns}
         handleColumns={handleColumns}
         tabs={tabs}
+        contentAboveFilter={<MoneyInfo />}
+        isAddRecord={false}
       />
     </>
   )
 }
 
-export default Withdraw
+export default BalanceHistory
