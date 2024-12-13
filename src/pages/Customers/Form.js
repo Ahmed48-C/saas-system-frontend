@@ -39,7 +39,7 @@ const Form = ({ handleClick, icon, title }) => {
                 await formFetchDropdownRecords(`${BASE_URL}/api/get/locations/`, setLocations);
                 setLoadingLocations(false);
             } catch (error) {
-                setErrorLocations('Error fetching suppliers');
+                setErrorLocations('Error fetching locations');
                 setLoadingLocations(false);
             }
 

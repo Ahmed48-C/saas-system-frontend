@@ -5,13 +5,12 @@ import { formatFilterRecordDropdown } from '../../functions/pages/formatFilterRe
 import { filterFetchDropdownRecords } from '../../functions/pages/filterFetchDropdownRecords';
 import { BASE_URL } from '../../config/apis';
 
-const FilterContent = ({ currentFilter, setCurrentFilter, handleProducts, products, stores, handleStores, suppliers, handleSuppliers }) => {
+const FilterContent = ({ currentFilter, setCurrentFilter, handleProducts, products, stores, handleStores }) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         filterFetchDropdownRecords(`${BASE_URL}/api/get/products/`, handleProducts)
         filterFetchDropdownRecords(`${BASE_URL}/api/get/stores/`, handleStores)
-        filterFetchDropdownRecords(`${BASE_URL}/api/get/suppliers/`, handleSuppliers)
         setLoading(false);
     }, []);
 
@@ -112,19 +111,6 @@ const FilterContent = ({ currentFilter, setCurrentFilter, handleProducts, produc
                     id='store'
                     onChange={(e) => setCurrentFilter({ ...currentFilter, store_id: e.target.value })}
                     value={currentFilter.store_id}
-                />
-            </Grid>
-            <Grid item xs={12}>
-                <InputSelect
-                    selectItems={suppliers.map(supplier => ({
-                        value: supplier.id.toString(),
-                        name: formatFilterRecordDropdown(supplier.name)
-                    }))}
-                    label='Supplier'
-                    name='supplier'
-                    id='supplier'
-                    onChange={(e) => setCurrentFilter({ ...currentFilter, supplier_id: e.target.value })}
-                    value={currentFilter.supplier_id}
                 />
             </Grid>
             </>

@@ -16,7 +16,6 @@ const CreateContent = () => {
             min_stock: data.min_stock,
             max_stock: data.max_stock,
             store_id: data.store_id,
-            supplier_id: data.supplier_id,
             product_id: data.product_id,
         };
 
@@ -32,7 +31,7 @@ const CreateContent = () => {
                 // Check if the error response contains 'duplicate key'
                 if (error.response.data && typeof error.response.data === 'object' && error.response.data.detail) {
                     if (error.response.data.detail.includes('duplicate key')) {
-                        errorMessage = 'Only a single inventory can have the same product, store and supplier';
+                        errorMessage = 'Only a single inventory can have the same product and store';
                     }
                     // else {
                     //     errorMessage = error.response.data.detail;
