@@ -24,12 +24,8 @@ const Form = ({ handleClick, icon, title }) => {
     const [stores, setStores] = useState([]);
     const [products, setProducts] = useState([]);
     const [balances, setBalances] = useState([]);
-    const [suppliers, setSuppliers] = useState([]);
     // const statuses = ['Pending', 'Completed']
     const [statuses, setStatuses] = useState([]);
-
-    const [loadingSuppliers, setLoadingSuppliers] = useState(false);
-    const [errorSuppliers, setErrorSuppliers] = useState('');
 
     const [loadingStores, setLoadingStores] = useState(false);
     const [errorStores, setErrorStores] = useState('');
@@ -92,23 +88,13 @@ const Form = ({ handleClick, icon, title }) => {
         // formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/stores/`, setStores)
         // formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/products/`, setProducts)
         // formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/balances/`, setBalances)
-        // formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/suppliers/`, setSuppliers)
 
         const fetchDropdownData = async () => {
 
-            setLoadingSuppliers(true);
             setLoadingProducts(true);
             setLoadingStores(true);
             setLoadingBalances(true);
             setLoadingStatuses(true);
-
-            try {
-                await formFetchDropdownRecords(`${BASE_URL}/api/get/suppliers/`, setSuppliers);
-                setLoadingSuppliers(false);
-            } catch (error) {
-                setErrorSuppliers('Error fetching suppliers');
-                setLoadingSuppliers(false);
-            }
 
             try {
                 await formFetchDropdownRecords(`${BASE_URL}/api/get/stores/`, setStores);
@@ -178,7 +164,7 @@ const Form = ({ handleClick, icon, title }) => {
 
     const isFormValid = () => {
         // Ensure all basic fields are filled
-        if (!data.code || !data.store_id || !data.balance_id || !data.supplier_id) {
+        if (!data.code || !data.store_id || !data.balance_id) {
             return false;
         }
 
@@ -468,24 +454,6 @@ const Form = ({ handleClick, icon, title }) => {
                         error={isEmpty(data.status)}
                         loading={loadingStatuses}
                         errorMessage={errorStatuses}
-                        />
-                    </Grid>
-
-                    <Grid item xs={4}>
-                        <InputSelect
-                        selectItems={suppliers.map(supplier => ({
-                            value: supplier.id,
-                            name: formatFormRecordDropdown(supplier.name)
-                        }))}
-                        label='Supplier'
-                        name='supplier_id'
-                        id='supplier_id'
-                        onChange={handleInputChange('supplier_id')}
-                        value={data.supplier_id ?? ""}
-                        error={isEmpty(data.supplier_id)}
-                        disabled={!!id}
-                        loading={loadingSuppliers}
-                        errorMessage={errorSuppliers}
                         />
                     </Grid>
 

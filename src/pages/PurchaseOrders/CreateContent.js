@@ -16,7 +16,6 @@ const CreateContent = () => {
         status: data.status,
         store_id: data.store_id,
         balance_id: data.balance_id,
-        supplier_id: data.supplier_id,
         items: data.items,
       };
 

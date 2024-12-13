@@ -16,7 +16,6 @@ const headers = [
     { key: '', label: '', className: 'bg-white text-center' },
     { key: 'product', label: 'Product', className: 'bg-white text-left' },
     { key: 'store', label: 'Store', className: 'bg-white text-left' },
-    { key: 'supplier', label: 'Supplier', className: 'bg-white text-left' },
     { key: 'actions', label: 'Actions', className: 'bg-white text-center', sortable: false }
 ];
 
@@ -38,11 +37,10 @@ const Inventories = () => {
 
     const [filters, setFilters] = useState([]);
     const [anchorEl4, setAnchorEl4] = useState(null);
-    const [currentFilter, setCurrentFilter] = useState({ in_stock: '', on_order: '', reserved: '', min_stock: '', max_stock: '', product_id: '', store_id: '', supplier_id: '' });
+    const [currentFilter, setCurrentFilter] = useState({ in_stock: '', on_order: '', reserved: '', min_stock: '', max_stock: '', product_id: '', store_id: '' });
     const [products, setProducts] = useState([]);
     const [stores, setStores] = useState([]);
-    const [suppliers, setSuppliers] = useState([]);
-    const filterRecords = { products, stores, suppliers };
+    const filterRecords = { products, stores };
     const [isEditing, setIsEditing] = useState(false);
     const [editIndex, setEditIndex] = useState(null);
 
@@ -59,8 +57,7 @@ const Inventories = () => {
             { name: 'min_stock', label: 'Min Stock', className: 'bg-white text-left', selected: false },
             { name: 'max_stock', label: 'Max Stock', className: 'bg-white text-left', selected: false },
             { name: 'product', label: 'Product', className: 'bg-white text-left', selected: true },
-            { name: 'store', label: 'Store', className: 'bg-white text-left', selected: true },
-            { name: 'supplier', label: 'Supplier', className: 'bg-white text-left', selected: true }
+            { name: 'store', label: 'Store', className: 'bg-white text-left', selected: true }
         ];
     });
 
@@ -171,10 +168,6 @@ const Inventories = () => {
         setStores(value);
     }
 
-    const handleSuppliers = (value) => {
-        setSuppliers(value);
-    }
-
     const handleBatchDelete = () => {
         const successCallback = (data) => {
             setNumSelected(0);
@@ -222,7 +215,7 @@ const Inventories = () => {
             handleIsEditing={handleIsEditing}
             handleEditIndex={handleEditIndex}
             editIndex={editIndex}
-            filterContent={<FilterContent currentFilter={currentFilter} setCurrentFilter={setCurrentFilter} products={products} handleProducts={handleProducts} stores={stores} handleStores={handleStores} suppliers={suppliers} handleSuppliers={handleSuppliers} />}
+            filterContent={<FilterContent currentFilter={currentFilter} setCurrentFilter={setCurrentFilter} products={products} handleProducts={handleProducts} stores={stores} handleStores={handleStores} />}
             filterRecords={filterRecords} // Pass records object
             />}
             tableHeading={<TableHeading

@@ -15,13 +15,17 @@ import { imageUploadHandler } from "../../config/uploadHandler";
 import {
     maxFileSizeInMBForUploadImage,
 } from "../../config/common";
+import { BASE_URL } from '../../config/apis';
 
 const Form = ({ handleClick, icon, title }) => {
     const { id } = useParams();
 
     const [data, setData] = useState({});
     const [editLoading, setEditLoading] = useState(false);
-    // const [suppliers, setSuppliers] = useState([]);
+    const [suppliers, setSuppliers] = useState([]);
+
+    const [loadingSuppliers, setLoadingSuppliers] = useState(false);
+    const [errorSuppliers, setErrorSuppliers] = useState('');
 
     const units = getUnits();
 
@@ -39,13 +43,27 @@ const Form = ({ handleClick, icon, title }) => {
             fetchData();
         }
 
-        // formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/suppliers/`, setSuppliers)
+        const fetchDropdownData = async () => {
+
+            setLoadingSuppliers(true);
+
+            try {
+                await formFetchDropdownRecords(`${BASE_URL}/api/get/suppliers/`, setSuppliers);
+                setLoadingSuppliers(false);
+            } catch (error) {
+                setErrorSuppliers('Error fetching suppliers');
+                setLoadingSuppliers(false);
+            }
+
+        };
+
+        fetchDropdownData();
     }, [id, fetchData]);
 
     const isFormValid = () => {
         return  data.code &&
-                data.name ;
-                // data.supplier_id;
+                data.name &&
+                data.supplier_id;
     };
 
     const handleInputChange = (field) => (e) => {
@@ -155,7 +173,7 @@ const Form = ({ handleClick, icon, title }) => {
                         key='description'
                         />
                     </Grid>
-                    {/* <Grid item xs={4}>
+                    <Grid item xs={4}>
                         <InputSelect
                         selectItems={suppliers.map(supplier => ({
                             value: supplier.id,
@@ -167,8 +185,10 @@ const Form = ({ handleClick, icon, title }) => {
                         onChange={handleInputChange('supplier_id')}
                         value={data.supplier_id ?? ""}
                         error={isEmpty(data.supplier_id)}
+                        loading={loadingSuppliers}
+                        errorMessage={errorSuppliers}
                         />
-                    </Grid> */}
+                    </Grid>
                     <Grid item xs={4}>
                         <Textarea
                         rows={1}

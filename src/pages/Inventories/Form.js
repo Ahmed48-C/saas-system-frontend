@@ -16,11 +16,7 @@ const Form = ({ handleClick, icon, title }) => {
     const [data, setData] = useState({});
     const [editLoading, setEditLoading] = useState(false); // Add loading state
     const [stores, setStores] = useState([]);
-    const [suppliers, setSuppliers] = useState([]);
     const [products, setProducts] = useState([]);
-
-    const [loadingSuppliers, setLoadingSuppliers] = useState(false);
-    const [errorSuppliers, setErrorSuppliers] = useState('');
 
     const [loadingStores, setLoadingStores] = useState(false);
     const [errorStores, setErrorStores] = useState('');
@@ -39,17 +35,8 @@ const Form = ({ handleClick, icon, title }) => {
 
         const fetchDropdownData = async () => {
 
-            setLoadingSuppliers(true);
             setLoadingProducts(true);
             setLoadingStores(true);
-
-            try {
-                await formFetchDropdownRecords(`${BASE_URL}/api/get/suppliers/`, setSuppliers);
-                setLoadingSuppliers(false);
-            } catch (error) {
-                setErrorSuppliers('Error fetching suppliers');
-                setLoadingSuppliers(false);
-            }
 
             try {
                 await formFetchDropdownRecords(`${BASE_URL}/api/get/stores/`, setStores);
@@ -71,7 +58,6 @@ const Form = ({ handleClick, icon, title }) => {
         fetchDropdownData();
 
         // formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/stores/`, setStores)
-        // formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/suppliers/`, setSuppliers)
         // formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/products/`, setProducts)
     }, [id, fetchData]);
 
@@ -104,7 +90,6 @@ const Form = ({ handleClick, icon, title }) => {
 
         return (
             data.store_id &&
-            data.supplier_id &&
             data.product_id &&
             isStockValid // Apply stock validation conditionally
         );
@@ -200,23 +185,6 @@ const Form = ({ handleClick, icon, title }) => {
                         disabled={!!id} // Disable if id is present
                         loading={loadingStores}
                         errorMessage={errorStores}
-                        />
-                    </Grid>
-                    <Grid item xs={6}>
-                        <InputSelect
-                        selectItems={suppliers.map(supplier => ({
-                            value: supplier.id,
-                            name: formatFormRecordDropdown(supplier.name)
-                        }))}
-                        label='Supplier'
-                        name='supplier_id'
-                        id='supplier_id'
-                        onChange={handleInputChange('supplier_id')}
-                        value={data.supplier_id ?? ""}
-                        error={isEmpty(data.supplier_id)}
-                        disabled={!!id} // Disable if id is present
-                        loading={loadingSuppliers}
-                        errorMessage={errorSuppliers}
                         />
                     </Grid>
                     <Grid item xs={6}>
