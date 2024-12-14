@@ -9,8 +9,12 @@ import { handleFetchRecord } from '../../functions/pages/handleFetchRecord'
 import { formatFormRecordDropdown } from '../../functions/pages/formatFormRecordDropdown'
 import { formFetchDropdownRecords } from '../../functions/pages/formFetchDropdownRecords'
 import { BASE_URL } from '../../config/apis';
+import { useHistory } from 'react-router-dom';
+import ConfirmCancel from '../../pages-components/ConfirmCancel'
 
 const Form = ({ handleClick, icon, title }) => {
+    const history = useHistory();
+
     const { id } = useParams(); // Get the ID from the URL
 
     const [data, setData] = useState({});
@@ -116,6 +120,12 @@ const Form = ({ handleClick, icon, title }) => {
         handleClick(sanitizedData); // Submit sanitized data
     };
 
+    const handleNavigatePage = () => {
+        history.push('/ui/inventories');
+    };
+
+    const [openConfirmCancelDialog, setOpenConfirmCancelDialog] = useState(false);
+
     return (
         <>
             {editLoading ? (
@@ -140,6 +150,16 @@ const Form = ({ handleClick, icon, title }) => {
                             </div>
                             <div className="app-page-title--heading">
                                 <Box display="flex" justifyContent="flex-end">
+                                    <span style={{ paddingRight: '8px' }}>
+                                        <Button
+                                        variant="contained"
+                                        size="small"
+                                        className="btn-info"
+                                        onClick={() => setOpenConfirmCancelDialog(true)}
+                                        >
+                                        <span className="btn-wrapper--text" style={{ paddingRight: '5px' }}>Cancel</span>
+                                        </Button>
+                                    </span>
                                     <Tooltip title="Submit">
                                         <span>
                                             <Button
@@ -304,6 +324,11 @@ const Form = ({ handleClick, icon, title }) => {
                         </Box>
                     </Grid>
                 </Grid>
+                <ConfirmCancel
+                    open={openConfirmCancelDialog}
+                    setOpen={setOpenConfirmCancelDialog}
+                    handleCancelClick={() => handleNavigatePage()}
+                />
             </FormControl>
             )}
         </>
