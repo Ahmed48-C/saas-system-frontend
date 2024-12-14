@@ -7,8 +7,12 @@ import isEmpty from '../../functions/pages/isEmpty'
 import { useParams } from 'react-router-dom';
 import {API_ENDPOINTS} from '../../config/apis'
 import { handleFetchRecord } from '../../functions/pages/handleFetchRecord'
+import { useHistory } from 'react-router-dom';
+import ConfirmCancel from '../../pages-components/ConfirmCancel'
 
 const Form = ({ handleClick, icon, title }) => {
+    const history = useHistory();
+
     const { id } = useParams(); // Get the ID from the URL
 
     const [locationsData, setLocationsData] = useState({});
@@ -56,6 +60,12 @@ const Form = ({ handleClick, icon, title }) => {
         setLocationsData({ ...locationsData, [field]: e.target.value });
     };
 
+    const handleNavigatePage = () => {
+        history.push('/ui/locations');
+    };
+
+    const [openConfirmCancelDialog, setOpenConfirmCancelDialog] = useState(false);
+
     return (
         <>
             {editLoading ? (
@@ -72,6 +82,16 @@ const Form = ({ handleClick, icon, title }) => {
                             </div>
                             <div className="app-page-title--heading">
                                 <Box display="flex" justifyContent="flex-end">
+                                    <span style={{ paddingRight: '8px' }}>
+                                        <Button
+                                        variant="contained"
+                                        size="small"
+                                        className="btn-info"
+                                        onClick={() => setOpenConfirmCancelDialog(true)}
+                                        >
+                                        <span className="btn-wrapper--text" style={{ paddingRight: '5px' }}>Cancel</span>
+                                        </Button>
+                                    </span>
                                     <Tooltip title="Submit">
                                         <span>
                                             <Button
@@ -245,6 +265,11 @@ const Form = ({ handleClick, icon, title }) => {
                         </Box>
                     </Grid>
                 </Grid>
+                <ConfirmCancel
+                    open={openConfirmCancelDialog}
+                    setOpen={setOpenConfirmCancelDialog}
+                    handleCancelClick={() => handleNavigatePage()}
+                />
             </FormControl>
             )}
         </>

@@ -3,8 +3,11 @@ import { Box, Button, Divider, FormControl, Grid, Tooltip } from '@material-ui/c
 import { Loader, Textarea } from '../../pages-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import isEmpty from '../../functions/pages/isEmpty'
+import { useHistory } from 'react-router-dom';
+import ConfirmCancel from '../../pages-components/ConfirmCancel'
 
 const Form = ({ handleClick, icon, title }) => {
+    const history = useHistory();
 
     const [data, setData] = useState({});
 
@@ -33,6 +36,12 @@ const Form = ({ handleClick, icon, title }) => {
         }
     };
 
+    const handleNavigatePage = () => {
+        history.push('/ui/balances');
+    };
+
+    const [openConfirmCancelDialog, setOpenConfirmCancelDialog] = useState(false);
+
     return (
         <>
             <FormControl fullWidth>
@@ -54,6 +63,16 @@ const Form = ({ handleClick, icon, title }) => {
                             </div>
                             <div className="app-page-title--heading">
                                 <Box display="flex" justifyContent="flex-end">
+                                    <span style={{ paddingRight: '8px' }}>
+                                        <Button
+                                        variant="contained"
+                                        size="small"
+                                        className="btn-info"
+                                        onClick={() => setOpenConfirmCancelDialog(true)}
+                                        >
+                                        <span className="btn-wrapper--text" style={{ paddingRight: '5px' }}>Cancel</span>
+                                        </Button>
+                                    </span>
                                     <Tooltip title="Submit">
                                         <span>
                                             <Button
@@ -139,6 +158,11 @@ const Form = ({ handleClick, icon, title }) => {
                         </Box>
                     </Grid>
                 </Grid>
+                <ConfirmCancel
+                    open={openConfirmCancelDialog}
+                    setOpen={setOpenConfirmCancelDialog}
+                    handleCancelClick={() => handleNavigatePage()}
+                />
             </FormControl>
         </>
     )
