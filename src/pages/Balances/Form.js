@@ -28,7 +28,7 @@ const Form = ({ handleClick, icon, title }) => {
             // Allow numeric input including decimals with max 2 decimal places
             if (value === '' || /^[0-9]*\.?[0-9]{0,2}$/.test(value)) {
                 const updatedData = { ...data, [field]: value };
-                updatedData.total = calculateTotal(updatedData.price, updatedData.quantity);
+                // updatedData.total = calculateTotal(updatedData.price, updatedData.quantity);
                 setData(updatedData);
             }
         } else {

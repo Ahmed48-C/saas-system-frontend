@@ -11,6 +11,11 @@ import { formFetchDropdownRecords } from '../../functions/pages/formFetchDropdow
 import { BASE_URL } from '../../config/apis';
 import { useHistory } from 'react-router-dom';
 import ConfirmCancel from '../../pages-components/ConfirmCancel'
+import PopupCreateNew from '../../pages-components/PopupCreateNew'
+import { handleSubmitRecord } from '../../functions/pages/handleSubmitRecord'
+import { toast } from 'react-toastify'
+import InputSelectNoCreate from '../../pages-components/InputSelectNoCreate'
+import { countryList } from '../../config/common'
 
 const Form = ({ handleClick, icon, title }) => {
     const history = useHistory();
@@ -28,11 +33,29 @@ const Form = ({ handleClick, icon, title }) => {
     const [loadingProducts, setLoadingProducts] = useState(false);
     const [errorProducts, setErrorProducts] = useState('');
 
+    const [suppliers, setSuppliers] = useState([]);
+
+    const [loadingSuppliers, setLoadingSuppliers] = useState(false);
+    const [errorSuppliers, setErrorSuppliers] = useState('');
+
+    const [countryOptions, setCountryOptions] = useState([]);
+
     const fetchData = useCallback(() => {
         handleFetchRecord(id, API_ENDPOINTS.GET_INVENTORY, setData, setEditLoading);
     }, [id]);
 
     useEffect(() => {
+        // Map through country list and sort them alphabetically
+        const sortedCountries = countryList
+            .map(country => ({
+                name: country,
+                value: country // Setting value to country name
+            }))
+            .sort((a, b) => a.name.localeCompare(b.name));
+
+        // Set the sorted countries in the state
+        setCountryOptions(sortedCountries);
+
         if (id) {
             fetchData();
         }
@@ -41,21 +64,30 @@ const Form = ({ handleClick, icon, title }) => {
 
             setLoadingProducts(true);
             setLoadingStores(true);
+            setLoadingSuppliers(true);
 
             try {
-                await formFetchDropdownRecords(`${BASE_URL}/api/get/stores/`, setStores);
-                setLoadingStores(false);
+                await formFetchDropdownRecords(`${BASE_URL}/api/get/stores/`, setStores, setLoadingStores);
+                // setLoadingStores(false);
             } catch (error) {
                 setErrorStores('Error fetching stores');
                 setLoadingStores(false);
             }
 
             try {
-                await formFetchDropdownRecords(`${BASE_URL}/api/get/products/`, setProducts);
-                setLoadingProducts(false);
+                await formFetchDropdownRecords(`${BASE_URL}/api/get/products/`, setProducts, setLoadingProducts);
+                // setLoadingProducts(false);
             } catch (error) {
                 setErrorProducts('Error fetching products');
                 setLoadingProducts(false);
+            }
+
+            try {
+                await formFetchDropdownRecords(`${BASE_URL}/api/get/suppliers/`, setSuppliers, setLoadingSuppliers);
+                // setLoadingSuppliers(false);
+            } catch (error) {
+                setErrorSuppliers('Error fetching suppliers');
+                setLoadingSuppliers(false);
             }
         };
 
@@ -125,6 +157,138 @@ const Form = ({ handleClick, icon, title }) => {
     };
 
     const [openConfirmCancelDialog, setOpenConfirmCancelDialog] = useState(false);
+
+    const [openProductPopupCreateNew, setOpenProductPopupCreateNew] = useState(false);
+    const [productPopupData, setProductPopupData] = useState({});
+
+    const [openStorePopupCreateNew, setOpenStorePopupCreateNew] = useState(false);
+    const [storePopupData, setStorePopupData] = useState({});
+
+    const onCreateNewProduct = () => {
+        setLoadingProducts(true);
+
+        const postData = {
+            code: productPopupData.code,
+            name: productPopupData.name,
+            supplier_id: productPopupData.supplier_id,
+        };
+
+        const fetchDropdownData = async () => {
+
+            // setLoadingSuppliers(true);
+
+            try {
+                await formFetchDropdownRecords(`${BASE_URL}/api/get/products/`, setProducts, setLoadingProducts);
+                // setLoadingProducts(false);
+            } catch (error) {
+                setErrorProducts('Error fetching products');
+                setLoadingProducts(false);
+            }
+
+        };
+
+        const successCallback = (data) => {
+            toast.success('Added Product Successfully');
+            fetchDropdownData();
+        };
+
+        const errorCallback = (error) => {
+            let errorMessage = 'An unexpected error occurred';
+
+            if (error.response) {
+                if (error.response.data && typeof error.response.data === 'object' && error.response.data.detail) {
+                    errorMessage = error.response.data.detail;
+                } else if (error.response.status === 500) {
+                    // For server errors
+                    errorMessage = 'An error occurred on the server. Please try again later.';
+                }
+            } else if (error.message) {
+                errorMessage = error.message;
+            }
+
+            toast.error('Error: ' + errorMessage);
+        };
+
+        handleSubmitRecord(postData, API_ENDPOINTS.POST_PRODUCT, successCallback, errorCallback);
+        console.log('Created new Product')
+    };
+
+    const onCreateNewStore = () => {
+        setLoadingStores(true);
+
+        const postData = {
+            code: storePopupData.code,
+            name: storePopupData.name,
+            street: storePopupData.street,
+            city: storePopupData.city,
+            state: storePopupData.state,
+            postcode: storePopupData.postcode,
+            country: storePopupData.country,
+        };
+
+        const fetchDropdownData = async () => {
+
+            try {
+                await formFetchDropdownRecords(`${BASE_URL}/api/get/stores/`, setStores, setLoadingStores);
+            } catch (error) {
+                setErrorStores('Error fetching stores');
+                setLoadingStores(false);
+            }
+
+        };
+
+        const successCallback = (data) => {
+            toast.success('Added Store Successfully');
+            fetchDropdownData();
+        };
+
+        const errorCallback = (error) => {
+            let errorMessage = 'An unexpected error occurred';
+
+            if (error.response) {
+                if (error.response.data && typeof error.response.data === 'object' && error.response.data.detail) {
+                    errorMessage = error.response.data.detail;
+                } else if (error.response.status === 500) {
+                    // For server errors
+                    errorMessage = 'An error occurred on the server. Please try again later.';
+                }
+            } else if (error.message) {
+                errorMessage = error.message;
+            }
+
+            toast.error('Error: ' + errorMessage);
+        };
+
+        handleSubmitRecord(postData, API_ENDPOINTS.POST_STORE, successCallback, errorCallback);
+        console.log('Created new Store')
+    };
+
+    const isProductPopupFormValid = () => {
+        return  productPopupData.code &&
+                productPopupData.name &&
+                productPopupData.supplier_id;
+    };
+
+    const isStorePopupFormValid = () => {
+        return  storePopupData.code &&
+                storePopupData.name &&
+                storePopupData.street &&
+                storePopupData.city &&
+                storePopupData.state &&
+                storePopupData.postcode &&
+                storePopupData.country;
+    };
+
+    const handlePopupInputChange = (setState) => (field) => (e) => {
+        const value = e?.target?.value || ''; // Safeguard against null/undefined target
+        setState((prevState) => ({
+            ...prevState,
+            [field]: value,
+        }));
+    };
+
+    const handleProductPopupInputChange = handlePopupInputChange(setProductPopupData);
+    const handleStorePopupInputChange = handlePopupInputChange(setStorePopupData);
 
     return (
         <>
@@ -205,6 +369,8 @@ const Form = ({ handleClick, icon, title }) => {
                         disabled={!!id} // Disable if id is present
                         loading={loadingStores}
                         errorMessage={errorStores}
+                        onCreateNew={() => setOpenStorePopupCreateNew(true)}
+                        titleCreateNew='Store'
                         />
                     </Grid>
                     <Grid item xs={6}>
@@ -222,6 +388,8 @@ const Form = ({ handleClick, icon, title }) => {
                         disabled={!!id} // Disable if id is present
                         loading={loadingProducts}
                         errorMessage={errorProducts}
+                        onCreateNew={() => setOpenProductPopupCreateNew(true)}
+                        titleCreateNew='Product'
                         />
                     </Grid>
                     <Grid item xs={12} style={{ paddingLeft: '35px', paddingRight: '0px' }}>
@@ -328,6 +496,184 @@ const Form = ({ handleClick, icon, title }) => {
                     open={openConfirmCancelDialog}
                     setOpen={setOpenConfirmCancelDialog}
                     handleCancelClick={() => handleNavigatePage()}
+                />
+                <PopupCreateNew
+                    open={openProductPopupCreateNew}
+                    setOpen={setOpenProductPopupCreateNew}
+                    handleSubmit={() => onCreateNewProduct()}
+                    title='Product'
+                    form={
+                        <FormControl fullWidth>
+                            <Grid container spacing={4} className="my-4" style={{ width: '100%' }}>
+                                <Grid item xs={12}>
+                                    <Textarea
+                                        rows={1}
+                                        rowsMax={2}
+                                        label='Code'
+                                        name='code'
+                                        id='code'
+                                        onChange={handleProductPopupInputChange('code')}
+                                        value={productPopupData.code ?? ""}
+                                        key='code'
+                                        error={isEmpty(productPopupData.code)}
+                                        maxLength={80}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Textarea
+                                        rows={1}
+                                        rowsMax={2}
+                                        label='Name'
+                                        name='name'
+                                        id='name'
+                                        onChange={handleProductPopupInputChange('name')}
+                                        value={productPopupData.name ?? ""}
+                                        key='name'
+                                        error={isEmpty(productPopupData.name)}
+                                        maxLength={80}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <InputSelectNoCreate
+                                    selectItems={suppliers.map(supplier => ({
+                                        value: supplier.id,
+                                        name: formatFormRecordDropdown(supplier.name)
+                                    }))}
+                                    label='Supplier'
+                                    name='supplier_id'
+                                    id='supplier_id'
+                                    onChange={handleProductPopupInputChange('supplier_id')}
+                                    value={productPopupData.supplier_id ?? ""}
+                                    error={isEmpty(productPopupData.supplier_id)}
+                                    loading={loadingSuppliers}
+                                    errorMessage={errorSuppliers}
+                                    />
+                                </Grid>
+                            </Grid>
+                        </FormControl>
+                    }
+                    isPopupFormValid={isProductPopupFormValid}
+                />
+                <PopupCreateNew
+                    open={openStorePopupCreateNew}
+                    setOpen={setOpenStorePopupCreateNew}
+                    handleSubmit={() => onCreateNewStore()}
+                    title='Store'
+                    form={
+                        <FormControl fullWidth>
+                            <Grid container spacing={4} className="my-4" style={{ width: '100%' }}>
+                                <Grid item xs={12}>
+                                    <Textarea
+                                        rows={1}
+                                        rowsMax={2}
+                                        label='Code'
+                                        name='code'
+                                        id='code'
+                                        onChange={handleStorePopupInputChange('code')}
+                                        value={storePopupData.code ?? ""}
+                                        key='code'
+                                        error={isEmpty(storePopupData.code)}
+                                        maxLength={50}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Textarea
+                                        rows={1}
+                                        rowsMax={2}
+                                        label='Name'
+                                        name='name'
+                                        id='name'
+                                        onChange={handleStorePopupInputChange('name')}
+                                        value={storePopupData.name ?? ""}
+                                        key='name'
+                                        error={isEmpty(storePopupData.name)}
+                                        maxLength={80}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Textarea
+                                        rows={1}
+                                        rowsMax={2}
+                                        label='Note'
+                                        name='note'
+                                        id='note'
+                                        onChange={handleStorePopupInputChange('note')}
+                                        value={storePopupData.note ?? ""}
+                                        key='note'
+                                        error={isEmpty(storePopupData.note)}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Textarea
+                                        rows={1}
+                                        rowsMax={2}
+                                        label='Street'
+                                        name='street'
+                                        id='street'
+                                        onChange={handleStorePopupInputChange('street')}
+                                        value={storePopupData.street ?? ""}
+                                        key='street'
+                                        error={isEmpty(storePopupData.street)}
+                                        maxLength={200}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Textarea
+                                        rows={1}
+                                        rowsMax={2}
+                                        label='City'
+                                        name='city'
+                                        id='city'
+                                        onChange={handleStorePopupInputChange('city')}
+                                        value={storePopupData.city ?? ""}
+                                        key='city'
+                                        error={isEmpty(storePopupData.city)}
+                                        maxLength={200}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Textarea
+                                        rows={1}
+                                        rowsMax={2}
+                                        label='State'
+                                        name='state'
+                                        id='state'
+                                        onChange={handleStorePopupInputChange('state')}
+                                        value={storePopupData.state ?? ""}
+                                        key='state'
+                                        error={isEmpty(storePopupData.state)}
+                                        maxLength={200}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Textarea
+                                        rows={1}
+                                        rowsMax={2}
+                                        label='Postcode'
+                                        name='postcode'
+                                        id='postcode'
+                                        onChange={handleStorePopupInputChange('postcode')}
+                                        value={storePopupData.postcode ?? ""}
+                                        key='postcode'
+                                        error={isEmpty(storePopupData.postcode)}
+                                        maxLength={50}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <InputSelectNoCreate
+                                        selectItems={countryOptions}
+                                        label='Country'
+                                        name='country'
+                                        id='country'
+                                        onChange={handleStorePopupInputChange('country')}
+                                        value={storePopupData.country ?? ""}
+                                        error={isEmpty(storePopupData.country)}
+                                    />
+                                </Grid>
+                            </Grid>
+                        </FormControl>
+                    }
+                    isPopupFormValid={isStorePopupFormValid}
                 />
             </FormControl>
             )}

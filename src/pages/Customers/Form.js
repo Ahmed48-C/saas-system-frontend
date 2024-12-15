@@ -13,6 +13,11 @@ import { BASE_URL } from '../../config/apis';
 import { phoneNumberValidator } from '../../functions/pages/phoneNumberValidator'
 import { useHistory } from 'react-router-dom';
 import ConfirmCancel from '../../pages-components/ConfirmCancel'
+import PopupCreateNew from '../../pages-components/PopupCreateNew'
+import { handleSubmitRecord } from '../../functions/pages/handleSubmitRecord'
+import { toast } from 'react-toastify'
+import InputSelectNoCreate from '../../pages-components/InputSelectNoCreate'
+import { countryList } from '../../config/common'
 
 const Form = ({ handleClick, icon, title }) => {
     const history = useHistory();
@@ -26,11 +31,24 @@ const Form = ({ handleClick, icon, title }) => {
     const [loadingLocations, setLoadingLocations] = useState(false);
     const [errorLocations, setErrorLocations] = useState('');
 
+    const [countryOptions, setCountryOptions] = useState([]);
+
     const fetchData = useCallback(() => {
         handleFetchRecord(id, API_ENDPOINTS.GET_CUSTOMER, setData, setEditLoading);
     }, [id]);
 
     useEffect(() => {
+        // Map through country list and sort them alphabetically
+        const sortedCountries = countryList
+            .map(country => ({
+                name: country,
+                value: country // Setting value to country name
+            }))
+            .sort((a, b) => a.name.localeCompare(b.name));
+
+        // Set the sorted countries in the state
+        setCountryOptions(sortedCountries);
+
         if (id) {
             fetchData();
         }
@@ -40,8 +58,8 @@ const Form = ({ handleClick, icon, title }) => {
             setLoadingLocations(true);
 
             try {
-                await formFetchDropdownRecords(`${BASE_URL}/api/get/locations/`, setLocations);
-                setLoadingLocations(false);
+                await formFetchDropdownRecords(`${BASE_URL}/api/get/locations/`, setLocations, setLoadingLocations);
+                // setLoadingLocations(false);
             } catch (error) {
                 setErrorLocations('Error fetching locations');
                 setLoadingLocations(false);
@@ -75,6 +93,79 @@ const Form = ({ handleClick, icon, title }) => {
     };
 
     const [openConfirmCancelDialog, setOpenConfirmCancelDialog] = useState(false);
+
+    const [openLocationPopupCreateNew, setOpenLocationPopupCreateNew] = useState(false);
+    const [locationPopupData, setLocationPopupData] = useState({});
+
+    const onCreateNewLocation = () => {
+        setLoadingLocations(true);
+
+        const postData = {
+            code: locationPopupData.code,
+            name: locationPopupData.name,
+            street: locationPopupData.street,
+            city: locationPopupData.city,
+            state: locationPopupData.state,
+            postcode: locationPopupData.postcode,
+            country: locationPopupData.country,
+        };
+
+        const fetchDropdownData = async () => {
+
+            try {
+                await formFetchDropdownRecords(`${BASE_URL}/api/get/locations/`, setLocations, setLoadingLocations);
+            } catch (error) {
+                setErrorLocations('Error fetching locations');
+                setLoadingLocations(false);
+            }
+
+        };
+
+        const successCallback = (data) => {
+            toast.success('Added Location Successfully');
+            fetchDropdownData();
+        };
+
+        const errorCallback = (error) => {
+            let errorMessage = 'An unexpected error occurred';
+
+            if (error.response) {
+                if (error.response.data && typeof error.response.data === 'object' && error.response.data.detail) {
+                    errorMessage = error.response.data.detail;
+                } else if (error.response.status === 500) {
+                    // For server errors
+                    errorMessage = 'An error occurred on the server. Please try again later.';
+                }
+            } else if (error.message) {
+                errorMessage = error.message;
+            }
+
+            toast.error('Error: ' + errorMessage);
+        };
+
+        handleSubmitRecord(postData, API_ENDPOINTS.POST_LOCATION, successCallback, errorCallback);
+        console.log('Created new Location')
+    };
+
+    const isLocationPopupFormValid = () => {
+        return  locationPopupData.code &&
+                locationPopupData.name &&
+                locationPopupData.street &&
+                locationPopupData.city &&
+                locationPopupData.state &&
+                locationPopupData.postcode &&
+                locationPopupData.country;
+    };
+
+    const handlePopupInputChange = (setState) => (field) => (e) => {
+        const value = e?.target?.value || ''; // Safeguard against null/undefined target
+        setState((prevState) => ({
+            ...prevState,
+            [field]: value,
+        }));
+    };
+
+    const handleLocationPopupInputChange = handlePopupInputChange(setLocationPopupData);
 
     return (
         <>
@@ -227,6 +318,8 @@ const Form = ({ handleClick, icon, title }) => {
                         error={isEmpty(data.location_id)}
                         loading={loadingLocations}
                         errorMessage={errorLocations}
+                        onCreateNew={() => setOpenLocationPopupCreateNew(true)}
+                        titleCreateNew='Location'
                         />
                     </Grid>
                     <Grid item xs={12} style={{ paddingLeft: '35px', paddingRight: '0px' }}>
@@ -259,6 +352,127 @@ const Form = ({ handleClick, icon, title }) => {
                     open={openConfirmCancelDialog}
                     setOpen={setOpenConfirmCancelDialog}
                     handleCancelClick={() => handleNavigatePage()}
+                />
+                <PopupCreateNew
+                    open={openLocationPopupCreateNew}
+                    setOpen={setOpenLocationPopupCreateNew}
+                    handleSubmit={() => onCreateNewLocation()}
+                    title='Location'
+                    form={
+                        <FormControl fullWidth>
+                            <Grid container spacing={4} className="my-4" style={{ width: '100%' }}>
+                                <Grid item xs={12}>
+                                    <Textarea
+                                        rows={1}
+                                        rowsMax={2}
+                                        label='Code'
+                                        name='code'
+                                        id='code'
+                                        onChange={handleLocationPopupInputChange('code')}
+                                        value={locationPopupData.code ?? ""}
+                                        key='code'
+                                        error={isEmpty(locationPopupData.code)}
+                                        maxLength={50}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Textarea
+                                        rows={1}
+                                        rowsMax={2}
+                                        label='Name'
+                                        name='name'
+                                        id='name'
+                                        onChange={handleLocationPopupInputChange('name')}
+                                        value={locationPopupData.name ?? ""}
+                                        key='name'
+                                        error={isEmpty(locationPopupData.name)}
+                                        maxLength={80}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Textarea
+                                        rows={1}
+                                        rowsMax={2}
+                                        label='Note'
+                                        name='note'
+                                        id='note'
+                                        onChange={handleLocationPopupInputChange('note')}
+                                        value={locationPopupData.note ?? ""}
+                                        key='note'
+                                        error={isEmpty(locationPopupData.note)}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Textarea
+                                        rows={1}
+                                        rowsMax={2}
+                                        label='Street'
+                                        name='street'
+                                        id='street'
+                                        onChange={handleLocationPopupInputChange('street')}
+                                        value={locationPopupData.street ?? ""}
+                                        key='street'
+                                        error={isEmpty(locationPopupData.street)}
+                                        maxLength={200}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Textarea
+                                        rows={1}
+                                        rowsMax={2}
+                                        label='City'
+                                        name='city'
+                                        id='city'
+                                        onChange={handleLocationPopupInputChange('city')}
+                                        value={locationPopupData.city ?? ""}
+                                        key='city'
+                                        error={isEmpty(locationPopupData.city)}
+                                        maxLength={200}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Textarea
+                                        rows={1}
+                                        rowsMax={2}
+                                        label='State'
+                                        name='state'
+                                        id='state'
+                                        onChange={handleLocationPopupInputChange('state')}
+                                        value={locationPopupData.state ?? ""}
+                                        key='state'
+                                        error={isEmpty(locationPopupData.state)}
+                                        maxLength={200}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Textarea
+                                        rows={1}
+                                        rowsMax={2}
+                                        label='Postcode'
+                                        name='postcode'
+                                        id='postcode'
+                                        onChange={handleLocationPopupInputChange('postcode')}
+                                        value={locationPopupData.postcode ?? ""}
+                                        key='postcode'
+                                        error={isEmpty(locationPopupData.postcode)}
+                                        maxLength={50}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <InputSelectNoCreate
+                                        selectItems={countryOptions}
+                                        label='Country'
+                                        name='country'
+                                        id='country'
+                                        onChange={handleLocationPopupInputChange('country')}
+                                        value={locationPopupData.country ?? ""}
+                                        error={isEmpty(locationPopupData.country)}
+                                    />
+                                </Grid>
+                            </Grid>
+                        </FormControl>
+                    }
+                    isPopupFormValid={isLocationPopupFormValid}
                 />
             </FormControl>
             )}

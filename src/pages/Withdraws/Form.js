@@ -10,6 +10,9 @@ import { formatFormRecordDropdown } from '../../functions/pages/formatFormRecord
 import { formFetchDropdownRecords } from '../../functions/pages/formFetchDropdownRecords'
 import { useHistory } from 'react-router-dom';
 import ConfirmCancel from '../../pages-components/ConfirmCancel'
+import PopupCreateNew from '../../pages-components/PopupCreateNew'
+import { handleSubmitRecord } from '../../functions/pages/handleSubmitRecord'
+import { toast } from 'react-toastify'
 
 const Form = ({ handleClick, icon, title }) => {
     const history = useHistory();
@@ -37,8 +40,8 @@ const Form = ({ handleClick, icon, title }) => {
             setLoadingBalances(true);
 
             try {
-                await formFetchDropdownRecords(`${BASE_URL}/api/get/balances/`, setBalances);
-                setLoadingBalances(false);
+                await formFetchDropdownRecords(`${BASE_URL}/api/get/balances/`, setBalances, setLoadingBalances);
+                // setLoadingBalances(false);
             } catch (error) {
                 setErrorBalances('Error fetching suppliers');
                 setLoadingBalances(false);
@@ -81,6 +84,79 @@ const Form = ({ handleClick, icon, title }) => {
     };
 
     const [openConfirmCancelDialog, setOpenConfirmCancelDialog] = useState(false);
+
+    const [openBalancePopupCreateNew, setOpenBalancePopupCreateNew] = useState(false);
+    const [balancePopupData, setBalancePopupData] = useState({});
+
+    const onCreateNewBalance = () => {
+        setLoadingBalances(true);
+
+        const postData = {
+            name: balancePopupData.name,
+            amount: balancePopupData.amount,
+        };
+
+        const fetchDropdownData = async () => {
+
+            try {
+                await formFetchDropdownRecords(`${BASE_URL}/api/get/balances/`, setBalances, setLoadingBalances);
+            } catch (error) {
+                setErrorBalances('Error fetching balances');
+                setLoadingBalances(false);
+            }
+
+        };
+
+        const successCallback = (data) => {
+            toast.success('Added Balance Successfully');
+            fetchDropdownData();
+        };
+
+        const errorCallback = (error) => {
+            let errorMessage = 'An unexpected error occurred';
+
+            if (error.response) {
+                if (error.response.data && typeof error.response.data === 'object' && error.response.data.detail) {
+                    errorMessage = error.response.data.detail;
+                } else if (error.response.status === 500) {
+                    // For server errors
+                    errorMessage = 'An error occurred on the server. Please try again later.';
+                }
+            } else if (error.message) {
+                errorMessage = error.message;
+            }
+
+            toast.error('Error: ' + errorMessage);
+        };
+
+        handleSubmitRecord(postData, API_ENDPOINTS.POST_BALANCE, successCallback, errorCallback);
+        console.log('Created new Balance')
+    };
+
+    const isBalancePopupFormValid = () => {
+        return  balancePopupData.name &&
+                balancePopupData.amount ;
+    };
+
+    const handlePopupInputChange = (setState) => (field) => (e) => {
+        const value = e?.target?.value || ''; // Safeguard against null/undefined target
+        if (field === 'amount') {
+            // Allow numeric input including decimals with max 2 decimal places
+            if (value === '' || /^[0-9]*\.?[0-9]{0,2}$/.test(value)) {
+                setState((prevState) => ({
+                    ...prevState,
+                    [field]: value,
+                }));
+            }
+        } else {
+            setState((prevState) => ({
+                ...prevState,
+                [field]: value,
+            }));
+        }
+    };
+
+    const handleBalancePopupInputChange = handlePopupInputChange(setBalancePopupData);
 
     return (
         <>
@@ -158,6 +234,8 @@ const Form = ({ handleClick, icon, title }) => {
                         error={isEmpty(data.balance_id)}
                         loading={loadingBalances}
                         errorMessage={errorBalances}
+                        onCreateNew={() => setOpenBalancePopupCreateNew(true)}
+                        titleCreateNew='Balance'
                         />
                     </Grid>
                     <Grid item xs={12}>
@@ -217,6 +295,47 @@ const Form = ({ handleClick, icon, title }) => {
                     open={openConfirmCancelDialog}
                     setOpen={setOpenConfirmCancelDialog}
                     handleCancelClick={() => handleNavigatePage()}
+                />
+                <PopupCreateNew
+                    open={openBalancePopupCreateNew}
+                    setOpen={setOpenBalancePopupCreateNew}
+                    handleSubmit={() => onCreateNewBalance()}
+                    title='Balance'
+                    form={
+                        <FormControl fullWidth>
+                            <Grid container spacing={4} className="my-4" style={{ width: '100%' }}>
+                                <Grid item xs={12}>
+                                    <Textarea
+                                        rows={1}
+                                        rowsMax={2}
+                                        label='Name'
+                                        name='name'
+                                        id='name'
+                                        onChange={handleBalancePopupInputChange('name')}
+                                        value={balancePopupData.name ?? ""}
+                                        key='name'
+                                        error={isEmpty(balancePopupData.name)}
+                                        maxLength={80}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Textarea
+                                        rows={1}
+                                        rowsMax={2}
+                                        label='Amount'
+                                        name='amount'
+                                        id='amount'
+                                        onChange={handleBalancePopupInputChange('amount')}
+                                        value={balancePopupData.amount ?? ""}
+                                        key='amount'
+                                        error={isEmpty(balancePopupData.amount)}
+                                        maxLength={200}
+                                    />
+                                </Grid>
+                            </Grid>
+                        </FormControl>
+                    }
+                    isPopupFormValid={isBalancePopupFormValid}
                 />
             </FormControl>
             )}

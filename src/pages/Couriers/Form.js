@@ -12,6 +12,7 @@ import { BASE_URL } from '../../config/apis';
 import { phoneNumberValidator } from '../../functions/pages/phoneNumberValidator'
 import { useHistory } from 'react-router-dom';
 import ConfirmCancel from '../../pages-components/ConfirmCancel'
+import InputSelectNoCreate from '../../pages-components/InputSelectNoCreate'
 
 const Form = ({ handleClick, icon, title }) => {
     const history = useHistory();
@@ -40,8 +41,8 @@ const Form = ({ handleClick, icon, title }) => {
             setLoadingVehicleTypes(true);
 
             try {
-                await formFetchDropdownRecords(`${BASE_URL}/api/get/vehicle_types/`, setVehicleTypes);
-                setLoadingVehicleTypes(false);
+                await formFetchDropdownRecords(`${BASE_URL}/api/get/vehicle_types/`, setVehicleTypes, setLoadingVehicleTypes);
+                // setLoadingVehicleTypes(false);
             } catch (error) {
                 setErrorVehicleTypes('Error fetching suppliers');
                 setLoadingVehicleTypes(false);
@@ -191,7 +192,7 @@ const Form = ({ handleClick, icon, title }) => {
                     </Grid>
                     */}
                     <Grid item xs={6}>
-                        <InputSelect
+                        <InputSelectNoCreate
                         selectItems={vehicleTypes.map(vehicle => ({
                             value: vehicle,
                             name: formatFormRecordDropdown(vehicle)
@@ -207,7 +208,7 @@ const Form = ({ handleClick, icon, title }) => {
                         />
                     </Grid>
                     <Grid item xs={6}>
-                        <InputSelect
+                        <InputSelectNoCreate
                         selectItems={isAvailable.map(available => ({
                             value: available,
                             name: formatFormRecordDropdown(available)

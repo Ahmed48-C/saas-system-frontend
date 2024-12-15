@@ -18,6 +18,10 @@ import {
 import { BASE_URL } from '../../config/apis';
 import { useHistory } from 'react-router-dom';
 import ConfirmCancel from '../../pages-components/ConfirmCancel'
+import PopupCreateNew from '../../pages-components/PopupCreateNew'
+import { handleSubmitRecord } from '../../functions/pages/handleSubmitRecord'
+import { toast } from 'react-toastify'
+import InputSelectNoCreate from '../../pages-components/InputSelectNoCreate'
 
 const Form = ({ handleClick, icon, title }) => {
     const history = useHistory();
@@ -30,6 +34,11 @@ const Form = ({ handleClick, icon, title }) => {
 
     const [loadingSuppliers, setLoadingSuppliers] = useState(false);
     const [errorSuppliers, setErrorSuppliers] = useState('');
+
+    const [locations, setLocations] = useState([]);
+
+    const [loadingLocations, setLoadingLocations] = useState(false);
+    const [errorLocations, setErrorLocations] = useState('');
 
     const units = getUnits();
 
@@ -50,13 +59,22 @@ const Form = ({ handleClick, icon, title }) => {
         const fetchDropdownData = async () => {
 
             setLoadingSuppliers(true);
+            setLoadingLocations(true);
 
             try {
-                await formFetchDropdownRecords(`${BASE_URL}/api/get/suppliers/`, setSuppliers);
-                setLoadingSuppliers(false);
+                await formFetchDropdownRecords(`${BASE_URL}/api/get/suppliers/`, setSuppliers, setLoadingSuppliers);
+                // setLoadingSuppliers(false);
             } catch (error) {
                 setErrorSuppliers('Error fetching suppliers');
                 setLoadingSuppliers(false);
+            }
+
+            try {
+                await formFetchDropdownRecords(`${BASE_URL}/api/get/locations/`, setLocations, setLoadingLocations);
+                // setLoadingLocations(false);
+            } catch (error) {
+                setErrorLocations('Error fetching locations');
+                setLoadingLocations(false);
             }
 
         };
@@ -88,6 +106,105 @@ const Form = ({ handleClick, icon, title }) => {
     };
 
     const [openConfirmCancelDialog, setOpenConfirmCancelDialog] = useState(false);
+    const [openPopupCreateNew, setOpenPopupCreateNew] = useState(false);
+    const [supplierPopupData, setSupplierPopupData] = useState({});
+
+    const onCreateNewSupplier = () => {
+        setLoadingSuppliers(true);
+
+        const postData = {
+            name: supplierPopupData.name,
+            location_id: supplierPopupData.location_id,
+        };
+
+        const fetchDropdownData = async () => {
+
+            // setLoadingSuppliers(true);
+
+            try {
+                await formFetchDropdownRecords(`${BASE_URL}/api/get/suppliers/`, setSuppliers, setLoadingSuppliers);
+                // setLoadingSuppliers(false);
+                console.log("FETCHED SUPPLIERS:"  + JSON.stringify(suppliers))
+            } catch (error) {
+                setErrorSuppliers('Error fetching suppliers');
+                setLoadingSuppliers(false);
+            }
+
+        };
+
+        const successCallback = (data) => {
+            toast.success('Added Supplier Successfully');
+            fetchDropdownData();
+        };
+
+        const errorCallback = (error) => {
+            let errorMessage = 'An unexpected error occurred';
+
+            if (error.response) {
+                if (error.response.data && typeof error.response.data === 'object' && error.response.data.detail) {
+                    errorMessage = error.response.data.detail;
+                } else if (error.response.status === 500) {
+                    // For server errors
+                    errorMessage = 'An error occurred on the server. Please try again later.';
+                }
+            } else if (error.message) {
+                errorMessage = error.message;
+            }
+
+            toast.error('Error: ' + errorMessage);
+        };
+
+        handleSubmitRecord(postData, API_ENDPOINTS.POST_SUPPLIER, successCallback, errorCallback);
+        console.log('Created new Supplier')
+    };
+
+    const isPopupFormValid = () => {
+        return  supplierPopupData.name &&
+                supplierPopupData.location_id;
+    };
+
+    const handlePopupInputChange = (field) => (e) => {
+        setSupplierPopupData({ ...supplierPopupData, [field]: e.target.value });
+    };
+
+    // const PopupForm = () => {
+    //     return(
+    //         <FormControl fullWidth>
+    //             <Grid container spacing={4} className="my-4" style={{ width: '100%' }}>
+    //                 <Grid item xs={12}>
+    //                     <Textarea
+    //                         rows={1}
+    //                         rowsMax={2}
+    //                         label='Name'
+    //                         name='name'
+    //                         id='name'
+    //                         onChange={handlePopupInputChange('name')}
+    //                         value={supplierPopupData.name ?? ""}
+    //                         key='name'
+    //                         error={isEmpty(supplierPopupData.name)}
+    //                         maxLength={80}
+    //                     />
+    //                 </Grid>
+    //                 <Grid item xs={12}>
+    //                     <InputSelectPopup
+    //                     selectItems={locations.map(location => ({
+    //                         value: location.id,
+    //                         name: formatFormRecordDropdown(location.name)
+    //                     }))}
+    //                     label='Location'
+    //                     name='location_id'
+    //                     id='location_id'
+    //                     onChange={handlePopupInputChange('location_id')}
+    //                     value={supplierPopupData.location_id ?? ""}
+    //                     error={isEmpty(supplierPopupData.location_id)}
+    //                     loading={loadingLocations}
+    //                     errorMessage={errorLocations}
+    //                     />
+    //                 </Grid>
+    //             </Grid>
+    //         </FormControl>
+    //     );
+    // }
 
     return (
         <>
@@ -207,6 +324,8 @@ const Form = ({ handleClick, icon, title }) => {
                         error={isEmpty(data.supplier_id)}
                         loading={loadingSuppliers}
                         errorMessage={errorSuppliers}
+                        onCreateNew={() => setOpenPopupCreateNew(true)}
+                        titleCreateNew='Supplier'
                         />
                     </Grid>
                     <Grid item xs={4}>
@@ -403,6 +522,49 @@ const Form = ({ handleClick, icon, title }) => {
                     open={openConfirmCancelDialog}
                     setOpen={setOpenConfirmCancelDialog}
                     handleCancelClick={() => handleNavigatePage()}
+                />
+                <PopupCreateNew
+                    open={openPopupCreateNew}
+                    setOpen={setOpenPopupCreateNew}
+                    handleSubmit={() => onCreateNewSupplier()}
+                    title='Supplier'
+                    form={
+                        <FormControl fullWidth>
+                            <Grid container spacing={4} className="my-4" style={{ width: '100%' }}>
+                                <Grid item xs={12}>
+                                    <Textarea
+                                        rows={1}
+                                        rowsMax={2}
+                                        label='Name'
+                                        name='name'
+                                        id='name'
+                                        onChange={handlePopupInputChange('name')}
+                                        value={supplierPopupData.name ?? ""}
+                                        key='name'
+                                        error={isEmpty(supplierPopupData.name)}
+                                        maxLength={80}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <InputSelectNoCreate
+                                    selectItems={locations.map(location => ({
+                                        value: location.id,
+                                        name: formatFormRecordDropdown(location.name)
+                                    }))}
+                                    label='Location'
+                                    name='location_id'
+                                    id='location_id'
+                                    onChange={handlePopupInputChange('location_id')}
+                                    value={supplierPopupData.location_id ?? ""}
+                                    error={isEmpty(supplierPopupData.location_id)}
+                                    loading={loadingLocations}
+                                    errorMessage={errorLocations}
+                                    />
+                                </Grid>
+                            </Grid>
+                        </FormControl>
+                    }
+                    isPopupFormValid={isPopupFormValid}
                 />
             </FormControl>
             )}
