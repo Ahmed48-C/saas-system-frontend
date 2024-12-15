@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const formFetchDropdownRecords = (url, setRecords) => {
+export const formFetchDropdownRecords = (url, setRecords, setLoading) => {
     axios.get(url)
         .then(response => {
             if (Array.isArray(response.data.data)) {
@@ -10,6 +10,7 @@ export const formFetchDropdownRecords = (url, setRecords) => {
             } else {
                 console.error('Invalid data format:', response.data);
             }
+            setLoading(false); // Set loading to false after processing
         })
         .catch(error => {
             console.error('Error fetching data:', error);

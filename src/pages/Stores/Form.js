@@ -9,6 +9,7 @@ import { API_ENDPOINTS, BASE_URL} from '../../config/apis'
 import { handleFetchRecord } from '../../functions/pages/handleFetchRecord'
 import { useHistory } from 'react-router-dom';
 import ConfirmCancel from '../../pages-components/ConfirmCancel'
+import InputSelectNoCreate from '../../pages-components/InputSelectNoCreate'
 
 const Form = ({ handleClick, icon, title }) => {
     const history = useHistory();
@@ -234,7 +235,7 @@ const Form = ({ handleClick, icon, title }) => {
                         />
                     </Grid>
                     <Grid item xs={6}>
-                        <InputSelect
+                        <InputSelectNoCreate
                         selectItems={countryOptions}
                         label='Country'
                         name='country'

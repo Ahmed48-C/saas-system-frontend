@@ -16,6 +16,12 @@ import DateTime from '../../pages-components/DateTimePicker'
 
 import { useHistory } from 'react-router-dom';
 import ConfirmCancel from '../../pages-components/ConfirmCancel'
+import InputSelectNoCreate from '../../pages-components/InputSelectNoCreate'
+import PopupCreateNew from '../../pages-components/PopupCreateNew'
+import { handleSubmitRecord } from '../../functions/pages/handleSubmitRecord'
+import { toast } from 'react-toastify'
+import { countryList } from '../../config/common'
+import { phoneNumberValidator } from '../../functions/pages/phoneNumberValidator'
 
 const Form = ({ handleClick, icon, title }) => {
     const history = useHistory();
@@ -66,6 +72,18 @@ const Form = ({ handleClick, icon, title }) => {
     const [loadingStatuses, setLoadingStatuses] = useState(false);
     const [errorStatuses, setErrorStatuses] = useState('');
 
+    const [locations, setLocations] = useState([]);
+
+    const [loadingLocations, setLoadingLocations] = useState(false);
+    const [errorLocations, setErrorLocations] = useState('');
+
+    const [vehicleTypes, setVehicleTypes] = useState([]);
+
+    const [loadingVehicleTypes, setLoadingVehicleTypes] = useState(false);
+    const [errorVehicleTypes, setErrorVehicleTypes] = useState('');
+
+    const [countryOptions, setCountryOptions] = useState([]);
+
     const fetchData = useCallback(() => {
         handleFetchRecord(id, API_ENDPOINTS.GET_SALE_ORDER, setData, setEditLoading);
     }, [id]);
@@ -83,6 +101,17 @@ const Form = ({ handleClick, icon, title }) => {
     };
 
     useEffect(() => {
+        // Map through country list and sort them alphabetically
+        const sortedCountries = countryList
+            .map(country => ({
+                name: country,
+                value: country // Setting value to country name
+            }))
+            .sort((a, b) => a.name.localeCompare(b.name));
+
+        // Set the sorted countries in the state
+        setCountryOptions(sortedCountries);
+
         if (id) {
             fetchData();
         }
@@ -126,61 +155,79 @@ const Form = ({ handleClick, icon, title }) => {
             setLoadingStores(true);
             setLoadingBalances(true);
             setLoadingStatuses(true);
+            setLoadingLocations(true);
+            setLoadingVehicleTypes(true);
 
             try {
-                await formFetchDropdownRecords(`${BASE_URL}/api/get/customers/`, setCustomers);
-                setLoadingCustomers(false);
+                await formFetchDropdownRecords(`${BASE_URL}/api/get/customers/`, setCustomers, setLoadingCustomers);
+                // setLoadingCustomers(false);
             } catch (error) {
                 setErrorCustomers('Error fetching customers');
                 setLoadingCustomers(false);
             }
 
             try {
-                await formFetchDropdownRecords(`${BASE_URL}/api/get/clients/`, setClients);
-                setLoadingClients(false);
+                await formFetchDropdownRecords(`${BASE_URL}/api/get/clients/`, setClients, setLoadingClients);
+                // setLoadingClients(false);
             } catch (error) {
                 setErrorClients('Error fetching clients');
                 setLoadingClients(false);
             }
 
             try {
-                await formFetchDropdownRecords(`${BASE_URL}/api/get/couriers/`, setCouriers);
-                setLoadingCouriers(false);
+                await formFetchDropdownRecords(`${BASE_URL}/api/get/couriers/`, setCouriers, setLoadingCouriers);
+                // setLoadingCouriers(false);
             } catch (error) {
                 setErrorCouriers('Error fetching couriers');
                 setLoadingCouriers(false);
             }
 
             try {
-                await formFetchDropdownRecords(`${BASE_URL}/api/get/stores/`, setStores);
-                setLoadingStores(false);
+                await formFetchDropdownRecords(`${BASE_URL}/api/get/stores/`, setStores, setLoadingStores);
+                // setLoadingStores(false);
             } catch (error) {
                 setErrorStores('Error fetching stores');
                 setLoadingStores(false);
             }
 
             try {
-                await formFetchDropdownRecords(`${BASE_URL}/api/get/balances/`, setBalances);
-                setLoadingBalances(false);
+                await formFetchDropdownRecords(`${BASE_URL}/api/get/balances/`, setBalances, setLoadingBalances);
+                // setLoadingBalances(false);
             } catch (error) {
                 setErrorBalances('Error fetching balances');
                 setLoadingBalances(false);
             }
 
             try {
-                await formFetchDropdownRecords(`${BASE_URL}/api/get/products/`, setProducts);
-                setLoadingProducts(false);
+                await formFetchDropdownRecords(`${BASE_URL}/api/get/products/`, setProducts, setLoadingProducts);
+                // setLoadingProducts(false);
             } catch (error) {
                 setErrorProducts('Error fetching products');
                 setLoadingProducts(false);
             }
 
             try {
-                await formFetchDropdownRecords(`${BASE_URL}/api/get/sales_status/`, setStatuses);
-                setLoadingStatuses(false);
+                await formFetchDropdownRecords(`${BASE_URL}/api/get/sales_status/`, setStatuses, setLoadingStatuses);
+                // setLoadingStatuses(false);
             } catch (error) {
                 setErrorStatuses('Error fetching statuses');
                 setLoadingStatuses(false);
+            }
+
+            try {
+                await formFetchDropdownRecords(`${BASE_URL}/api/get/locations/`, setLocations, setLoadingLocations);
+                // setLoadingLocations(false);
+            } catch (error) {
+                setErrorLocations('Error fetching locations');
+                setLoadingLocations(false);
+            }
+
+            try {
+                await formFetchDropdownRecords(`${BASE_URL}/api/get/vehicle_types/`, setVehicleTypes, setLoadingVehicleTypes);
+                // setLoadingVehicleTypes(false);
+            } catch (error) {
+                setErrorVehicleTypes('Error fetching suppliers');
+                setLoadingVehicleTypes(false);
             }
         };
 
@@ -431,6 +478,336 @@ const Form = ({ handleClick, icon, title }) => {
 
     const [openConfirmCancelDialog, setOpenConfirmCancelDialog] = useState(false);
 
+    const [openBalancePopupCreateNew, setOpenBalancePopupCreateNew] = useState(false);
+    const [balancePopupData, setBalancePopupData] = useState({});
+
+    const [openStorePopupCreateNew, setOpenStorePopupCreateNew] = useState(false);
+    const [storePopupData, setStorePopupData] = useState({});
+
+    const [openClientPopupCreateNew, setOpenClientPopupCreateNew] = useState(false);
+    const [clientPopupData, setClientPopupData] = useState({});
+    const [clientIsActive, setClientIsActive] = useState(['true', 'false']);
+
+    const [openCustomerPopupCreateNew, setOpenCustomerPopupCreateNew] = useState(false);
+    const [customerPopupData, setCustomerPopupData] = useState({});
+
+    const [openCourierPopupCreateNew, setOpenCourierPopupCreateNew] = useState(false);
+    const [courierPopupData, setCourierPopupData] = useState({});
+    const [courierIsAvailable, setCourierIsAvailable] = useState(['true', 'false']);
+
+    const onCreateNewBalance = () => {
+        setLoadingBalances(true);
+
+        const postData = {
+            name: balancePopupData.name,
+            amount: balancePopupData.amount,
+        };
+
+        const fetchDropdownData = async () => {
+
+            try {
+                await formFetchDropdownRecords(`${BASE_URL}/api/get/balances/`, setBalances, setLoadingBalances);
+            } catch (error) {
+                setErrorBalances('Error fetching balances');
+                setLoadingBalances(false);
+            }
+
+        };
+
+        const successCallback = (data) => {
+            toast.success('Added Balance Successfully');
+            fetchDropdownData();
+        };
+
+        const errorCallback = (error) => {
+            let errorMessage = 'An unexpected error occurred';
+
+            if (error.response) {
+                if (error.response.data && typeof error.response.data === 'object' && error.response.data.detail) {
+                    errorMessage = error.response.data.detail;
+                } else if (error.response.status === 500) {
+                    // For server errors
+                    errorMessage = 'An error occurred on the server. Please try again later.';
+                }
+            } else if (error.message) {
+                errorMessage = error.message;
+            }
+
+            toast.error('Error: ' + errorMessage);
+        };
+
+        handleSubmitRecord(postData, API_ENDPOINTS.POST_BALANCE, successCallback, errorCallback);
+        console.log('Created new Balance')
+    };
+
+    const onCreateNewStore = () => {
+        setLoadingStores(true);
+
+        const postData = {
+            code: storePopupData.code,
+            name: storePopupData.name,
+            street: storePopupData.street,
+            city: storePopupData.city,
+            state: storePopupData.state,
+            postcode: storePopupData.postcode,
+            country: storePopupData.country,
+        };
+
+        const fetchDropdownData = async () => {
+
+            try {
+                await formFetchDropdownRecords(`${BASE_URL}/api/get/stores/`, setStores, setLoadingStores);
+            } catch (error) {
+                setErrorStores('Error fetching stores');
+                setLoadingStores(false);
+            }
+
+        };
+
+        const successCallback = (data) => {
+            toast.success('Added Store Successfully');
+            fetchDropdownData();
+        };
+
+        const errorCallback = (error) => {
+            let errorMessage = 'An unexpected error occurred';
+
+            if (error.response) {
+                if (error.response.data && typeof error.response.data === 'object' && error.response.data.detail) {
+                    errorMessage = error.response.data.detail;
+                } else if (error.response.status === 500) {
+                    // For server errors
+                    errorMessage = 'An error occurred on the server. Please try again later.';
+                }
+            } else if (error.message) {
+                errorMessage = error.message;
+            }
+
+            toast.error('Error: ' + errorMessage);
+        };
+
+        handleSubmitRecord(postData, API_ENDPOINTS.POST_STORE, successCallback, errorCallback);
+        console.log('Created new Store')
+    };
+
+    const onCreateNewClient = () => {
+        setLoadingClients(true);
+
+        const postData = {
+            name: clientPopupData.name,
+            phone: clientPopupData.phone,
+            is_active: clientPopupData.is_active,
+            share_percentage: clientPopupData.share_percentage,
+        };
+
+        const fetchDropdownData = async () => {
+
+            try {
+                await formFetchDropdownRecords(`${BASE_URL}/api/get/clients/`, setClients, setLoadingClients);
+            } catch (error) {
+                setErrorClients('Error fetching clients');
+                setLoadingClients(false);
+            }
+
+        };
+
+        const successCallback = (data) => {
+            toast.success('Added Client Successfully');
+            fetchDropdownData();
+        };
+
+        const errorCallback = (error) => {
+            let errorMessage = 'An unexpected error occurred';
+
+            if (error.response) {
+                if (error.response.data && typeof error.response.data === 'object' && error.response.data.detail) {
+                    errorMessage = error.response.data.detail;
+                } else if (error.response.status === 500) {
+                    // For server errors
+                    errorMessage = 'An error occurred on the server. Please try again later.';
+                }
+            } else if (error.message) {
+                errorMessage = error.message;
+            }
+
+            toast.error('Error: ' + errorMessage);
+        };
+
+        handleSubmitRecord(postData, API_ENDPOINTS.POST_CLIENT, successCallback, errorCallback);
+        console.log('Created new Client')
+    };
+
+    const onCreateNewCustomer = () => {
+        setLoadingCustomers(true);
+
+        const postData = {
+            code: customerPopupData.code,
+            name: customerPopupData.name,
+            location_id: customerPopupData.location_id,
+        };
+
+        const fetchDropdownData = async () => {
+
+            try {
+                await formFetchDropdownRecords(`${BASE_URL}/api/get/customers/`, setCustomers, setLoadingCustomers);
+            } catch (error) {
+                setErrorCustomers('Error fetching customers');
+                setLoadingCustomers(false);
+            }
+
+        };
+
+        const successCallback = (data) => {
+            toast.success('Added Customer Successfully');
+            fetchDropdownData();
+        };
+
+        const errorCallback = (error) => {
+            let errorMessage = 'An unexpected error occurred';
+
+            if (error.response) {
+                if (error.response.data && typeof error.response.data === 'object' && error.response.data.detail) {
+                    errorMessage = error.response.data.detail;
+                } else if (error.response.status === 500) {
+                    // For server errors
+                    errorMessage = 'An error occurred on the server. Please try again later.';
+                }
+            } else if (error.message) {
+                errorMessage = error.message;
+            }
+
+            toast.error('Error: ' + errorMessage);
+        };
+
+        handleSubmitRecord(postData, API_ENDPOINTS.POST_CUSTOMER, successCallback, errorCallback);
+        console.log('Created new Customer')
+    };
+
+    const onCreateNewCourier = () => {
+        setLoadingCouriers(true);
+
+        const postData = {
+            name: courierPopupData.name,
+            phone: courierPopupData.phone,
+            vehicle_type: courierPopupData.vehicle_type,
+            is_available: courierPopupData.is_available,
+            default_delivery_cost: courierPopupData.default_delivery_cost,
+        };
+
+        const fetchDropdownData = async () => {
+
+            try {
+                await formFetchDropdownRecords(`${BASE_URL}/api/get/couriers/`, setCouriers, setLoadingCouriers);
+            } catch (error) {
+                setErrorCouriers('Error fetching couriers');
+                setLoadingCouriers(false);
+            }
+
+        };
+
+        const successCallback = (data) => {
+            toast.success('Added Courier Successfully');
+            fetchDropdownData();
+        };
+
+        const errorCallback = (error) => {
+            let errorMessage = 'An unexpected error occurred';
+
+            if (error.response) {
+                if (error.response.data && typeof error.response.data === 'object' && error.response.data.detail) {
+                    errorMessage = error.response.data.detail;
+                } else if (error.response.status === 500) {
+                    // For server errors
+                    errorMessage = 'An error occurred on the server. Please try again later.';
+                }
+            } else if (error.message) {
+                errorMessage = error.message;
+            }
+
+            toast.error('Error: ' + errorMessage);
+        };
+
+        handleSubmitRecord(postData, API_ENDPOINTS.POST_COURIER, successCallback, errorCallback);
+        console.log('Created new Courier')
+    };
+
+    const isBalancePopupFormValid = () => {
+        return  balancePopupData.name &&
+                balancePopupData.amount ;
+    };
+
+    const isStorePopupFormValid = () => {
+        return  storePopupData.code &&
+                storePopupData.name &&
+                storePopupData.street &&
+                storePopupData.city &&
+                storePopupData.state &&
+                storePopupData.postcode &&
+                storePopupData.country;
+    };
+
+    const isClientPopupFormValid = () => {
+        return  clientPopupData.name &&
+                // data.phone &&
+                phoneNumberValidator(clientPopupData.phone) &&
+                clientPopupData.is_active?.toString() &&
+                clientPopupData.share_percentage;
+    };
+
+    const isCustomerPopupFormValid = () => {
+        return  customerPopupData.code &&
+                customerPopupData.name &&
+                customerPopupData.location_id;
+    };
+
+    const isCourierPopupFormValid = () => {
+        return  courierPopupData.name &&
+                phoneNumberValidator(courierPopupData.phone) &&
+                courierPopupData.vehicle_type &&
+                courierPopupData.is_available?.toString() &&
+                courierPopupData.default_delivery_cost;
+    };
+
+    const handlePopupInputChange = (setState) => (field) => (e) => {
+        const value = e?.target?.value || ''; // Safeguard against null/undefined target
+        if (field === 'amount') {
+            // Allow numeric input including decimals with max 2 decimal places
+            if (value === '' || /^[0-9]*\.?[0-9]{0,2}$/.test(value)) {
+                setState((prevState) => ({
+                    ...prevState,
+                    [field]: value,
+                }));
+            }
+        } else if (field === 'share_percentage') {
+            // Allow only whole numbers and restrict max value to 100
+            if ((value === '' || /^[0-9]*$/.test(value)) && (+value <= 100 || value === '')) {
+                setState((prevState) => ({
+                    ...prevState,
+                    [field]: value,
+                }));
+            }
+        } else if (field === 'default_delivery_cost') {
+            // Allow only whole numbers
+            if (value === '' || /^[0-9]*$/.test(value)) {
+                setState((prevState) => ({
+                    ...prevState,
+                    [field]: value,
+                }));
+            }
+        } else {
+            setState((prevState) => ({
+                ...prevState,
+                [field]: value,
+            }));
+        }
+    };
+
+    const handleBalancePopupInputChange = handlePopupInputChange(setBalancePopupData);
+    const handleStorePopupInputChange = handlePopupInputChange(setStorePopupData);
+    const handleClientPopupInputChange = handlePopupInputChange(setClientPopupData);
+    const handleCustomerPopupInputChange = handlePopupInputChange(setCustomerPopupData);
+    const handleCourierPopupInputChange = handlePopupInputChange(setCourierPopupData);
+
     return (
         <>
             {editLoading ? (
@@ -534,7 +911,7 @@ const Form = ({ handleClick, icon, title }) => {
                     </Grid>
 
                     <Grid item xs={8}>
-                        <InputSelect
+                        <InputSelectNoCreate
                         selectItems={statuses.map(status => ({
                             value: status,
                             name: formatFormRecordDropdown(status)
@@ -565,6 +942,8 @@ const Form = ({ handleClick, icon, title }) => {
                         disabled={!!id}
                         loading={loadingCustomers}
                         errorMessage={errorCustomers}
+                        onCreateNew={() => setOpenCustomerPopupCreateNew(true)}
+                        titleCreateNew='Customer'
                         />
                     </Grid>
 
@@ -583,6 +962,8 @@ const Form = ({ handleClick, icon, title }) => {
                         disabled={!!id}
                         loading={loadingClients}
                         errorMessage={errorClients}
+                        onCreateNew={() => setOpenClientPopupCreateNew(true)}
+                        titleCreateNew='Client'
                         />
                     </Grid>
 
@@ -601,6 +982,8 @@ const Form = ({ handleClick, icon, title }) => {
                         disabled={!!id}
                         loading={loadingStores}
                         errorMessage={errorStores}
+                        onCreateNew={() => setOpenStorePopupCreateNew(true)}
+                        titleCreateNew='Store'
                         />
                     </Grid>
 
@@ -619,6 +1002,8 @@ const Form = ({ handleClick, icon, title }) => {
                         disabled={!!id}
                         loading={loadingBalances}
                         errorMessage={errorBalances}
+                        onCreateNew={() => setOpenBalancePopupCreateNew(true)}
+                        titleCreateNew='Balance'
                         />
                     </Grid>
 
@@ -828,11 +1213,13 @@ const Form = ({ handleClick, icon, title }) => {
                             disabled={!!id}
                             loading={loadingCouriers}
                             errorMessage={errorCouriers}
+                            onCreateNew={() => setOpenCourierPopupCreateNew(true)}
+                            titleCreateNew='Courier'
                             />
                         </Grid>
 
                         <Grid item xs={6}>
-                            <InputSelect
+                            <InputSelectNoCreate
                             selectItems={isFreeDelivery.map(freeDelivery => ({
                                 value: freeDelivery,
                                 name: formatFormRecordDropdown(freeDelivery)
@@ -942,6 +1329,369 @@ const Form = ({ handleClick, icon, title }) => {
                     open={openConfirmCancelDialog}
                     setOpen={setOpenConfirmCancelDialog}
                     handleCancelClick={() => handleNavigatePage()}
+                />
+                <PopupCreateNew
+                    open={openBalancePopupCreateNew}
+                    setOpen={setOpenBalancePopupCreateNew}
+                    handleSubmit={() => onCreateNewBalance()}
+                    title='Balance'
+                    form={
+                        <FormControl fullWidth>
+                            <Grid container spacing={4} className="my-4" style={{ width: '100%' }}>
+                                <Grid item xs={12}>
+                                    <Textarea
+                                        rows={1}
+                                        rowsMax={2}
+                                        label='Name'
+                                        name='name'
+                                        id='name'
+                                        onChange={handleBalancePopupInputChange('name')}
+                                        value={balancePopupData.name ?? ""}
+                                        key='name'
+                                        error={isEmpty(balancePopupData.name)}
+                                        maxLength={80}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Textarea
+                                        rows={1}
+                                        rowsMax={2}
+                                        label='Amount'
+                                        name='amount'
+                                        id='amount'
+                                        onChange={handleBalancePopupInputChange('amount')}
+                                        value={balancePopupData.amount ?? ""}
+                                        key='amount'
+                                        error={isEmpty(balancePopupData.amount)}
+                                        maxLength={200}
+                                    />
+                                </Grid>
+                            </Grid>
+                        </FormControl>
+                    }
+                    isPopupFormValid={isBalancePopupFormValid}
+                />
+                <PopupCreateNew
+                    open={openStorePopupCreateNew}
+                    setOpen={setOpenStorePopupCreateNew}
+                    handleSubmit={() => onCreateNewStore()}
+                    title='Store'
+                    form={
+                        <FormControl fullWidth>
+                            <Grid container spacing={4} className="my-4" style={{ width: '100%' }}>
+                                <Grid item xs={12}>
+                                    <Textarea
+                                        rows={1}
+                                        rowsMax={2}
+                                        label='Code'
+                                        name='code'
+                                        id='code'
+                                        onChange={handleStorePopupInputChange('code')}
+                                        value={storePopupData.code ?? ""}
+                                        key='code'
+                                        error={isEmpty(storePopupData.code)}
+                                        maxLength={50}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Textarea
+                                        rows={1}
+                                        rowsMax={2}
+                                        label='Name'
+                                        name='name'
+                                        id='name'
+                                        onChange={handleStorePopupInputChange('name')}
+                                        value={storePopupData.name ?? ""}
+                                        key='name'
+                                        error={isEmpty(storePopupData.name)}
+                                        maxLength={80}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Textarea
+                                        rows={1}
+                                        rowsMax={2}
+                                        label='Street'
+                                        name='street'
+                                        id='street'
+                                        onChange={handleStorePopupInputChange('street')}
+                                        value={storePopupData.street ?? ""}
+                                        key='street'
+                                        error={isEmpty(storePopupData.street)}
+                                        maxLength={200}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Textarea
+                                        rows={1}
+                                        rowsMax={2}
+                                        label='City'
+                                        name='city'
+                                        id='city'
+                                        onChange={handleStorePopupInputChange('city')}
+                                        value={storePopupData.city ?? ""}
+                                        key='city'
+                                        error={isEmpty(storePopupData.city)}
+                                        maxLength={200}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Textarea
+                                        rows={1}
+                                        rowsMax={2}
+                                        label='State'
+                                        name='state'
+                                        id='state'
+                                        onChange={handleStorePopupInputChange('state')}
+                                        value={storePopupData.state ?? ""}
+                                        key='state'
+                                        error={isEmpty(storePopupData.state)}
+                                        maxLength={200}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Textarea
+                                        rows={1}
+                                        rowsMax={2}
+                                        label='Postcode'
+                                        name='postcode'
+                                        id='postcode'
+                                        onChange={handleStorePopupInputChange('postcode')}
+                                        value={storePopupData.postcode ?? ""}
+                                        key='postcode'
+                                        error={isEmpty(storePopupData.postcode)}
+                                        maxLength={50}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <InputSelectNoCreate
+                                        selectItems={countryOptions}
+                                        label='Country'
+                                        name='country'
+                                        id='country'
+                                        onChange={handleStorePopupInputChange('country')}
+                                        value={storePopupData.country ?? ""}
+                                        error={isEmpty(storePopupData.country)}
+                                    />
+                                </Grid>
+                            </Grid>
+                        </FormControl>
+                    }
+                    isPopupFormValid={isStorePopupFormValid}
+                />
+                <PopupCreateNew
+                    open={openClientPopupCreateNew}
+                    setOpen={setOpenClientPopupCreateNew}
+                    handleSubmit={() => onCreateNewClient()}
+                    title='Client'
+                    form={
+                        <FormControl fullWidth>
+                            <Grid container spacing={4} className="my-4" style={{ width: '100%' }}>
+                                <Grid item xs={12}>
+                                    <Textarea
+                                        rows={1}
+                                        rowsMax={2}
+                                        label='Name'
+                                        name='name'
+                                        id='name'
+                                        onChange={handleClientPopupInputChange('name')}
+                                        value={clientPopupData.name ?? ""}
+                                        key='name'
+                                        error={isEmpty(clientPopupData.name)}
+                                        maxLength={100}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Textarea
+                                        rows={1}
+                                        rowsMax={2}
+                                        label='Phone'
+                                        name='phone'
+                                        id='phone'
+                                        onChange={handleClientPopupInputChange('phone')}
+                                        value={clientPopupData.phone ?? ""}
+                                        key='phone'
+                                        // error={isEmpty(data.phone)}
+                                        error={isEmpty(clientPopupData.phone) || !phoneNumberValidator(clientPopupData.phone)}
+                                        helperText={isEmpty(clientPopupData.phone) || !phoneNumberValidator(clientPopupData.phone) ? 'Enter a valid phone number.' : ''}
+                                        maxLength={15}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <InputSelectNoCreate
+                                        selectItems={clientIsActive.map(active => ({
+                                            value: active,
+                                            name: formatFormRecordDropdown(active)
+                                        }))}
+                                        label='Is Active'
+                                        name='is_active'
+                                        id='is_active'
+                                        onChange={handleClientPopupInputChange('is_active')}
+                                        value={clientPopupData.is_active ?? ""}
+                                        error={isEmpty(clientPopupData.is_active)}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Textarea
+                                        rows={1}
+                                        rowsMax={2}
+                                        label='Share Percentage'
+                                        name='share_percentage'
+                                        id='share_percentage'
+                                        onChange={handleClientPopupInputChange('share_percentage')}
+                                        value={clientPopupData.share_percentage ?? ""}
+                                        key='share_percentage'
+                                        error={isEmpty(clientPopupData.share_percentage)}
+                                        maxLength={5}
+                                    />
+                                </Grid>
+                            </Grid>
+                        </FormControl>
+                    }
+                    isPopupFormValid={isClientPopupFormValid}
+                />
+                <PopupCreateNew
+                    open={openCustomerPopupCreateNew}
+                    setOpen={setOpenCustomerPopupCreateNew}
+                    handleSubmit={() => onCreateNewCustomer()}
+                    title='Customer'
+                    form={
+                        <FormControl fullWidth>
+                            <Grid container spacing={4} className="my-4" style={{ width: '100%' }}>
+                                <Grid item xs={12}>
+                                    <Textarea
+                                        rows={1}
+                                        rowsMax={2}
+                                        label='Code'
+                                        name='code'
+                                        id='code'
+                                        onChange={handleCustomerPopupInputChange('code')}
+                                        value={customerPopupData.code ?? ""}
+                                        key='code'
+                                        error={isEmpty(customerPopupData.code)}
+                                        maxLength={80}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Textarea
+                                        rows={1}
+                                        rowsMax={2}
+                                        label='Name'
+                                        name='name'
+                                        id='name'
+                                        onChange={handleCustomerPopupInputChange('name')}
+                                        value={customerPopupData.name ?? ""}
+                                        key='name'
+                                        error={isEmpty(customerPopupData.name)}
+                                        maxLength={80}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <InputSelectNoCreate
+                                        selectItems={locations.map(location => ({
+                                            value: location.id,
+                                            name: formatFormRecordDropdown(location.name)
+                                        }))}
+                                        label='Location'
+                                        name='location_id'
+                                        id='location_id'
+                                        onChange={handleCustomerPopupInputChange('location_id')}
+                                        value={customerPopupData.location_id ?? ""}
+                                        error={isEmpty(customerPopupData.location_id)}
+                                        loading={loadingLocations}
+                                        errorMessage={errorLocations}
+                                    />
+                                </Grid>
+                            </Grid>
+                        </FormControl>
+                    }
+                    isPopupFormValid={isCustomerPopupFormValid}
+                />
+                <PopupCreateNew
+                    open={openCourierPopupCreateNew}
+                    setOpen={setOpenCourierPopupCreateNew}
+                    handleSubmit={() => onCreateNewCourier()}
+                    title='Courier'
+                    form={
+                        <FormControl fullWidth>
+                            <Grid container spacing={4} className="my-4" style={{ width: '100%' }}>
+                                <Grid item xs={12}>
+                                    <Textarea
+                                        rows={1}
+                                        rowsMax={2}
+                                        label='Name'
+                                        name='name'
+                                        id='name'
+                                        onChange={handleCourierPopupInputChange('name')}
+                                        value={courierPopupData.name ?? ""}
+                                        key='name'
+                                        error={isEmpty(courierPopupData.name)}
+                                        maxLength={100}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Textarea
+                                        rows={1}
+                                        rowsMax={2}
+                                        label='Phone'
+                                        name='phone'
+                                        id='phone'
+                                        onChange={handleCourierPopupInputChange('phone')}
+                                        value={courierPopupData.phone ?? ""}
+                                        key='phone'
+                                        error={isEmpty(courierPopupData.phone) || !phoneNumberValidator(courierPopupData.phone)}
+                                        helperText={isEmpty(courierPopupData.phone) || !phoneNumberValidator(courierPopupData.phone) ? 'Enter a valid phone number.' : ''}
+                                        maxLength={15}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <InputSelectNoCreate
+                                        selectItems={vehicleTypes.map(vehicle => ({
+                                            value: vehicle,
+                                            name: formatFormRecordDropdown(vehicle)
+                                        }))}
+                                        label='Vehicle Types'
+                                        name='vehicle_type'
+                                        id='vehicle_type'
+                                        onChange={handleCourierPopupInputChange('vehicle_type')}
+                                        value={courierPopupData.vehicle_type ?? ""}
+                                        error={isEmpty(courierPopupData.vehicle_type)}
+                                        loading={loadingVehicleTypes}
+                                        errorMessage={errorVehicleTypes}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <InputSelectNoCreate
+                                        selectItems={courierIsAvailable.map(available => ({
+                                            value: available,
+                                            name: formatFormRecordDropdown(available)
+                                        }))}
+                                        label='Is Available'
+                                        name='is_available'
+                                        id='is_available'
+                                        onChange={handleCourierPopupInputChange('is_available')}
+                                        value={courierPopupData.is_available ?? ""}
+                                        error={isEmpty(courierPopupData.is_available)}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Textarea
+                                        rows={1}
+                                        rowsMax={2}
+                                        label='Default Delivery Cost'
+                                        name='default_delivery_cost'
+                                        id='default_delivery_cost'
+                                        onChange={handleCourierPopupInputChange('default_delivery_cost')}
+                                        value={courierPopupData.default_delivery_cost ?? ""}
+                                        key='default_delivery_cost'
+                                        error={isEmpty(courierPopupData.default_delivery_cost)}
+                                        maxLength={15}
+                                    />
+                                </Grid>
+                            </Grid>
+                        </FormControl>
+                    }
+                    isPopupFormValid={isCourierPopupFormValid}
                 />
             </FormControl>
             )}

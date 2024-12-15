@@ -12,6 +12,7 @@ import { BASE_URL } from '../../config/apis';
 import { phoneNumberValidator } from '../../functions/pages/phoneNumberValidator'
 import { useHistory } from 'react-router-dom';
 import ConfirmCancel from '../../pages-components/ConfirmCancel'
+import InputSelectNoCreate from '../../pages-components/InputSelectNoCreate'
 
 const Form = ({ handleClick, icon, title }) => {
     const history = useHistory();
@@ -169,7 +170,7 @@ const Form = ({ handleClick, icon, title }) => {
                     </Grid>
                     */}
                     <Grid item xs={6}>
-                        <InputSelect
+                        <InputSelectNoCreate
                         selectItems={isActive.map(active => ({
                             value: active,
                             name: formatFormRecordDropdown(active)
