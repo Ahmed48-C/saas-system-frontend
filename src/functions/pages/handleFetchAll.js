@@ -1,4 +1,5 @@
 import axios from "axios";
+import apiClient from "../../config/apiClient";
 
 const constructFetchUrl = (endpoint, page, pageSize, order, orderBy, filters) => {
     let url = endpoint((page - 1) * pageSize, page * pageSize);
@@ -16,7 +17,7 @@ export const fetchAll = (endpoint, page, pageSize, order, orderBy, filters, setD
 
     const url = constructFetchUrl(endpoint, page, pageSize, order, orderBy, filters);
 
-    axios.get(url)
+    apiClient.get(url)
         .then(response => {
             setData(response.data);
             setLoading(false);

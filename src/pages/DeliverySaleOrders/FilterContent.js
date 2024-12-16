@@ -4,6 +4,7 @@ import { Grid } from '@material-ui/core'
 import { formatFilterRecordDropdown } from '../../functions/pages/formatFilterRecordDropdown';
 import { filterFetchDropdownRecords } from '../../functions/pages/filterFetchDropdownRecords';
 import { BASE_URL } from '../../config/apis';
+import InputSelectNoCreate from '../../pages-components/InputSelectNoCreate';
 
 const FilterContent = ({ currentFilter, setCurrentFilter, handleProducts, products, stores, handleStores, handleBalances, balances, handleCustomers, customers, handleClients, clients }) => {
     const [loading, setLoading] = useState(true);
@@ -74,7 +75,7 @@ const FilterContent = ({ currentFilter, setCurrentFilter, handleProducts, produc
                 />
             </Grid>
             <Grid item xs={12}>
-                <InputSelect
+                <InputSelectNoCreate
                     selectItems={customers.map(customer => ({
                         value: customer.id.toString(),
                         name: formatFilterRecordDropdown(customer.name)
@@ -87,7 +88,7 @@ const FilterContent = ({ currentFilter, setCurrentFilter, handleProducts, produc
                 />
             </Grid>
             <Grid item xs={12}>
-                <InputSelect
+                <InputSelectNoCreate
                     selectItems={clients.map(client => ({
                         value: client.id.toString(),
                         name: formatFilterRecordDropdown(client.name)
@@ -100,7 +101,7 @@ const FilterContent = ({ currentFilter, setCurrentFilter, handleProducts, produc
                 />
             </Grid>
             <Grid item xs={12}>
-                <InputSelect
+                <InputSelectNoCreate
                     selectItems={stores.map(store => ({
                         value: store.id.toString(),
                         name: formatFilterRecordDropdown(store.name)
@@ -113,7 +114,7 @@ const FilterContent = ({ currentFilter, setCurrentFilter, handleProducts, produc
                 />
             </Grid>
             <Grid item xs={12}>
-                <InputSelect
+                <InputSelectNoCreate
                     selectItems={balances.map(balance => ({
                         value: balance.id.toString(),
                         name: formatFilterRecordDropdown(balance.name)
@@ -126,7 +127,7 @@ const FilterContent = ({ currentFilter, setCurrentFilter, handleProducts, produc
                 />
             </Grid>
             <Grid item xs={12}>
-                <InputSelect
+                <InputSelectNoCreate
                     selectItems={products.map(product => ({
                         value: product.id.toString(),
                         name: formatFilterRecordDropdown(product.name)

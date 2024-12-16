@@ -3,6 +3,7 @@ import { InputSelect, Loader, Textarea } from '../../pages-components'
 import { Grid } from '@material-ui/core'
 import { formatFilterRecordDropdown } from '../../functions/pages/formatFilterRecordDropdown';
 import { filterFetchDropdownRecords } from '../../functions/pages/filterFetchDropdownRecords';
+import InputSelectNoCreate from '../../pages-components/InputSelectNoCreate';
 
 const FilterContent = ({
     currentFilter,
@@ -64,7 +65,7 @@ const FilterContent = ({
                 />
             </Grid>
             <Grid item xs={12}>
-                <InputSelect
+                <InputSelectNoCreate
                     selectItems={suppliers.map(supplier => ({
                         value: supplier.id.toString(),
                         name: formatFilterRecordDropdown(supplier.name)

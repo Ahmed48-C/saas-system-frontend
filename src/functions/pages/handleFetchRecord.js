@@ -1,4 +1,5 @@
 import axios from 'axios';
+import apiClient from '../../config/apiClient';
 
 export const handleFetchRecord = (id, endpoint, setData, setLoading) => {
   setLoading(true); // Set loading to true before fetching data

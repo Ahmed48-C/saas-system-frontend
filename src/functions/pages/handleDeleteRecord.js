@@ -1,9 +1,10 @@
-import axios from "axios";
+// import axios from "axios";
+import apiClient from "../../config/apiClient";
 
 const handleDeleteRecord = (id, endpoint, fetchRecords, successCallback, errorCallback) => {
     let url = endpoint(id);
 
-    axios.delete(url)
+    apiClient.delete(url)
     .then(response => {
         console.log('Delete request successful:', response.data);
         fetchRecords();
