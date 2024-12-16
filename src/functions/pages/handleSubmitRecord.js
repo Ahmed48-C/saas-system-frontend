@@ -1,9 +1,10 @@
-import axios from "axios";
+// import axios from "axios";
+import apiClient from "../../config/apiClient";
 
 export const handleSubmitRecord = (postData, endpoint, successCallback, errorCallback) => {
     let url = endpoint();
 
-    axios.post(url, postData)
+    apiClient.post(url, postData)
     .then(response => {
         console.log('Post request successful:', response.data);
         if (successCallback) {

@@ -75,7 +75,7 @@ const Stores = () => {
     const fetchRecords = useCallback(() => {
         const errorCallback = (error) => {
         console.log('Error occurred:', error);
-        history.push('/ui/500'); // Navigate to the 500 error page
+        // history.push('/ui/500'); // Navigate to the 500 error page
         };
         fetchAll(
         API_ENDPOINTS.GET_STORES,

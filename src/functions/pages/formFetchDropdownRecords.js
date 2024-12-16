@@ -1,7 +1,8 @@
-import axios from "axios";
+// import axios from "axios";
+import apiClient from "../../config/apiClient";
 
 export const formFetchDropdownRecords = (url, setRecords, setLoading) => {
-    axios.get(url)
+    apiClient.get(url)
         .then(response => {
             if (Array.isArray(response.data.data)) {
                 setRecords(response.data.data);

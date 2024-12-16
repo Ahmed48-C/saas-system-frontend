@@ -75,7 +75,7 @@ const Supplier = () => {
 
   const fetchSuppliers = useCallback(() => {
     const errorCallback = (error) => {
-      history.push('/ui/500'); // Navigate to the 500 error page
+      // history.push('/ui/500'); // Navigate to the 500 error page
     };
     fetchAll(
       API_ENDPOINTS.GET_SUPPLIERS,

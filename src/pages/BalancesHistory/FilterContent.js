@@ -4,6 +4,7 @@ import { Grid } from '@material-ui/core'
 import { formatFilterRecordDropdown } from '../../functions/pages/formatFilterRecordDropdown';
 import { filterFetchDropdownRecords } from '../../functions/pages/filterFetchDropdownRecords';
 import { BASE_URL } from '../../config/apis';
+import InputSelectNoCreate from '../../pages-components/InputSelectNoCreate';
 
 const FilterContent = ({ currentFilter, setCurrentFilter, handleBalances, balances }) => {
     const [loading, setLoading] = useState(true);
@@ -79,7 +80,7 @@ const FilterContent = ({ currentFilter, setCurrentFilter, handleBalances, balanc
                 />
             </Grid>
             <Grid item xs={12}>
-                <InputSelect
+                <InputSelectNoCreate
                     selectItems={balances.map(balance => ({
                         value: balance.id.toString(),
                         name: formatFilterRecordDropdown(balance.name)
@@ -92,7 +93,7 @@ const FilterContent = ({ currentFilter, setCurrentFilter, handleBalances, balanc
                 />
             </Grid>
             <Grid item xs={12}>
-                <InputSelect
+                <InputSelectNoCreate
                     selectItems={actions.map(action => ({
                         value: action,
                         name: formatFilterRecordDropdown(action)

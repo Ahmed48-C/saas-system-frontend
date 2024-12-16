@@ -1,9 +1,10 @@
-import axios from 'axios';
+// import axios from 'axios';
+import apiClient from '../../config/apiClient';
 
 export const handleUpdateRecord = (id, updateData, endpoint, successCallback, errorCallback) => {
   let url = endpoint(id);
 
-  axios.put(url, updateData)
+  apiClient.put(url, updateData)
     .then(response => {
       console.log('Update request successful:', response.data);
       if (successCallback) {

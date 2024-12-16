@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { InputSelect, Textarea } from '../../pages-components'
 import { Grid } from '@material-ui/core'
 import { countryList } from '../../config/common'
+import InputSelectNoCreate from '../../pages-components/InputSelectNoCreate'
 
 const FilterContent = ({ currentFilter, setCurrentFilter }) => {
 
@@ -126,7 +127,7 @@ const FilterContent = ({ currentFilter, setCurrentFilter }) => {
                 />
             </Grid>
             <Grid item xs={12}>
-                <InputSelect
+                <InputSelectNoCreate
                     selectItems={countryOptions}
                     label='Country'
                     name='country'

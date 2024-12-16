@@ -139,6 +139,8 @@ import {
   faSignOutAlt,
   faLink
 } from '@fortawesome/free-solid-svg-icons';
+import ProtectedRoute from './pages-components/ProtectedRoute';
+import UnprotectedRoute from './pages-components/UnprotectedRoute';
 library.add(
   far,
   faSquare,
@@ -471,6 +473,10 @@ const BalancesHistory = lazy(() =>
   import('./pages/BalancesHistory/index')
 );
 
+const Login = lazy(() =>
+  import('./pages/Login/index')
+);
+
 
 const Routes = () => {
   const SuspenseLoading = () => {
@@ -512,273 +518,280 @@ const Routes = () => {
   };
 
   return (
-      <ThemeProvider theme={MuiTheme}>
+    <ThemeProvider theme={MuiTheme}>
+      <Switch>
+        <UnprotectedRoute 
+          exact 
+          path="/ui/login" 
+          component={() => (
+            <Suspense fallback={<SuspenseLoading />}>
+              <Login />
+            </Suspense>
+          )}
+        />
+        
+        <Route>
           <LeftSidebar>
-              <AnimatePresence>
-                  <Suspense fallback={<SuspenseLoading />}>
-                      <Switch>
-                          <Redirect exact from="/ui" to="/ui/dashboard" />
-                          {/* <Route> */}
+            <AnimatePresence>
+              <Suspense fallback={<SuspenseLoading />}>
+                <Switch>
+                  <Redirect exact from="/ui" to="/ui/dashboard" />
+                  
+                  <ProtectedRoute
+                    exact
+                    path="/ui/dashboard"
+                    component={Dashboard}
+                  />
+                  <Route
+                    exact
+                    path="/ui/locations"
+                    component={Locations}
+                  />
+                  <ProtectedRoute
+                    exact
+                    path="/ui/location/create"
+                    component={CreateLocations}
+                  />
+                  <Route
+                    exact
+                    path="/ui/location/edit/:id"
+                    component={EditLocations}
+                  />
 
-                            <Route
-                                exact
-                                path="/ui/dashboard"
-                                component={Dashboard}
-                            />
+                  <Route
+                    exact
+                    path="/ui/stores"
+                    component={Stores}
+                  />
+                  <ProtectedRoute
+                    exact
+                    path="/ui/store/create"
+                    component={CreateStores}
+                  />
+                  <Route
+                    exact
+                    path="/ui/store/edit/:id"
+                    component={EditStores}
+                  />
 
-                            <Route
-                                exact
-                                path="/ui/locations"
-                                component={Locations}
-                            />
-                            <Route
-                                exact
-                                path="/ui/location/create"
-                                component={CreateLocations}
-                            />
-                            <Route
-                                exact
-                                path="/ui/location/edit/:id"
-                                component={EditLocations}
-                            />
+                  <Route
+                    exact
+                    path="/ui/suppliers"
+                    component={Suppliers}
+                  />
+                  <ProtectedRoute
+                    exact
+                    path="/ui/supplier/create"
+                    component={CreateSuppliers}
+                  />
+                  <Route
+                    exact
+                    path="/ui/supplier/edit/:id"
+                    component={EditSuppliers}
+                  />
 
-                            <Route
-                                exact
-                                path="/ui/stores"
-                                component={Stores}
-                            />
-                            <Route
-                                exact
-                                path="/ui/store/create"
-                                component={CreateStores}
-                            />
-                            <Route
-                                exact
-                                path="/ui/store/edit/:id"
-                                component={EditStores}
-                            />
+                  <Route
+                    exact
+                    path="/ui/customers"
+                    component={Customers}
+                  />
+                  <ProtectedRoute
+                    exact
+                    path="/ui/customer/create"
+                    component={CreateCustomers}
+                  />
+                  <Route
+                    exact
+                    path="/ui/customer/edit/:id"
+                    component={EditCustomers}
+                  />
 
-                            <Route
-                                exact
-                                path="/ui/suppliers"
-                                component={Suppliers}
-                            />
-                            <Route
-                                exact
-                                path="/ui/supplier/create"
-                                component={CreateSuppliers}
-                            />
-                            <Route
-                                exact
-                                path="/ui/supplier/edit/:id"
-                                component={EditSuppliers}
-                            />
+                  <Route
+                    exact
+                    path="/ui/products"
+                    component={Products}
+                  />
+                  <ProtectedRoute
+                    exact
+                    path="/ui/product/create"
+                    component={CreateProducts}
+                  />
+                  <Route
+                    exact
+                    path="/ui/product/edit/:id"
+                    component={EditProducts}
+                  />
 
-                            <Route
-                                exact
-                                path="/ui/customers"
-                                component={Customers}
-                            />
-                            <Route
-                                exact
-                                path="/ui/customer/create"
-                                component={CreateCustomers}
-                            />
-                            <Route
-                                exact
-                                path="/ui/customer/edit/:id"
-                                component={EditCustomers}
-                            />
+                  <Route
+                    exact
+                    path="/ui/inventories"
+                    component={Inventories}
+                  />
+                  <ProtectedRoute
+                    exact
+                    path="/ui/inventory/create"
+                    component={CreateInventories}
+                  />
+                  <Route
+                    exact
+                    path="/ui/inventory/edit/:id"
+                    component={EditInventories}
+                  />
 
-                            <Route
-                                exact
-                                path="/ui/products"
-                                component={Products}
-                            />
-                            <Route
-                                exact
-                                path="/ui/product/create"
-                                component={CreateProducts}
-                            />
-                            <Route
-                                exact
-                                path="/ui/product/edit/:id"
-                                component={EditProducts}
-                            />
+                  <Route
+                    exact
+                    path="/ui/purchase-orders"
+                    component={PurchaseOrders}
+                  />
+                  <ProtectedRoute
+                    exact
+                    path="/ui/purchase-order/create"
+                    component={CreatePurchaseOrders}
+                  />
+                  <Route
+                    exact
+                    path="/ui/purchase-order/edit/:id"
+                    component={EditPurchaseOrders}
+                  />
 
-                            <Route
-                                exact
-                                path="/ui/inventories"
-                                component={Inventories}
-                            />
-                            <Route
-                                exact
-                                path="/ui/inventory/create"
-                                component={CreateInventories}
-                            />
-                            <Route
-                                exact
-                                path="/ui/inventory/edit/:id"
-                                component={EditInventories}
-                            />
+                  <Route
+                    exact
+                    path="/ui/balances"
+                    component={Balances}
+                  />
+                  <ProtectedRoute
+                    exact
+                    path="/ui/balance/create"
+                    component={CreateBalances}
+                  />
 
-                            <Route
-                                exact
-                                path="/ui/purchase-orders"
-                                component={PurchaseOrders}
-                            />
-                            <Route
-                                exact
-                                path="/ui/purchase-order/create"
-                                component={CreatePurchaseOrders}
-                            />
-                            <Route
-                                exact
-                                path="/ui/purchase-order/edit/:id"
-                                component={EditPurchaseOrders}
-                            />
+                  <Route
+                    exact
+                    path="/ui/deposits"
+                    component={Deposits}
+                  />
+                  <ProtectedRoute
+                    exact
+                    path="/ui/deposit/create"
+                    component={CreateDeposits}
+                  />
 
-                            <Route
-                                exact
-                                path="/ui/balances"
-                                component={Balances}
-                            />
-                            <Route
-                                exact
-                                path="/ui/balance/create"
-                                component={CreateBalances}
-                            />
+                  <Route
+                    exact
+                    path="/ui/withdraws"
+                    component={Withdraws}
+                  />
+                  <ProtectedRoute
+                    exact
+                    path="/ui/withdraw/create"
+                    component={CreateWithdraws}
+                  />
 
-                            <Route
-                                exact
-                                path="/ui/deposits"
-                                component={Deposits}
-                            />
-                            <Route
-                                exact
-                                path="/ui/deposit/create"
-                                component={CreateDeposits}
-                            />
+                  <Route
+                    exact
+                    path="/ui/transfers"
+                    component={Transfers}
+                  />
+                  <ProtectedRoute
+                    exact
+                    path="/ui/transfer/create"
+                    component={CreateTransfers}
+                  />
 
-                            <Route
-                                exact
-                                path="/ui/withdraws"
-                                component={Withdraws}
-                            />
-                            <Route
-                                exact
-                                path="/ui/withdraw/create"
-                                component={CreateWithdraws}
-                            />
+                  <Route
+                    exact
+                    path="/ui/sale-orders"
+                    component={SaleOrders}
+                  />
+                  <ProtectedRoute
+                    exact
+                    path="/ui/sale-order/create"
+                    component={CreateSaleOrders}
+                  />
+                  <Route
+                    exact
+                    path="/ui/sale-order/edit/:id"
+                    component={EditSaleOrders}
+                  />
 
-                            <Route
-                                exact
-                                path="/ui/transfers"
-                                component={Transfers}
-                            />
-                            <Route
-                                exact
-                                path="/ui/transfer/create"
-                                component={CreateTransfers}
-                            />
+                  <Route
+                    exact
+                    path="/ui/completed-sale-orders"
+                    component={CompletedSaleOrders}
+                  />
 
-                            <Route
-                                exact
-                                path="/ui/sale-orders"
-                                component={SaleOrders}
-                            />
-                            <Route
-                                exact
-                                path="/ui/sale-order/create"
-                                component={CreateSaleOrders}
-                            />
-                            <Route
-                                exact
-                                path="/ui/sale-order/edit/:id"
-                                component={EditSaleOrders}
-                            />
+                  <Route
+                    exact
+                    path="/ui/delivery-sale-orders"
+                    component={DeliverySaleOrders}
+                  />
 
-                            <Route
-                                exact
-                                path="/ui/completed-sale-orders"
-                                component={CompletedSaleOrders}
-                            />
+                  <Route
+                    exact
+                    path="/ui/cancelled-sale-orders"
+                    component={CancelledSaleOrders}
+                  />
 
-                            <Route
-                                exact
-                                path="/ui/delivery-sale-orders"
-                                component={DeliverySaleOrders}
-                            />
+                  <Route
+                    exact
+                    path="/ui/couriers"
+                    component={Couriers}
+                  />
+                  <ProtectedRoute
+                    exact
+                    path="/ui/courier/create"
+                    component={CreateCouriers}
+                  />
+                  <Route
+                    exact
+                    path="/ui/courier/edit/:id"
+                    component={EditCouriers}
+                  />
 
-                            <Route
-                                exact
-                                path="/ui/cancelled-sale-orders"
-                                component={CancelledSaleOrders}
-                            />
+                  <Route
+                    exact
+                    path="/ui/clients"
+                    component={Clients}
+                  />
+                  <ProtectedRoute
+                    exact
+                    path="/ui/client/create"
+                    component={CreateClients}
+                  />
+                  <Route
+                    exact
+                    path="/ui/client/edit/:id"
+                    component={EditClients}
+                  />
 
-                            <Route
-                              exact
-                              path="/ui/couriers"
-                              component={Couriers}
-                            />
-                            <Route
-                              exact
-                              path="/ui/courier/create"
-                              component={CreateCouriers}
-                            />
-                            <Route
-                              exact
-                              path="/ui/courier/edit/:id"
-                              component={EditCouriers}
-                            />
+                  <Route
+                    exact
+                    path="/ui/inventory-logs"
+                    component={InventoryLogs}
+                  />
 
-                            <Route
-                              exact
-                              path="/ui/clients"
-                              component={Clients}
-                            />
-                            <Route
-                              exact
-                              path="/ui/client/create"
-                              component={CreateClients}
-                            />
-                            <Route
-                              exact
-                              path="/ui/client/edit/:id"
-                              component={EditClients}
-                            />
+                  <Route
+                    exact
+                    path="/ui/client-balances"
+                    component={ClientBalances}
+                  />
 
-                            <Route
-                              exact
-                              path="/ui/inventory-logs"
-                              component={InventoryLogs}
-                            />
+                  <Route
+                    exact
+                    path="/ui/balances-history"
+                    component={BalancesHistory}
+                  />
 
-                            <Route
-                              exact
-                              path="/ui/client-balances"
-                              component={ClientBalances}
-                            />
-
-                            <Route
-                              exact
-                              path="/ui/balances-history"
-                              component={BalancesHistory}
-                            />
-
-                            {/* <Route path="/ui/400" component={BadRequest400} />
-                            <Route path="/ui/401" component={Unauthorized401} />
-                            <Route path="/ui/403" component={Forbidden403} /> */}
-                            <Route path="/ui/500" component={InternalServerError500} />
-                            {/* Catch all other routes */}
-                            <Route component={NotFound404} />
-                          {/* </Route> */}
-                      </Switch>
-                  </Suspense>
-              </AnimatePresence>
+                  <Route path="/ui/500" component={InternalServerError500} />
+                  <Route component={NotFound404} />
+                </Switch>
+              </Suspense>
+            </AnimatePresence>
           </LeftSidebar>
-      </ThemeProvider>
-  )
-}
+        </Route>
+      </Switch>
+    </ThemeProvider>
+  );
+};
 
 export default Routes
