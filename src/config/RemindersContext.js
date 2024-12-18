@@ -1,7 +1,8 @@
-import axios from 'axios';
+// import axios from 'axios';
 import React, { createContext, useContext, useState } from 'react';
 import { toast } from 'react-toastify';
 import {API_ENDPOINTS} from './apis';
+import apiClient from './apiClient';
 
 const RemindersContext = createContext();
 
@@ -18,7 +19,7 @@ export const RemindersProvider = ({ children }) => {
             toast.error('Error ' + error.message);
         };
 
-        axios.get(API_ENDPOINTS.GET_REMINDERS())
+        apiClient.get(API_ENDPOINTS.GET_REMINDERS())
             .then(response => {
                 setReminders(response.data.data);
                 setLoading(false);

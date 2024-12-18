@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import apiClient from '../../config/apiClient'; // Use apiClient for API calls
+import Cookies from 'js-cookie';  // Add this import
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -14,8 +16,6 @@ import {
 import MailOutlineTwoToneIcon from '@material-ui/icons/MailOutlineTwoTone';
 import LockTwoToneIcon from '@material-ui/icons/LockTwoTone';
 
-import { BASE_URL } from '../../config/apis';
-
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -26,31 +26,36 @@ const Login = () => {
     setError(''); // Reset error message
 
     try {
-      const response = await fetch(`${BASE_URL}/token/`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
+      const response = await apiClient.post(
+        '/token/',
+        {
+          username,
+          password
         },
-        body: JSON.stringify({ username, password })
-      });
+        {
+          withCredentials: true // Include credentials in the request
+        }
+      );
 
-      const data = await response.json();
-      console.log('Login response data:', data); // Debugging line
-
-      if (response.ok && data.access) {
-        localStorage.setItem('token', data.access);
-        localStorage.setItem('refresh_token', data.refresh);
+      if (response.data.access) {
+        
+        localStorage.setItem('token', response.data.access);
         console.log('Login successful!');
+        
+        // Set the refresh token as a cookie
+        Cookies.set('refresh_token', response.data.refresh, {
+          expires: 1, // Cookie expires in 7 days
+          path: '/', // Cookie is available for all paths
+          // secure: false, // Secure in production
+          sameSite: 'Lax' // Cross-site cookie policy
+        });
 
         // Redirect to dashboard or another protected route
-        // Replace '/dashboard' with your desired route
-        window.location.href = 'ui/dashboard/';
-      } else {
-        setError(data.detail || 'Invalid username or password.');
+        window.location.href = '/ui/dashboard/';
       }
     } catch (err) {
       console.error('Error during login:', err);
-      setError('An unexpected error occurred. Please try again.');
+      setError(err.response?.data?.detail || 'Invalid username or password.');
     }
   };
 

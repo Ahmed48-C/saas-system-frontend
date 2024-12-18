@@ -20,6 +20,7 @@ import PopupCreateNew from '../../pages-components/PopupCreateNew'
 import { handleSubmitRecord } from '../../functions/pages/handleSubmitRecord'
 import { toast } from 'react-toastify'
 import { countryList } from '../../config/common'
+import apiClient from '../../config/apiClient'
 
 const Form = ({ handleClick, icon, title }) => {
     const history = useHistory();
@@ -85,7 +86,7 @@ const Form = ({ handleClick, icon, title }) => {
 
         const fetchLastPurchaseOrder = async () => {
             try {
-                const response = await axios.get(`${BASE_URL}/api/get/purchase_order/last/`);
+                const response = await apiClient.get(`${BASE_URL}/api/get/purchase_order/last/`);
                 const lastOrderId = response.data.id;
 
                 console.log(response.data);

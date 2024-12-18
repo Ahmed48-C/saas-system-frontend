@@ -1,4 +1,4 @@
-export const BASE_URL = 'http://127.0.0.1:8000';
+export const BASE_URL = 'http://localhost:8000';
 // export const BASE_URL = 'https://azzamting.pythonanywhere.com/';
 
 export const API_ENDPOINTS = {
