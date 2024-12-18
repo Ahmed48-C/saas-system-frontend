@@ -33,9 +33,32 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
         if (response.ok) {
           setIsAuthenticated(true);
         } else {
-          setIsAuthenticated(false);
-          // For production
-          // localStorage.removeItem('token');
+          // Try to refresh the token
+          try {
+            const refreshResponse = await fetch(`${BASE_URL}/token/refresh/`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              credentials: 'include', // equivalent to withCredentials: true
+            });
+
+            if (refreshResponse.ok) {
+              const data = await refreshResponse.json();
+              console.log('Refresh response:', data);
+              // Save the new token
+              localStorage.setItem('token', data.access);
+              console.log('New token:', data.access);
+              setIsAuthenticated(true);
+            } else {
+              setIsAuthenticated(false);
+              localStorage.removeItem('token');
+            }
+          } catch (refreshError) {
+            console.error('Token refresh failed:', refreshError);
+            setIsAuthenticated(false);
+            localStorage.removeItem('token');
+          }
         }
       } catch (error) {
         console.error('Token verification failed:', error);
