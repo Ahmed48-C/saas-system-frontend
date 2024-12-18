@@ -6,6 +6,7 @@ import { TextField, Grid, Paper, Typography, InputAdornment, IconButton } from '
 import CurrencyInputSelect from '../CurrencyInputSelect';
 import { toast } from 'react-toastify';
 import Loader from '../Loader';
+import apiClient from '../../config/apiClient';
 
 const API_KEY = '2f5ecdd5c54ae1e0090f9be2'; // Replace with your actual API key
 const API_URL = `https://v6.exchangerate-api.com/v6/${API_KEY}/latest/`;
@@ -22,7 +23,7 @@ const CurrencyConverter = () => {
     useEffect(() => {
         const fetchCurrencies = () => {
             setLoading(true);
-            axios.get(`${API_URL}USD`) // Fetching USD as a base
+            apiClient.get(`${API_URL}USD`) // Fetching USD as a base
                 .then(response => {
                     const data = response.data;
                     setCurrencies(data.conversion_rates);

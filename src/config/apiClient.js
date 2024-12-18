@@ -5,18 +5,16 @@ import { BASE_URL } from './apis';
 // Create an Axios instance
 const apiClient = axios.create({
     baseURL: BASE_URL, // Replace with your actual API base URL
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    withCredentials: true, // This ensures cookies are sent with requests
 });
 
-const TEST_TOKEN = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM0NDk0NTY5LCJpYXQiOjE3MzQzMjE3NjksImp0aSI6Ijk0MGUyYzkwOTBjYTRhMzhhMTVjMmI1ZjAwYzcxYmY2IiwidXNlcl9pZCI6M30.Vo_NO7jL400JKWX40EyZi6_eHA39KJqv5vowi2C-v2I';
-
-// Add a request interceptor to include the token dynamically
+// Add a request interceptor to include the access token
 apiClient.interceptors.request.use(
     (config) => {
-        // For production
         const token = localStorage.getItem('token');
-        
-        // For testing
-        // const token = TEST_TOKEN;
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         }
@@ -30,16 +28,45 @@ apiClient.interceptors.request.use(
 // Add a response interceptor to handle 401 and 500 errors
 apiClient.interceptors.response.use(
     (response) => response,
-    (error) => {
+    async (error) => {
         if (error.response) {
             if (error.response.status === 401) {
-                // Redirect to login page
-                window.location.href = '/ui/login';
+                try {
+                    console.log('Refreshing token...');
+                    // Try to refresh the token
+                    const response = await axios.post(
+                        `${BASE_URL}/token/refresh/`,
+                        {},  // empty body
+                        {
+                            withCredentials: true,  // Important!
+                            headers: {
+                                'Content-Type': 'application/json',
+                            }
+                        }
+                    );
+
+                    console.log('Refresh response:', response);
+                    
+                    if (response.data.access) {
+                        // Save the new token
+                        localStorage.setItem('token', response.data.access);
+                        console.log('New token:', response.data.access);
+                        
+                        // Retry the original request with the new token
+                        const config = error.config;
+                        config.headers.Authorization = `Bearer ${response.data.access}`;
+                        return apiClient(config);
+                    }
+                } catch (refreshError) {
+                    // If refresh fails, redirect to login
+                    window.location.href = '/ui/login';
+                }
             } else if (error.response.status === 500) {
                 // Redirect to 500 error page
                 window.location.href = '/ui/500';
             }
         }
+
         return Promise.reject(error);
     }
 );

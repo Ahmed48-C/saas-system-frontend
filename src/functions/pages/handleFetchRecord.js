@@ -1,4 +1,4 @@
-import axios from 'axios';
+// import axios from 'axios';
 import apiClient from '../../config/apiClient';
 
 export const handleFetchRecord = (id, endpoint, setData, setLoading) => {
@@ -7,7 +7,7 @@ export const handleFetchRecord = (id, endpoint, setData, setLoading) => {
 
   console.log('Fetching data from URL:', url);
 
-  axios.get(url)
+  apiClient.get(url)
     .then(response => {
       console.log('Response data:', response.data);
 

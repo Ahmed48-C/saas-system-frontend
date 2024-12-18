@@ -13,6 +13,7 @@ import axios from 'axios';
 import {API_ENDPOINTS} from './config/apis';
 import reminderSound from './assets/images/reminder-sound.mp3';
 import { SelectedIDsProvider } from './config/SelectedIdsContext';
+import apiClient from './config/apiClient';
 
 const store = configureStore();
 
@@ -80,7 +81,7 @@ function ReminderWatcher() {
         reached: true,
       };
 
-      axios.put(url, updateData)
+      apiClient.put(url, updateData)
         .then(response => {
             fetchAllReminders(); // Re-fetch the reminders after updating
         })

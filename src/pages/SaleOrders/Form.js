@@ -22,6 +22,7 @@ import { handleSubmitRecord } from '../../functions/pages/handleSubmitRecord'
 import { toast } from 'react-toastify'
 import { countryList } from '../../config/common'
 import { phoneNumberValidator } from '../../functions/pages/phoneNumberValidator'
+import apiClient from '../../config/apiClient'
 
 const Form = ({ handleClick, icon, title }) => {
     const history = useHistory();
@@ -118,7 +119,7 @@ const Form = ({ handleClick, icon, title }) => {
 
         const fetchLastSaleOrder = async () => {
             try {
-                const response = await axios.get(`${BASE_URL}/api/get/sale_order/last/`);
+                const response = await apiClient.get(`${BASE_URL}/api/get/sale_order/last/`);
                 const lastOrderId = response.data.id;
 
                 console.log(response.data);
