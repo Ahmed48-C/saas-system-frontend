@@ -28,5 +28,25 @@ export const countryList = [
     "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe"
 ];
 
+export const currencyList = [
+    "USD", "EUR", "GBP", "JPY", "AUD", 
+    "CAD", "CHF", "CNY", "HKD", "NZD", 
+    "SEK", "NOK", "DKK", "INR", "SGD", 
+    "KRW", "ZAR", "BRL", "MXN", "RUB", 
+    "AED", "SAR", "TRY", "THB", "MYR", 
+    "IDR", "PHP", "PLN", "CZK", "HUF", 
+    "ILS", "EGP", "VND", "NGN", "PKR", 
+    "BDT", "LKR", "KWD", "OMR", "QAR", 
+    "BHD", "MAD", "ARS", "COP", "CLP", 
+    "PEN", "UYU", "GHS", "TZS", "KES", 
+    "UGX", "ETB", "XAF", "XOF", "GMD", 
+    "SCR", "FJD", "XPF", "PGK", "SBD", 
+    "BND", "MUR", "BWP", "MZN", "CDF", 
+    "ZMW", "AFN", "DZD", "IRR", "LBP", 
+    "TND", "DOP", "JMD", "BSD", "HTG", 
+    "ANG", "AWG", "SZL", "NAD", "LSL", 
+    "MWK", "RWF", "GNF", "MGA", "BIF"
+];
+
 // Edit this values to control the allowed upload files size by MB
 export const maxFileSizeInMBForUploadImage = 10;

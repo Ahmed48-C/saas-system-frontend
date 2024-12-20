@@ -389,20 +389,20 @@ const CreateBalances = lazy(() =>
   import('./pages/Balances/CreateContent')
 );
 
-const Deposits = lazy(() =>
-  import('./pages/Deposits/index')
+const Incomes = lazy(() =>
+  import('./pages/Incomes/index')
 );
 
-const CreateDeposits = lazy(() =>
-  import('./pages/Deposits/CreateContent')
+const CreateIncomes = lazy(() =>
+  import('./pages/Incomes/CreateContent')
 );
 
-const Withdraws = lazy(() =>
-  import('./pages/Withdraws/index')
+const Expenses = lazy(() =>
+  import('./pages/Expenses/index')
 );
 
-const CreateWithdraws = lazy(() =>
-  import('./pages/Withdraws/CreateContent')
+const CreateExpenses = lazy(() =>
+  import('./pages/Expenses/CreateContent')
 );
 
 const Transfers = lazy(() =>
@@ -667,24 +667,24 @@ const Routes = () => {
 
                   <Route
                     exact
-                    path="/ui/deposits"
-                    component={Deposits}
+                    path="/ui/incomes"
+                    component={Incomes}
                   />
                   <ProtectedRoute
                     exact
-                    path="/ui/deposit/create"
-                    component={CreateDeposits}
+                    path="/ui/income/create"
+                    component={CreateIncomes}
                   />
 
                   <Route
                     exact
-                    path="/ui/withdraws"
-                    component={Withdraws}
+                    path="/ui/expenses"
+                    component={Expenses}
                   />
                   <ProtectedRoute
                     exact
-                    path="/ui/withdraw/create"
-                    component={CreateWithdraws}
+                    path="/ui/expense/create"
+                    component={CreateExpenses}
                   />
 
                   <Route

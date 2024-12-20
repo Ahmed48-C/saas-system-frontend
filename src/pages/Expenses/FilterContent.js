@@ -5,13 +5,30 @@ import { formatFilterRecordDropdown } from '../../functions/pages/formatFilterRe
 import { filterFetchDropdownRecords } from '../../functions/pages/filterFetchDropdownRecords';
 import { BASE_URL } from '../../config/apis';
 import InputSelectNoCreate from '../../pages-components/InputSelectNoCreate';
+import { currencyList } from '../../config/common';
 
-const FilterContent = ({ currentFilter, setCurrentFilter, handleBalances, balances }) => {
+const FilterContent = ({ currentFilter, setCurrentFilter, handleBalances, balances, handleSuppliers, suppliers, handleCategories, categories }) => {
     const [loading, setLoading] = useState(true);
+    const [currencyOptions, setCurrencyOptions] = useState([]);
 
     useEffect(() => {
         filterFetchDropdownRecords(`${BASE_URL}/api/get/balances/`, handleBalances)
+        filterFetchDropdownRecords(`${BASE_URL}/api/get/suppliers/`, handleSuppliers)
+        filterFetchDropdownRecords(`${BASE_URL}/api/get/expense_categories/`, handleCategories)
         setLoading(false);
+    }, []);
+
+    useEffect(() => {
+        // Map through country list and sort them alphabetically
+        const sortedCurrencies = currencyList
+            .map(currency => ({
+                name: currency,
+                value: currency // Setting value to country name
+            }))
+            .sort((a, b) => a.name.localeCompare(b.name));
+
+        // Set the sorted countries in the state
+        setCurrencyOptions(sortedCurrencies);
     }, []);
 
     const handleInputChange = (field) => (e) => {
@@ -51,6 +68,32 @@ const FilterContent = ({ currentFilter, setCurrentFilter, handleBalances, balanc
                 />
             </Grid>
             <Grid item xs={12}>
+                <InputSelectNoCreate
+                    selectItems={suppliers.map(supplier => ({
+                        value: supplier.id.toString(),
+                        name: formatFilterRecordDropdown(supplier.name)
+                    }))}
+                    label='Supplier'
+                    name='supplier'
+                    id='supplier'
+                    onChange={(e) => setCurrentFilter({ ...currentFilter, supplier_id: e.target.value })}
+                    value={currentFilter.supplier_id}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <InputSelectNoCreate
+                    selectItems={categories.map(category => ({
+                        value: category.id.toString(),
+                        name: formatFilterRecordDropdown(category.name)
+                    }))}
+                    label='Category'
+                    name='category'
+                    id='category'
+                    onChange={(e) => setCurrentFilter({ ...currentFilter, category_id: e.target.value })}
+                    value={currentFilter.category_id}
+                />
+            </Grid>
+            <Grid item xs={12}>
                 <Textarea
                     style={{ margin: 0 }}
                     rows={1}
@@ -61,6 +104,16 @@ const FilterContent = ({ currentFilter, setCurrentFilter, handleBalances, balanc
                     value={currentFilter.amount}
                     onChange={handleInputChange('amount')}
                     maxLength={15}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <InputSelectNoCreate
+                    selectItems={currencyOptions}
+                    label='Currency'
+                    name='currency'
+                    id='currency'
+                    value={currentFilter.currency}
+                    onChange={(e) => setCurrentFilter({ ...currentFilter, currency: e.target.value })}
                 />
             </Grid>
             <Grid item xs={12}>

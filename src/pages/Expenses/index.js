@@ -15,6 +15,7 @@ import HandleTableErrorCallback from '../../functions/pages/HandleTableErrorCall
 const headers = [
   { key: '', label: '', className: 'bg-white text-center' },
   { key: 'balance', label: 'Balance', className: 'bg-white text-left' },
+  { key: 'supplier', label: 'Supplier', className: 'bg-white text-left' },
   { key: 'amount', label: 'Amount', className: 'bg-white text-left' },
   { key: 'type', label: 'Type', className: 'bg-white text-left' },
   { key: 'note', label: 'Note', className: 'bg-white text-left' },
@@ -26,13 +27,13 @@ const headers = [
 const tabs = [
   { url: '/ui/balances', title: 'Balances' },
   { url: '/ui/balances-history', title: 'Balances History' },
-  { url: '/ui/deposits', title: 'Deposits' },
-  { url: '/ui/withdraws', title: 'Withdraws' },
+  { url: '/ui/incomes', title: 'Incomes' },
+  { url: '/ui/expenses', title: 'Expenses' },
   { url: '/ui/transfers', title: 'Transfers' }
 ];
 
-const Deposit = () => {
-  const heading = 'Deposit'
+const Expense = () => {
+  const heading = 'Expense'
   const [loading, setLoading] = useState(true);
   const [records, setRecords] = useState([]);
 
@@ -44,9 +45,11 @@ const Deposit = () => {
 
   const [filters, setFilters] = useState([]);
   const [anchorEl4, setAnchorEl4] = useState(null);
-  const [currentFilter, setCurrentFilter] = useState({ balance_id: '', amount: '', type: '', note: '', date: '', action: '' });
+  const [currentFilter, setCurrentFilter] = useState({ balance_id: '', supplier_id: '', category_id: '', amount: '', type: '', note: '', date: '', action: '' });
   const [balances, setBalances] = useState([]);
-  const filterRecords = { balances };
+  const [suppliers, setSuppliers] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const filterRecords = { balances, suppliers, categories };
   const [isEditing, setIsEditing] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
 
@@ -55,19 +58,23 @@ const Deposit = () => {
   const [isSelectedAll, setIsSelectedAll] = useState(false);
 
   const [columns, setColumns] = useState(() => {
-    const savedColumns = localStorage.getItem('depositColumns');
+    const savedColumns = localStorage.getItem('expenseColumns');
     return savedColumns ? JSON.parse(savedColumns) : [
+        { name: 'attachment_file', label: 'Attachment', className: 'bg-white text-left', selected: true },
         { name: 'balance', label: 'Balance', className: 'bg-white text-left', selected: true },
+        { name: 'supplier', label: 'Supplier', className: 'bg-white text-left', selected: true },
+        { name: 'category', label: 'Category', className: 'bg-white text-left', selected: true },
         { name: 'amount', label: 'Amount', className: 'bg-white text-left', selected: true },
         { name: 'type', label: 'Type', className: 'bg-white text-left', selected: true },
         { name: 'note', label: 'Note', className: 'bg-white text-left', selected: false },
         { name: 'date', label: 'date', className: 'bg-white text-left', selected: true },
         { name: 'action', label: 'Action', className: 'bg-white text-left', selected: false },
+        // { name: 'currency', label: 'Currency', className: 'bg-white text-left', selected: true },
     ];
   });
 
   useEffect(() => {
-    localStorage.setItem('depositColumns', JSON.stringify(columns));
+    localStorage.setItem('expenseColumns', JSON.stringify(columns));
   }, [columns]);
 
   const history = useHistory();
@@ -75,7 +82,7 @@ const Deposit = () => {
   const { ids, setIds } = UseIDs();
 
   const handleNavigation = () => {
-    history.push('/ui/deposit/create');
+    history.push('/ui/expense/create');
   };
 
   const fetchRecords = useCallback(() => {
@@ -84,7 +91,7 @@ const Deposit = () => {
       // history.push('/ui/500'); // Navigate to the 500 error page
     };
     fetchAll(
-      API_ENDPOINTS.GET_BALANCE_LOGS,
+      API_ENDPOINTS.GET_EXPENSES,
       page,
       rows,
       order,
@@ -92,6 +99,7 @@ const Deposit = () => {
       filters,
       (data) => {
         setRecords(data);
+        console.log(data)
         if (data.actual_total_count) {
           setTotalPages(Math.ceil(data.actual_total_count / rows));
         } else {
@@ -168,19 +176,27 @@ const Deposit = () => {
     setBalances(value);
   }
 
+  const handleSuppliers = (value) => {
+    setSuppliers(value);
+  }
+
+  const handleCategories = (value) => {
+    setCategories(value);
+  }
+
   const handleBatchDelete = () => {
     const successCallback = (data) => {
       setNumSelected(0);
       setSelected([]);
       setIsSelectedAll(false);
-      toast.success('Deleted Deposits Successfully');
+      toast.success('Deleted Expenses Successfully');
     };
 
     const errorCallback = (error) => {
-      HandleTableErrorCallback(error, 'Deposit', ids, setIds);
+      HandleTableErrorCallback(error, 'Expense', ids, setIds);
     };
 
-    handleBatchDeleteRecords(selected, API_ENDPOINTS.DELETE_BALANCE_LOGS, fetchRecords, successCallback, errorCallback)
+    handleBatchDeleteRecords(selected, API_ENDPOINTS.DELETE_EXPENSES, fetchRecords, successCallback, errorCallback)
   }
 
   const handleSelectAll = () => {
@@ -215,7 +231,7 @@ const Deposit = () => {
           handleIsEditing={handleIsEditing}
           handleEditIndex={handleEditIndex}
           editIndex={editIndex}
-          filterContent={<FilterContent currentFilter={currentFilter} setCurrentFilter={setCurrentFilter} balances={balances} handleBalances={handleBalances} />}
+          filterContent={<FilterContent currentFilter={currentFilter} setCurrentFilter={setCurrentFilter} balances={balances} handleBalances={handleBalances} suppliers={suppliers} handleSuppliers={handleSuppliers} categories={categories} handleCategories={handleCategories} />}
           filterRecords={filterRecords} // Pass records object
         />}
         tableHeading={<TableHeading
@@ -226,8 +242,8 @@ const Deposit = () => {
           columns={columns}
         />}
         tableContent={
-          !loading && records.data.filter(item => item.type === 'DEPOSIT').length === 0 ? (
-            <NoRecords context='Deposits' />
+          !loading && records.data.filter(item => item.type === 'EXPENSE').length === 0 ? (
+            <NoRecords context='Expenses' />
           ) : (
             <TableContent
               fetchRecords={fetchRecords}
@@ -242,7 +258,7 @@ const Deposit = () => {
             />
           )
         }
-        Heading='Deposits'
+        Heading='Expenses'
         handleClick={handleNavigation}
         handlePageChange={handlePageChange}
         pageCount={totalPages}
@@ -262,4 +278,4 @@ const Deposit = () => {
   )
 }
 
-export default Deposit
+export default Expense
