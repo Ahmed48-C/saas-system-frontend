@@ -23,7 +23,7 @@ const CurrencyConverter = () => {
     useEffect(() => {
         const fetchCurrencies = () => {
             setLoading(true);
-            apiClient.get(`${API_URL}USD`) // Fetching USD as a base
+            apiClient.get(`${API_URL}USD`, { withCredentials: false }) // Fetching USD as a base
                 .then(response => {
                     const data = response.data;
                     setCurrencies(data.conversion_rates);

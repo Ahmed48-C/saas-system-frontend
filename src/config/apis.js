@@ -113,4 +113,25 @@ export const API_ENDPOINTS = {
   GET_BALANCES_HISTORY: (from, to) => `${BASE_URL}/api/get/balances_history/?from=${from}&to=${to}`,
   DELETE_BALANCE_HISTORY: (id) => `${BASE_URL}/api/delete/balance_history/${id}/`,
   DELETE_BALANCES_HISTORY: () => `${BASE_URL}/api/delete/balances_history/`,
+
+  DELETE_EXPENSE: (id) => `${BASE_URL}/api/delete/expense/${id}/`,
+  DELETE_EXPENSES: () => `${BASE_URL}/api/delete/expenses/`,
+  POST_EXPENSE: () => `${BASE_URL}/api/post/expense/`,
+  PUT_EXPENSE: (id) => `${BASE_URL}/api/put/expense/${id}/`,
+  GET_EXPENSES: (from, to) => `${BASE_URL}/api/get/expenses/?from=${from}&to=${to}`,
+  GET_EXPENSE: (id) => `${BASE_URL}/api/get/expense/${id}/`,
+
+  DELETE_INCOME: (id) => `${BASE_URL}/api/delete/income/${id}/`,
+  DELETE_INCOMES: () => `${BASE_URL}/api/delete/incomes/`,
+  POST_INCOME: () => `${BASE_URL}/api/post/income/`,
+  PUT_INCOME: (id) => `${BASE_URL}/api/put/income/${id}/`,
+  GET_INCOMES: (from, to) => `${BASE_URL}/api/get/incomes/?from=${from}&to=${to}`,
+  GET_INCOME: (id) => `${BASE_URL}/api/get/income/${id}/`,
+
+  GET_INCOME_CATEGORIES: () => `${BASE_URL}/api/get/income_categories/`,
+  GET_EXPENSE_CATEGORIES: () => `${BASE_URL}/api/get/expense_categories/`,
+
+  POST_INCOME_CATEGORY: () => `${BASE_URL}/api/post/income_category/`,
+  POST_EXPENSE_CATEGORY: () => `${BASE_URL}/api/post/expense_category/`,
+
 };

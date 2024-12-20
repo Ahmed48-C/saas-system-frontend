@@ -26,13 +26,13 @@ const headers = [
 const tabs = [
   { url: '/ui/balances', title: 'Balances' },
   { url: '/ui/balances-history', title: 'Balances History' },
-  { url: '/ui/deposits', title: 'Deposits' },
-  { url: '/ui/withdraws', title: 'Withdraws' },
+  { url: '/ui/incomes', title: 'Incomes' },
+  { url: '/ui/expenses', title: 'Expenses' },
   { url: '/ui/transfers', title: 'Transfers' }
 ];
 
-const Withdraw = () => {
-  const heading = 'Withdraw'
+const Income = () => {
+  const heading = 'Income'
   const [loading, setLoading] = useState(true);
   const [records, setRecords] = useState([]);
 
@@ -44,9 +44,11 @@ const Withdraw = () => {
 
   const [filters, setFilters] = useState([]);
   const [anchorEl4, setAnchorEl4] = useState(null);
-  const [currentFilter, setCurrentFilter] = useState({ balance_id: '', amount: '', type: '', note: '', date: '', action: '' });
+  const [currentFilter, setCurrentFilter] = useState({ balance_id: '', customer_id: '', category_id: '', amount: '', type: '', note: '', date: '', action: '', currency: '' });
   const [balances, setBalances] = useState([]);
-  const filterRecords = { balances };
+  const [customers, setCustomers] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const filterRecords = { balances, customers, categories };
   const [isEditing, setIsEditing] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
 
@@ -55,19 +57,23 @@ const Withdraw = () => {
   const [isSelectedAll, setIsSelectedAll] = useState(false);
 
   const [columns, setColumns] = useState(() => {
-    const savedColumns = localStorage.getItem('withdrawColumns');
+    const savedColumns = localStorage.getItem('incomeColumns');
     return savedColumns ? JSON.parse(savedColumns) : [
+        { name: 'attachment_file', label: 'Attachment', className: 'bg-white text-left', selected: true },
         { name: 'balance', label: 'Balance', className: 'bg-white text-left', selected: true },
+        { name: 'customer', label: 'Customer', className: 'bg-white text-left', selected: true },
+        { name: 'category', label: 'Category', className: 'bg-white text-left', selected: true },
         { name: 'amount', label: 'Amount', className: 'bg-white text-left', selected: true },
         { name: 'type', label: 'Type', className: 'bg-white text-left', selected: true },
         { name: 'note', label: 'Note', className: 'bg-white text-left', selected: false },
         { name: 'date', label: 'date', className: 'bg-white text-left', selected: true },
         { name: 'action', label: 'Action', className: 'bg-white text-left', selected: false },
+        // { name: 'currency', label: 'Currency', className: 'bg-white text-left', selected: true },
     ];
   });
 
   useEffect(() => {
-    localStorage.setItem('withdrawColumns', JSON.stringify(columns));
+    localStorage.setItem('incomeColumns', JSON.stringify(columns));
   }, [columns]);
 
   const history = useHistory();
@@ -75,7 +81,7 @@ const Withdraw = () => {
   const { ids, setIds } = UseIDs();
 
   const handleNavigation = () => {
-    history.push('/ui/withdraw/create');
+    history.push('/ui/income/create');
   };
 
   const fetchRecords = useCallback(() => {
@@ -84,7 +90,7 @@ const Withdraw = () => {
       // history.push('/ui/500'); // Navigate to the 500 error page
     };
     fetchAll(
-      API_ENDPOINTS.GET_BALANCE_LOGS,
+      API_ENDPOINTS.GET_INCOMES,
       page,
       rows,
       order,
@@ -92,7 +98,6 @@ const Withdraw = () => {
       filters,
       (data) => {
         setRecords(data);
-        console.log(data)
         if (data.actual_total_count) {
           setTotalPages(Math.ceil(data.actual_total_count / rows));
         } else {
@@ -169,19 +174,27 @@ const Withdraw = () => {
     setBalances(value);
   }
 
+  const handleCustomers = (value) => {
+    setCustomers(value);
+  }
+
+  const handleCategories = (value) => {
+    setCategories(value);
+  }
+
   const handleBatchDelete = () => {
     const successCallback = (data) => {
       setNumSelected(0);
       setSelected([]);
       setIsSelectedAll(false);
-      toast.success('Deleted Withdraws Successfully');
+      toast.success('Deleted Incomes Successfully');
     };
 
     const errorCallback = (error) => {
-      HandleTableErrorCallback(error, 'Withdraw', ids, setIds);
+      HandleTableErrorCallback(error, 'Income', ids, setIds);
     };
 
-    handleBatchDeleteRecords(selected, API_ENDPOINTS.DELETE_BALANCE_LOGS, fetchRecords, successCallback, errorCallback)
+    handleBatchDeleteRecords(selected, API_ENDPOINTS.DELETE_INCOMES, fetchRecords, successCallback, errorCallback)
   }
 
   const handleSelectAll = () => {
@@ -216,7 +229,7 @@ const Withdraw = () => {
           handleIsEditing={handleIsEditing}
           handleEditIndex={handleEditIndex}
           editIndex={editIndex}
-          filterContent={<FilterContent currentFilter={currentFilter} setCurrentFilter={setCurrentFilter} balances={balances} handleBalances={handleBalances} />}
+          filterContent={<FilterContent currentFilter={currentFilter} setCurrentFilter={setCurrentFilter} balances={balances} handleBalances={handleBalances} customers={customers} handleCustomers={handleCustomers} categories={categories} handleCategories={handleCategories} />}
           filterRecords={filterRecords} // Pass records object
         />}
         tableHeading={<TableHeading
@@ -227,8 +240,8 @@ const Withdraw = () => {
           columns={columns}
         />}
         tableContent={
-          !loading && records.data.filter(item => item.type === 'WITHDRAW').length === 0 ? (
-            <NoRecords context='Withdraws' />
+          !loading && records.data.filter(item => item.type === 'INCOME').length === 0 ? (
+            <NoRecords context='Incomes' />
           ) : (
             <TableContent
               fetchRecords={fetchRecords}
@@ -243,7 +256,7 @@ const Withdraw = () => {
             />
           )
         }
-        Heading='Withdraws'
+        Heading='Incomes'
         handleClick={handleNavigation}
         handlePageChange={handlePageChange}
         pageCount={totalPages}
@@ -263,4 +276,4 @@ const Withdraw = () => {
   )
 }
 
-export default Withdraw
+export default Income

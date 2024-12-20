@@ -278,15 +278,15 @@ const SidebarMenu = (props) => {
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
-                      to="/ui/deposits">
-                      Deposits
+                      to="/ui/incomes">
+                      Incomes
                     </NavLink>
                   </li>
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
-                      to="/ui/withdraws">
-                      Withdraws
+                      to="/ui/expenses">
+                      Expenses
                     </NavLink>
                   </li>
                   <li>

@@ -41,8 +41,8 @@ const TableContent = ({
   };
 
   useEffect(() => {
-    updateSelectedWithIds('deposits', ids, setIds, handleSelected, handleNumSelected);
-  }, [ids.deposits]);
+    updateSelectedWithIds('incomes', ids, setIds, handleSelected, handleNumSelected);
+  }, [ids.incomes]);
 
   useEffect(() => {
     if (records && records.data && records.data.length > 0) {
@@ -92,6 +92,11 @@ const Row = ({
   columns,
 }) => {
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
+  const [isImageZoomed, setIsImageZoomed] = useState(false); // State to track zoom
+
+  const handleImageClick = () => {
+    setIsImageZoomed(!isImageZoomed); // Toggle zoom state on click
+  };
 
   const history = useHistory();
   const open = Boolean(anchorEl) && currentRowId === row.id;
@@ -106,16 +111,16 @@ const Row = ({
 
   const handleDeleteClick = (id) => {
     const successCallback = (data) => {
-      toast.success('Deleted Deposit Successfully');
+      toast.success('Deleted Income Successfully');
     };
 
     // handleDeleteRecord(id, API_ENDPOINTS.DELETE_BALANCE_LOG, fetchRecords, successCallback, (error) => {
-    handleDeleteRecord(row.id, API_ENDPOINTS.DELETE_BALANCE_LOG, fetchRecords, successCallback, (error) => {
-      HandleTableErrorCallback(error, 'Deposit', ids, setIds); // Pass the error and entity name to the reusable function
+    handleDeleteRecord(row.id, API_ENDPOINTS.DELETE_INCOME, fetchRecords, successCallback, (error) => {
+      HandleTableErrorCallback(error, 'Income', ids, setIds); // Pass the error and entity name to the reusable function
     });
   };
 
-  if (row.type !== 'DEPOSIT') {
+  if (row.type !== 'INCOME') {
     return null;
   }
 
@@ -135,6 +140,38 @@ const Row = ({
             return (
               <td key={index} className='text-success'>
                 {row[column.name]}
+              </td>
+            );
+          } else if (column.name === 'attachment_file' && row[column.name]) {
+            return (
+              <td key={index}>
+                <img
+                  src={row[column.name]}
+                  alt={`${row.name || 'Attachment'}`}
+                  onClick={handleImageClick}
+                  onError={(e) => { e.target.style.display = 'none'; }} // Hide attachment if error
+                  style={{
+                    width: '70px',
+                    height: '70px',
+                    objectFit: 'cover',
+                    cursor: 'pointer',
+                    transition: 'transform 0.3s ease, box-shadow 0.3s ease', // Add transition for box-shadow
+                    transform: isImageZoomed ? 'scale(2.4)' : 'scale(1)', // Zoom effect
+                    boxShadow: isImageZoomed ? '0 4px 8px rgba(0, 0, 0, 0.6)' : 'none', // Apply shadow when zoomed
+                    zIndex: isImageZoomed ? 9999 : 'auto', // Ensure it pops over other elements
+                    position: isImageZoomed ? 'relative' : 'static', // Make it relative for z-index to work
+                    borderRadius: '3px', // Consistent border radius
+                  }}
+                />
+              </td>
+            );
+          } else if (column.name === 'currency') {
+            // Skip rendering amount column as it will be combined with currency
+            return null;
+          } else if (column.name === 'amount') {
+            return (
+              <td key={index}>
+                {row['currency']} {row[column.name]}
               </td>
             );
           } else {
