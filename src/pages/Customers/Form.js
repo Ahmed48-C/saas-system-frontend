@@ -78,9 +78,9 @@ const Form = ({ handleClick, icon, title }) => {
                 // data.phone &&
                 // phoneNumberValidator(data.phone) &&
                 // data.email &&
-                data.location_id&&
-                (isEmpty(data.phone) || phoneNumberValidator(data.phone))
-                (isEmpty(data.email) || emailValidator(data.email))
+                data.location_id &&
+                (isEmpty(data.phone) || phoneNumberValidator(data.phone)) &&
+                (isEmpty(data.email) || emailValidator(data.email));
                 // emailValidator(data.email);
     };
 

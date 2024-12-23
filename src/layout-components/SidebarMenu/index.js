@@ -186,13 +186,13 @@ const SidebarMenu = (props) => {
                       Quote
                     </NavLink>
                   </li> */}
-                  {/* <li>
+                  <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
-                      to="/ui/DashboardCommerce">
+                      to="/ui/invoices">
                       Invoice
                     </NavLink>
-                  </li> */}
+                  </li>
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}

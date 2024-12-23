@@ -16,11 +16,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMoneyBill } from '@fortawesome/free-solid-svg-icons'; // Import the money sign icon
 
 const headers = [
+  { key: '', label: '', className: 'bg-white text-center' },
   { key: 'code', label: 'Code', className: 'bg-white text-left' },
   { key: 'price', label: 'Price', className: 'bg-white text-left' },
   { key: 'quantity', label: 'Quantity', className: 'bg-white text-left' },
   { key: 'total', label: 'Total', className: 'bg-white text-left' },
   { key: 'status', label: 'Status', className: 'bg-white text-left' },
+  { key: 'actions', label: 'Actions', className: 'bg-white text-center', sortable: false }
 ];
 
 const tabs = [
@@ -31,8 +33,8 @@ const tabs = [
   { url: '/ui/cancelled-sale-orders', title: 'Cancelled Sale Order' },
 ];
 
-const CancelledSaleOrder = () => {
-  const heading = 'Cancelled Sale Order'
+const Invoice = () => {
+  const heading = 'Invoice'
   const [loading, setLoading] = useState(true);
   const [records, setRecords] = useState([]);
 
@@ -44,14 +46,11 @@ const CancelledSaleOrder = () => {
 
   const [filters, setFilters] = useState([]);
   const [anchorEl4, setAnchorEl4] = useState(null);
-  // const [currentFilter, setCurrentFilter] = useState({ code: '', price: '', quantity: '', total: '', status: '', product_id: '', store_id: '', balance_id: '', customer_id: '' });
-  const [currentFilter, setCurrentFilter] = useState({ code: '', quantity: '', total: '', items__product_id: '', store_id: '', balance_id: '', customer_id: '', client_id: '', items__price: '', items__quantity: '', items__total: '' });
-  const [products, setProducts] = useState([]);
-  const [stores, setStores] = useState([]);
-  const [balances, setBalances] = useState([]);
+  const [currentFilter, setCurrentFilter] = useState({ number: '', date: '', due_date: '', currency: '', payment_method: '', total: '', note: '', customer_id: '', location_id: '', items__product_id: '', items__price: '', items__quantity: '', items__total: '' });
   const [customers, setCustomers] = useState([]);
-  const [clients, setClients] = useState([]);
-  const filterRecords = { products, stores, balances, customers, clients };
+  const [locations, setLocations] = useState([]);
+  const [products, setProducts] = useState([]);
+  const filterRecords = { customers, locations, products };
   const [isEditing, setIsEditing] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
 
@@ -60,30 +59,33 @@ const CancelledSaleOrder = () => {
   const [isSelectedAll, setIsSelectedAll] = useState(false);
 
   const [columns, setColumns] = useState(() => {
-    const savedColumns = localStorage.getItem('cancelledSaleOrderColumns');
+    const savedColumns = localStorage.getItem('invoiceColumns');
     return savedColumns ? JSON.parse(savedColumns) : [
-      { name: 'code', label: 'Code', className: 'bg-white text-left', selected: true },
-      // { name: 'price', label: 'Price', className: 'bg-white text-left', selected: false },
-      // { name: 'quantity', label: 'Quantity', className: 'bg-white text-left', selected: false },
-      { name: 'total', label: 'Total', className: 'bg-white text-left', selected: true },
-      { name: 'status', label: 'Status', className: 'bg-white text-left', selected: true },
-      // { name: 'product', label: 'Product', className: 'bg-white text-left', selected: true },
+      { name: 'attachment_file', label: 'Attachment', className: 'bg-white text-left', selected: true },
+      { name: 'number', label: 'Number', className: 'bg-white text-left', selected: true },
+      { name: 'date', label: 'Date', className: 'bg-white text-left', selected: true },
+      { name: 'due_date', label: 'Due Date', className: 'bg-white text-left', selected: true },
       { name: 'items', label: 'Items', className: 'bg-white text-left', selected: true },
-      { name: 'store', label: 'Store', className: 'bg-white text-left', selected: true },
+      { name: 'currency', label: 'Currency', className: 'bg-white text-left', selected: true },
+      { name: 'payment_method', label: 'Payment Method', className: 'bg-white text-left', selected: true },
+      { name: 'total', label: 'Total', className: 'bg-white text-left', selected: true },
+      { name: 'note', label: 'Note', className: 'bg-white text-left', selected: false },
       { name: 'customer', label: 'Customer', className: 'bg-white text-left', selected: true },
-      { name: 'client', label: 'Client', className: 'bg-white text-left', selected: true },
-      { name: 'balance', label: 'Balance', className: 'bg-white text-left', selected: true }
-      // { name: 'customer', label: 'Customer', className: 'bg-white text-left', selected: true }
+      { name: 'location', label: 'Location', className: 'bg-white text-left', selected: true }
     ];
   });
 
   useEffect(() => {
-    localStorage.setItem('cancelledSaleOrderColumns', JSON.stringify(columns));
+    localStorage.setItem('invoiceColumns', JSON.stringify(columns));
   }, [columns]);
 
   const history = useHistory();
 
   const { ids, setIds } = UseIDs();
+
+  const handleNavigation = () => {
+    history.push('/ui/invoice/create');
+  };
 
   const fetchRecords = useCallback(() => {
     const errorCallback = (error) => {
@@ -91,7 +93,7 @@ const CancelledSaleOrder = () => {
       // history.push('/ui/500'); // Navigate to the 500 error page
     };
     fetchAll(
-      API_ENDPOINTS.GET_CANCELLED_SALE_ORDERS,
+      API_ENDPOINTS.GET_INVOICES,
       page,
       rows,
       order,
@@ -99,6 +101,7 @@ const CancelledSaleOrder = () => {
       filters,
       (data) => {
         setRecords(data);
+        console.log(data);
         if (data.actual_total_count) {
           setTotalPages(Math.ceil(data.actual_total_count / rows));
         } else {
@@ -175,20 +178,12 @@ const CancelledSaleOrder = () => {
     setProducts(value);
   }
 
-  const handleStores = (value) => {
-    setStores(value);
-  }
-
-  const handleBalances = (value) => {
-    setBalances(value);
-  }
-
   const handleCustomers = (value) => {
     setCustomers(value);
   }
 
-  const handleClients = (value) => {
-    setClients(value);
+  const handleLocations = (value) => {
+    setLocations(value);
   }
 
   const handleBatchDelete = () => {
@@ -196,14 +191,14 @@ const CancelledSaleOrder = () => {
       setNumSelected(0);
       setSelected([]);
       setIsSelectedAll(false);
-      toast.success('Deleted Cancelled Sale Orders Successfully');
+      toast.success('Deleted Invoices Successfully');
     };
 
     const errorCallback = (error) => {
-      HandleTableErrorCallback(error, 'Cancelled Sale Order', ids, setIds);
+      HandleTableErrorCallback(error, 'Invoice', ids, setIds);
     };
 
-    handleBatchDeleteRecords(selected, API_ENDPOINTS.DELETE_SALE_ORDERS, fetchRecords, successCallback, errorCallback)
+    handleBatchDeleteRecords(selected, API_ENDPOINTS.DELETE_INVOICES, fetchRecords, successCallback, errorCallback)
   }
 
   const handleSelectAll = () => {
@@ -220,37 +215,35 @@ const CancelledSaleOrder = () => {
   }
 
   const MoneyInfo = () => {
-    const { cancelledTotal } = useMemo(() => {
+    const { total } = useMemo(() => {
       if (!Array.isArray(records.data) || records.data.length === 0) {
-        return { cancelledTotal: 0 }; // Return default values if data is not available
+        return { total: 0 }; // Return default values if data is not available
       }
 
       return records.data.reduce(
         (acc, record) => {
-          if (record.status === 'Cancelled') {
-            acc.cancelledTotal += parseFloat(record.total) || 0;
-          }
+          acc.total += parseFloat(record.total) || 0;
           return acc;
         },
-        { cancelledTotal: 0 }
+        { total: 0 }
       );
     }, [records.data]); // Make sure to include records.data in the dependency array
 
     return (
       <Grid container>
         <Grid item xl={12} md={12}>
-          <Card className="card-box card-box-border-bottom border-danger">
+          <Card className="card-box card-box-border-bottom border-success">
             <CardContent style={{ paddingBottom: 0 }}>
               <div className="text-center">
                 <div className="mt-1">
                   <FontAwesomeIcon
                     icon={faMoneyBill}
-                    className="font-size-xxl text-danger"
+                    className="font-size-xxl text-success"
                   />
                 </div>
                 <div className="mt-3 line-height-sm mb-2">
-                  <b className="font-size-lg pr-1">${cancelledTotal.toFixed(2)}</b>
-                  <span className="text-black-50">Cancelled</span>
+                  <b className="font-size-lg pr-1">${total.toFixed(2)}</b>
+                  <span className="text-black-50">Total</span>
                 </div>
               </div>
             </CardContent>
@@ -279,7 +272,7 @@ const CancelledSaleOrder = () => {
           handleIsEditing={handleIsEditing}
           handleEditIndex={handleEditIndex}
           editIndex={editIndex}
-          filterContent={<FilterContent currentFilter={currentFilter} setCurrentFilter={setCurrentFilter} products={products} handleProducts={handleProducts} stores={stores} handleStores={handleStores} balances={balances} handleBalances={handleBalances} customers={customers} handleCustomers={handleCustomers} clients={clients} handleClients={handleClients} />}
+          filterContent={<FilterContent currentFilter={currentFilter} setCurrentFilter={setCurrentFilter} products={products} handleProducts={handleProducts} customers={customers} handleCustomers={handleCustomers} locations={locations} handleLocations={handleLocations} />}
           filterRecords={filterRecords} // Pass records object
         />}
         tableHeading={<TableHeading
@@ -288,12 +281,10 @@ const CancelledSaleOrder = () => {
           onRequestSort={handleRequestSort}
           headers={headers}
           columns={columns}
-          isActions={false}
-          isBatchDelete={false}
         />}
         tableContent={
           !loading && records.data.length === 0 ? (
-            <NoRecords context='Cancelled Sale Orders' />
+            <NoRecords context='Invoices' />
           ) : (
             <TableContent
               fetchRecords={fetchRecords}
@@ -308,7 +299,8 @@ const CancelledSaleOrder = () => {
             />
           )
         }
-        Heading='Cancelled Sale Orders'
+        Heading='Invoices'
+        handleClick={handleNavigation}
         handlePageChange={handlePageChange}
         pageCount={totalPages}
         page={page}
@@ -323,10 +315,9 @@ const CancelledSaleOrder = () => {
         handleColumns={handleColumns}
         tabs={tabs}
         contentAboveFilter={<MoneyInfo />}
-        isAddRecord={false}
       />
     </>
   )
 }
 
-export default CancelledSaleOrder
+export default Invoice
