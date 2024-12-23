@@ -134,4 +134,11 @@ export const API_ENDPOINTS = {
   POST_INCOME_CATEGORY: () => `${BASE_URL}/api/post/income_category/`,
   POST_EXPENSE_CATEGORY: () => `${BASE_URL}/api/post/expense_category/`,
 
+  DELETE_INVOICE: (id) => `${BASE_URL}/api/delete/invoice/${id}/`,
+  DELETE_INVOICES: () => `${BASE_URL}/api/delete/invoices/`,
+  POST_INVOICE: () => `${BASE_URL}/api/post/invoice/`,
+  PUT_INVOICE: (id) => `${BASE_URL}/api/put/invoice/${id}/`,
+  GET_INVOICES: (from, to) => `${BASE_URL}/api/get/invoices/?from=${from}&to=${to}`,
+  GET_INVOICE: (id) => `${BASE_URL}/api/get/invoice/${id}/`,
+
 };

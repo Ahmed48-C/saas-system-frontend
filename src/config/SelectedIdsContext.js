@@ -22,6 +22,7 @@ export const SelectedIDsProvider = ({ children }) => {
         balances_history: [],
         expenses: [],
         incomes: [],
+        invoices: [],
     });
 
     return (

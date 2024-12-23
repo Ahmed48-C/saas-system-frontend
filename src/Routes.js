@@ -477,6 +477,18 @@ const Login = lazy(() =>
   import('./pages/Login/index')
 );
 
+const Invoices = lazy(() =>
+  import('./pages/Invoices/index')
+);
+
+const CreateInvoices = lazy(() =>
+  import('./pages/Invoices/CreateContent')
+);
+
+const EditInvoices = lazy(() =>
+  import('./pages/Invoices/EditContent')
+);
+
 
 const Routes = () => {
   const SuspenseLoading = () => {
@@ -696,6 +708,22 @@ const Routes = () => {
                     exact
                     path="/ui/transfer/create"
                     component={CreateTransfers}
+                  />
+
+                  <Route
+                    exact
+                    path="/ui/invoices"
+                    component={Invoices}
+                  />
+                  <ProtectedRoute
+                    exact
+                    path="/ui/invoice/create"
+                    component={CreateInvoices}
+                  />
+                  <Route
+                    exact
+                    path="/ui/invoice/edit/:id"
+                    component={EditInvoices}
                   />
 
                   <Route
