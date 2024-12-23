@@ -99,56 +99,11 @@ const Form = ({ handleClick, icon, title }) => {
 
         if (id) {
             fetchData();
-        }
-
-
-        const fetchDropdownData = async () => {
-
-            setLoadingProducts(true);
-            setLoadingCustomers(true);
-            setLoadingLocations(true);
-            setLoadingPaymentMethods(true);
-
-            try {
-                await formFetchDropdownRecords(`${BASE_URL}/api/get/customers/`, setCustomers, setLoadingCustomers);
-                // setLoadingCustomers(false);
-            } catch (error) {
-                setErrorCustomers('Error fetching customers');
-                setLoadingCustomers(false);
-            }
-
-            try {
-                await formFetchDropdownRecords(`${BASE_URL}/api/get/locations/`, setLocations, setLoadingLocations);
-                // setLoadingLocations(false);
-            } catch (error) {
-                setErrorLocations('Error fetching locations');
-                setLoadingLocations(false);
-            }
-
-            try {
-                await formFetchDropdownRecords(`${BASE_URL}/api/get/products/`, setProducts, setLoadingProducts);
-                // setLoadingProducts(false);
-            } catch (error) {
-                setErrorProducts('Error fetching products');
-                setLoadingProducts(false);
-            }
-
-            try {
-                await formFetchDropdownRecords(`${BASE_URL}/api/get/invoice_payment_methods/`, setPaymentMethods, setLoadingPaymentMethods);
-                // setLoadingPaymentMethods(false);
-            } catch (error) {
-                setErrorPaymentMethods('Error fetching payment methods');
-                setLoadingPaymentMethods(false);
-            }
-        };
-
-        fetchDropdownData();
-
-        if (!id) {
+        } else {
             // Set default values for new invoice
             const currentDate = new Date();
             const dueDate = new Date();
-            dueDate.setDate(currentDate.getDate() + 7); // Add 7 days for due date
+            dueDate.setDate(currentDate.getDate() + 7);
 
             const newNumber = generateInvoiceNumber();
             setData((prevData) => ({
@@ -158,11 +113,118 @@ const Form = ({ handleClick, icon, title }) => {
                 due_date: format(dueDate, 'yyyy-MM-dd')
             }));
         }
-    }, [id, fetchData]);
 
+        const fetchDropdownData = async () => {
+
+            setLoadingProducts(true);
+            setLoadingCustomers(true);
+            setLoadingLocations(true);
+            setLoadingPaymentMethods(true);
+
+            try {
+                // Fetch all the data first
+                await Promise.all([
+                    formFetchDropdownRecords(`${BASE_URL}/api/get/customers/`, setCustomers, setLoadingCustomers),
+                    formFetchDropdownRecords(`${BASE_URL}/api/get/products/`, setProducts, setLoadingProducts),
+                    formFetchDropdownRecords(`${BASE_URL}/api/get/locations/`, setLocations, setLoadingLocations),
+                    formFetchDropdownRecords(`${BASE_URL}/api/get/invoice_payment_methods/`, setPaymentMethods, setLoadingPaymentMethods)
+                ]);
+            } catch (error) {
+                console.error('Error fetching dropdown data:', error);
+                if (!id) {
+                    toast.error('Error loading required data. Please try again.');
+                }
+            }
+        };
+
+        fetchDropdownData();
+    }, [id]);
+
+    // New useEffect to handle pending invoice data after customers and products are loaded
     useEffect(() => {
-        console.log('Products:', products); // Log products to verify
-    }, [products]);
+        const processPendingInvoiceData = async () => {
+            // Only proceed if we have both customers and products loaded
+            if (!id && customers.length > 0 && products.length > 0) {
+                const pendingInvoiceData = localStorage.getItem('pendingInvoiceData');
+                if (pendingInvoiceData) {
+                    try {
+                        const parsedData = JSON.parse(pendingInvoiceData);
+                        
+                        // console.log('Pending Invoice Data:', parsedData);
+                        // console.log('Available Customers:', customers);
+                        
+                        // Find customer ID from name using the state, with more robust comparison
+                        const customer = customers.find(c => {
+                            // Normalize both strings for comparison
+                            const customerName = (c.name || '').trim().toLowerCase();
+                            const searchName = (parsedData.customer || '').trim().toLowerCase();
+                            // console.log(`Comparing: "${customerName}" with "${searchName}"`);
+                            return customerName === searchName;
+                        });
+
+                        if (!customer) {
+                            throw new Error(`Customer not found: ${parsedData.customer}. Available customers: ${customers.map(c => c.name).join(', ')}`);
+                        }
+
+                        // console.log('Found Customer:', customer);
+
+                        // Transform items to include product IDs
+                        const transformedItems = parsedData.items.map(item => {
+                            // console.log('Processing item:', item);
+                            // Find product with more robust comparison
+                            const product = products.find(p => {
+                                const productName = (p.name || '').trim().toLowerCase();
+                                const searchName = (item.product || '').trim().toLowerCase();
+                                // console.log(`Comparing product: "${productName}" with "${searchName}"`);
+                                return productName === searchName;
+                            });
+
+                            if (!product) {
+                                throw new Error(`Product not found: ${item.product}. Available products: ${products.map(p => p.name).join(', ')}`);
+                            }
+
+                            // console.log('Found Product:', product);
+
+                            return {
+                                product_id: product.id,
+                                price: item.price,
+                                quantity: item.quantity,
+                                total: item.total
+                            };
+                        });
+
+                        // console.log('Transformed Items:', transformedItems);
+
+                        // Update form data with transformed data
+                        setData(prevData => {
+                            const newData = {
+                                ...prevData,
+                                customer_id: customer.id,
+                                items: transformedItems,
+                                total: parsedData.total,
+                                note: `Created from Sale Order: ${parsedData.sale_order_code}`
+                            };
+                            // console.log('Setting form data:', newData);
+                            return newData;
+                        });
+
+                    } catch (error) {
+                        console.error('Error processing pending invoice data:', error);
+                        toast.error('Error loading sale order data: ' + error.message);
+                    } finally {
+                        // Always clear the pending data from localStorage
+                        localStorage.removeItem('pendingInvoiceData');
+                    }
+                }
+            }
+        };
+
+        processPendingInvoiceData();
+    }, [id, customers, products]); // This effect runs when customers or products change
+
+    // useEffect(() => {
+    //     console.log('Products:', products); // Log products to verify
+    // }, [products]);
 
     const calculateTotal = () => {
         const totalValue = data.items.reduce((acc, product) => {
@@ -344,9 +406,9 @@ const Form = ({ handleClick, icon, title }) => {
         );
     }
 
-    useEffect(() => {
-        console.log(" TOTAL: ", data.total)
-    }, [data.total])
+    // useEffect(() => {
+    //     console.log(" TOTAL: ", data.total)
+    // }, [data.total])
 
     const handleNavigatePage = () => {
         history.push('/ui/invoices');
@@ -380,7 +442,7 @@ const Form = ({ handleClick, icon, title }) => {
             try {
                 await formFetchDropdownRecords(`${BASE_URL}/api/get/customers/`, setCustomers, setLoadingCustomers);
                 // setLoadingCustomers(false);
-                console.log("FETCHED CUSTOMERS:"  + JSON.stringify(customers))
+                // console.log("FETCHED CUSTOMERS:"  + JSON.stringify(customers))
             } catch (error) {
                 setErrorCustomers('Error fetching customers');
                 setLoadingCustomers(false);
@@ -411,7 +473,7 @@ const Form = ({ handleClick, icon, title }) => {
         };
 
         handleSubmitRecord(postData, API_ENDPOINTS.POST_CUSTOMER, successCallback, errorCallback);
-        console.log('Created new Customer')
+        // console.log('Created new Customer')
     };
 
 
@@ -468,7 +530,7 @@ const Form = ({ handleClick, icon, title }) => {
         };
 
         handleSubmitRecord(postData, API_ENDPOINTS.POST_LOCATION, successCallback, errorCallback);
-        console.log('Created new Location')
+        // console.log('Created new Location')
     };
 
     const isLocationPopupFormValid = () => {
