@@ -196,16 +196,19 @@ const Row = ({
             return <td key={index}>{value}</td>;
           }
         })}
-        <td>
+        <td className="text-center">
           <ButtonGroup variant="text" aria-label="text primary button group">
             <Tooltip title="Create Invoice">
               <Button
+                style={{ minWidth: '32px', minHeight: '32px', paddingRight: '6px', paddingLeft: '5px' }}
                 variant="contained"
                 size="small"
-                className="btn-primary"
+                className="btn-primary text-white"
                 onClick={handleCreateInvoice}
               >
-                <ReceiptIcon />
+                <span className="btn-wrapper--icon">
+                  <ReceiptIcon fontSize='small' />
+                </span>
               </Button>
             </Tooltip>
           </ButtonGroup>

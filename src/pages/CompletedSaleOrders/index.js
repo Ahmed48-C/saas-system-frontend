@@ -288,7 +288,7 @@ const CompletedSaleOrder = () => {
           onRequestSort={handleRequestSort}
           headers={headers}
           columns={columns}
-          isActions={false}
+          // isActions={false}
           isBatchDelete={false}
         />}
         tableContent={
@@ -323,7 +323,7 @@ const CompletedSaleOrder = () => {
         handleColumns={handleColumns}
         tabs={tabs}
         contentAboveFilter={<MoneyInfo />}
-        isAddRecord={false}
+        // isAddRecord={false}
       />
     </>
   )
