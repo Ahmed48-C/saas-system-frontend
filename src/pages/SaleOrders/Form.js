@@ -98,7 +98,7 @@ const Form = ({ handleClick, icon, title }) => {
         const minute = String(now.getMinutes()).padStart(2, '0');
         const second = String(now.getSeconds()).padStart(2, '0');
 
-        return `PO-${day}${hour}${minute}${second}`;
+        return `SO-${day}${hour}${minute}${second}`;
     };
 
     useEffect(() => {

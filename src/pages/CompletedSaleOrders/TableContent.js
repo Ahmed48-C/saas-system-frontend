@@ -15,6 +15,7 @@ import { selectedRowStyles } from '../../theme/selectedRowStyles';
 import { ExpandLess, ExpandMore } from '@material-ui/icons';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+import ReceiptIcon from '@material-ui/icons/Receipt';
 import ConfirmDelete from '../../pages-components/ConfirmDelete';
 
 const TableContent = ({
@@ -127,6 +128,32 @@ const Row = ({
     setExpandedRow(expandedRow === index ? null : index);
   };
 
+  const handleCreateInvoice = () => {
+    try {
+      // Store the sale order data in localStorage
+      const invoiceData = {
+        customer: row.customer,
+        items: row.items.map(item => ({
+          product: item.product,
+          price: parseFloat(item.price),
+          quantity: parseInt(item.quantity),
+          total: parseFloat(item.total)
+        })),
+        total: parseFloat(row.total),
+        sale_order_code: row.code
+      };
+
+      // Store in localStorage
+      localStorage.setItem('pendingInvoiceData', JSON.stringify(invoiceData));
+
+      // Navigate to invoice creation page
+      history.push('/ui/invoice/create');
+    } catch (error) {
+      console.error('Error preparing invoice data:', error);
+      toast.error('Error preparing invoice data: ' + (error.message || 'Unknown error'));
+    }
+  };
+
   return (
     <>
       <TableRow
@@ -169,6 +196,20 @@ const Row = ({
             return <td key={index}>{value}</td>;
           }
         })}
+        <td>
+          <ButtonGroup variant="text" aria-label="text primary button group">
+            <Tooltip title="Create Invoice">
+              <Button
+                variant="contained"
+                size="small"
+                className="btn-primary"
+                onClick={handleCreateInvoice}
+              >
+                <ReceiptIcon />
+              </Button>
+            </Tooltip>
+          </ButtonGroup>
+        </td>
       </TableRow>
     </>
   );
