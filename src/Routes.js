@@ -137,7 +137,16 @@ import {
   faArrowLeft,
   faStar,
   faSignOutAlt,
-  faLink
+  faLink,
+  faShoppingCart,
+  faCartPlus,
+  faMinusCircle,
+  faMapMarkerAlt,
+  faStore,
+  faBox,
+  faFileInvoice,
+  faExchangeAlt,
+  faWallet
 } from '@fortawesome/free-solid-svg-icons';
 import ProtectedRoute from './pages-components/ProtectedRoute';
 import UnprotectedRoute from './pages-components/UnprotectedRoute';
@@ -263,7 +272,16 @@ library.add(
   faArrowLeft,
   faStar,
   faSignOutAlt,
-  faLink
+  faLink,
+  faShoppingCart,
+  faCartPlus,
+  faMinusCircle,
+  faMapMarkerAlt,
+  faStore,
+  faBox,
+  faFileInvoice,
+  faExchangeAlt,
+  faWallet
 );
 
 const NotFound404 = () => {

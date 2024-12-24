@@ -141,4 +141,11 @@ export const API_ENDPOINTS = {
   GET_INVOICES: (from, to) => `${BASE_URL}/api/get/invoices/?from=${from}&to=${to}`,
   GET_INVOICE: (id) => `${BASE_URL}/api/get/invoice/${id}/`,
 
+  GET_TASKS: () => `${BASE_URL}/api/get/tasks/`,
+  GET_TASK: (id) => `${BASE_URL}/api/get/task/${id}/`,
+  POST_TASK: () => `${BASE_URL}/api/post/task/`,
+  PUT_TASK: (id) => `${BASE_URL}/api/put/task/${id}/`,
+  DELETE_TASK: (id) => `${BASE_URL}/api/delete/task/${id}/`,
+  GET_TASK_STATUS: () => `${BASE_URL}/api/get/tasks_status/`,
+  GET_TASK_PRIORITY: () => `${BASE_URL}/api/get/tasks_priority/`,
 };
