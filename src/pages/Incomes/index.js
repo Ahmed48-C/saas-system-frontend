@@ -44,7 +44,7 @@ const Income = () => {
 
   const [filters, setFilters] = useState([]);
   const [anchorEl4, setAnchorEl4] = useState(null);
-  const [currentFilter, setCurrentFilter] = useState({ balance_id: '', customer_id: '', category_id: '', amount: '', type: '', note: '', date: '', action: '', currency: '' });
+  const [currentFilter, setCurrentFilter] = useState({ balance_id: '', customer_id: '', category_id: '', amount: '', type: '', note: '', date: '', action: '' });
   const [balances, setBalances] = useState([]);
   const [customers, setCustomers] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -68,7 +68,6 @@ const Income = () => {
         { name: 'note', label: 'Note', className: 'bg-white text-left', selected: false },
         { name: 'date', label: 'date', className: 'bg-white text-left', selected: true },
         { name: 'action', label: 'Action', className: 'bg-white text-left', selected: false },
-        // { name: 'currency', label: 'Currency', className: 'bg-white text-left', selected: true },
     ];
   });
 

@@ -17,7 +17,6 @@ const CreateContent = () => {
         type: 'EXPENSE',
         note: data.note,
         action: 'Subtract',
-        currency: data.currency,
         attachment: data.attachment,
         attachment_file: data.attachment_file,
       };

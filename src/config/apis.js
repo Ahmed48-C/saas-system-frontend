@@ -148,4 +148,16 @@ export const API_ENDPOINTS = {
   DELETE_TASK: (id) => `${BASE_URL}/api/delete/task/${id}/`,
   GET_TASK_STATUS: () => `${BASE_URL}/api/get/tasks_status/`,
   GET_TASK_PRIORITY: () => `${BASE_URL}/api/get/tasks_priority/`,
+
+  GET_INCOME_30_DAYS: () => `${BASE_URL}/api/get/incomes/last-30-days/`,
+  GET_EXPENSE_30_DAYS: () => `${BASE_URL}/api/get/expenses/last-30-days/`,
+
+  GET_INCOME_CURRENT_MONTH: () => `${BASE_URL}/api/get/incomes/current-month/`,
+  GET_EXPENSE_CURRENT_MONTH: () => `${BASE_URL}/api/get/expenses/current-month/`,
+
+  GET_SALES_30_DAYS: () => `${BASE_URL}/api/get/sales_orders/last-30-days/`,
+  GET_SALES_CURRENT_MONTH: () => `${BASE_URL}/api/get/sales_orders/current-month/`,
+
+  GET_TOTAL_STOCK: () => `${BASE_URL}/api/get/total-stock/`,
+  GET_TOTAL_BALANCE: () => `${BASE_URL}/api/get/total-balance/`,
 };

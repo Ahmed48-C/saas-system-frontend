@@ -5,11 +5,9 @@ import { formatFilterRecordDropdown } from '../../functions/pages/formatFilterRe
 import { filterFetchDropdownRecords } from '../../functions/pages/filterFetchDropdownRecords';
 import { BASE_URL } from '../../config/apis';
 import InputSelectNoCreate from '../../pages-components/InputSelectNoCreate';
-import { currencyList } from '../../config/common';
 
 const FilterContent = ({ currentFilter, setCurrentFilter, handleProducts, products, handleCustomers, customers, handleLocations, locations }) => {
     const [loading, setLoading] = useState(true);
-    const [currencyOptions, setCurrencyOptions] = useState([]);
     const [paymentMethods, setPaymentMethods] = useState([]);
 
     useEffect(() => {
@@ -18,19 +16,6 @@ const FilterContent = ({ currentFilter, setCurrentFilter, handleProducts, produc
         filterFetchDropdownRecords(`${BASE_URL}/api/get/locations/`, handleLocations)
         filterFetchDropdownRecords(`${BASE_URL}/api/get/invoice_payment_methods/`, setPaymentMethods)
         setLoading(false);
-    }, []);
-
-    useEffect(() => {
-        // Map through country list and sort them alphabetically
-        const sortedCurrencies = currencyList
-            .map(currency => ({
-                name: currency,
-                value: currency // Setting value to country name
-            }))
-            .sort((a, b) => a.name.localeCompare(b.name));
-
-        // Set the sorted countries in the state
-        setCurrencyOptions(sortedCurrencies);
     }, []);
 
     const handleInputChange = (field) => (e) => {
@@ -74,16 +59,6 @@ const FilterContent = ({ currentFilter, setCurrentFilter, handleProducts, produc
                     value={currentFilter.number}
                     onChange={(e) => setCurrentFilter({ ...currentFilter, number: e.target.value })}
                     maxLength={80}
-                />
-            </Grid>
-            <Grid item xs={12}>
-                <InputSelectNoCreate
-                    selectItems={currencyOptions}
-                    label='Currency'
-                    name='currency'
-                    id='currency'
-                    value={currentFilter.currency}
-                    onChange={(e) => setCurrentFilter({ ...currentFilter, currency: e.target.value })}
                 />
             </Grid>
             <Grid item xs={12}>

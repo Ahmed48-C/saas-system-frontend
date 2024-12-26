@@ -14,7 +14,6 @@ import PopupCreateNew from '../../pages-components/PopupCreateNew'
 import { handleSubmitRecord } from '../../functions/pages/handleSubmitRecord'
 import { toast } from 'react-toastify'
 import InputSelectNoCreate from '../../pages-components/InputSelectNoCreate'
-import { currencyList } from '../../config/common'
 import CardImageUpload from '../../pages-components/MediaUploader';
 import { imageUploadHandler } from "../../config/uploadHandler";
 import {
@@ -102,26 +101,9 @@ const Form = ({ handleClick, icon, title }) => {
         // formFetchDropdownRecords(`http://127.0.0.1:8000/api/get/balances/`, setBalances)
     }, [id, fetchData]);
 
-    // State to hold the list of countries
-    const [currencyOptions, setCurrencyOptions] = useState([]);
-
-    useEffect(() => {
-        // Map through country list and sort them alphabetically
-        const sortedCurrencies = currencyList
-            .map(currency => ({
-                name: currency,
-                value: currency // Setting value to country name
-            }))
-            .sort((a, b) => a.name.localeCompare(b.name));
-
-        // Set the sorted countries in the state
-        setCurrencyOptions(sortedCurrencies);
-    }, []);
-
     const isFormValid = () => {
         return  data.balance_id &&
                 data.supplier_id &&
-                data.currency &&
                 data.amount;
     };
 
@@ -471,17 +453,6 @@ const Form = ({ handleClick, icon, title }) => {
                         key='amount'
                         error={isEmpty(data.amount)}
                         maxLength={15}
-                        />
-                    </Grid>
-                    <Grid item xs={6}>
-                        <InputSelectNoCreate
-                        selectItems={currencyOptions}
-                        label='Currency'
-                        name='currency'
-                        id='currency'
-                        onChange={handleInputChange('currency')}
-                        value={data.currency ?? ""}
-                        error={isEmpty(data.currency)}
                         />
                     </Grid>
                     <Grid item xs={8} style={{ paddingLeft: '35px', paddingRight: '0px' }}>

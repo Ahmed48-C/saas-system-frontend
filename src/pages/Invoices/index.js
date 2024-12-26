@@ -46,7 +46,7 @@ const Invoice = () => {
 
   const [filters, setFilters] = useState([]);
   const [anchorEl4, setAnchorEl4] = useState(null);
-  const [currentFilter, setCurrentFilter] = useState({ number: '', date: '', due_date: '', currency: '', payment_method: '', total: '', note: '', customer_id: '', location_id: '', items__product_id: '', items__price: '', items__quantity: '', items__total: '' });
+  const [currentFilter, setCurrentFilter] = useState({ number: '', date: '', due_date: '', payment_method: '', total: '', note: '', customer_id: '', location_id: '', items__product_id: '', items__price: '', items__quantity: '', items__total: '' });
   const [customers, setCustomers] = useState([]);
   const [locations, setLocations] = useState([]);
   const [products, setProducts] = useState([]);
@@ -66,7 +66,6 @@ const Invoice = () => {
       { name: 'date', label: 'Date', className: 'bg-white text-left', selected: true },
       { name: 'due_date', label: 'Due Date', className: 'bg-white text-left', selected: true },
       { name: 'items', label: 'Items', className: 'bg-white text-left', selected: true },
-      { name: 'currency', label: 'Currency', className: 'bg-white text-left', selected: true },
       { name: 'payment_method', label: 'Payment Method', className: 'bg-white text-left', selected: true },
       { name: 'total', label: 'Total', className: 'bg-white text-left', selected: true },
       { name: 'note', label: 'Note', className: 'bg-white text-left', selected: false },

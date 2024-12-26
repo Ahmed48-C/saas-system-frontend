@@ -16,7 +16,6 @@ const EditContent = ({ editLoading }) => {
         number: data.number,
         date: data.date,
         due_date: data.due_date,
-        currency: data.currency,
         payment_method: data.payment_method,
         total: data.total,
         note: data.note,

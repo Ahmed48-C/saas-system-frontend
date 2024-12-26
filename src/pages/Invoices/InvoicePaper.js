@@ -444,7 +444,7 @@ const InvoicePaper = ({ invoiceId }) => {
                 <div style={{ fontSize: '0.85rem' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '0.75rem', fontWeight: 'bold', fontSize: '1rem' }}>
                     <span>Total Due</span>
-                    <span>{invoiceData.currency} {invoiceData.total}</span>
+                    <span>{invoiceData.total}</span>
                   </div>
                 </div>
               </Grid>
@@ -466,7 +466,7 @@ const InvoicePaper = ({ invoiceId }) => {
                 <div style={{ fontSize: '0.85rem' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '0.75rem', fontWeight: 'bold', fontSize: '1rem' }}>
                     <span>Total Due</span>
-                    <span>{invoiceData.currency} {invoiceData.total}</span>
+                    <span>{invoiceData.total}</span>
                   </div>
                 </div>
               </div>

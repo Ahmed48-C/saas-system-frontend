@@ -69,7 +69,6 @@ const Expense = () => {
         { name: 'note', label: 'Note', className: 'bg-white text-left', selected: false },
         { name: 'date', label: 'date', className: 'bg-white text-left', selected: true },
         { name: 'action', label: 'Action', className: 'bg-white text-left', selected: false },
-        // { name: 'currency', label: 'Currency', className: 'bg-white text-left', selected: true },
     ];
   });
 
