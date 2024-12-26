@@ -19,7 +19,7 @@ import InputSelectNoCreate from '../../pages-components/InputSelectNoCreate'
 import PopupCreateNew from '../../pages-components/PopupCreateNew'
 import { handleSubmitRecord } from '../../functions/pages/handleSubmitRecord'
 import { toast } from 'react-toastify'
-import { countryList, currencyList, maxFileSizeInMBForUploadImage } from '../../config/common'
+import { countryList, maxFileSizeInMBForUploadImage } from '../../config/common'
 import apiClient from '../../config/apiClient'
 import CardImageUpload from '../../pages-components/MediaUploader';
 import { imageUploadHandler } from '../../config/uploadHandler'
@@ -55,7 +55,6 @@ const Form = ({ handleClick, icon, title }) => {
     const [loadingPaymentMethods, setLoadingPaymentMethods] = useState(false);
     const [errorPaymentMethods, setErrorPaymentMethods] = useState('');
 
-    const [currencyOptions, setCurrencyOptions] = useState([]);
     const [countryOptions, setCountryOptions] = useState([]);
 
     const fetchData = useCallback(() => {
@@ -75,16 +74,6 @@ const Form = ({ handleClick, icon, title }) => {
     };
 
     useEffect(() => {
-        // Map through currency list and sort them alphabetically
-        const sortedCurrencies = currencyList
-            .map(currency => ({
-                name: currency,
-                value: currency // Setting value to currency name
-            }))
-            .sort((a, b) => a.name.localeCompare(b.name));
-
-        // Set the sorted countries in the state
-        setCurrencyOptions(sortedCurrencies);
 
         // Map through country list and sort them alphabetically
         const sortedCountries = countryList
@@ -739,18 +728,6 @@ const Form = ({ handleClick, icon, title }) => {
                             </div>
                             <Divider className="my-4" />
                         </div>
-                    </Grid>
-                    
-                    <Grid item xs={6}>
-                        <InputSelectNoCreate
-                            selectItems={currencyOptions}
-                            label='Currency'
-                            name='currency'
-                            id='currency'
-                            onChange={handleInputChange('currency')}
-                            value={data.currency ?? ""}
-                            // error={isEmpty(data.currency)}
-                        />
                     </Grid>
 
                     <Grid item xs={6}>

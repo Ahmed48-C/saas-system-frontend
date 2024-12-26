@@ -17,7 +17,6 @@ const CreateContent = () => {
         type: 'INCOME',
         note: data.note,
         action: 'Add',
-        currency: data.currency,
         attachment: data.attachment,
         attachment_file: data.attachment_file,
       };

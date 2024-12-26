@@ -165,15 +165,6 @@ const Row = ({
                 />
               </td>
             );
-          } else if (column.name === 'currency') {
-            // Skip rendering amount column as it will be combined with currency
-            return null;
-          } else if (column.name === 'amount') {
-            return (
-              <td key={index}>
-                {row['currency']} {row[column.name]}
-              </td>
-            );
           } else {
             return (
               <td key={index}>
