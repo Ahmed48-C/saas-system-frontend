@@ -4,6 +4,7 @@ import Shortcuts from '../pages-components/DashboardComponents/Shortcuts'
 import Tasks from '../pages-components/DashboardComponents/Tasks'
 import IncomeExpenseAnalysis from '../pages-components/DashboardComponents/IncomeExpenseAnalysis'
 import SalesCompletedAnalysis from '../pages-components/DashboardComponents/SalesCompletedAnalysis'
+import PurchaseAnalysis from '../pages-components/DashboardComponents/PurchaseAnalysis'
 import TotalInStock from '../pages-components/DashboardComponents/TotalInStock'
 import TotalBalance from '../pages-components/DashboardComponents/TotalBalance'
 
@@ -29,16 +30,21 @@ const Dashboard = () => {
           <TotalInStock />
         </Grid>
 
-        {/* Main Content Row */}
+        {/* Analysis Charts Row */}
         <Grid item xs={12} lg={6}>
           <SalesCompletedAnalysis />
         </Grid>
         <Grid item xs={12} lg={6}>
+          <PurchaseAnalysis />
+        </Grid>
+
+        {/* Shortcuts and Tasks Row */}
+        <Grid item xs={12}>
           <Grid container spacing={4}>
-            <Grid item xs={12}>
+            <Grid item xs={12} lg={6}>
               <Shortcuts />
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} lg={6}>
               <Tasks />
             </Grid>
           </Grid>
