@@ -160,4 +160,7 @@ export const API_ENDPOINTS = {
 
   GET_TOTAL_STOCK: () => `${BASE_URL}/api/get/total-stock/`,
   GET_TOTAL_BALANCE: () => `${BASE_URL}/api/get/total-balance/`,
+
+  GET_PURCHASE_30_DAYS: () => `${BASE_URL}/api/get/purchase_orders/last-30-days/`,
+  GET_PURCHASE_CURRENT_MONTH: () => `${BASE_URL}/api/get/purchase_orders/current-month/`,
 };
