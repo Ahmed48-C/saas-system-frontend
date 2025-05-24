@@ -1,8 +1,6 @@
 # 🚀 Accounting System Frontend
 
 <div align="center">
-  <img src="public/logo.png" alt="Accounting System Logo" width="200" />
-  
   [![React](https://img.shields.io/badge/React-16.13.1-blue.svg)](https://reactjs.org/)
   [![Material-UI](https://img.shields.io/badge/Material--UI-4.9.14-blue.svg)](https://material-ui.com/)
   [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
