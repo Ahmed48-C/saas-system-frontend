@@ -15,14 +15,10 @@ A modern, feature-rich SaaS (Software as a Service) accounting frontend applicat
 
 - 🎨 **Modern UI/UX** - Built with Material-UI for a sleek, professional look
 - 📊 **Advanced Charts** - Integrated with ApexCharts and Chart.js for data visualization
-- 🗺️ **Maps Integration** - Support for Google Maps and Leaflet
-- 📅 **Calendar** - Full-featured calendar with React Big Calendar
-- 🎯 **Drag and Drop** - Beautiful DnD functionality
 - 📝 **Rich Text Editor** - Integrated with Draft.js and React Quill
 - 📱 **Responsive Design** - Works seamlessly across all devices
 - 🔒 **Authentication Ready** - Built-in authentication system
 - 📊 **Data Tables** - Advanced table functionality
-- 🎨 **Theme Customization** - Easily customizable theme
 
 ## 🚀 Quick Start
 
